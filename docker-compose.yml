@@ -1,0 +1,12 @@
+version: '3.5'
+services:
+  restapi:
+    build: ./restapi
+    ports:
+      - "5000:5000"
+  webapp:
+    build: ./webapp
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - restapi
