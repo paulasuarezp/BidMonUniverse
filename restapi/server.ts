@@ -6,6 +6,13 @@ const app: Application = express();
 const port: number = 5000;
 
 
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://mongo:27017/dbtfg', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB Connected'))
+  .catch((err: any) => console.error('MongoDB connection error:', err));
+
+
 app.use(cors({
     origin: 'http://localhost:5173' // Vite
   }));
@@ -17,3 +24,5 @@ app.listen(port, ():void => {
 }).on("error",(error:Error)=>{
     console.error('Error occured: ' + error.message);
 });
+
+
