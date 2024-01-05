@@ -2,13 +2,19 @@ import express, { Application, RequestHandler } from "express";
 import cors from 'cors';
 import bp from 'body-parser';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 const app: Application = express();
 const port: number = 5000;
 
 
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://mongo:27017/dbtfg', { useNewUrlParser: true, useUnifiedTopology: true })
+
+const mongoURI: string = process.env.MONGO_URI!;
+
+mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB Connected'))
   .catch((err: any) => console.error('MongoDB connection error:', err));
 

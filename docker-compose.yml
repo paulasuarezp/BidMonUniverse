@@ -21,22 +21,10 @@ services:
     volumes:
       - ./restapi:/usr/src/app
       - /usr/src/app/node_modules
-    depends_on:
-      - mongo
     networks:
-      - express-mongo
       - react-express
     expose: 
       - 3000
-  mongo:
-    restart: always
-    image: mongo:latest
-    volumes:
-      - ./data:/data/db
-    networks:
-      - express-mongo
-    expose:
-      - 27017
+  
 networks:
   react-express:
-  express-mongo:
