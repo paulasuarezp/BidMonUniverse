@@ -1,6 +1,15 @@
+# Usa la imagen base de Node 20
 FROM node:20
+
+# Copia el código de la aplicación
 COPY . /app
+
+# Establece el directorio de trabajo
 WORKDIR /app
-#Install the dependencies
+
+# Instala las dependencias de Node.js
 RUN npm install
-CMD [ "npm", "start" ]
+
+
+# Comando para iniciar la aplicación
+CMD ["npm", "start" ]

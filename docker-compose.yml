@@ -1,12 +1,30 @@
-version: '3.5'
 services:
-  restapi:
-    build: ./restapi
-    ports:
-      - "5000:5000"
   webapp:
-    build: ./webapp
+    build:
+      context: webapp
     ports:
-      - "5173:5173"
-    depends_on: 
+      - 5173:5173
+    stdin_open: true
+    volumes:
+      - ./webapp:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: always
+    networks:
+      - react-express
+    depends_on:
       - restapi
+
+  restapi:
+    restart: always
+    build:
+      context: restapi
+    volumes:
+      - ./restapi:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - react-express
+    expose: 
+      - 3000
+  
+networks:
+  react-express:

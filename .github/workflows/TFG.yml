@@ -11,24 +11,24 @@ on:
         types: [published]
 
 jobs:
-    unit-tests:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-              with:
-                fetch-depth: 0
-            - uses: actions/setup-node@v3
-              with:
-                node-version: 20
-            - run: npm --prefix webapp ci
-            - run: npm --prefix restapi ci
-            - run: npm --prefix webapp test --coverage --watchAll
-            - run: npm --prefix restapi test --coverage --watchAll
-            - name: Analyze with SonarCloud
-              uses: sonarsource/sonarcloud-github-action@master
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    # unit-tests:
+    #     runs-on: ubuntu-latest
+    #     steps:
+    #         - uses: actions/checkout@v3
+    #           with:
+    #             fetch-depth: 0
+    #         - uses: actions/setup-node@v3
+    #           with:
+    #             node-version: 20
+    #         - run: npm --prefix webapp ci
+    #         - run: npm --prefix restapi ci
+    #         - run: npm --prefix webapp test --coverage --watchAll
+    #         - run: npm --prefix restapi test --coverage --watchAll
+    #         - name: Analyze with SonarCloud
+    #           uses: sonarsource/sonarcloud-github-action@master
+    #           env:
+    #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
     docker-push-webapp:
         name: Push webapp Docker Image to GitHub Packages

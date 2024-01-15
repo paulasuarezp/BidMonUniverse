@@ -39,3 +39,6 @@ restapi/coverage
 .env.development.local
 .env.test.local
 .env.production.local
+
+data
+restapi/.env
