@@ -1,6 +1,8 @@
 import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/system';
 
+
+//#region PROPS
 // Only include variant, size, and color
 //type ButtonBaseProps = Pick<MuiButtonProps, 'variant' | 'size' | 'color'>;
 
@@ -12,9 +14,10 @@ export interface ButtonProps extends ButtonBaseProps {
   buttonType?: 'primary' | 'secondary'; 
 }
 
+//#endregion
 
 
-
+//#region STYLES
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) => prop !== 'buttonType', // Filtrar propiedad personalizada para evitar errores en el DOM
 })<ButtonProps>(({ theme, buttonType }) => {
@@ -40,10 +43,11 @@ const StyledButton = styled(MuiButton, {
     textTransform: 'none',
   };
 });
+//#endregion
 
 
-
-function Button(props: ButtonProps) {
+//#region COMPONENTE BUTTON
+export default function Button(props: ButtonProps) {
   const { label = "Default Label", buttonType = "primary", ...rest } = props;
 
   return (
@@ -52,6 +56,4 @@ function Button(props: ButtonProps) {
     </StyledButton> 
   );
 }
-
-
-export default Button;
+//#endregion

@@ -3,6 +3,7 @@ import { Box, TextField } from '@mui/material';
 import Paper from '../components/paper/Paper';
 import Button from '../components/button/Button';
 
+//#region COMPONENTE LOGIN
 export default function Login() {
   return (
     <Paper 
@@ -19,4 +20,4 @@ export default function Login() {
     </Paper>
   );
 };
-
+//#endregion
