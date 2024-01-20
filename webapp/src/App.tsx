@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { ThemeProvider } from '@mui/material/styles';
 import { lightTheme, darkTheme } from './themes';
-import  Button  from './views/components/button/Button';
-import LogoBox  from './views/components/logoBox/LogoBox';
-import './App.css'
-import Paper from './views/components/paper/Paper';
+import Login from './views/layouts/Login';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -15,11 +12,7 @@ function App() {
 
   return (
     <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
-      <Paper background={'light'}>
-        <LogoBox />
-        <Button label="Primer botón" />
-        <Button label="Segundo botón" buttonType='secondary'/>
-      </Paper>
+      <Login></Login>
     </ThemeProvider>
   )
 }

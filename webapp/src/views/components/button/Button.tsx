@@ -2,10 +2,10 @@ import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/materia
 import { styled } from '@mui/material/styles';
 
 // Only include variant, size, and color
-type ButtonBaseProps = Pick<MuiButtonProps, 'variant' | 'size' | 'color'>;
+//type ButtonBaseProps = Pick<MuiButtonProps, 'variant' | 'size' | 'color'>;
 
 // Use all except disableRipple
-// type ButtonBaseProps = Omit<MuiButtonProps, "disableRipple">;
+ type ButtonBaseProps = Omit<MuiButtonProps, "disableRipple">;
 
 export interface ButtonProps extends ButtonBaseProps {
   label?: string;
@@ -14,27 +14,33 @@ export interface ButtonProps extends ButtonBaseProps {
 
 
 
-const StyledButton = styled(MuiButton)<ButtonProps>(({ theme, buttonType }) => ({
-  ...(buttonType === 'primary' && {
-    color: theme.palette.primary.contrastText, 
-    backgroundColor: theme.palette.primary.main, 
-    variant: 'contained',
-    '&:hover': {
-      backgroundColor: theme.palette.primary.dark, 
-    },
-  }),
-  ...(buttonType === 'secondary' && {
-    color: theme.palette.secondary.main,
-    border: `0.1em solid ${theme.palette.secondary.main}`,
-    variant: 'outlined',
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.light,
-      color: theme.palette.secondary.contrastText,
-      border: `0.1em solid ${theme.palette.secondary.light}`,
-    },
-  }),
-  textTransform: 'none',
-}));
+
+const StyledButton = styled(MuiButton, {
+  shouldForwardProp: (prop) => prop !== 'buttonType', // Filtrar propiedad personalizada para evitar errores en el DOM
+})<ButtonProps>(({ theme, buttonType }) => {
+  return {
+    ...(buttonType === 'primary' && {
+      color: theme.palette.primary.contrastText, 
+      backgroundColor: theme.palette.primary.main, 
+      variant: 'contained',
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark, 
+      },
+    }),
+    ...(buttonType === 'secondary' && {
+      color: theme.palette.secondary.main,
+      border: `0.1em solid ${theme.palette.secondary.main}`,
+      variant: 'outlined',
+      '&:hover': {
+        backgroundColor: theme.palette.secondary.light,
+        color: theme.palette.secondary.contrastText,
+        border: `0.1em solid ${theme.palette.secondary.light}`,
+      },
+    }),
+    textTransform: 'none',
+  };
+});
+
 
 
 function Button(props: ButtonProps) {

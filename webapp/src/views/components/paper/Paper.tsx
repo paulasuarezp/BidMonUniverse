@@ -1,31 +1,44 @@
-import MuiPaper, { PaperProps } from '@mui/material/Paper';
+import React from 'react';
+import Box from '@mui/material/Box';
+import MuiPaper, { PaperProps as MuiPaperProps } from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-interface ExtraPaperProps {
-    background: 'light' | 'main' | 'dark';
-    padding?: boolean;
+interface CustomPaperProps {
+    background?: 'img' | 'color';
+    title?: string;
+    imageSrc?: string;
+    imageAlt?: string;
 }
 
-const PaperRoot = styled(MuiPaper, {
-    shouldForwardProp: (prop) => prop !== 'background' && prop !== 'padding',
-})<ExtraPaperProps>(({ theme, padding }) => ({
-    backgroundColor: "theme.palette.background.paper",
-    ...(padding && {
-        padding: theme.spacing(1),
-    }),
+const StyledPaper = styled(MuiPaper)<CustomPaperProps & MuiPaperProps>(({ theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    margin: 'auto',
+    position: 'relative',
+    padding: theme.spacing(1),
 }));
 
-export default function Paper(props: PaperProps & ExtraPaperProps) {
-    const { background, classes, className, padding = false, ...other } = props;
 
+export default function Paper({
+    background,
+    title,
+    imageSrc,
+    imageAlt,
+    children,
+    ...other
+}: CustomPaperProps & MuiPaperProps) {
     return (
-        <PaperRoot
+        <StyledPaper
             square={false}
             elevation={12}
             background={background}
-            padding={padding}
-            className={className}
             {...other}
-        />
+        >
+            <Box sx={{ textAlign: 'center', p: 2 }}>
+                {imageSrc && <img src={imageSrc} alt={imageAlt} style={{ maxWidth: '100%', height: 'auto' }} />}
+                {title && <Typography variant="h5" component="h2" sx={{ mt: 2 }}>{title}</Typography>}
+            </Box>
+            {children}
+        </StyledPaper>
     );
 }

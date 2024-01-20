@@ -1,6 +1,8 @@
 // src/themes.ts
 import { createTheme } from '@mui/material/styles';
 
+
+// Paleta para tema CLARO
 export const lightTheme = createTheme({
   palette: {
     mode: 'light',
@@ -11,8 +13,8 @@ export const lightTheme = createTheme({
       main: '#FFCE31', // Amarillo Pikachu como acento secundario
     },
     background: {
-      default: '#FFFFFF', // Fondo principal blanco
-      paper: '#F5F5F5',   // Fondo secundario gris claro
+      default: '#F5F5F5', // Fondo principal blanco
+      paper: '#FFFFFF',   // Fondo secundario gris claro
     },
     text: {
       primary: '#333333', // Texto principal gris oscuro
@@ -31,7 +33,7 @@ export const lightTheme = createTheme({
   // Otros ajustes de personalización...
 });
 
-
+// Paleta para tema OSCURO
 export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
