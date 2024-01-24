@@ -1,7 +1,7 @@
 // ThemeSwitch.tsx
 import React from 'react';
 import { Switch, FormGroup, FormControlLabel } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({

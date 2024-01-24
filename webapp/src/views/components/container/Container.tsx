@@ -1,10 +1,11 @@
 import { Container as MuiContainer, ContainerProps} from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 
 //#region STYLES
 const StyledContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => ({
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
     display: 'flex',
+    padding: '0 !important',
     flexDirection: 'column',
     minHeight: '100vh',
     minWidth: '100vw',
@@ -13,7 +14,7 @@ const StyledContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => ({
 //#endregion
 
 //#region COMPONENTE CONTAINER
-export default function Container({ children, ...other }:ContainerProps) {
+export default function Container({ children }:ContainerProps) {
     return (
         <StyledContainer>
             {children}
