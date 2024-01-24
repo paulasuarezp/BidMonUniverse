@@ -4,10 +4,11 @@ import { lightTheme, darkTheme } from './themes';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import BasePage from './views/pages/BasePage';
 import Login from './views/layouts/Login';
-import Button from './views/components/button/Button';
+import Home from './views/pages/Home';
 
 function App() {
   const [mode, setMode] = React.useState('light');
+  
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -16,13 +17,15 @@ function App() {
   return (
     <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
       <Router>
-          <Routes>
-          <Route path="/" element={
-              <BasePage toggleTheme={toggleMode} children={<Login/>}/>
-            } 
-          />
-          </Routes>
-        </Router>
+        <BasePage toggleTheme={toggleMode} >
+          <>
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/login" element={<Login/>}/>
+            </Routes>
+          </>
+        </BasePage>
+      </Router>
     </ThemeProvider>
   );
 }

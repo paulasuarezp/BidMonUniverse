@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
+import {Button, ButtonProps} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { motion } from 'framer-motion';
 import { styled, useTheme } from '@mui/material/styles';
@@ -21,7 +21,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
     },
   }));
 
-export default function LoginButton() {
+export default function LoginButton(props: ButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   const iconVariants = {
@@ -39,6 +39,7 @@ export default function LoginButton() {
       onMouseOver={() => setIsHovered(true)}
       onMouseOut={() => setIsHovered(false)}
       style={{ position: 'relative', overflow: 'hidden' }}
+        {...props}
     >
       <motion.div
         animate={isHovered ? 'hidden' : 'visible'}

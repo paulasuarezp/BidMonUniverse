@@ -1,5 +1,5 @@
 import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
-import { styled } from '@mui/system';
+import { styled } from '@mui/material/styles';
 
 
 //#region PROPS

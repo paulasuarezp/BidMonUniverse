@@ -38,7 +38,7 @@ export default function UserMenu({ auth, anchorElUser, handleUserMenu, handleClo
           </IconButton>
         ) : (
           //<Button label='Iniciar sesión' buttonType='header' onClick={handleLoginClick} />
-          <ButtonLogin />
+          <ButtonLogin onClick={handleLoginClick} />
         )}
         <Menu
           id="menu-appbar-user"

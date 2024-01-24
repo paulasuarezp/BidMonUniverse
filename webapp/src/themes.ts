@@ -7,7 +7,7 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#3C82F6', // Azul claro como acento primario
+      main: '#BA4940', // Azul claro como acento primario
     },
     secondary: {
       main: '#FFCE31', // Amarillo Pikachu como acento secundario
