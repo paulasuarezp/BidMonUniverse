@@ -1,9 +1,9 @@
 // MiBoton.js
-import React from 'react';
 import { motion } from 'framer-motion';
 import './buttonPrincipal.css';
 import { Typography } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -20,6 +20,12 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
   }));
 
 export default function ButtonPrincipal({ label }:ButtonProps) {
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        navigate('/login'); 
+    };
+
     const whileHover = {
         scale: 1.1,
         transition: {
@@ -64,6 +70,7 @@ export default function ButtonPrincipal({ label }:ButtonProps) {
             <motion.button
                 className="btn"
                 whileHover={whileHover}
+                onClick={handleLoginClick}
             >
             <StyledTypography variant="h4" sx={{ flexGrow: 1, marginLeft: 1, marginBottom: 2 }}>  {label} </StyledTypography>
            

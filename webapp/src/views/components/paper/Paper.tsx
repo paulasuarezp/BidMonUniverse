@@ -15,7 +15,12 @@ const StyledPaper = styled(MuiPaper)<CustomPaperProps & MuiPaperProps>(({ theme 
     backgroundColor: theme.palette.background.paper,
     margin: 'auto',
     position: 'relative',
+    borderRadius: 16,
     padding: theme.spacing(1),
+    boxShadow: theme.palette.mode === 'light' ? 
+    'default': // Sombra para modo claro
+    '0px 2px 10px rgba(255, 255, 255, 0.24)', 
+
 }));
 
 
@@ -30,13 +35,13 @@ export default function Paper({
     return (
         <StyledPaper
             square={false}
-            elevation={12}
+            elevation={16}
             background={background}
             {...other}
         >
-            <Box sx={{ textAlign: 'center', p: 2 }}>
-                {imageSrc && <img src={imageSrc} alt={imageAlt} style={{ maxWidth: '100%', height: 'auto' }} />}
-                {title && <Typography variant="h5" component="h2" sx={{ mt: 2 }}>{title}</Typography>}
+            <Box sx={{ textAlign: 'center'}}>
+                {imageSrc && <img src={imageSrc} alt={imageAlt} style={{ maxWidth: '70%', height: 'auto' }} />}
+                {title && <Typography variant="h5" component="h2" sx={{ mb: 2 }}>{title}</Typography>}
             </Box>
             {children}
         </StyledPaper>

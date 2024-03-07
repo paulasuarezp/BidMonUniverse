@@ -4,7 +4,7 @@ import Container from '../components/container/Container';
 
 export const BasePage = (props: { toggleTheme:any, children: any }) => {
     return (
-        <Container disableGutters maxWidth={false}>
+        <Container disableGutters >
             <Header toggleTheme={props.toggleTheme}/>
             {props.children}
         </Container>

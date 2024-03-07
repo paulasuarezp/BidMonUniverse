@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {Button, ButtonProps} from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { motion } from 'framer-motion';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const StyledButton = styled(Button)(({ theme }) => ({
     fontWeight: 'bold', 
@@ -19,6 +19,14 @@ const StyledButton = styled(Button)(({ theme }) => ({
                 '0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255,255, 0.4)': // Sombra para modo claro
                 '0 0 10px rgba(229, 62, 48, 0.6), 0 0 20px rgba(229, 62, 48, 0.4)', 
     },
+    '&:active': {
+        outline: 'none',
+        border: 'none',
+      },
+      '&:focus': {
+        outline: 'none',
+        border: 'none',
+      },
   }));
 
 export default function LoginButton(props: ButtonProps) {

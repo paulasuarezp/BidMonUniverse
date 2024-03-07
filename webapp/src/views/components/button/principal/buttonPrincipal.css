@@ -75,6 +75,11 @@ button.btn:hover::before {
     left: 0.35rem;
 }
 
+button.btn:focus {
+    border:none;
+    outline:none;
+}
+
 /* Estilos generales */
 * {
     box-sizing: border-box;

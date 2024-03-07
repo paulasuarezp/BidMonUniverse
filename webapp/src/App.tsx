@@ -2,9 +2,10 @@ import React from 'react';
 import { ThemeProvider } from '@mui/system';
 import { lightTheme, darkTheme } from './themes';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import BasePage from './views/pages/BasePage';
-import Login from './views/layouts/Login';
 import Home from './views/pages/Home';
+import BasePage from './views/pages/BasePage';
+import NotFoundPage from './views/pages/NotFoundPage';
+import Login from './views/layouts/Login';
 
 function App() {
   const [mode, setMode] = React.useState('light');
@@ -14,6 +15,7 @@ function App() {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
+
   return (
     <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
       <Router>
@@ -22,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>}/>
               <Route path="/login" element={<Login/>}/>
+              <Route path="*" element={<NotFoundPage/>}/>
             </Routes>
           </>
         </BasePage>

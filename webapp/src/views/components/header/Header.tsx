@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, AppBarProps} from '@mui/material';
+import { AppBar, Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import ThemeSwitch from '../switch/ThemeSwitch';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +17,14 @@ interface HeaderProps {
 //#endregion
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
+ 
   backgroundColor: theme.palette.mode === 'light' ? 
-                   '#BA4940' : // Color para modo claro
+                   '#c92918' : // Color para modo claro BA4940
                    theme.palette.background.default, // Color para modo oscuro o cualquier otro modo
-  
+                   boxShadow: theme.palette.mode === 'light' ? 
+                   'default': // Sombra para modo claro
+                   '0px 2px 6px rgba(255, 255, 255, 0.24)', 
+  borderRadius: '6em',
 }));
 
 //#region COMPONENTE HEADER
@@ -72,7 +76,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
     <StyledAppBar position="static" >
       <Toolbar style={{ justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton edge="start" color="inherit" aria-label="menu">
+          <IconButton edge="start" color="inherit" aria-label="menu" sx={{mr:2}}>
             <MenuIcon />
           </IconButton>
           <LogoBox title="BidMon Universe"/>
