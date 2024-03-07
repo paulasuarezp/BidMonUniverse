@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;700&display=swap');
+
 :root {
-  font-family: Roboto, Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:  'Nunito', Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -77,6 +79,7 @@ body,
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  font-family: 'Nunito', Avenir, Helvetica, Arial, sans-serif;
 }
 
 
@@ -88,4 +91,11 @@ body {
 *::before,
 *::after {
   box-sizing: inherit;
+}
+
+.nunito {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
 }

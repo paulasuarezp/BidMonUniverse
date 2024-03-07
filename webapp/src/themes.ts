@@ -30,6 +30,15 @@ export const lightTheme = createTheme({
       main: '#FFA726', // Naranja para destacados y advertencias
     },
   },
+  typography: {
+    fontFamily: [
+      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Avenir',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
+  },
   // Otros ajustes de personalización...
 });
 
@@ -60,6 +69,15 @@ export const darkTheme = createTheme({
     warning: {
       main: '#FFB74D', // Naranja más claro y visible
     },
+  },
+  typography: {
+    fontFamily: [
+      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Avenir',
+      'Helvetica',
+      'Arial',
+      'sans-serif',
+    ].join(','),
   },
   
 });

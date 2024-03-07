@@ -1,5 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from '@mui/system';
+import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from './themes';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './views/pages/Home';
@@ -18,6 +19,7 @@ function App() {
 
   return (
     <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
+      <CssBaseline />
       <Router>
         <BasePage toggleTheme={toggleMode} >
           <>
