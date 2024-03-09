@@ -1,4 +1,4 @@
-import { IconButton, MenuItem, Menu } from '@mui/material';
+import { IconButton, Button, MenuItem, Menu } from '@mui/material';
 
 import TranslateIcon from '@mui/icons-material/Translate';
 
@@ -7,16 +7,23 @@ interface LanguageMenuProps {
     anchorElLang: null | HTMLElement;
     handleLanguageMenu: (event: React.MouseEvent<HTMLElement>) => void;
     handleCloseLanguageMenu: (languageKey: string) => void;
+    texto?: string;
   }
 //#endregion
 
 //#region COMPONENTE LANGUAGE MENU
-export default function LanguageMenu({ anchorElLang, handleLanguageMenu, handleCloseLanguageMenu }: LanguageMenuProps) {
+export default function LanguageMenu({ anchorElLang, handleLanguageMenu, handleCloseLanguageMenu, texto }: LanguageMenuProps) {
     return (
         <>
-        <IconButton color="inherit" aria-label="change language" onClick={handleLanguageMenu}>
-          <TranslateIcon />
-        </IconButton>
+        {
+          texto ? 
+          ( <Button color="inherit" onClick={handleLanguageMenu} startIcon={<TranslateIcon />}> Cambiar idioma </Button>)
+          :
+          ( <IconButton color="inherit" aria-label="change language" onClick={handleLanguageMenu}>
+              <TranslateIcon />
+            </IconButton>)
+        }
+       
         
         <Menu
             id="menu-appbar-language"

@@ -1,9 +1,15 @@
 // ThemeSwitch.tsx
-import React from 'react';
-import { Switch, FormGroup, FormControlLabel } from '@mui/material';
+import { Switch, FormGroup, FormControlLabel, useTheme, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 
+//#region PROPS
+interface ThemeSwitchProps {
+  toggleTheme?: () => void;
+}
+//#endregion
+
+//#region STYLES
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -50,20 +56,20 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 20 / 2,
   },
 }));
+//#endregion
 
-
-
-interface ThemeSwitchProps {
-  toggleTheme?: () => void;
-}
-
+//#region COMPONENTE THEME SWITCH
 export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const texto = theme.palette.mode === 'dark' ? 'Modo oscuro' : 'Modo claro';
   return (
     <FormGroup>
        <FormControlLabel
         control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme}/>}
-        label=""
+        label={isMobile ? texto : ''}
       />
     </FormGroup>
   );
 }
+//#endregion

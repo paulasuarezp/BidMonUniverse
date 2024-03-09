@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
-import { AppBar, Toolbar, IconButton } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import { AppBar, Toolbar, Box, Grid, useTheme, useMediaQuery } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import ThemeSwitch from '../switch/ThemeSwitch';
 import { useTranslation } from 'react-i18next';
 import LanguageMenu from '../menus/languageMenu/LanguageMenu';
 import UserMenu from '../menus/userMenu/UserMenu';
 import LogoBox from '../logoBox/LogoBox';
-import { styled } from '@mui/material/styles';
+
+import GeneralMenu from '../menus/generalMenu/GeneralMenu';
 
 
 
@@ -44,8 +43,12 @@ export default function Header({ toggleTheme }: HeaderProps) {
   const [auth, setAuth] = React.useState(false);
   const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [anchorGeralMenu, setAnchorGeneralMenu] = React.useState<null | HTMLElement>(null);
   const { i18n } = useTranslation();
 
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
  
 
  
@@ -66,6 +69,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
   // Language menu handlers
   const handleCloseLanguageMenu = (languageKey:string) => {
     i18n.changeLanguage(languageKey);
+    console.log('Language changed to: ', languageKey)
     setAnchorElLang(null);
   };
 
@@ -83,6 +87,11 @@ export default function Header({ toggleTheme }: HeaderProps) {
     };
   }, [anchorElLang]);
 
+
+  const handleGeneralMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorGeneralMenu(event.currentTarget);
+  };
+
   return  (
     <>
       <StyledAppBar>
@@ -90,9 +99,8 @@ export default function Header({ toggleTheme }: HeaderProps) {
         <Grid container alignItems="center" >
           {/* Izquierda: Menú Icono */}
           <Grid item xs={3} display="flex" justifyContent="flex-start">
-            <IconButton edge="start" color="inherit" aria-label="menu">
-              <MenuIcon />
-            </IconButton>
+            <GeneralMenu  anchorGeneralMenu={anchorGeralMenu} handleGeneralMenu={handleGeneralMenu} handleGeneralMenuClose={() => setAnchorGeneralMenu(null)} toggleTheme={toggleTheme}/>
+            
           </Grid>
 
           {/* Centro: LogoBox */}
@@ -114,7 +122,8 @@ export default function Header({ toggleTheme }: HeaderProps) {
           
         </Toolbar>
       </StyledAppBar>
-      {/* Contenedor para ThemeSwitch y LanguageMenu debajo del AppBar */}
+      {/* Contenedor para ThemeSwitch y LanguageMenu debajo del AppBar */
+      !isMobile &&
       <ControlsContainer>
         <LanguageMenu
           anchorElLang={anchorElLang}
@@ -123,6 +132,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
         />
         <ThemeSwitch toggleTheme={toggleTheme} />
       </ControlsContainer>
+      }
     </>
   );
 }
