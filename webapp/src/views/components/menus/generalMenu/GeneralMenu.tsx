@@ -1,6 +1,6 @@
 // MobileMenu.js
 import React, { useEffect } from 'react';
-import { Menu, MenuItem, IconButton, useMediaQuery, Chip, Divider, useTheme } from '@mui/material';
+import { Menu, MenuItem, IconButton, Box, Chip, Divider, useMediaQuery, useTheme } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../languageMenu/LanguageMenu';
 import ThemeSwitch from '../../switch/ThemeSwitch';
@@ -74,28 +74,24 @@ export default function GeneralMenu ({ anchorGeneralMenu, handleGeneralMenu, han
         Prueba de menú general
       </MenuItem>
 
-        { isMobile && <>
-        
-      <Divider textAlign="right">
-    <Chip label="Ajustes" size="small" />
-  </Divider>
-      <MenuItem>
-        {/* Componente de menú de idiomas */}
-        
-        <LanguageMenu 
-          anchorElLang={anchorElLang}
-          handleLanguageMenu={handleLanguageMenu}
-          handleCloseLanguageMenu={handleCloseLanguageMenu}
-          texto='Cambiar idioma'
-        />
-      </MenuItem>
-      <MenuItem onClick={handleGeneralMenuClose}>
-        {/* Switch de cambio de tema */}
-        
-        <ThemeSwitch toggleTheme={toggleTheme} />
-      </MenuItem>
-        </>
-    }
+        { isMobile && (
+                    <Box>
+                        <Divider textAlign="right">
+                            <Chip label="Ajustes" size="small" />
+                        </Divider>
+                        <MenuItem>
+                            <LanguageMenu 
+                                anchorElLang={anchorElLang}
+                                handleLanguageMenu={handleLanguageMenu}
+                                handleCloseLanguageMenu={handleCloseLanguageMenu}
+                                texto='Cambiar idioma'
+                            />
+                        </MenuItem>
+                        <MenuItem onClick={handleGeneralMenuClose}>
+                            <ThemeSwitch toggleTheme={toggleTheme} />
+                        </MenuItem>
+                    </Box>
+                )}
     </Menu>
         </>
     
