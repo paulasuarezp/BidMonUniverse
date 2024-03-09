@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { AppBar, Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import ThemeSwitch from '../switch/ThemeSwitch';
 import { useTranslation } from 'react-i18next';
 import LanguageMenu from '../menus/languageMenu/LanguageMenu';
@@ -16,16 +18,26 @@ interface HeaderProps {
 }
 //#endregion
 
+//#region STYLES
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
- 
-  backgroundColor: theme.palette.mode === 'light' ? 
-                   '#c92918' : // Color para modo claro BA4940
-                   theme.palette.background.default, // Color para modo oscuro o cualquier otro modo
-                   boxShadow: theme.palette.mode === 'light' ? 
-                   'default': // Sombra para modo claro
-                   '0px 2px 6px rgba(255, 255, 255, 0.24)', 
+  backgroundColor: theme.palette.mode === 'light' ? '#c92918' : theme.palette.background.default,
+  boxShadow: theme.palette.mode === 'light' ? 'default' : '0px 2px 6px rgba(255, 255, 255, 0.24)',
   borderRadius: '6em',
+  top: 5, // Fija el AppBar en la parte superior
+  position: 'fixed', // Fija el AppBar en la parte superior
 }));
+
+
+const ControlsContainer = styled(Box)(({ theme }) => ({
+  position: 'fixed', // Fija el contenedor en la posición deseada
+  right: 0, // Alinea el contenedor a la derecha
+  top: 95, // Ajusta este valor según la altura de tu AppBar
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(2), // Espaciado entre los elementos
+}));
+//#endregion
+
 
 //#region COMPONENTE HEADER
 export default function Header({ toggleTheme }: HeaderProps) {
@@ -71,33 +83,47 @@ export default function Header({ toggleTheme }: HeaderProps) {
     };
   }, [anchorElLang]);
 
-  return (
-    
-    <StyledAppBar position="static" >
-      <Toolbar style={{ justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{mr:2}}>
-            <MenuIcon />
-          </IconButton>
-          <LogoBox title="BidMon Universe"/>
-        </div>
-       
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <LanguageMenu
-            anchorElLang={anchorElLang}
-            handleLanguageMenu={handleLanguageMenu}
-            handleCloseLanguageMenu={handleCloseLanguageMenu}
-          />
-          <ThemeSwitch toggleTheme={toggleTheme}  />
+  return  (
+    <>
+      <StyledAppBar>
+        <Toolbar>
+        <Grid container alignItems="center" >
+          {/* Izquierda: Menú Icono */}
+          <Grid item xs={3} display="flex" justifyContent="flex-start">
+            <IconButton edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+          </Grid>
+
+          {/* Centro: LogoBox */}
+          <Grid item xs={6} display="flex" justifyContent="center">
+            <LogoBox title="BidMon Universe" />
+          </Grid>
+
+          {/* Derecha: UserMenu */}
+          <Grid item xs={3} display="flex" justifyContent="flex-end">
           <UserMenu
             auth={auth}
             anchorElUser={anchorElUser}
             handleUserMenu={handleUserMenu}
             handleCloseUserMenu={handleCloseUserMenu}
           />
-        </div>
-      </Toolbar>
-    </StyledAppBar>
+          </Grid>
+        </Grid>
+         
+          
+        </Toolbar>
+      </StyledAppBar>
+      {/* Contenedor para ThemeSwitch y LanguageMenu debajo del AppBar */}
+      <ControlsContainer>
+        <LanguageMenu
+          anchorElLang={anchorElLang}
+          handleLanguageMenu={handleLanguageMenu}
+          handleCloseLanguageMenu={handleCloseLanguageMenu}
+        />
+        <ThemeSwitch toggleTheme={toggleTheme} />
+      </ControlsContainer>
+    </>
   );
 }
 

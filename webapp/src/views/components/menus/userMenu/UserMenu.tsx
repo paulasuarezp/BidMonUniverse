@@ -36,7 +36,6 @@ export default function UserMenu({ auth, anchorElUser, handleUserMenu, handleClo
             <AccountCircle />
           </IconButton>
         ) : (
-          //<Button label='Iniciar sesión' buttonType='header' onClick={handleLoginClick} />
           <ButtonLogin onClick={handleLoginClick} />
         )}
         <Menu

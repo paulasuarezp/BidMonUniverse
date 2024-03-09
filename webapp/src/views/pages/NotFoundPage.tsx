@@ -4,6 +4,8 @@ import Button from '../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
+
+//#region STYLES
 const StyledPaper = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   maxWidth: 800,
@@ -31,8 +33,10 @@ const PrincipalText = styled(Typography)(({ theme }) => ({
   borderRadius: '4px',
   textAlign: 'center',
 }));
+//#endregion
 
 
+//#region COMPONENTE NOTFOUNDPAGE
 export default function NotFoundPage() {
   const navigate = useNavigate();
   const theme = useTheme();
@@ -42,6 +46,9 @@ export default function NotFoundPage() {
   return (
     <StyledPaper 
       elevation={3}
+      sx={{ 
+        mt: { xs: '5.5em', sm: 'auto' } // marginTop de 5.5em en xs (móviles) y 'auto' en sm y tamaños mayores
+      }}
     >
       <Box sx={{ display:'flex', flexDirection:'column',alignContent:'center', pl: 2, pr: 2, pb:2}}>
       <SecondaryText sx={{ marginBottom: '0.2em', marginTop:'1em' }}>
@@ -60,3 +67,4 @@ export default function NotFoundPage() {
     </StyledPaper>
   );
 };
+//#endregion

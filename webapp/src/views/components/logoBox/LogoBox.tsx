@@ -13,6 +13,9 @@ interface LogoBoxProps {
 const StyledTypography = styled(Typography)(({ theme }) => ({
     fontFamily: 'Pokemon',
     color: theme.palette.primary.contrastText,
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.25rem', // Ajusta este valor según tus necesidades para dispositivos móviles
+    },
 }));
 //#endregion
 
