@@ -7,6 +7,8 @@ import Home from './views/pages/Home';
 import BasePage from './views/pages/BasePage';
 import NotFoundPage from './views/pages/NotFoundPage';
 import Login from './views/layouts/Login';
+import Logueado from './views/pages/Logueado';
+import { AuthProvider } from './utils/AuthContext';
 
 function App() {
   const [mode, setMode] = React.useState('light');
@@ -18,20 +20,23 @@ function App() {
 
 
   return (
-    <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
-      <CssBaseline />
-      <Router>
-        <BasePage toggleTheme={toggleMode} >
-          <>
-            <Routes>
-              <Route path="/" element={<Home/>}/>
-              <Route path="/login" element={<Login/>}/>
-              <Route path="*" element={<NotFoundPage/>}/>
-            </Routes>
-          </>
-        </BasePage>
-      </Router>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
+        <CssBaseline />
+        <Router>
+          <BasePage toggleTheme={toggleMode} >
+            <>
+              <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/logueado" element={<Logueado/>}/>
+                <Route path="*" element={<NotFoundPage/>}/>
+              </Routes>
+            </>
+          </BasePage>
+        </Router>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

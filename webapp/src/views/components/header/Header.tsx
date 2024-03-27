@@ -40,7 +40,6 @@ const ControlsContainer = styled(Box)(({ theme }) => ({
 
 //#region COMPONENTE HEADER
 export default function Header({ toggleTheme }: HeaderProps) {
-  const [auth, setAuth] = React.useState(false);
   const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
   const [anchorGeralMenu, setAnchorGeneralMenu] = React.useState<null | HTMLElement>(null);
@@ -111,7 +110,6 @@ export default function Header({ toggleTheme }: HeaderProps) {
           {/* Derecha: UserMenu */}
           <Grid item xs={3} display="flex" justifyContent="flex-end">
           <UserMenu
-            auth={auth}
             anchorElUser={anchorElUser}
             handleUserMenu={handleUserMenu}
             handleCloseUserMenu={handleCloseUserMenu}

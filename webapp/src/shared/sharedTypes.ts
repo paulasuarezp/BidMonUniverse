@@ -5,3 +5,8 @@ export interface User {
     profileImg: string;
     role: string;
 }
+
+export interface SessionUser {
+    username: string;
+    token: string;
+}
