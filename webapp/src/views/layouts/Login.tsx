@@ -22,9 +22,10 @@ export default function Login() {
       .then(token => {
           console.log('Inicio de sesión exitoso y token almacenado desde Login.tsx -> ', token.token);
           setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
-          navigate('/logueado');
+          localStorage.setItem('userToken', token.token); 
           let sessionUser: SessionUser = { username: user, token: token.token };
           login(sessionUser); // Llamar a la función de inicio de sesión del contexto de autenticación
+          navigate('/logueado');
       })
       .catch(error => {
           console.error('Error en el inicio de sesión desde Login.tsx -> ', error);

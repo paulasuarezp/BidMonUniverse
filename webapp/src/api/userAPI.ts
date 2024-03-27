@@ -59,8 +59,8 @@ export function verifyToken(): Promise<any> {
             throw new Error('Token inválido');
         }
 
-        console.log('Token válido en userApi.ts:', response.json());
-        return response.json();
+        console.log('Token válido en userApi.ts:', response);
+        return response;
     })  
     .catch(error => {
         console.error('Ha ocurrido un error:', error.message);
