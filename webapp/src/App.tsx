@@ -9,7 +9,8 @@ import NotFoundPage from './views/pages/NotFoundPage';
 import Login from './views/layouts/Login';
 import Logueado from './views/pages/Logueado';
 import { AuthProvider } from './utils/AuthContext';
-import { PrivateRoute } from './utils/PrivateRoute';
+import { RouteRedirector } from './utils/RouteRedirector';
+import { AccessLevel } from './shared/sharedTypes';
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
@@ -29,9 +30,9 @@ function App() {
             <>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
+                <Route path="/login" element={<RouteRedirector initRoute={<Login/>} redirectPath="/logueado" accessLevel={AccessLevel.Guest}/>}/>
                 {/* Rutas protegidas */}
-                <Route path="/logueado" element={<PrivateRoute element={<Logueado/>}/>}/>
+                <Route path="/logueado" element={<RouteRedirector initRoute={<Logueado/>} redirectPath="/login" accessLevel={AccessLevel.User}/>}/>
                 {/* Página de Error */}
                 <Route path="*" element={<NotFoundPage/>}/>
               </Routes>

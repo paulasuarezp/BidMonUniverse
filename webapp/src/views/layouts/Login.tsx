@@ -5,7 +5,7 @@ import Button from '../components/button/Button';
 import { login as loginAPI } from '../../api/userAPI';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/AuthContext';
-import { SessionUser } from '../../shared/sharedTypes';
+import { AccessLevel, SessionUser } from '../../shared/sharedTypes';
 
 //#region COMPONENT Login
 export default function Login() {
@@ -20,11 +20,12 @@ export default function Login() {
 
   const handleLogin = async () => {
     loginAPI(user, password)
-      .then(token => {
-          console.log('Inicio de sesión exitoso y token almacenado desde Login.tsx -> ', token.token);
+      .then(data => {
+          console.log('Inicio de sesión exitoso y token almacenado desde Login.tsx -> ', data.token);
           setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
-          localStorage.setItem('userToken', token.token); 
-          let sessionUser: SessionUser = { username: user, token: token.token };
+          localStorage.setItem('userToken', data.token); 
+          let accessLevel = data.role === 'admin' ? AccessLevel.Admin : AccessLevel.User; // Determinar el nivel de acceso
+          let sessionUser: SessionUser = { username: user, token: data.token, role: accessLevel }; // Crear el objeto de usuario de sesión
           login(sessionUser); // Llamar a la función de inicio de sesión del contexto de autenticación
           navigate('/logueado');
       })

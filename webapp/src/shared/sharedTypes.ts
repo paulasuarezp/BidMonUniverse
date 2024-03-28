@@ -11,4 +11,13 @@ export interface User {
 export interface SessionUser {
     username: string;
     token: string;
+    role: AccessLevel;
 }
+
+
+// Enumeración de niveles de acceso
+export enum AccessLevel {
+    Guest,
+    User,
+    Admin
+  }

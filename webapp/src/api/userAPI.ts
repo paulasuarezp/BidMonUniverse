@@ -29,7 +29,7 @@ export async function login(username: string, password: string): Promise<any> {
         // Guardar el token en el almacenamiento local
         localStorage.setItem('userToken', JSON.stringify(token));
 
-        return { token };
+        return { token, role: data.user.role };
     } catch (error: any) {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };

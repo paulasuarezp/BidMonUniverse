@@ -42,6 +42,7 @@ const createUser = async (req: Request, res: Response) => {
             auth: true,
             user: {
                 username: savedUser.username,
+                role: savedUser.role,
             },
             token: token
         });
@@ -109,6 +110,7 @@ const loginUser = async (req: Request, res: Response) => {
             auth: true,
             user: {
                 username: user.username,
+                role: user.role,
             },
             token: token
         });
