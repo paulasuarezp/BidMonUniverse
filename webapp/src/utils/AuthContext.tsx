@@ -1,19 +1,26 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 import { SessionUser } from '../shared/sharedTypes';
 import { verifyToken } from '../api/userAPI';
 
+
+//#region PROPS
 interface AuthProviderProps {
   children: ReactNode;
 }
+//#endregion
 
+//#region TYPE AuthContextType
 interface AuthContextType {
   sessionUser: SessionUser | undefined;
   login: (user: SessionUser) => void;
   logout: () => void;
 }
+//#endregion
+
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+//#region COMPONENT AuthProvider
 export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [sessionUser, setSessionUser] = useState<SessionUser | undefined>(undefined);
 
@@ -42,6 +49,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     );
   };
   
+//#endregion
+
+//#region HOOK useAuth
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (context === undefined) {
@@ -49,4 +59,5 @@ export const useAuth = () => {
     }
     return context;
   };
+//#endregion
   

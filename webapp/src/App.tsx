@@ -9,9 +9,10 @@ import NotFoundPage from './views/pages/NotFoundPage';
 import Login from './views/layouts/Login';
 import Logueado from './views/pages/Logueado';
 import { AuthProvider } from './utils/AuthContext';
+import { PrivateRoute } from './utils/PrivateRoute';
 
 function App() {
-  const [mode, setMode] = React.useState('light');
+  const [mode, setMode] = React.useState('light'); // Tema claro por defecto
   
 
   const toggleMode = () => {
@@ -29,7 +30,9 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="/logueado" element={<Logueado/>}/>
+                {/* Rutas protegidas */}
+                <Route path="/logueado" element={<PrivateRoute element={<Logueado/>}/>}/>
+                {/* Página de Error */}
                 <Route path="*" element={<NotFoundPage/>}/>
               </Routes>
             </>

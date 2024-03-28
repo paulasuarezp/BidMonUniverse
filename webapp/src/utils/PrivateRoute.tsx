@@ -1,17 +1,19 @@
-import React, { ReactNode } from 'react';
-import { Route, Navigate, RouteProps } from 'react-router-dom';
+import { ReactNode } from 'react';
+import { Navigate, RouteProps } from 'react-router-dom';
 import { useAuth } from './AuthContext'; // Ajusta la importación según tu estructura de directorios
 
+//#region PROPS
 interface PrivateRouteProps extends Omit<RouteProps, 'element'> {
     element: ReactNode;
 }
+//#endregion
 
+//#region COMPONENT PrivateRoute
 export const PrivateRoute = ({ element }: PrivateRouteProps) => {
     const { sessionUser } = useAuth();
 
     return (
-        <Route
-            element={sessionUser ? element : <Navigate to="/login" replace />}
-        />
+        sessionUser ? element : <Navigate to="/login" replace />
     );
 }
+//#endregion
