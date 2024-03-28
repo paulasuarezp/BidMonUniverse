@@ -1,5 +1,6 @@
 const apiEndPointBase = 'http://localhost:5000/users'; // Base URL for the User API endpoints
 
+// Inicio de sesión
 export async function login(username: string, password: string): Promise<any> {
     const url = `${apiEndPointBase}/login`;
 
@@ -35,7 +36,7 @@ export async function login(username: string, password: string): Promise<any> {
     }
 }
 
-
+// Verificar el token de sesión
 export function verifyToken(): Promise<any> {
 
     const token = localStorage.getItem('userToken');

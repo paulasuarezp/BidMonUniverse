@@ -1,8 +1,11 @@
+import Container from "../components/container/Container";
 
 //#region COMPONENTE LOGIN
 export default function Login() {
   return (
-    <p>Has iniciado sesión.</p>
+    <Container> 
+      <p>Has iniciado sesión.</p>
+    </Container>
   );
 };
 //#endregion

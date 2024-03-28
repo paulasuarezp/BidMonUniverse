@@ -4,6 +4,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/material/styles';
 
+//#region STYLES
 const StyledButton = styled(Button)(({ theme }) => ({
     fontWeight: 'bold', 
     letterSpacing: '0.1em', 
@@ -28,9 +29,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
         border: 'none',
       },
   }));
+//#endregion
 
 
-
+//#region COMPONENT LoginButton
 export default function LoginButton(props: ButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const theme = useTheme();
@@ -81,3 +83,4 @@ export default function LoginButton(props: ButtonProps) {
 }</>
   );
 }
+//#endregion

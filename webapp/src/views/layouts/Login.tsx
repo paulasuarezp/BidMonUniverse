@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/AuthContext';
 import { SessionUser } from '../../shared/sharedTypes';
 
+//#region COMPONENT Login
 export default function Login() {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -55,3 +56,4 @@ export default function Login() {
     </Paper>
   );
 };
+//#endregion

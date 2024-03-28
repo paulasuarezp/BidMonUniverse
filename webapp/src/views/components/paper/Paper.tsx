@@ -1,16 +1,18 @@
-import React from 'react';
 import Box from '@mui/material/Box';
 import MuiPaper, { PaperProps as MuiPaperProps } from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+//#region PROPS
 interface CustomPaperProps {
     background?: 'img' | 'color';
     title?: string;
     imageSrc?: string;
     imageAlt?: string;
 }
+//#endregion
 
+//#region STYLES
 const StyledPaper = styled(MuiPaper)<CustomPaperProps & MuiPaperProps>(({ theme }) => ({
     backgroundColor: theme.palette.background.paper,
     margin: 'auto',
@@ -22,8 +24,9 @@ const StyledPaper = styled(MuiPaper)<CustomPaperProps & MuiPaperProps>(({ theme 
     '0px 2px 10px rgba(255, 255, 255, 0.24)', 
 
 }));
+//#endregion
 
-
+//#region COMPONENT Paper
 export default function Paper({
     background,
     title,
@@ -47,3 +50,4 @@ export default function Paper({
         </StyledPaper>
     );
 }
+//#endregion
