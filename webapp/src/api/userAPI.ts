@@ -36,6 +36,32 @@ export async function login(username: string, password: string): Promise<any> {
     }
 }
 
+// Registro de usuario
+export async function signup(username: string, password: string, birthday: string): Promise<any> {
+    const url = `${apiEndPointBase}/signup`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password, birthday }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Error en el registro de usuario');
+        }
+
+        return data;
+    } catch (error: any) {
+        console.error('Ha ocurrido un error:', error.message);
+        return { error: error.message };
+    }
+}
+
 // Verificar el token de sesión
 export function verifyToken(): Promise<any> {
 

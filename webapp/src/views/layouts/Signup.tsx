@@ -4,13 +4,14 @@ import Paper from '../components/paper/Paper';
 import Button from '../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import * as fieldsValidation from '../../utils/fieldsValidation';
 import { showError } from "../../utils/fieldsValidation";
 import { User } from '../../shared/sharedTypes';
 import BirthdayDatePicker from '../components/calendar/BirthdayPicker';
+import { signup as signupAPI } from '../../api/userAPI';
 
 
 
@@ -18,6 +19,7 @@ import BirthdayDatePicker from '../components/calendar/BirthdayPicker';
 export default function Signup() {
     const [birthday, setBirthday] = useState<Date | undefined>(undefined);
     const [birthdayError, setBirthdayError] = useState<string>('');
+    const navigate = useNavigate();
 
 
     const schema = fieldsValidation.signupValidationSchema;
@@ -32,10 +34,34 @@ export default function Signup() {
         if (user.username && user.password && birthday) {
             let newUser: User = { username: user.username, birthday: birthday.toISOString(), password: user.password, role:"standard", profileImg: "" };
             console.log('Usuario a registrar -> ', newUser);
+            signupAPI(user.username, user.password, birthday.toISOString()).then((response) => {
+                if (response.error) {
+                    fieldsValidation.showError(response.error, "Error al registrar el usuario", Swal.close);
+                } else {
+                    successSignup(newUser);
+                }
+            });
         } else {
-            fieldsValidation.showError("Debe de introducir", "Por favor, revíselas.", Swal.close)
+            fieldsValidation.showError("Todos los campos son obligatorios.", "Por favor, revíse el formulario.", Swal.close)
         }
     }
+
+    const successSignup = (user: User) => {
+      Swal.fire({
+          title: 'Cuenta creada',
+          text: "¡Cuenta " + user.username + " creada con éxito!",
+          icon: 'success',
+          showCancelButton: false,
+          confirmButtonColor: '#81c784',
+          confirmButtonText: 'Inicia sesión',
+      }).then((result) => {
+          if (result.isConfirmed) {
+              navigate("/login");
+          }
+      }).catch((e) => {
+          showError("Error inesperado", e.message, Swal.close)
+      })
+  }
 
     
 const updateBirthday = (date: any) => {
