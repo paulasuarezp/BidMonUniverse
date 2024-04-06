@@ -1,5 +1,6 @@
 // src/themes.ts
-import { createTheme } from '@mui/material/styles';
+import { ThemeOptions, createTheme } from '@mui/material/styles';
+import { color } from 'framer-motion';
 
 
 // Paleta para tema CLARO
@@ -81,3 +82,95 @@ export const darkTheme = createTheme({
   },
   
 });
+
+
+export const birthdayDatePickerTheme = (theme: any) => createTheme({
+  ...theme,
+  components: {
+    MuiDateCalendar: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+          borderRadius: '4px',
+          borderWidth: '0px',
+          borderColor: '#2196f3',
+          border: '0px solid',
+          backgroundColor: theme.palette.background.paper,
+        }
+      }
+    },
+    MuiPickersCalendarHeader: {
+      styleOverrides: {
+        root: {
+          color: '#1565c0',
+          borderRadius: '7px',
+          borderWidth: '0px',
+          borderColor: '#2196f3',
+          border: '0px solid',
+          backgroundColor: '#90caf9',
+        }
+      }
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+          border: 'none',
+          '&:hover': {
+            backgroundColor: '#e3f2fd', // Ejemplo: un azul claro en hover
+          },
+          '&.Mui-selected': {
+            backgroundColor: '#2196f3', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+          '&.Mui-checked': {
+            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+          '&.Mui-focused': {
+            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+        },
+        daySelected: {
+          backgroundColor: 'magenta',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#0d47a1',
+          },
+          '&.Mui-checked': {
+            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+          '&.Mui-focused': {
+            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+        },
+        // Estilos para los días seleccionados
+        day: {
+          backgroundColor: 'magenta',
+          color: '#fff',
+          '&:hover': {
+            backgroundColor: '#0d47a1',
+          },
+          '&.Mui-checked': {
+            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+          '&.Mui-focused': {
+            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
+            color: '#fff', // Letra blanca para los días seleccionados
+          },
+        },
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+        }
+      }
+    }
+  }
+})
