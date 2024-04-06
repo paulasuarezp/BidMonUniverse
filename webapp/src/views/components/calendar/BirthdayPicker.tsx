@@ -31,6 +31,14 @@ export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
             slotProps={{
                 textField: {
                     helperText: errrorMessage? errrorMessage : ' ',
+                    sx: {
+                        mb: 1.4,
+                    },
+                },
+                layout: {
+                    sx: {
+                    margin: 'dense',
+                    },
                 },
               }}
               minDate={minDate}

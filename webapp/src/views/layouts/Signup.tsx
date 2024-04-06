@@ -75,14 +75,16 @@ const updateBirthday = (date: any) => {
           id='username'
           fullWidth 
           label="Nombre de usuario" 
-          margin="normal" 
+          margin="normal"
+          sx={{ mb: 4 }} 
           {...register('username')}
+          error={!!errors.username}
           helperText={errors.username?.message}
         />
 
         <BirthdayDatePicker 
           onChange={(date) => updateBirthday(date)}
-          error={birthdayError ? birthdayError : ''}
+          error={birthdayError}
         />
 
         <TextField 
@@ -91,8 +93,9 @@ const updateBirthday = (date: any) => {
           label="Contraseña" 
           type="password" 
           autoComplete='current-password'
-          margin="normal" 
+          margin='normal'
           {...register('password')}
+          error={!!errors.password}
           helperText={errors.password?.message} 
         />
         
@@ -105,6 +108,7 @@ const updateBirthday = (date: any) => {
           autoComplete='current-password'
           margin="normal" 
           {...register('confirmPassword')}
+          error={!!errors.confirmPassword}
           helperText={errors.confirmPassword?.message}
         />
         

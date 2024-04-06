@@ -1,6 +1,5 @@
 // src/themes.ts
-import { ThemeOptions, createTheme } from '@mui/material/styles';
-import { color } from 'framer-motion';
+import { createTheme } from '@mui/material/styles';
 
 
 // Paleta para tema CLARO
@@ -12,6 +11,8 @@ export const lightTheme = createTheme({
     },
     secondary: {
       main: '#FFCE31', // Amarillo Pikachu como acento secundario
+      light: '#F8E26E', // Amarillo más claro para contraste
+      dark: '#FFB74D', // Amarillo más oscuro para contraste
     },
     background: {
       default: '#F5F5F5', // Fondo principal blanco
@@ -91,7 +92,7 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
       styleOverrides: {
         root: {
           color: theme.palette.text.primary,
-          borderRadius: '4px',
+          borderRadius: '6px',
           borderWidth: '0px',
           borderColor: '#2196f3',
           border: '0px solid',
@@ -102,12 +103,7 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
     MuiPickersCalendarHeader: {
       styleOverrides: {
         root: {
-          color: '#1565c0',
-          borderRadius: '7px',
-          borderWidth: '0px',
-          borderColor: '#2196f3',
-          border: '0px solid',
-          backgroundColor: '#90caf9',
+          color: theme.palette.text.primary,
         }
       }
     },
@@ -117,52 +113,77 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
           color: theme.palette.text.primary,
           border: 'none',
           '&:hover': {
-            backgroundColor: '#e3f2fd', // Ejemplo: un azul claro en hover
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
           },
           '&.Mui-selected': {
-            backgroundColor: '#2196f3', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
-          },
-          '&.Mui-checked': {
-            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
-            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
           },
         },
-        daySelected: {
-          backgroundColor: 'magenta',
-          color: '#fff',
+      },
+    },
+    MuiPickersMonth: {
+      styleOverrides: {
+        monthButton: {
+          color: theme.palette.text.primary,
+          border: 'none',
+          alignitems: 'center',
           '&:hover': {
-            backgroundColor: '#0d47a1',
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
           },
-          '&.Mui-checked': {
-            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+          '&.Mui-selected': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
-            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
           },
-        },
-        // Estilos para los días seleccionados
-        day: {
-          backgroundColor: 'magenta',
-          color: '#fff',
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+        }
+      }
+    },
+    MuiPickersYear: {
+      styleOverrides: {
+        yearButton: {
+          color: theme.palette.text.primary,
+          border: 'none',
           '&:hover': {
-            backgroundColor: '#0d47a1',
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
           },
-          '&.Mui-checked': {
-            backgroundColor: 'red', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+          '&.Mui-selected': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
-            backgroundColor: 'green', // Azul más oscuro para los días seleccionados
-            color: '#fff', // Letra blanca para los días seleccionados
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
           },
-        },
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+        }
       }
     },
     MuiTextField: {
