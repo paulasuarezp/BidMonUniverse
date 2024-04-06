@@ -32,7 +32,7 @@ export const lightTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Nunito', 
       'Avenir',
       'Helvetica',
       'Arial',
@@ -72,7 +72,7 @@ export const darkTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Nunito', 
       'Avenir',
       'Helvetica',
       'Arial',
