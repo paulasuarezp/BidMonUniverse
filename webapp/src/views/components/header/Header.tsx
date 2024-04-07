@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Toolbar, Box, Grid, useTheme, useMediaQuery } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ThemeSwitch from '../switch/ThemeSwitch';
@@ -18,18 +18,20 @@ interface HeaderProps {
 //#endregion
 
 //#region STYLES
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
+const StyledAppBar = styled(AppBar)<{ scrollbarWidth: number }>(({ theme, scrollbarWidth }) => ({
   backgroundColor: theme.palette.mode === 'light' ? '#c92918' : theme.palette.background.default,
   boxShadow: theme.palette.mode === 'light' ? 'default' : '0px 2px 6px rgba(255, 255, 255, 0.24)',
   borderRadius: '6em',
+  left:2,
   top: 5, // Fija el AppBar en la parte superior
   position: 'fixed', // Fija el AppBar en la parte superior
+  width: `calc(100% - ${scrollbarWidth+2}px)`,
 }));
 
 
 const ControlsContainer = styled(Box)(({ theme }) => ({
   position: 'fixed', // Fija el contenedor en la posición deseada
-  right: 0, // Alinea el contenedor a la derecha
+  right: 5, // Alinea el contenedor a la derecha
   top: 95, // Ajusta este valor según la altura de tu AppBar
   display: 'flex',
   alignItems: 'center',
@@ -40,17 +42,35 @@ const ControlsContainer = styled(Box)(({ theme }) => ({
 
 //#region COMPONENTE HEADER
 export default function Header({ toggleTheme }: HeaderProps) {
-  const [auth, setAuth] = React.useState(false);
-  const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-  const [anchorGeralMenu, setAnchorGeneralMenu] = React.useState<null | HTMLElement>(null);
+  const [anchorElLang, setAnchorElLang] = useState<null | HTMLElement>(null);
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [anchorGeralMenu, setAnchorGeneralMenu] = useState<null | HTMLElement>(null);
   const { i18n } = useTranslation();
 
   
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
  
+  const [scrollbarWidth, setScrollbarWidth] = useState(0);
 
+  useEffect(() => {
+    // Calcula el ancho del scrollbar
+    const calculateScrollbarWidth = () => {
+      const outer = document.createElement('div');
+      outer.style.visibility = 'hidden';
+      outer.style.overflow = 'scroll';
+      document.body.appendChild(outer);
+      const inner = document.createElement('div');
+      outer.appendChild(inner);
+      const scrollbarWidth = outer.offsetWidth - inner.offsetWidth;
+      if (outer.parentNode) {
+        outer.parentNode.removeChild(outer);
+      }
+      return scrollbarWidth;
+    };
+
+    setScrollbarWidth(calculateScrollbarWidth());
+  }, []);
  
   // User menu handlers
   const handleUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -94,7 +114,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
 
   return  (
     <>
-      <StyledAppBar>
+      <StyledAppBar scrollbarWidth={scrollbarWidth}>
         <Toolbar>
         <Grid container alignItems="center" >
           {/* Izquierda: Menú Icono */}
@@ -111,7 +131,6 @@ export default function Header({ toggleTheme }: HeaderProps) {
           {/* Derecha: UserMenu */}
           <Grid item xs={3} display="flex" justifyContent="flex-end">
           <UserMenu
-            auth={auth}
             anchorElUser={anchorElUser}
             handleUserMenu={handleUserMenu}
             handleCloseUserMenu={handleCloseUserMenu}

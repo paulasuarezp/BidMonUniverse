@@ -11,6 +11,8 @@ export const lightTheme = createTheme({
     },
     secondary: {
       main: '#FFCE31', // Amarillo Pikachu como acento secundario
+      light: '#F8E26E', // Amarillo más claro para contraste
+      dark: '#FFB74D', // Amarillo más oscuro para contraste
     },
     background: {
       default: '#F5F5F5', // Fondo principal blanco
@@ -32,7 +34,7 @@ export const lightTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Nunito', 
       'Avenir',
       'Helvetica',
       'Arial',
@@ -72,7 +74,7 @@ export const darkTheme = createTheme({
   },
   typography: {
     fontFamily: [
-      'Nunito', // Asegúrate de poner Nunito primero si es tu preferencia principal
+      'Nunito', 
       'Avenir',
       'Helvetica',
       'Arial',
@@ -81,3 +83,115 @@ export const darkTheme = createTheme({
   },
   
 });
+
+
+export const birthdayDatePickerTheme = (theme: any) => createTheme({
+  ...theme,
+  components: {
+    MuiDateCalendar: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+          borderRadius: '6px',
+          borderWidth: '0px',
+          borderColor: '#2196f3',
+          border: '0px solid',
+          backgroundColor: theme.palette.background.paper,
+        }
+      }
+    },
+    MuiPickersCalendarHeader: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+        }
+      }
+    },
+    MuiPickersDay: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+          border: 'none',
+          '&:hover': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+          },
+          '&.Mui-selected': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
+          },
+          '&.Mui-focused': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+        },
+      },
+    },
+    MuiPickersMonth: {
+      styleOverrides: {
+        monthButton: {
+          color: theme.palette.text.primary,
+          border: 'none',
+          alignitems: 'center',
+          '&:hover': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+          },
+          '&.Mui-selected': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
+          },
+          '&.Mui-focused': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+        }
+      }
+    },
+    MuiPickersYear: {
+      styleOverrides: {
+        yearButton: {
+          color: theme.palette.text.primary,
+          border: 'none',
+          '&:hover': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+          },
+          '&.Mui-selected': {
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            border:'none',
+            borderRadius:'5px',
+            color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
+          },
+          '&.Mui-focused': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+          '&:focus': {
+            border: 'none',
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main, 
+          },
+        }
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+        }
+      }
+    }
+  }
+})
