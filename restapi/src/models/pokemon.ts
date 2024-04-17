@@ -75,14 +75,16 @@ const pokemonSchema = new Schema(
             type: Number,
             required: true
         },
+        averageMaxChance: {
+            type: Number,
+            required: true
+        },
         gym : {
-            type: PokemonGym,
+            type: Object.values(PokemonGym),
             required: false,
             default: PokemonGym.None
         }
     }
 )
 
-const Pokemon = model("Pokemon", pokemonSchema);
-
-export default Pokemon;
+export default model("Pokemon", pokemonSchema);
