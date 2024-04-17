@@ -5,12 +5,14 @@
   "scripts": {
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts",
-    "test": "jest --runInBand --coverage"
+    "test": "jest --runInBand --coverage",
+    "fetch-data": "node src/scripts/fetchPokemonData.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
