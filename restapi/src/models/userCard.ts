@@ -1,7 +1,7 @@
 import {model, Schema} from 'mongoose';
 import { CardStatus } from './utils/enums';
 
-const cardPurchasedSchema = new Schema(
+const userCardSchema = new Schema(
     {
         card:{
             type: Schema.Types.ObjectId,
@@ -13,30 +13,19 @@ const cardPurchasedSchema = new Schema(
             required: true,
             ref: 'User'
         },
-        purchaseDate: {
-            type: Date,
-            required: true
-        },
-        pruchasePrice: {
-            type: Number,
-            required: true
-        },
-        soldDate: {
-            type: Date,
-            required: false
-        },
-        soldPrice: {
-            type: Number,
-            required: false
-        },
         status: {
             type: String,
             enum: CardStatus,
             default: CardStatus.NotForSale,
             required: true
         },
+        transactionHistory: {
+            type: [Schema.Types.ObjectId],
+            required: true,
+            ref: 'Transaction'
+        }
     }
 )
 
-const CardPurchased = model("CardPurchased", cardPurchasedSchema);
-export default CardPurchased;
+const UserCard = model("UserCard", userCardSchema);
+export default UserCard;
