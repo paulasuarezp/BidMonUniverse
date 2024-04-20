@@ -39,11 +39,20 @@ export enum PokemonGym {
     None = "none"
 }
 
+// Rarity of a pokemon
+export enum PokemonRarity {
+    Common = "common",
+    Rare = "rare",
+    UltraRare = "ultrarare",
+    Legendary = "legendary",
+    Mythical = "mythical"
+}
+
 
 
 // CARD
 // Rarity of a card
-export enum Rarity {
+export enum CardRarity {
     Common = "common",
     Rare = "rare",
     UltraRare = "ultrarare",
@@ -56,4 +65,12 @@ export enum CardStatus {
     Sold = "sold",
     OnBid = "onbid",
     NotForSale = "notforsale"
+}
+
+// TRANSACTION
+// Transaction concept
+export enum TransactionConcept {
+    CardPack = "purchaseByCardPack",
+    Bid = "purchaseByBid",
+    Sale = "sale"
 }

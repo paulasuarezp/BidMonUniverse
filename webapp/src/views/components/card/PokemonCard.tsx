@@ -37,16 +37,16 @@ export default function PokemonCard({ name, category, backgroundImage, pokemonIm
             overflow: 'visible', 
           }}>
              <Box sx={{
-        position: 'absolute',
-        top: -10, 
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '90px', 
-        height: '80px', 
-        backgroundImage: `url(/borde.png)`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-      }} />
+                position: 'absolute',
+                top: -10, 
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '90px', 
+                height: '80px', 
+                backgroundImage: `url(/borde.png)`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+              }} />
             <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
               <Chip label={category} 
                sx={{
