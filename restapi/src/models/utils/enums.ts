@@ -74,3 +74,20 @@ export enum TransactionConcept {
     Bid = "purchaseByBid",
     Sale = "sale"
 }
+
+// AUCTION
+// Auction status
+export enum AuctionStatus {
+    Open = "open",
+    Cancelled = "cancelled",
+    Closed = "closed"
+}
+
+// BID
+// Bid status
+export enum BidStatus {
+    Pending = "pending",
+    Accepted = "accepted",
+    Rejected = "rejected",
+    Withdrawn = "withdrawn"
+}

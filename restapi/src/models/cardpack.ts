@@ -1,14 +1,9 @@
 import {model, Schema} from 'mongoose'
-import { Rarity } from './utils/enums';
 
-const contentProbabilitySchema = new Schema({
-    rarity: {
-        type: String,
-        enum: Rarity,
-        required: true
-    },
-    probability: {
-        type: Number,
+const contentSchema = new Schema({
+    deck: {
+        type: Schema.Types.ObjectId,
+        ref: 'Deck',
         required: true
     },
     quantity: {
@@ -19,31 +14,30 @@ const contentProbabilitySchema = new Schema({
 
 const cardPackSchema = new Schema(
     {
-        name:{
+        name:{ // Name of the card pack
             type: String,
             required: true
         },
-        price: {
+        price: { // Price of the card pack
             type: Number,
             required: true
         },
-        releaseDate: {
+        releaseDate: { // Release date of the card pack
             type: Date,
             required: true
         },
-        numberOfCards: {
+        numberOfCards: { // Number of cards in the card pack
             type: Number,
             required: true
         },
-        contentProbability: {
-            type: [contentProbabilitySchema],
-            required: true
+        content: { // Specific type of card that you want to ensure is present in the card pack (e.g. 1 rare, 2 uncommon, 3 common) (optional)
+            type: [contentSchema],
         },
-        availableQuantity: {
+        availableQuantity: { // Number of card packs available
             type: Number,
             required: true
         },
-        available: {
+        available: { // Whether the card pack is available
             type: Boolean,
             default: true,
             required: true
