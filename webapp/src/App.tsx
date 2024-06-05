@@ -29,10 +29,10 @@ function App() {
             <>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<RouteRedirector initRoute={<Login/>} redirectPath="/logueado" accessLevel={AccessLevel.Guest}/>}/>
-                <Route path="/signup" element={<RouteRedirector initRoute={<Signup/>} redirectPath="/login" accessLevel={AccessLevel.Guest}/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/signup" element={<Signup/>}/>
                 {/* Rutas protegidas */}
-                <Route path="/logueado" element={<RouteRedirector initRoute={<Logueado/>} redirectPath="/login" accessLevel={AccessLevel.User}/>}/>
+                <Route path="/logueado" element={<Logueado/>}/>
                 {/* Página de Error */}
                 <Route path="*" element={<NotFoundPage/>}/>
               </Routes>

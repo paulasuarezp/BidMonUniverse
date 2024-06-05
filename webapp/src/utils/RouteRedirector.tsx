@@ -1,13 +1,12 @@
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
 import { AccessLevel } from '../shared/sharedTypes';
 import { getCurrentUser } from '../api/userAPI';
-import { get } from 'http';
 
 
 //#region PROPS
 interface RouteRedirectorProps extends Omit<RouteProps, 'element'> {
-    initRoute: ReactNode; // Ruta elegida por el usuario
+    initRoute: ReactElement; // Ruta elegida por el usuario
     redirectPath: string; // Ruta de redirección
     accessLevel: AccessLevel; // Criterio para elegir la ruta
 }

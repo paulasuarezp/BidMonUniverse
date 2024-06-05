@@ -18,7 +18,7 @@
 
 @font-face {
   font-family: 'Pokemon';
-  src: url('/fonts/Pokemon Hollow.ttf') format('truetype');
+  src: url('../public/fonts/Pokemon\ Hollow.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
