@@ -4,8 +4,6 @@ import { Menu, MenuItem, IconButton, Box, Chip, Divider, useMediaQuery, useTheme
 import MenuIcon from '@mui/icons-material/Menu';
 import LanguageMenu from '../languageMenu/LanguageMenu';
 import ThemeSwitch from '../../switch/ThemeSwitch';
-import { useTranslation } from 'react-i18next';
-
 //#region PROPS
 interface GeneralMenuProps {
     anchorGeneralMenu: null | HTMLElement;
@@ -19,8 +17,6 @@ interface GeneralMenuProps {
 export default function GeneralMenu ({ anchorGeneralMenu, handleGeneralMenu, handleGeneralMenuClose, toggleTheme}: GeneralMenuProps) {
   
     const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
-    const { i18n } = useTranslation();
-
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -31,7 +27,6 @@ export default function GeneralMenu ({ anchorGeneralMenu, handleGeneralMenu, han
 
   // Language menu handlers
   const handleCloseLanguageMenu = (languageKey:string) => {
-    i18n.changeLanguage(languageKey);
     setAnchorElLang(null);
   };
 
