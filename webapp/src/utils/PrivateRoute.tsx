@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Ajusta la importación según tu estructura de directorios
+import { getCurrentUser } from '../api/userAPI';
 
 //#region PROPS
 interface PrivateRouteProps extends Omit<RouteProps, 'element'> {
@@ -10,7 +10,7 @@ interface PrivateRouteProps extends Omit<RouteProps, 'element'> {
 
 //#region COMPONENT PrivateRoute
 export const PrivateRoute = ({ element }: PrivateRouteProps) => {
-    const { sessionUser } = useAuth();
+    const sessionUser = getCurrentUser();
 
     return (
         sessionUser ? element : <Navigate to="/login" replace />

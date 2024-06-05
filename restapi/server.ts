@@ -17,9 +17,9 @@ mongoose.connect(mongoURI)
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Permitir peticiones de webapp y parsear el body a JSON
-app.use(cors({
-    origin: 'http://localhost:5173' // Vite
-}));
+app.use(cors());
+
+
 app.use(bp.json());
 
 // Manejo de peticiones

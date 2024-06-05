@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { Box, TextField } from '@mui/material';
 import Paper from '../components/paper/Paper';
-import Button from '../components/button/Button';
+import Button from '../components/buttons/Button';
 import { login as loginAPI } from '../../api/userAPI';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../utils/AuthContext';
 import { AccessLevel, SessionUser } from '../../shared/sharedTypes';
 
 //#region COMPONENT Login
@@ -13,7 +12,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // Estado para almacenar el mensaje de error
 
-  const { login } = useAuth();
 
   const navigate = useNavigate();
   
@@ -26,8 +24,8 @@ export default function Login() {
           localStorage.setItem('userToken', data.token); 
           let accessLevel = data.role === 'admin' ? AccessLevel.Admin : AccessLevel.User; // Determinar el nivel de acceso
           let sessionUser: SessionUser = { username: user, token: data.token, role: accessLevel }; // Crear el objeto de usuario de sesión
-          login(sessionUser); // Llamar a la función de inicio de sesión del contexto de autenticación
-          navigate('/logueado');
+          //login(sessionUser); // Llamar a la función de inicio de sesión del contexto de autenticación
+          //navigate('/logueado');
       })
       .catch(error => {
           console.error('Error en el inicio de sesión desde Login.tsx -> ', error);

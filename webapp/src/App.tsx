@@ -9,7 +9,6 @@ import NotFoundPage from './views/pages/NotFoundPage';
 import Login from './views/layouts/Login';
 import Signup from './views/layouts/Signup';
 import Logueado from './views/pages/Logueado';
-import { AuthProvider } from './utils/AuthContext';
 import { RouteRedirector } from './utils/RouteRedirector';
 import { AccessLevel } from './shared/sharedTypes';
 
@@ -23,7 +22,6 @@ function App() {
 
 
   return (
-    <AuthProvider>
       <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
         <Router>
@@ -42,7 +40,6 @@ function App() {
           </BasePage>
         </Router>
       </ThemeProvider>
-    </AuthProvider>
   );
 }
 

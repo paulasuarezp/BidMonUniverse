@@ -1,10 +1,10 @@
 import {model, Schema} from 'mongoose'
-import { Rarity } from './utils/enums';
+import { CardRarity } from './utils/enums'
 
 const contentProbabilitySchema = new Schema({
     rarity: {
         type: String,
-        enum: Rarity,
+        enum: CardRarity,
         required: true
     },
     probability: {

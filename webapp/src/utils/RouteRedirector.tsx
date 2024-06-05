@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Ajusta la importación según tu estructura de directorios
 import { AccessLevel } from '../shared/sharedTypes';
+import { getCurrentUser } from '../api/userAPI';
+import { get } from 'http';
 
 
 //#region PROPS
@@ -14,17 +15,25 @@ interface RouteRedirectorProps extends Omit<RouteProps, 'element'> {
 
 //#region COMPONENT PrivateRoute
 export const RouteRedirector = ({ initRoute, redirectPath, accessLevel }: RouteRedirectorProps) => {
-    const { sessionUser } = useAuth();
+    const token = localStorage.getItem('userToken');
+    if(!token)
+        return <Navigate to="/login" replace />
+    else {
+        console.log('Token encontrado:', token);
+        const sessionUser = getCurrentUser();
 
-    if(accessLevel === AccessLevel.Guest && sessionUser) // Por ejemplo, si un usuario ya ha iniciado sesión e intenta volver a iniciarla, redirigirlo a la página de inicio
-        return  <Navigate to={redirectPath} replace />
-    
-    if(accessLevel === AccessLevel.User && !sessionUser && redirectPath) // Si un usuario no ha iniciado sesión y necesita hacerlo, redirigirlo a la página de inicio de sesión
-        return <Navigate to={redirectPath} replace />
-    
-    if(accessLevel === AccessLevel.Admin && (!sessionUser || sessionUser.role !== AccessLevel.Admin)) // Si un usuario no ha iniciado sesión o no es administrador, redirigirlo a la página de inicio
-        return sessionUser ? <Navigate to={redirectPath} replace /> : <Navigate to="/login" replace />
+        if(accessLevel === AccessLevel.Guest && sessionUser) // Por ejemplo, si un usuario ya ha iniciado sesión e intenta volver a iniciarla, redirigirlo a la página de inicio
+            return  <Navigate to={redirectPath} replace />
+        
+        if(accessLevel === AccessLevel.User && !sessionUser && redirectPath) // Si un usuario no ha iniciado sesión y necesita hacerlo, redirigirlo a la página de inicio de sesión
+            return <Navigate to={redirectPath} replace />
+        
+        if(accessLevel === AccessLevel.Admin && (!sessionUser || sessionUser.role !== AccessLevel.Admin)) // Si un usuario no ha iniciado sesión o no es administrador, redirigirlo a la página de inicio
+            return sessionUser ? <Navigate to={redirectPath} replace /> : <Navigate to="/login" replace />
 
+    }
+
+    
     return initRoute;
 }
 //#endregion
