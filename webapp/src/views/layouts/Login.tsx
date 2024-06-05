@@ -19,13 +19,18 @@ export default function Login() {
   const handleLogin = async () => {
     loginAPI(user, password)
       .then(data => {
-          console.log('Inicio de sesión exitoso y token almacenado desde Login.tsx -> ', data.token);
-          setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
-          localStorage.setItem('userToken', data.token); 
-          let accessLevel = data.role === 'admin' ? AccessLevel.Admin : AccessLevel.User; // Determinar el nivel de acceso
-          let sessionUser: SessionUser = { username: user, token: data.token, role: accessLevel }; // Crear el objeto de usuario de sesión
-          //login(sessionUser); // Llamar a la función de inicio de sesión del contexto de autenticación
-          //navigate('/logueado');
+          if (data.error) {
+              console.error('Error en el inicio de sesión desde Login.tsx -> ', data.error);
+              setErrorMessage(data.error); // Guardar y mostrar el mensaje de error
+          } else {
+              console.log('Inicio de sesión exitoso y token almacenado desde Login.tsx -> ', data.token);
+              setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
+              localStorage.setItem('userToken', data.token); 
+              let accessLevel = data.role === 'admin' ? AccessLevel.Admin : AccessLevel.User;
+              let sessionUser: SessionUser = { username: user, token: data.token, role: accessLevel };
+              // login(sessionUser); // Actualizar estado global y navegar
+              // navigate('/logueado');
+          }
       })
       .catch(error => {
           console.error('Error en el inicio de sesión desde Login.tsx -> ', error);
