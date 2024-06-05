@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 dotenv.config();
 
 const app: Application = express();
-const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
 const mongoURI: string = process.env.MONGO_URI!;
 
 // Conexión a la base de datos
