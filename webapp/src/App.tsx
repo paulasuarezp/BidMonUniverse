@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { ThemeProvider } from '@mui/system';
+import CssBaseline from '@mui/material/CssBaseline';
+import { lightTheme, darkTheme } from './themes';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './views/pages/Home';
+import BasePage from './views/pages/BasePage';
+import NotFoundPage from './views/pages/NotFoundPage';
+import Login from './views/layouts/Login';
+import Signup from './views/layouts/Signup';
+import Logueado from './views/pages/Logueado';
+import { RouteRedirector } from './utils/RouteRedirector';
+import { AccessLevel } from './shared/sharedTypes';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [mode, setMode] = React.useState('light'); // Tema claro por defecto
+  
+
+  const toggleMode = () => {
+    setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+  };
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React :)</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Provider store={store}>
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
+        <CssBaseline />
+        <Router>
+          <BasePage toggleTheme={toggleMode} >
+            <>
+              <Routes>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/login" element={<RouteRedirector initRoute={<Login/>} redirectPath="/logueado" accessLevel={AccessLevel.Guest}/>}/>
+                <Route path="/signup" element={<RouteRedirector initRoute={<Signup/>} redirectPath="/login" accessLevel={AccessLevel.Guest}/>}/>
+                {/* Rutas protegidas */}
+                <Route path="/logueado" element={<RouteRedirector initRoute={<Logueado/>} redirectPath="/login" accessLevel={AccessLevel.Standard}/>}/>
+                {/* Página de Error */}
+                <Route path="*" element={<NotFoundPage/>}/>
+              </Routes>
+            </>
+          </BasePage>
+        </Router>
+      </ThemeProvider>
+      </PersistGate>
+    </Provider>
+  );
 }
 
-export default App
+export default App;
