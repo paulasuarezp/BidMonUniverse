@@ -4,6 +4,9 @@ import { Menu, MenuItem, IconButton } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import ButtonLogin from '../../buttons/login/ButtonLogin';
 import { Logout } from '@mui/icons-material';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../redux/store';
+import { resetUser } from '../../../../redux/slices/userSlice';
 
 
 //#region PROPS
@@ -18,16 +21,26 @@ interface UserMenuProps {
 //#region COMPONENTE USER MENU
 export default function UserMenu({anchorElUser, handleUserMenu, handleCloseUserMenu }: UserMenuProps) {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const sessionUser = useSelector((state: RootState) => state.user);
+    let isAuthenticated = sessionUser?.username ? true : false;
     
     const handleLoginClick = () => {
         navigate('/login'); 
     };
 
+    
     const handleLogout = () => {
-        // Cerrar sesión
+        // Cerrar menú de usuario
         handleCloseUserMenu();
+        // Eliminar token de usuario
+        localStorage.removeItem('userToken');
+        // Reiniciar el estado del usuario
+        dispatch(resetUser());
+        // Redirigir a la página de inicio
+        navigate('/');
+
     }
 
     return (

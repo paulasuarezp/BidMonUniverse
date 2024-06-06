@@ -49,7 +49,13 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
-// Función para iniciar sesión
+
+/**
+ * Función para iniciar sesión
+ * @param req  Request, con los datos del usuario
+ * @param res Response, con la respuesta de la petición y token de autenticación
+ * @returns 
+ */
 const loginUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ username: req.body.username });
@@ -69,9 +75,8 @@ const loginUser = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign(
-            { user: user.username, time: Date.now() / 1000 },
-            process.env.TOKEN_SECRET!,
-            { expiresIn: '1h' }
+            { username: user.username, role:user.role, time: Date.now() / 1000 },
+            process.env.TOKEN_SECRET!
         );
 
         res.header('Authorization', 'Bearer ' + token);
@@ -80,7 +85,10 @@ const loginUser = async (req: Request, res: Response) => {
             auth: true,
             user: {
                 username: user.username,
-                role: user.role
+                role: user.role,
+                balance: user.balance,
+                birthday: user.birthday,
+                profileImg: user.profileImg
             },
             token: token
         });
@@ -94,8 +102,36 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 
+const getUser = async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOne({ username: req.params.username });
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado.'
+            });
+        }
+
+        return res.status(200).json({
+            user: {
+                username: user.username,
+                role: user.role,
+                balance: user.balance,
+                birthday: user.birthday,
+                profileImg: user.profileImg
+            }
+        });
+    
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.'
+        });
+    }
+};
+
 
 export {
     createUser,
-    loginUser
+    loginUser,
+    getUser
 };

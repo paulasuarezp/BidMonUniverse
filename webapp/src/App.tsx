@@ -11,6 +11,8 @@ import Signup from './views/layouts/Signup';
 import Logueado from './views/pages/Logueado';
 import { RouteRedirector } from './utils/RouteRedirector';
 import { AccessLevel } from './shared/sharedTypes';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
@@ -22,6 +24,7 @@ function App() {
 
 
   return (
+    <Provider store={store}>
       <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
         <Router>
@@ -40,6 +43,7 @@ function App() {
           </BasePage>
         </Router>
       </ThemeProvider>
+    </Provider>
   );
 }
 

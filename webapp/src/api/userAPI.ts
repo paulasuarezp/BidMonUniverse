@@ -28,7 +28,9 @@ export async function login(username: string, password: string): Promise<any> {
         // Guardar el token en el almacenamiento local
         localStorage.setItem('userToken', token);
 
-        return { token, role: data.user.role };
+        let user = data.user;
+
+        return { user };
     } catch (error: any) {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
@@ -97,14 +99,14 @@ export function logout(): void {
     localStorage.removeItem('userToken');
 }
 
-// Obtener el usuario actual
-export function getCurrentUser(): any {
+// Obtener los datos de un usuario
+export function getUser(username:string): any {
     const token = localStorage.getItem('userToken');
     if (!token) {
         return null;
     }
 
-    const url = `${apiEndPointBase}/getCurrentUser`;
+    const url = `${apiEndPointBase}/` + username;
 
     return fetch(url, {
         method: 'GET',

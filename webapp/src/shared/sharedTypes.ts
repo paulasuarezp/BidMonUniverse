@@ -5,19 +5,21 @@ export interface User {
     birthday: string;
     profileImg: string;
     role: AccessLevel;
+    balance?: number;
 }
 
-// SessionUser es el tipo de dato que se almacena en el contexto de autenticación
-export interface SessionUser {
+// Estado del usuario
+export interface UserState {
     username: string;
-    token: string;
     role: AccessLevel;
+    birthday: string;
+    balance: number;
+    profileImg: string;
 }
-
 
 // Enumeración de niveles de acceso
 export enum AccessLevel {
     Guest = 'guest',
-    User = 'standard',
+    Standard = 'standard',
     Admin = 'admin'
   }
