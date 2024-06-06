@@ -1,5 +1,4 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { get } from 'http';
 import { UserState, AccessLevel } from '../../shared/sharedTypes';
 
 const initialState: UserState = {

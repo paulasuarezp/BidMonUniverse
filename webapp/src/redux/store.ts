@@ -21,6 +21,13 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/REGISTER'], // Ignoring specific actions dispatched by redux-persist
+        ignoredPaths: ['_persist'], // Commonly used by redux-persist to store non-serializable elements
+      },
+    }),
 });
 
 export const persistor = persistStore(store);

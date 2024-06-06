@@ -38,6 +38,8 @@ export default function UserMenu({anchorElUser, handleUserMenu, handleCloseUserM
         localStorage.removeItem('userToken');
         // Reiniciar el estado del usuario
         dispatch(resetUser());
+        // Limpiar el almacenamiento persistente
+        localStorage.removeItem('persist:root');
         // Redirigir a la página de inicio
         navigate('/');
 
