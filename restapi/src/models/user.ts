@@ -29,7 +29,7 @@ const userSchema = new Schema(
             enum: ["standard", "admin"],
             default: "standard",
             required: false
-        },
+        }
     }
 )
 

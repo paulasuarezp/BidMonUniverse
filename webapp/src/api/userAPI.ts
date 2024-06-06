@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5000/users'; // Base URL for the User API endpoints
+const apiEndPointBase = 'http://localhost:5001/users'; // Base URL for the User API endpoints
 
 // Inicio de sesión
 export async function login(username: string, password: string): Promise<any> {
@@ -19,17 +19,18 @@ export async function login(username: string, password: string): Promise<any> {
             throw new Error(data.message || 'Error en el inicio de sesión');
         }
 
-        
         const token = data.token;
-        
+
         if (!token) {
             throw new Error('Token no encontrado en la respuesta');
         }
         console.log('Token recibido:', token);
         // Guardar el token en el almacenamiento local
-        localStorage.setItem('userToken', JSON.stringify(token));
+        localStorage.setItem('userToken', token);
 
-        return { token, role: data.user.role };
+        let user = data.user;
+
+        return { user };
     } catch (error: any) {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
@@ -64,7 +65,6 @@ export async function signup(username: string, password: string, birthday: strin
 
 // Verificar el token de sesión
 export function verifyToken(): Promise<any> {
-
     const token = localStorage.getItem('userToken');
     if (!token) {
         return Promise.reject('Token no encontrado');
@@ -76,10 +76,9 @@ export function verifyToken(): Promise<any> {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, 
-        },  
+            'Authorization': `Bearer ${token}`,
+        },
     })
-
     .then(response => {
         if (!response.ok) {
             localStorage.removeItem('userToken');
@@ -87,8 +86,42 @@ export function verifyToken(): Promise<any> {
         }
 
         console.log('Token válido en userApi.ts:', response);
-        return response;
-    })  
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Ha ocurrido un error:', error.message);
+        return { error: error.message };
+    });
+}
+
+// Cerrar sesión
+export function logout(): void {
+    localStorage.removeItem('userToken');
+}
+
+// Obtener los datos de un usuario
+export function getUser(username:string): any {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return null;
+    }
+
+    const url = `${apiEndPointBase}/` + username;
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al obtener el usuario');
+        }
+
+        return response.json();
+    })
     .catch(error => {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };

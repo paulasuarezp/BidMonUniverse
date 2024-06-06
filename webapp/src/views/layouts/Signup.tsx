@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, TextField } from '@mui/material';
 import Paper from '../components/paper/Paper';
-import Button from '../components/button/Button';
+import Button from '../components/buttons/Button';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ import { showError } from "../../utils/fieldsValidation";
 import { User } from '../../shared/sharedTypes';
 import BirthdayDatePicker from '../components/calendar/BirthdayPicker';
 import { signup as signupAPI } from '../../api/userAPI';
+import { AccessLevel } from '../../shared/sharedTypes';
 
 
 
@@ -32,7 +33,7 @@ export default function Signup() {
 
     const trySignup = (user: UserSchema) => {
         if (user.username && user.password && birthday) {
-            let newUser: User = { username: user.username, birthday: birthday.toISOString(), password: user.password, role:"standard", profileImg: "" };
+            let newUser: User = { username: user.username, birthday: birthday.toISOString(), password: user.password, role:AccessLevel.Standard, profileImg: "" };
             console.log('Usuario a registrar -> ', newUser);
             signupAPI(user.username, user.password, birthday.toISOString()).then((response) => {
                 if (response.error) {

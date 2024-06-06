@@ -9,9 +9,12 @@ const auth = (req: Request, res: Response, next: any) => {
         jwt.verify(token, process.env.TOKEN_SECRET);
         next();
     } catch (error) {
-        res.status(400).send('Token inválido. Acceso denegado.');
+        if (error instanceof jwt.TokenExpiredError) {
+            return res.status(401).send('Token expirado. Por favor, inicie sesión de nuevo.');
+        } else {
+            return res.status(400).send('Token inválido. Por favor, inicie sesión de nuevo.');
+        }
     }
 };
-
 
 module.exports = auth;

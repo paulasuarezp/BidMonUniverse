@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonPrincipal from '../components/button/principal/ButtonPrincipal';
+import ButtonPrincipal from '../components/buttons/principal/ButtonPrincipal';
 import PokemonCard from '../components/card/PokemonCard';
 
 //#region COMPONENTE LOGIN

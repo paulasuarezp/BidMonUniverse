@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { Navigate, RouteProps } from 'react-router-dom';
-import { useAuth } from './AuthContext'; // Ajusta la importación según tu estructura de directorios
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+
 
 //#region PROPS
 interface PrivateRouteProps extends Omit<RouteProps, 'element'> {
@@ -10,10 +12,11 @@ interface PrivateRouteProps extends Omit<RouteProps, 'element'> {
 
 //#region COMPONENT PrivateRoute
 export const PrivateRoute = ({ element }: PrivateRouteProps) => {
-    const { sessionUser } = useAuth();
-
+    const sessionUser = useSelector((state: RootState) => state.user);
+    let isUserLogged = sessionUser.username ? true : false;
+    
     return (
-        sessionUser ? element : <Navigate to="/login" replace />
+        isUserLogged ? element : <Navigate to="/login" replace />
     );
 }
 //#endregion

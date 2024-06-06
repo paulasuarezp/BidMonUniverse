@@ -1,10 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Menu, MenuItem, IconButton } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import ButtonLogin from '../../button/login/ButtonLogin';
+import ButtonLogin from '../../buttons/login/ButtonLogin';
 import { Logout } from '@mui/icons-material';
-import {useAuth} from '../../../../utils/AuthContext';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../../../redux/store';
+import { resetUser } from '../../../../redux/slices/userSlice';
 
 
 //#region PROPS
@@ -19,23 +21,33 @@ interface UserMenuProps {
 //#region COMPONENTE USER MENU
 export default function UserMenu({anchorElUser, handleUserMenu, handleCloseUserMenu }: UserMenuProps) {
     const navigate = useNavigate();
-    const { sessionUser, logout } = useAuth();
+    const dispatch = useDispatch();
 
-    console.log('auth -->', sessionUser)
-    
+    const sessionUser = useSelector((state: RootState) => state.user);
+    let isAuthenticated = sessionUser?.username ? true : false;
     
     const handleLoginClick = () => {
         navigate('/login'); 
     };
 
+    
     const handleLogout = () => {
-        logout();
+        // Cerrar menú de usuario
         handleCloseUserMenu();
+        // Eliminar token de usuario
+        localStorage.removeItem('userToken');
+        // Reiniciar el estado del usuario
+        dispatch(resetUser());
+        // Limpiar el almacenamiento persistente
+        localStorage.removeItem('persist:root');
+        // Redirigir a la página de inicio
+        navigate('/');
+
     }
 
     return (
       <>
-        {sessionUser ? (
+        {isAuthenticated ? (
           <IconButton
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -63,7 +75,7 @@ export default function UserMenu({anchorElUser, handleUserMenu, handleCloseUserM
           open={Boolean(anchorElUser)}
           onClose={handleCloseUserMenu}
         >
-          {sessionUser && (
+          {isAuthenticated && (
             // Opciones del menú para usuario autenticado
             <div>
               <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>

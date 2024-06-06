@@ -1,8 +1,5 @@
 // gymLeaders.ts -> Purpose: A map that associates gym names with the Pokémon leader.
-
-import Pokemon  from "../pokemon";
 import { PokemonGym } from "./enums";
-
 
 type Pokemon = {
     name: string;

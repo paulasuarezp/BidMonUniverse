@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardMedia, Chip, Stack, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 
 interface PokemonCardProps {
     name: string;
