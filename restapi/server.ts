@@ -8,7 +8,7 @@ import mongoose from 'mongoose';
 dotenv.config();
 
 const app: Application = express();
-const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5000;
+const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
 const mongoURI: string = process.env.MONGO_URI!;
 
 // Conexión a la base de datos
@@ -17,9 +17,9 @@ mongoose.connect(mongoURI)
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Permitir peticiones de webapp y parsear el body a JSON
-app.use(cors({
-    origin: 'http://localhost:5173' // Vite
-}));
+app.use(cors());
+
+
 app.use(bp.json());
 
 // Manejo de peticiones

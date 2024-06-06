@@ -19,11 +19,17 @@ const userSchema = new Schema(
             type: String,
             required: false
         },
-        role: {
-            type: String,
-            default: "standard",
+        balance: {
+            type: Number,
+            default: 0,
             required: false
         },
+        role: {
+            type: String,
+            enum: ["standard", "admin"],
+            default: "standard",
+            required: false
+        }
     }
 )
 
