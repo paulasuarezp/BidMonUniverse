@@ -64,14 +64,6 @@ const cardSchema = new Schema(
             type: Number,
             required: true
         },
-        specialAttack: {   // Special attack of the pokemon
-            type: Number,
-            required: true
-        },
-        specialDefense: { // Special defense of the pokemon
-            type: Number,
-            required: true
-        },
         speed: { // Speed of the pokemon
             type: Number,
             required: true
@@ -94,7 +86,7 @@ const cardSchema = new Schema(
             default: false,
             required: true
         },
-        n_locationsArea: {  // Number of locations where the pokemon can be found
+        n_location_area: {  // Number of locations where the pokemon can be found
             type: Number,
             required: true
         },

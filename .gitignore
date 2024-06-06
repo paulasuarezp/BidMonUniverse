@@ -40,5 +40,5 @@ restapi/coverage
 .env.test.local
 .env.production.local
 
-data
+
 restapi/.env
