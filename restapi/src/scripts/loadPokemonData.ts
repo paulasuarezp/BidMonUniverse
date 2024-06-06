@@ -33,6 +33,7 @@ function loadCSVData(filePath: string) {
             .then(() => console.log('Todos los datos han sido cargados correctamente.'))
             .catch(error => console.error('Error al cargar datos:', error));
         });
+        mongoose.disconnect().then(() => console.log("Disconnected from MongoDB."));
 }
 
 loadCSVData('data/cards_data.csv');

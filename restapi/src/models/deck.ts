@@ -3,6 +3,10 @@ import { model, Schema } from 'mongoose'
 import { CardRarity } from "./utils/enums";
 
 const deckSchema = new Schema({
+    deckId: {
+        type: String, // Format: "d-000", "d-001", "d-002" ... "d-nnn"
+        required: true
+    },
     name: {
         type: String,
         required: true
