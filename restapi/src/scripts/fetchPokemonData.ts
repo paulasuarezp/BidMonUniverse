@@ -20,14 +20,14 @@ interface Stat {
   stat: { name: string };
 }
 
-interface CardData {
+export interface CardData {
   cardId: String, // Del tipo C000, C001, C002 ... CNNN
   pokemonId: Number, 
   name: String, // Nombre del pokemon
   rarity: CardRarity, // Rareza de la carta
   releaseDate: Date,
   availableQuantity: Number,
- // cards: String,
+  cards: String,
   pokemonType: PokemonType, 
   description: String, // Se obtiene del endpoint pokemon-species/id -> flavor_text
   image: String, // URL a la imagen del pokemon
@@ -56,11 +56,12 @@ async function fetchAndStorePokemon() {
     path: 'data/cards_data.csv',
     header: [
       { id: 'cardId', title: 'cardId' }, // Format: "c-<pokemonId>-n"
-      { id: 'pokemonId', title: 'pokemonID' },
+      { id: 'pokemonId', title: 'pokemonId' },
       { id: 'name', title: 'name' },
       { id: 'rarity', title: 'rarity' },
       { id: 'releaseDate', title: 'releaseDate' },
       { id: 'availableQuantity', title: 'availableQuantity' },
+      { id: 'cards', title: 'cards' },
       { id: 'pokemonType', title: 'pokemonType' },
       { id: 'description', title: 'description' },
       { id: 'image', title: 'image' },
@@ -127,6 +128,7 @@ async function fetchAndStorePokemon() {
         rarity: getCardRarity(),
         releaseDate: new Date(),
         availableQuantity: 100,
+        cards: '',
         pokemonType: types[0].type.name as PokemonType,
         description: descriptions.join('@NEWDESCRIPTION@'), 
         image: dreamWorldImage,
