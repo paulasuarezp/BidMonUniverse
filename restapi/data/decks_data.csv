@@ -1,0 +1,6 @@
+deckId;name;type;publicationDate;cards
+d-0-n;Deck Common;Common;Thu Jun 06 2024 20:33:25 GMT+0200 (Central European Summer Time);
+d-1-n;Deck Rare;Rare;Thu Jun 06 2024 20:33:25 GMT+0200 (Central European Summer Time);
+d-2-n;Deck UltraRare;UltraRare;Thu Jun 06 2024 20:33:25 GMT+0200 (Central European Summer Time);
+d-3-n;Deck Legendary;Legendary;Thu Jun 06 2024 20:33:25 GMT+0200 (Central European Summer Time);
+d-4-n;Deck Mythical;Mythical;Thu Jun 06 2024 20:33:25 GMT+0200 (Central European Summer Time);
