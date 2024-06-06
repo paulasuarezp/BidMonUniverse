@@ -4,7 +4,7 @@ import { UserState, AccessLevel } from '../../shared/sharedTypes';
 
 const initialState: UserState = {
     username: '',
-    role: AccessLevel.Standard,
+    role: AccessLevel.Guest,
     birthday: '',
     balance: 0,
     profileImg: ''
@@ -23,7 +23,7 @@ const userSlice = createSlice({
         },
         resetUser(state) {
             state.username = '';
-            state.role = AccessLevel.Standard;
+            state.role = AccessLevel.Guest;
             state.birthday = '';
             state.balance = 0;
             state.profileImg = '';

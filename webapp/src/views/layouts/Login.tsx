@@ -4,7 +4,6 @@ import Paper from '../components/paper/Paper';
 import Button from '../components/buttons/Button';
 import { login as loginAPI } from '../../api/userAPI';
 import { useNavigate } from 'react-router-dom';
-import { AccessLevel, UserState } from '../../shared/sharedTypes';
 import { setUser } from '../../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 

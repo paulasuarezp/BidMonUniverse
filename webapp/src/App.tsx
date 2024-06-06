@@ -12,7 +12,8 @@ import Logueado from './views/pages/Logueado';
 import { RouteRedirector } from './utils/RouteRedirector';
 import { AccessLevel } from './shared/sharedTypes';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store';
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <Provider store={store}>
+      <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
       <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
         <CssBaseline />
         <Router>
@@ -32,10 +34,10 @@ function App() {
             <>
               <Routes>
                 <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<Login/>}/>
-                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/login" element={<RouteRedirector initRoute={<Login/>} redirectPath="/logueado" accessLevel={AccessLevel.Guest}/>}/>
+                <Route path="/signup" element={<RouteRedirector initRoute={<Signup/>} redirectPath="/login" accessLevel={AccessLevel.Guest}/>}/>
                 {/* Rutas protegidas */}
-                <Route path="/logueado" element={<Logueado/>}/>
+                <Route path="/logueado" element={<RouteRedirector initRoute={<Logueado/>} redirectPath="/login" accessLevel={AccessLevel.Standard}/>}/>
                 {/* Página de Error */}
                 <Route path="*" element={<NotFoundPage/>}/>
               </Routes>
@@ -43,6 +45,7 @@ function App() {
           </BasePage>
         </Router>
       </ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 }
