@@ -62,17 +62,18 @@ export enum CardRarity {
 
 // Status of a card
 export enum CardStatus {
+    OnAuction = "onauction",
     Sold = "sold",
-    OnBid = "onbid",
     NotForSale = "notforsale"
 }
 
 // TRANSACTION
 // Transaction concept
 export enum TransactionConcept {
-    CardPack = "purchaseByCardPack",
-    Bid = "purchaseByBid",
-    Sale = "sale"
+    CardPack = "PurchaseByCardPack",
+    Bid = "PurchaseByBid",
+    Sold = "SoldOnAuction",
+    ForSale = "ForSaleOnAuction",
 }
 
 // AUCTION
