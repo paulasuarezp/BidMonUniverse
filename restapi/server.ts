@@ -26,8 +26,22 @@ app.use(bp.json());
 app.use("/users", userRouter);
 
 // Arrancar servidor
-app.listen(port, (): void => {
+const server = app.listen(port, (): void => {
     console.log('Restapi listening on ' + port);
 }).on("error",(error: Error) => {
     console.error('Error occurred: ' + error.message);
 });
+
+// Cerrar servidor y conexión a la base de datos
+const closeServer = async () => {
+  server.close(() => {
+      console.log('HTTP server closed');
+  });
+  await mongoose.connection.close();
+  console.log('MongoDB connection closed');
+};
+
+// Escuchar señales de terminación para cerrar la aplicación correctamente
+process.on('SIGINT', closeServer);
+process.on('SIGTERM', closeServer);
+process.on('SIGUSR2', closeServer);  // Para nodemon restart
