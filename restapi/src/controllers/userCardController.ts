@@ -81,6 +81,113 @@ const addNewUserCard = async (req, res) => {
 }
 
 
+const putUserCardUpForAuction = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        // Extraer datos necesarios del request
+        const { sellerId, userCardId, saleBase, cardId, auctionId } = req.body;
+
+        // Actualizar la UserCard para transferirla al nuevo usuario
+        const updatedCard = await UserCard.findOneAndUpdate(
+            { user: sellerId, card: cardId },
+            { status:  CardStatus.OnAuction },  // Actualizar el estado
+            { new: true, session: session }  // Retorna el documento actualizado
+        );
+
+        if (!updatedCard) {
+            throw new Error("No se pudo poner la carta en subasta. La carta no se encontró o ya fue vendida.");
+        }
+
+        // Registrar la transacción de venta
+        const saleTransaction = new Transaction({
+            user: sellerId,
+            userCard: userCardId,
+            cardId: cardId,
+            concept: TransactionConcept.ForSale,
+            price: saleBase,
+            date: new Date(),
+            auctionId: auctionId,
+        });
+        await saleTransaction.save({ session });
+
+
+        // Añadir la referencia de la transacción a la carta
+        updatedCard.transactionHistory.push(saleTransaction._id);
+        await updatedCard.save({ session });
+
+        // Realizar la transacción si todo fue exitoso
+        await session.commitTransaction();
+        session.endSession();
+        res.status(200).json({ message: 'La carta se ha puesto en subasta.' });
+    } catch (error) {
+        // Si algo falla, abortar la transacción y manejar el error
+        await session.abortTransaction();
+        session.endSession();
+        console.error(error);
+        res.status(500).json({ message: error.message || 'No se pudo poner la carta en subasta.' });
+    }
+}
+
+/**
+ * La carta se retira de la subasta y se devuelve al vendedor.
+ * @param req 
+ * @param res 
+ */
+const withdrawnUserCardFromAuction = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    try {
+        // Extraer datos necesarios del request
+        const { sellerId, userCardId, saleBase, cardId, auctionId } = req.body;
+
+        // Actualizar la UserCard para transferirla al nuevo usuario
+        const updatedCard = await UserCard.findOneAndUpdate(
+            { user: sellerId, card: cardId },
+            { status:  CardStatus.NotForSale },  // Actualizar el estado
+            { new: true, session: session }  // Retorna el documento actualizado
+        );
+
+        if (!updatedCard) {
+            throw new Error("No se pudo retirar la carta de la subasta. La carta no se encontró o ya fue vendida.");
+        }
+
+        // Registrar la transacción de venta
+        const saleTransaction = new Transaction({
+            user: sellerId,
+            userCard: userCardId,
+            cardId: cardId,
+            concept: TransactionConcept.ForSale,
+            price: saleBase,
+            date: new Date(),
+            auctionId: auctionId,
+        });
+        await saleTransaction.save({ session });
+
+
+        // Añadir la referencia de la transacción a la carta
+        updatedCard.transactionHistory.push(saleTransaction._id);
+        await updatedCard.save({ session });
+
+        // Realizar la transacción si todo fue exitoso
+        await session.commitTransaction();
+        session.endSession();
+        res.status(200).json({ message: 'La carta se ha retirado de la subasta.' });
+    } catch (error) {
+        // Si algo falla, abortar la transacción y manejar el error
+        await session.abortTransaction();
+        session.endSession();
+        console.error(error);
+        res.status(500).json({ message: error.message || 'No se pudo retirar la carta de la subasta.' });
+    }
+}
+
+
+
+
+
 
 /**
  * Esta función transfiere una carta de un usuario a otro, registrando las transacciones de venta y compra.
@@ -101,10 +208,15 @@ const transferCard = async (req, res) => {
         // Extraer datos necesarios del request
         const { sellerId, buyerId, userCardId, salePrice, cardId, auctionId, bidId } = req.body;
 
-        // Eliminar la UserCard del usuario vendedor
-        const transferCard = await UserCard.findOneAndDelete({ user: sellerId, card: cardId }, { session });
-        if (!transferCard) {
-            throw new Error("Card not found or already sold.");
+        // Actualizar la UserCard para transferirla al nuevo usuario
+        const updatedCard = await UserCard.findOneAndUpdate(
+            { user: sellerId, card: cardId },
+            { user: buyerId, status:  CardStatus.NotForSale},  // Actualizar el usuario y el estado
+            { new: true, session: session }  // Retorna el documento actualizado
+        );
+
+        if (!updatedCard) {
+            throw new Error("Card not found or already transferred.");
         }
 
         // Registrar la transacción de venta
@@ -112,7 +224,7 @@ const transferCard = async (req, res) => {
             user: sellerId,
             userCard: userCardId,
             cardId: cardId,
-            concept: TransactionConcept.Sale,
+            concept: TransactionConcept.Sold,
             price: salePrice,
             date: new Date(),
             auctionId: auctionId,
@@ -133,11 +245,9 @@ const transferCard = async (req, res) => {
         });
         await purchaseTransaction.save({ session });
 
-        // Añadir la UserCard al usuario comprador
-        transferCard.user = buyerId;
-        transferCard.status = CardStatus.NotForSale;
-        transferCard.transactionHistory.push(saleTransaction._id);
-        await transferCard.save({ session });
+        // Añadir la referencia de la transacción a la carta
+        updatedCard.transactionHistory.push(saleTransaction._id, purchaseTransaction._id);
+        await updatedCard.save({ session });
 
         // Realizar la transacción si todo fue exitoso
         await session.commitTransaction();
@@ -157,5 +267,7 @@ export {
     getUserCards,
     getUserCard,
     addNewUserCard,
-    transferCard
+    transferCard,
+    putUserCardUpForAuction,
+    withdrawnUserCardFromAuction
 };
