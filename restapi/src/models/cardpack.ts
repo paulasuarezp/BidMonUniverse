@@ -1,9 +1,8 @@
 import {model, Schema} from 'mongoose'
 
-const contentSchema = new Schema({
-    deck: {
-        type: Schema.Types.ObjectId,
-        ref: 'Deck',
+export const contentSchema = new Schema({
+    deckId: {  // Unique identifier for the deck, format "D-XXXX"
+        type: String,
         required: true
     },
     quantity: {
@@ -14,6 +13,10 @@ const contentSchema = new Schema({
 
 const cardPackSchema = new Schema(
     {
+        cardPackId: { // Unique identifier for the card pack, format "CP-XXXX"
+            type: String,
+            required: true
+        },
         name:{ // Name of the card pack
             type: String,
             required: true
@@ -30,8 +33,29 @@ const cardPackSchema = new Schema(
             type: Number,
             required: true
         },
-        content: { // Specific type of card that you want to ensure is present in the card pack (e.g. 1 rare, 2 uncommon, 3 common) (optional)
-            type: [contentSchema],
+        deckId1: { // Unique identifier for the deck, format "D-XXXX"
+            type: String,
+            required: false
+        },
+        quantity1: { // Number of cards in the deck
+            type: Number,
+            required: false
+        },
+        deckId2: { // Unique identifier for the deck, format "D-XXXX"
+            type: String,
+            required: false
+        },
+        quantity2: { // Number of cards in the deck
+            type: Number,
+            required: false
+        },
+        deckId3: { // Unique identifier for the deck, format "D-XXXX"
+            type: String,
+            required: false
+        },
+        quantity3: { // Number of cards in the deck
+            type: Number,
+            required: false
         },
         availableQuantity: { // Number of card packs available
             type: Number,

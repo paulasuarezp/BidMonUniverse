@@ -24,9 +24,9 @@ async function fetchAndStoreDecks() {
 
     const decks: DeckData[] = [];
     console.log('Fetching decks data...');
-    let cont = 0;
+    let cont = 1;
     for(let rarity in CardRarity) {
-        const deckId = `d-${cont}-n`;
+        const deckId = `d-${cont}`;
         const name = `Deck ${rarity}`;
         const type = rarity;
         const publicationDate = new Date();
