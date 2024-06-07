@@ -9,7 +9,8 @@
     "fetch-data": "ts-node src/scripts/fetchPokemonData.ts",
     "load-data": "ts-node src/scripts/loadPokemonData.ts",
     "fetchDecksData": "ts-node src/scripts/fetchDecksData.ts",
-    "loadDecksData": "ts-node src/scripts/loadDecks.ts"
+    "loadDecksData": "ts-node src/scripts/loadDecks.ts",
+    "loadCardPacksData": "ts-node src/scripts/loadCardPacks.ts"
   },
   "keywords": [],
   "author": "",
