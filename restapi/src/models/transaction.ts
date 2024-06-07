@@ -2,6 +2,11 @@ import { model, Schema } from 'mongoose'
 import { TransactionConcept } from './utils/enums';
 
 const transactionSchema = new Schema({
+    user: { // User that made the transaction
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     userCard: { // User card that was purchased or sold
         type: Schema.Types.ObjectId,
         required: true,
@@ -19,9 +24,17 @@ const transactionSchema = new Schema({
         type: Number,
         required: true
     },
+    cardId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Card',
+    },
     auctionId: {
         type: Schema.Types.ObjectId,
         ref: 'Auction',
+    },
+    bidId : {
+        type: Schema.Types.ObjectId,
+        ref: 'Bid',
     },
     cardPackId: {
         type: Schema.Types.ObjectId,
