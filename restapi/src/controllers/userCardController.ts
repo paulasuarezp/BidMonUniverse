@@ -1,8 +1,6 @@
-import { register } from 'module';
 import mongoose from 'mongoose';
 import UserCard from '../models/userCard';
 import { Request, Response } from 'express';
-import { registerTransaction } from './transaction';
 import { CardStatus, TransactionConcept } from '../models/utils/enums';
 import Transaction from '../models/transaction';
 

@@ -1,6 +1,11 @@
 const { check, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
+
 const cardRouter: Router = express.Router();
+
+const auth = require('../middlewares/authMiddleware');
+
+cardRouter.use(auth);
 
 import {
     getUserCards,
@@ -11,6 +16,30 @@ import {
     withdrawnUserCardFromAuction
   } from '../controllers/userCardController';
   
+// Obtener todas las cartas de un usuario
+cardRouter.get('/user-cards/:userId', [
+    check('userId').isMongoId().withMessage('Invalid user ID format'),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    }
+  ], getUserCards);
+  
+  // Obtener una carta de un usuario por ID de carta
+  cardRouter.get('/user-card/:userId/:cardId', [
+    check('userId').isMongoId().withMessage('Invalid user ID format'),
+    check('cardId').isMongoId().withMessage('Invalid card ID format'),
+    (req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      next();
+    }
+  ], getUserCard);
 
 
 cardRouter.post('/add-user-card', [
