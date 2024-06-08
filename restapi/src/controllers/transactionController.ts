@@ -1,29 +1,13 @@
 import Transaction from '../models/transaction';
 import { Request, Response } from 'express';
 
-const registerTransaction = async (req: Request, res: Response) => {
-    try {
-        const transaction = new Transaction({
-            user: req.body.user,
-            userCard: req.body.userCard,
-            concept: req.body.concept,
-            date: new Date(),
-            price: req.body.price,
-            cardId: req.body.cardId,
-            auctionId: req.body.auctionId,
-            cardPackId: req.body.cardPackId
-        });
-
-        await transaction.save();
-        res.status(201).json(transaction);
-    }
-    catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: 'Se ha producido un error al registrar la transacción.' });
-    }
-}
-
-// Obtener todas las transacciones
+/**
+ * Función para obtener todas las transacciones registradas en la base de datos
+ * @param req 
+ * @param res 
+ * @returns lista de transacciones
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 const getTransactions = async (req: Request, res: Response) => {
     try {
         const transactions = await Transaction.find();
@@ -35,11 +19,16 @@ const getTransactions = async (req: Request, res: Response) => {
     }
 };
 
-// Obtener una transacción por su ID
+/**
+ * Devuelve una transacción por su ID (mongoose.Types.ObjectId)
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 const getTransaction = async (req: Request, res: Response) => {
     try {
         const
-            transaction = await Transaction.findOne({ transactionId: req.params.transactionId });
+            transaction = await Transaction.findById(req.params.transactionId);
         if (!transaction) {
             return res.status(404
                 ).json({ message: 'Transacción no encontrada.' });
@@ -52,10 +41,14 @@ const getTransaction = async (req: Request, res: Response) => {
     }
 }
 
-// Obtener transacciones por id de usuario
+/**
+ * Devuelve todas las transacciones de un usuario por su username
+ * @param req 
+ * @param res 
+ */
 const getTransactionsByUserId = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ user: req.params.userId });
+        const transactions = await Transaction.find({ username: req.params.username });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -64,10 +57,31 @@ const getTransactionsByUserId = async (req: Request, res: Response) => {
     }
 }
 
-// Obtener transacciones por id de carta
+/**
+ * Devuelve todas las transacciones de cartas por su cardId
+ * @param req 
+ * @param res 
+ */
 const getTransactionsByCardId = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ cardId: req.params.cardId });
+        const transactions = await Transaction.find({ legibleCardId: req.params.cardId });
+        res.status(200).json(transactions);
+    }
+    catch (error: any) {
+        console.error(error);
+        res.status(500).json({ message: 'Se ha producido un error al obtener las transacciones.' });
+    }
+}
+
+/**
+ * Devuelve todas las transacciones de cartas por su cardId pertenecientes a un usuario
+ * @param req
+ * @param res
+ * @returns
+ */
+const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
+    try {
+        const transactions = await Transaction.find({ legibleCardId: req.params.cardId, username: req.params.username });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -82,5 +96,5 @@ export {
     getTransaction,
     getTransactionsByUserId,
     getTransactionsByCardId,
-    registerTransaction
+    getTransactionsByCardIdAndUsername
 };
