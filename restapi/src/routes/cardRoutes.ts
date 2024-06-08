@@ -9,13 +9,24 @@ cardRouter.use(auth);
 
 import { 
     getCards,
-    getCard
+    getCard,
+    updateCardReferences
   } from '../controllers/cardController';
 
-// Obtener todas las cartas
+/**
+ * Ruta para obtener todas las cartas
+ * @route GET /cards
+ */
 cardRouter.get('/', getCards);
 
-// Obtener una carta por su ID
+cardRouter.get('/updateCardReferences', updateCardReferences);
+
+
+/**
+ * Ruta para obtener una carta por su ID
+ * @route GET /cards/:cardId
+ * @param cardId id de la carta
+ */
 cardRouter.get('/:cardId', [
     check('cardId').notEmpty().withMessage('Card ID is required'),
     (req: Request, res: Response, next: any) => {
@@ -26,6 +37,8 @@ cardRouter.get('/:cardId', [
         next();
     }
 ], getCard);
+
+
 
 
 export default cardRouter;
