@@ -90,7 +90,7 @@ export enum AuctionStatus {
 // Bid status
 export enum BidStatus {
     Pending = "pending",
-    Accepted = "accepted",
+    Winner = "winner",
     Rejected = "rejected",
     Withdrawn = "withdrawn"
 }
