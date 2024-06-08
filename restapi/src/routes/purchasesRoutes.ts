@@ -13,7 +13,12 @@ import {
 
 
 
-// Comprar un sobre de cartas
+/**
+ * Ruta para comprar un sobre de cartas
+ * @route POST /purchases/cardpack
+ * @param username nombre de usuario
+ * @param cardPackId id del sobre de cartas
+ */
 purchasesRouter.post('/cardpack', [
     check('username').notEmpty().withMessage('Username is required'),
     check('cardPackId').notEmpty().withMessage('Card Pack ID is required'),
