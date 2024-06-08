@@ -12,10 +12,23 @@ import {
     getDeck
 } from '../controllers/deckController';
 
-// Obtener todos los mazos de cartas
+/**
+ * Ruta para obtener todos los mazos de cartas
+ * @route GET /decks
+ * @returns lista de mazos de cartas
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 deckRouter.get('/', getDecks);
 
-// Obtener un mazo de cartas por su ID
+/**
+ * Ruta para obtener un mazo de cartas por su ID
+ * @route GET /decks/:deckId
+ * @param deckId id del mazo de cartas
+ * @returns mazo de cartas
+ * @throws 404 - Si no se encuentra el mazo de cartas
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ * @throws 400 - Si deckId no es un string
+ */
 deckRouter.get('/:deckId', [
     check('deckId').notEmpty().withMessage('Deck ID is required'),
     (req: Request, res: Response, next: any) => {
