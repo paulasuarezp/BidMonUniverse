@@ -33,8 +33,3 @@ export interface IDeck extends Document {
     publicationDate: Date;
     cards: Types.ObjectId[];
 }
-
-interface ICardRef {
-    card: Types.ObjectId;
-    quantity: number;
-}
