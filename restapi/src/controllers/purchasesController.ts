@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import CardPack from "../models/cardpack";
 import { getDeckById } from "./deckController";
 import { getCardById } from "./cardController";
-import  Card  from "../models/card";
+import  User from "../models/user";
 import Transaction from "../models/transaction";
 import UserCard from "../models/userCard";
 import mongoose from "mongoose";
@@ -10,19 +10,46 @@ import { CardStatus, TransactionConcept } from "../models/utils/enums";
 import { IDeck, ICard} from "./types/types";
 import { ClientSession } from "mongoose";
 
+/**
+ * Función que permite comprar un paquete de cartas.
+ * 1. Se obtiene el paquete de cartas a comprar.
+ * 2. Se generan cartas aleatorias para cada mazo definido en el paquete.
+ * 3. Se crean y guardan transacciones para cada carta generada.
+ * 4. Se crean y guardan registros de cartas de usuario para cada carta generada.
+ *  
+ * @param req 
+ * @param res 
+ */
 
 const purchaseCardPack = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { userId, cardPackId, price } = req.body;
+        const { userId, cardPackId } = req.body;
 
         const cardPack = await CardPack.findById(cardPackId).session(session);
         if (!cardPack) {
             throw new Error("El paquete de cartas no existe.");
         }
 
-        let allGeneratedCards: ICard[] = [];  // Asegúrate de que el tipo es consistente y adecuado
+        // Verificar que el usuario tenga suficiente saldo para comprar el paquete
+        const price = cardPack.price;
+        let user = await User.findOne({ username: userId }).session(session);
+        if (!user) {
+            throw new Error("El usuario no existe.");
+        }
+        if (user && user.balance && user.balance < price) {
+            throw new Error("Saldo insuficiente para comprar el paquete de cartas.");
+        } else if (!user.balance) {
+            throw new Error("El usuario no tiene saldo.");
+        } else {
+            // Actualizar el saldo del usuario
+            user.balance -= price;
+            await user.save({ session });
+        }
+
+        // Array para almacenar todas las cartas generadas
+        let allGeneratedCards: ICard[] = []; 
 
         // Generar cartas para cada mazo definido en el paquete de cartas
         for (const [index, deckId] of [cardPack.deckId1, cardPack.deckId2, cardPack.deckId3].entries()) {
@@ -62,7 +89,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
         res.status(200).json({ message: "Las cartas se han comprado correctamente." , cards: allGeneratedCards});
 
     } catch (error) {
-        
+
         console.error("Se ha producido un error al comprar el paquete de cartas:", error);
         await session.abortTransaction();
         res.status(500).json({ message: error.message || "Se ha producido un error al comprar el paquete de cartas." });
@@ -107,3 +134,8 @@ async function generateCards(deckId: string, quantity: number, session: ClientSe
 
     return cards;
 }
+
+
+export {
+    purchaseCardPack   
+};
