@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import CardPack from "../models/cardpack";
-import { getDeckById } from "./deckController";
-import { getCardById } from "./cardController";
+import { getDeckByDeckId } from "./deckController";
+import Card from "../models/card";
 import  User from "../models/user";
 import Transaction from "../models/transaction";
 import UserCard from "../models/userCard";
@@ -25,9 +25,9 @@ const purchaseCardPack = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { userId, cardPackId } = req.body;
+        const { username, cardPackId } = req.body;
 
-        const cardPack = await CardPack.findById(cardPackId).session(session);
+        const cardPack = await CardPack.findOne({ cardPackId: cardPackId }).session(session);
         if (!cardPack) {
             throw new Error("El paquete de cartas no existe.");
         }
@@ -40,7 +40,9 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
         // Verificar que el usuario tenga suficiente saldo para comprar el paquete
         const price = cardPack.price;
-        let user = await User.findOne({ username: userId }).session(session);
+
+        let user = await User.findOne({ username: username }).session(session);
+
         if (!user) {
             throw new Error("El usuario no existe.");
         }
@@ -62,6 +64,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
             const quantityKey = `quantity${index + 1}` as keyof ICardPack;
             const quantity = cardPack[quantityKey];
             if (deckId && quantity) {
+                console.log("Generar cartas del mazo " + deckId + " con cantidad " + quantity)
                 const cards = await generateCards(deckId, quantity, session);
                 allGeneratedCards = allGeneratedCards.concat(cards);
             }
@@ -81,28 +84,31 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
         await cardPack.save({ session });
 
-        
 
         // Crear y guardar transacciones para cada carta generada
         for (const card of allGeneratedCards) {
 
-            const newTransaction = new Transaction({
-                user: userId,
-                concept: TransactionConcept.CardPack,
-                date: new Date(),
-                price: price,
-                cardId: card._id, 
-                cardPackId: cardPackId
-            });
-
-            await newTransaction.save({ session });
 
             const newUserCard = new UserCard({
-                user: userId,
+                user: user._id,
                 card: card._id,
                 status: CardStatus.NotForSale,
-                transactionHistory: [newTransaction._id]
+                transactionHistory: []
             });
+
+            const newTransaction = new Transaction({
+                user: user._id,
+                concept: TransactionConcept.CardPack,
+                date: new Date(),
+                userCard: newUserCard._id,
+                price: price,
+                cardId: card._id, 
+                cardPackId: cardPack._id
+            });
+
+            newUserCard.transactionHistory.push(newTransaction._id);
+            
+            await newTransaction.save({ session });
 
             await newUserCard.save({ session });
         }
@@ -132,21 +138,23 @@ const purchaseCardPack = async (req: Request, res: Response) => {
  * @param session Sesión de transacción de Mongoose.
  * @returns Un array de objetos Card.
  */
-async function generateCards(deckId: string, quantity: number, session: ClientSession): Promise<ICard[]> {
+async function generateCards(deckId: string, quantity: number, session: any): Promise<ICard[]> {
     let cards: ICard[] = [];
-    const deck: IDeck | null = await getDeckById(deckId, session);
+    const deck: IDeck | null = await getDeckByDeckId(deckId, session);
     if (!deck) {
         return cards; // Retorna un array vacío si el mazo no tiene cartas.
     }
-
+    console.log("------------------------ Generando cartas del mazo " + deckId);
     let cardsIds = deck.cards.map(card => card._id);
 
     while (cards.length < quantity && cardsIds.length > 0) {
         const randomIndex = Math.floor(Math.random() * cardsIds.length);
         const cardId = cardsIds.splice(randomIndex, 1)[0]; 
 
-        let generatedCard: ICard | null = await getCardById(cardId, session);
-
+        let generatedCardAux = await Card.findById(cardId).session(session);
+        let generatedCard = generatedCardAux as unknown as ICard | null;
+        console.log("Generando carta...")
+        console.log(generatedCard);
         if (!generatedCard) {
             continue; // Si es null, salta al próximo ciclo del bucle.
         } else {

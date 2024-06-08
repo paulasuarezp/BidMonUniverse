@@ -1,6 +1,6 @@
 cardPackId;name;price;releaseDate;numberOfCards;deckId1;quantity1;deckId2;quantity2;deckId3;quantity3;availableQuantity;available
-CP-1;Starter Pack;20;2024-06-01;5;D-1;4;D-2;1;;;100000;true
-CP-2;Advanced Pack;35;2024-06-15;8;D-1;4;D-2;3;D-3;1;200;true
-CP-3;Pro Pack;50;2024-07-01;10;D-1;3;D-2;5;D-3;2;150;true
-CP-4;Ultimate Pack;75;2024-07-15;12;D-2;2;D-3;8;D-4;2;100;true
-CP-5;Mega Pack;150;2024-08-01;6;D-3;1;D-4;4;D-5;1;50;true
+CP-1;Starter Pack;20;2024-06-01;5;d-1;4;d-2;1;;;100000;true
+CP-2;Advanced Pack;35;2024-06-15;8;d-1;4;d-2;3;d-3;1;200;true
+CP-3;Pro Pack;50;2024-07-01;10;d-1;3;d-2;5;d-3;2;150;true
+CP-4;Ultimate Pack;75;2024-07-15;12;d-2;2;d-3;8;d-4;2;100;true
+CP-5;Mega Pack;150;2024-08-01;6;d-3;1;d-4;4;d-5;1;50;true

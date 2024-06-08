@@ -7,6 +7,7 @@ import cardRouter from "./src/routes/cardRoutes";
 import userCardRouter from "./src/routes/userCardRoutes";
 import purchasesRouter from "./src/routes/purchasesRoutes";
 import transactionRouter from "./src/routes/transactionRoutes";
+import deckRouter from "./src/routes/deckRoutes";
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose'; 
 
@@ -30,6 +31,7 @@ app.use(bp.json());
 // Manejo de peticiones
 app.use("/users", userRouter);
 app.use("/cardpacks", cardPackRouter);
+app.use("/decks", deckRouter);
 app.use("/cards", cardRouter);
 app.use("/usercards", userCardRouter);
 app.use("/purchases", purchasesRouter);
