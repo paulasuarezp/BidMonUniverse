@@ -1,6 +1,7 @@
 import Card from '../models/card';
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';  // Importa el tipo Session para TypeScript
+import { ICard } from './types/types';
 
 
 // Obtener todas las cartas disponibles
@@ -38,11 +39,11 @@ const getCard = async (req: Request, res: Response) => {
  * @param session - Sesión de transacción opcional.
  * @returns La carta encontrada o null si no existe.
  */
-const getCardById = async (id: any, session?: ClientSession) => {
+const getCardById = async (id: any, session?: ClientSession): Promise<ICard | null> => {
     try {
         const query = { _id: id };
         const options = session ? { session } : {};
-        const card = await Card.findOne(query, options);
+        const card: ICard | null = await Card.findOne(query, options);
         if (!card) {
             return null;
         }
