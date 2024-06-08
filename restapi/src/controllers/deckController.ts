@@ -2,6 +2,7 @@ import exp from 'constants';
 import Deck from '../models/deck';
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose'; 
+import { IDeck } from './types/types';
 
 // Obtener todos los mazos de cartas disponibles
 const getDecks = async (req: Request, res: Response) => {
@@ -30,30 +31,21 @@ const getDeck = async (req: Request, res: Response) => {
     }
 }
 
-
-
 /**
- * Obtener un mazo de cartas por su ID, opcionalmente dentro de una sesión de transacción.
+ * Obtener las cartas de un mazo por su ID.
  * 
- * @param id - El identificador del mazo.
+ * @param deckId - El identificador del mazo.
  * @param session - Sesión de transacción opcional.
  * @returns El mazo encontrado o null si no existe.
+ * @throws Error si ocurre un error al buscar el mazo.
  */
-const getDeckById = async (id: string, session?: ClientSession) => {
-    try {
-        const query = { deckId: id };
-        const options = session ? { session } : {};
-        const deck = await Deck.findOne(query, options);
-        if (!deck) {
-            return null;
-        }
-        return deck;
-    }
-    catch (error: any) {
-        console.error('Error fetching deck:', error);
-        return null;
-    }
+async function getDeckById(deckId: string, session: ClientSession): Promise<IDeck | null> {
+    return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
 }
+
+
+
+
 
 // Exportar funciones de controlador
 export {

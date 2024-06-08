@@ -1,8 +1,5 @@
 import CardPack from "../models/cardpack";
 import { Request, Response } from "express";
-import { getDeckById } from "./deckController";
-import { getCardById } from "./cardController";
-import  Card  from "../models/card";
 
 
 // Obtener todos los sobres de cartas disponibles
