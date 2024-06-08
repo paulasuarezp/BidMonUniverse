@@ -2,6 +2,11 @@ import express, { Application } from "express";
 import cors from 'cors';
 import bp from 'body-parser';
 import userRouter from './src/routes/userRoutes';
+import cardPackRouter from "./src/routes/cardPackRoutes";
+import cardRouter from "./src/routes/cardRoutes";
+import userCardRouter from "./src/routes/userCardRoutes";
+import purchasesRouter from "./src/routes/purchasesRoutes";
+import transactionRouter from "./src/routes/transactionRoutes";
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose'; 
 
@@ -24,6 +29,12 @@ app.use(bp.json());
 
 // Manejo de peticiones
 app.use("/users", userRouter);
+app.use("/cardpacks", cardPackRouter);
+app.use("/cards", cardRouter);
+app.use("/usercards", userCardRouter);
+app.use("/purchases", purchasesRouter);
+app.use("/transactions", transactionRouter);
+
 
 // Arrancar servidor
 const server = app.listen(port, (): void => {
