@@ -8,17 +8,27 @@ import UserCard from "../models/userCard";
 import mongoose from "mongoose";
 import { CardStatus, TransactionConcept } from "../models/utils/enums";
 import { IDeck, ICard, ICardPack} from "./types/types";
-import { ClientSession } from "mongoose";
 
 /**
  * Función que permite comprar un paquete de cartas.
+ * 
  * 1. Se obtiene el paquete de cartas a comprar.
- * 2. Se generan cartas aleatorias para cada mazo definido en el paquete.
- * 3. Se crean y guardan transacciones para cada carta generada.
- * 4. Se crean y guardan registros de cartas de usuario para cada carta generada.
- *  
- * @param req 
- * @param res 
+ * 2. Se verifica que haya disponibilidad del paquete de cartas.
+ * 3. Se verifica que el usuario tenga suficiente saldo para comprar el paquete.
+ * 4. Se generan las cartas del paquete, actualizando la cantidad disponible de cada carta.
+ * 5. Se actualiza la cantidad disponible del paquete de cartas.
+ * 6. Se actualiza el saldo del usuario.
+ * 7. Se crean y guardan las transacciones para cada carta generada.
+ * 8. Se añade la referencia de la carta del usuario en la carta genérica.
+ * 9. Se añaden las cartas generadas a la colección de cartas del usuario.
+ * 10. Se retorna un mensaje de éxito.
+ * 
+ *  Si ocurre un error, se aborta la transacción y se retorna un mensaje de error.
+ * 
+ * @param req request, debe contener el nombre de usuario y el identificador del paquete de cartas.
+ * @param res response, retorna un mensaje de éxito con las cartas generadas o un mensaje de error.
+ * @returns lista de cartas generadas
+ * @throws 500 - Si se produce un error al comprar el paquete de cartas.
  */
 
 const purchaseCardPack = async (req: Request, res: Response) => {
@@ -33,7 +43,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
         }
 
         // Verificar que haya disponibilidad del paquete de cartas
-        if (cardPack.availableQuantity <= 0) {
+        if (cardPack.availableQuantity <= 0 || !cardPack.available) {
             throw new Error("El paquete de cartas está agotado.");
         }
 
@@ -91,23 +101,32 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
             const newUserCard = new UserCard({
                 user: user._id,
+                username: user.username,
                 card: card._id,
+                legibleCardId: card.cardId,
                 status: CardStatus.NotForSale,
                 transactionHistory: []
             });
 
             const newTransaction = new Transaction({
                 user: user._id,
+                username: user.username,
                 concept: TransactionConcept.CardPack,
                 date: new Date(),
                 userCard: newUserCard._id,
                 price: price,
-                cardId: card._id, 
-                cardPackId: cardPack._id
+                cardId: card._id,
+                legibleCardId: card.cardId,
+                cardPackId: cardPack._id,
+                legibleCardPackId: cardPack.cardPackId
             });
 
             newUserCard.transactionHistory.push(newTransaction._id);
-            
+
+            // Añadir referencia a la carta del usuario en la carta genérica
+            card.cards.push(newUserCard._id);
+            await card.save({ session });
+
             await newTransaction.save({ session });
 
             await newUserCard.save({ session });
@@ -144,7 +163,7 @@ async function generateCards(deckId: string, quantity: number, session: any): Pr
     if (!deck) {
         return cards; // Retorna un array vacío si el mazo no tiene cartas.
     }
-    console.log("------------------------ Generando cartas del mazo " + deckId);
+
     let cardsIds = deck.cards.map(card => card._id);
 
     while (cards.length < quantity && cardsIds.length > 0) {
@@ -153,8 +172,6 @@ async function generateCards(deckId: string, quantity: number, session: any): Pr
 
         let generatedCardAux = await Card.findById(cardId).session(session);
         let generatedCard = generatedCardAux as unknown as ICard | null;
-        console.log("Generando carta...")
-        console.log(generatedCard);
         if (!generatedCard) {
             continue; // Si es null, salta al próximo ciclo del bucle.
         } else {
