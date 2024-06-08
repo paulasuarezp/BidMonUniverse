@@ -39,7 +39,7 @@ const getCard = async (req: Request, res: Response) => {
  * @param session - Sesión de transacción opcional.
  * @returns La carta encontrada o null si no existe.
  */
-const getCardById = async (id: any, session?: ClientSession): Promise<ICard | null> => {
+const getCardById2 = async (id: any, session?: ClientSession): Promise<ICard | null> => {
     try {
         const query = { _id: id };
         const options = session ? { session } : {};
@@ -54,6 +54,12 @@ const getCardById = async (id: any, session?: ClientSession): Promise<ICard | nu
         return null;
     }
 }
+
+const getCardById = async (id: any, session: ClientSession): Promise<ICard | null> => {
+    const card: any = await Card.findById(id).session(session).populate('cards').exec();
+    return card as unknown as ICard | null;
+  }
+  
 
 // Exportar funciones de controlador
 

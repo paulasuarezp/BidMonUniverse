@@ -22,6 +22,8 @@ purchasesRouter.post('/cardpack', [
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
+        console.log('Validations passed');
+        console.log("Username: " + req.body.username);
         next();
     }
 ], purchaseCardPack);

@@ -39,8 +39,9 @@ const getDeck = async (req: Request, res: Response) => {
  * @returns El mazo encontrado o null si no existe.
  * @throws Error si ocurre un error al buscar el mazo.
  */
-async function getDeckById(deckId: string, session: ClientSession): Promise<IDeck | null> {
-    return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
+async function getDeckByDeckId(deckId: string, session: ClientSession): Promise<IDeck | null> {
+   // return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
+    return Deck.findOne({ deckId: deckId }).session(session).populate('cards').exec() as Promise<IDeck | null>;
 }
 
 
@@ -51,5 +52,5 @@ async function getDeckById(deckId: string, session: ClientSession): Promise<IDec
 export {
     getDecks,
     getDeck,
-    getDeckById
+    getDeckByDeckId
 };
