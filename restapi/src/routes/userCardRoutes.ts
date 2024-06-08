@@ -21,7 +21,7 @@ cardRouter.get('/:username', [
     check('username').notEmpty().withMessage('Username is required'),
     check('username').isString().withMessage('Username must be a string'),
     check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -37,7 +37,7 @@ cardRouter.get('/:username', [
     check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
     check('cardId').notEmpty().withMessage('Card ID is required'),
     check('cardId').isString().withMessage('Card ID must be a string'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -54,7 +54,7 @@ cardRouter.post('/add', [
     check('auctionId').optional().isString().withMessage('Invalid Auction ID'),
     check('bidId').optional().isString().withMessage('Invalid Bid ID'),
     check('cardPackId').optional().isString().withMessage('Invalid Card Pack ID'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
@@ -72,7 +72,7 @@ cardRouter.post('/transfer', [
     check('salePrice').isFloat({ min: 0 }).withMessage('Sale price must be a valid number'),
     check('auctionId').notEmpty().withMessage('Auction ID is required'),
     check('bidId').notEmpty().withMessage('Bid ID is required'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -87,7 +87,7 @@ cardRouter.post('/transfer', [
     check('sellerId').notEmpty().withMessage('Seller ID is required'),
     check('userCardId').notEmpty().withMessage('User Card ID is required'),
     check('saleBase').isFloat({ min: 0 }).withMessage('Base sale price must be a valid number'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -101,7 +101,7 @@ cardRouter.post('/transfer', [
     check('sellerId').notEmpty().withMessage('Seller ID is required'),
     check('userCardId').notEmpty().withMessage('User Card ID is required'),
     check('auctionId').optional().isMongoId().withMessage('Invalid Auction ID'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });

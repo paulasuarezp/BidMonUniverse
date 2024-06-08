@@ -18,7 +18,7 @@ deckRouter.get('/', getDecks);
 // Obtener un mazo de cartas por su ID
 deckRouter.get('/:deckId', [
     check('deckId').isMongoId().withMessage('Invalid deck ID format'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
