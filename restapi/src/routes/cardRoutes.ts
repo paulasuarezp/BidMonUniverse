@@ -18,7 +18,7 @@ cardRouter.get('/', getCards);
 // Obtener una carta por su ID
 cardRouter.get('/:cardId', [
     check('cardId').notEmpty().withMessage('Card ID is required'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });

@@ -17,7 +17,7 @@ import {
 purchasesRouter.post('/cardpack', [
     check('username').notEmpty().withMessage('Username is required'),
     check('cardPackId').notEmpty().withMessage('Card Pack ID is required'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });

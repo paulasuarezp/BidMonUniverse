@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "es6",                // Especifica la versión de ECMAScript de salida.
+        "module": "commonjs",           // Especifica el módulo de código generado.
+        "outDir": "./dist",             // Redirige la salida a la carpeta 'dist'.
+        "rootDir": "./src",             // Especifica la carpeta raíz desde donde se compilan los archivos.
+        "strict": false,                // Desactiva todas las opciones estrictas.
+        "strictNullChecks": false,      // Desactiva la comprobación estricta de nulidad.
+        "strictPropertyInitialization": false, // Desactiva la inicialización estricta de las propiedades de las clases.
+        "strictFunctionTypes": false,   // Desactiva la comprobación estricta en los tipos de funciones.
+        "noImplicitAny": false,         // Permite que los tipos implícitos sean 'any'.
+        "esModuleInterop": true,        // Permite la interoperabilidad de módulos ES6 por defecto.
+        "skipLibCheck": true,           // Omite la comprobación de los archivos de declaración de las bibliotecas.
+        "forceConsistentCasingInFileNames": true // Asegura que el caso de los nombres de archivo sea consistente en las importaciones.
+    },
+    "include": [
+        "src/**/*"  // Incluye todos los archivos dentro de la carpeta 'src'.
+    ],
+    "exclude": [
+        "node_modules",  // Excluye la carpeta 'node_modules'.
+        "**/*.spec.ts"   // Excluye todos los archivos de prueba.
+    ]
+}

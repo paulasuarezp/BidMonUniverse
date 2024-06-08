@@ -37,7 +37,7 @@ const getUserCard = async (req: Request, res: Response) => {
  * @param req 
  * @param res 
  */
-const addNewUserCard = async (req, res) => {
+const addNewUserCard = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();  // Iniciar una sesión de transacción
     session.startTransaction();  // Iniciar la transacción
     try {
@@ -79,7 +79,7 @@ const addNewUserCard = async (req, res) => {
 }
 
 
-const putUserCardUpForAuction = async (req, res) => {
+const putUserCardUpForAuction = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -119,7 +119,7 @@ const putUserCardUpForAuction = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
         res.status(200).json({ message: 'La carta se ha puesto en subasta.' });
-    } catch (error) {
+    } catch (error: any) {
         // Si algo falla, abortar la transacción y manejar el error
         await session.abortTransaction();
         session.endSession();
@@ -133,7 +133,7 @@ const putUserCardUpForAuction = async (req, res) => {
  * @param req 
  * @param res 
  */
-const withdrawnUserCardFromAuction = async (req, res) => {
+const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -173,7 +173,7 @@ const withdrawnUserCardFromAuction = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
         res.status(200).json({ message: 'La carta se ha retirado de la subasta.' });
-    } catch (error) {
+    } catch (error: any) {
         // Si algo falla, abortar la transacción y manejar el error
         await session.abortTransaction();
         session.endSession();
@@ -198,7 +198,7 @@ const withdrawnUserCardFromAuction = async (req, res) => {
  * - Si la carta no se encuentra o ya fue vendida.
  * - Si no se puede completar la transacción.
  **/
-const transferCard = async (req, res) => {
+const transferCard = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -251,7 +251,7 @@ const transferCard = async (req, res) => {
         await session.commitTransaction();
         session.endSession();
         res.status(200).json({ message: 'Card transfer successful.' });
-    } catch (error) {
+    } catch (error: any) {
         // Si algo falla, abortar la transacción y manejar el error
         await session.abortTransaction();
         session.endSession();

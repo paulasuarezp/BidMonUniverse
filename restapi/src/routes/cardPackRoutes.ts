@@ -19,7 +19,7 @@ cardPackRouter.get('/', getCardPacks);
 // Obtener un sobre de cartas por su ID
 cardPackRouter.get('/:cardPackId', [
     check('cardPackId').isMongoId().withMessage('Invalid card pack ID format'),
-    (req, res, next) => {
+    (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });

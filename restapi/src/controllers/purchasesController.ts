@@ -7,7 +7,7 @@ import Transaction from "../models/transaction";
 import UserCard from "../models/userCard";
 import mongoose from "mongoose";
 import { CardStatus, TransactionConcept } from "../models/utils/enums";
-import { IDeck, ICard} from "./types/types";
+import { IDeck, ICard, ICardPack} from "./types/types";
 import { ClientSession } from "mongoose";
 
 /**
@@ -32,6 +32,12 @@ const purchaseCardPack = async (req: Request, res: Response) => {
             throw new Error("El paquete de cartas no existe.");
         }
 
+        // Verificar que haya disponibilidad del paquete de cartas
+        if (cardPack.availableQuantity <= 0) {
+            throw new Error("El paquete de cartas está agotado.");
+        }
+
+
         // Verificar que el usuario tenga suficiente saldo para comprar el paquete
         const price = cardPack.price;
         let user = await User.findOne({ username: userId }).session(session);
@@ -53,12 +59,29 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
         // Generar cartas para cada mazo definido en el paquete de cartas
         for (const [index, deckId] of [cardPack.deckId1, cardPack.deckId2, cardPack.deckId3].entries()) {
-            const quantity = cardPack['quantity' + (index + 1)];
+            const quantityKey = `quantity${index + 1}` as keyof ICardPack;
+            const quantity = cardPack[quantityKey];
             if (deckId && quantity) {
                 const cards = await generateCards(deckId, quantity, session);
                 allGeneratedCards = allGeneratedCards.concat(cards);
             }
         }
+
+        // Comprobar que se ha generado el número de cartas esperado
+        if (allGeneratedCards.length !== cardPack.numberOfCards) {
+            throw new Error("No se han podido generar todas las cartas del paquete.");
+        }
+
+        // Actualizar la cantidad disponible del paquete de cartas
+        cardPack.availableQuantity--;
+
+        if (cardPack.availableQuantity <= 0) {
+            cardPack.available = false;
+        }
+
+        await cardPack.save({ session });
+
+        
 
         // Crear y guardar transacciones para cada carta generada
         for (const card of allGeneratedCards) {
@@ -84,11 +107,13 @@ const purchaseCardPack = async (req: Request, res: Response) => {
             await newUserCard.save({ session });
         }
 
+
+
         await session.commitTransaction();
 
         res.status(200).json({ message: "Las cartas se han comprado correctamente." , cards: allGeneratedCards});
 
-    } catch (error) {
+    } catch (error: any) {
 
         console.error("Se ha producido un error al comprar el paquete de cartas:", error);
         await session.abortTransaction();
@@ -116,20 +141,27 @@ async function generateCards(deckId: string, quantity: number, session: ClientSe
 
     let cardsIds = deck.cards.map(card => card._id);
 
-    while (cards.length < quantity) {
+    while (cards.length < quantity && cardsIds.length > 0) {
         const randomIndex = Math.floor(Math.random() * cardsIds.length);
-        const card = cardsIds.splice(randomIndex, 1)[0]; 
+        const cardId = cardsIds.splice(randomIndex, 1)[0]; 
 
-        let generatedCard: ICard | null = await getCardById(card._id, session);
-      
-        if (!generatedCard || cards.some(c => c.cardId === generatedCard.cardId) || generatedCard.availableQuantity <= 0){
-            continue; 
+        let generatedCard: ICard | null = await getCardById(cardId, session);
+
+        if (!generatedCard) {
+            continue; // Si es null, salta al próximo ciclo del bucle.
+        } else {
+            if (generatedCard.cardId && cards.some(c => c.cardId === generatedCard.cardId)) {
+                continue;
+            }
+            else if (generatedCard.availableQuantity <= 0) {
+                continue;
+            } else {
+                generatedCard.availableQuantity--;
+                await generatedCard.save({ session });
+                cards.push(generatedCard);
+            }
         }
-
-        generatedCard.availableQuantity --;
-        await generatedCard.save({ session });
-
-        cards.push(generatedCard);
+        
     }
 
     return cards;
