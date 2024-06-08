@@ -4,7 +4,13 @@ import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose'; 
 import { IDeck } from './types/types';
 
-// Obtener todos los mazos de cartas disponibles
+/**
+ * Obtiene todos los mazos de cartas registrados en la base de datos.
+ * @param req 
+ * @param res 
+ * @returns lista de mazos de cartas
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 const getDecks = async (req: Request, res: Response) => {
     try {
         const decks = await Deck.find();
@@ -16,7 +22,14 @@ const getDecks = async (req: Request, res: Response) => {
     }
 };
 
-// Obtener un mazo de cartas por su ID
+/**
+ * Devuelve un mazo de cartas por su ID (deckId).
+ * @param req 
+ * @param res 
+ * @returns mazo de cartas
+ * @throws 404 - Si no se encuentra el mazo de cartas
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 const getDeck = async (req: Request, res: Response) => {
     try {
         const deck = await Deck.findOne({ deckId: req.params.deckId });
