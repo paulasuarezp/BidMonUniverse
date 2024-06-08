@@ -23,7 +23,9 @@ const getTransactions = async (req: Request, res: Response) => {
  * Devuelve una transacción por su ID (mongoose.Types.ObjectId)
  * @param req 
  * @param res 
- * @returns 
+ * @returns transacción
+ * @throws 404 - Si no se encuentra la transacción
+ * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getTransaction = async (req: Request, res: Response) => {
     try {
@@ -45,6 +47,8 @@ const getTransaction = async (req: Request, res: Response) => {
  * Devuelve todas las transacciones de un usuario por su username
  * @param req 
  * @param res 
+ * @returns lista de transacciones
+ * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getTransactionsByUserId = async (req: Request, res: Response) => {
     try {
@@ -61,6 +65,8 @@ const getTransactionsByUserId = async (req: Request, res: Response) => {
  * Devuelve todas las transacciones de cartas por su cardId
  * @param req 
  * @param res 
+ * @returns lista de transacciones
+ * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getTransactionsByCardId = async (req: Request, res: Response) => {
     try {
@@ -78,6 +84,7 @@ const getTransactionsByCardId = async (req: Request, res: Response) => {
  * @param req
  * @param res
  * @returns
+ * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
     try {

@@ -13,7 +13,8 @@ import {
     getActiveAuctions,
     getActiveAuctionByUser,
     putUserCardUpForAuction,
-    withdrawnUserCardFromAuction
+    withdrawnUserCardFromAuction,
+    checkAllActiveAuctions
 } from '../controllers/auctionController';
 
 
@@ -117,5 +118,15 @@ auctionRouter.post('/put-auction-card', [
         next();
     }
 ], withdrawnUserCardFromAuction);
+
+
+/**
+ * Ruta para verificar todas las subastas activas, y si alguna ha finalizado, se actualiza su estado y se notifica al ganador.
+ * @route GET /check-all-active-auctions
+ * @returns {Auction[]} 200 - Lista de subastas actualizadas, con sus respectivos ganadores notificados
+ */
+
+auctionRouter.get('/check-all-active-auctions', checkAllActiveAuctions);
+
 
 export default auctionRouter;
