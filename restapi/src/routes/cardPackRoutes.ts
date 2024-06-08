@@ -12,11 +12,17 @@ import {
     getCardPack
 } from '../controllers/cardPackController';
 
-
-// Obtener todos los sobres de cartas
+/**
+ * Ruta para obtener todos los sobres de cartas
+ * @route GET /cardPacks
+ */
 cardPackRouter.get('/', getCardPacks);
 
-// Obtener un sobre de cartas por su ID
+/**
+ * Ruta para obtener un sobre de cartas por su ID
+ * @route GET /cardPacks/:cardPackId
+ * @param cardPackId id del sobre de cartas
+ */
 cardPackRouter.get('/:cardPackId', [
     check('cardPackId').notEmpty().withMessage('Card Pack ID is required'),
     (req: Request, res: Response, next: any) => {
