@@ -2,7 +2,13 @@ import CardPack from "../models/cardpack";
 import { Request, Response } from "express";
 
 
-// Obtener todos los sobres de cartas disponibles
+/**
+ * Función para obtener todos los sobres de cartas registrados en la base de datos
+ * @param req 
+ * @param res 
+ * @returns lista de sobres de cartas
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 const getCardPacks = async (req: Request, res: Response) => {
     try {
         const cardPacks = await CardPack.find({ available: true });
@@ -14,7 +20,14 @@ const getCardPacks = async (req: Request, res: Response) => {
     }
 };
 
-// Obtener un sobre de cartas por su ID
+/**
+ * Función para obtener un sobre de cartas por su ID (cardPackId) y que esté disponible
+ * @param req
+ * @param res
+ * @returns sobre de cartas
+ * @throws 404 - Si no se encuentra el paquete de cartas o no está disponible
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ */
 const getCardPack = async (req: Request, res: Response) => {
     try {
         const cardPack = await CardPack
