@@ -7,6 +7,14 @@ const transactionSchema = new Schema({
         required: true,
         ref: 'User'
     },
+    username: {
+        type: String,
+        required: true,
+    },
+    legibleCardId: {
+        type: String,
+        required: true,
+    },
     userCard: { // User card that was purchased or sold
         type: Schema.Types.ObjectId,
         required: true,
@@ -40,6 +48,10 @@ const transactionSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'CardPack',
     },
+    legibleCardPackId: {
+        type: String,
+        required: false,
+    }
 })
 
 const Transaction = model("Transaction", transactionSchema);
