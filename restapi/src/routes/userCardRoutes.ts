@@ -10,13 +10,17 @@ cardRouter.use(auth);
 import {
     getUserCards,
     getUserCard,
-    addNewUserCard,
-    transferCard,
-    putUserCardUpForAuction,
-    withdrawnUserCardFromAuction
+    addNewUserCard
   } from '../controllers/userCardController';
   
-// Obtener todas las cartas de un usuario
+/**
+ * Ruta para obtener todas las cartas de un usuario
+ * @route GET /cards/:username
+ * @param username nombre de usuario
+ * @returns lista de cartas de un usuario
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ * @throws 400 - Si username no es un string
+ */
 cardRouter.get('/:username', [
     check('username').notEmpty().withMessage('Username is required'),
     check('username').isString().withMessage('Username must be a string'),
@@ -30,30 +34,45 @@ cardRouter.get('/:username', [
     }
   ], getUserCards);
   
-  // Obtener una carta de un usuario por ID de carta
-  cardRouter.get('/:username/:cardId', [
-    check('username').notEmpty().withMessage('Username is required'),
-    check('username').isString().withMessage('Username must be a string'),
-    check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
-    check('cardId').notEmpty().withMessage('Card ID is required'),
-    check('cardId').isString().withMessage('Card ID must be a string'),
-    (req: Request, res: Response, next: any) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      next();
+
+/**
+ * Ruta para obtener una carta de un usuario por su ID
+ * @route GET /cards/:username/:cardId
+ * @param username nombre de usuario
+ * @param cardId id de la carta
+ * @returns carta de un usuario
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ * @throws 400 - Si username o cardId no son strings válidos
+ */
+cardRouter.get('/:username/:cardId', [
+  check('username').notEmpty().withMessage('Username is required'),
+  check('username').isString().withMessage('Username must be a string'),
+  check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
+  check('cardId').notEmpty().withMessage('Card ID is required'),
+  check('cardId').isString().withMessage('Card ID must be a string'),
+  (req: Request, res: Response, next: any) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
-  ], getUserCard);
+    next();
+  }
+], getUserCard);
 
 
+/**
+ * Ruta para añadir una carta a un usuario
+ * @route POST /cards/add
+ * @param username nombre de usuario
+ * @param cardId id de la carta
+ * 
+ * @returns carta añadida
+ * @throws 500 - Si se produce un error de conexión con la base de datos
+ * @throws 400 - Si username o cardId no son strings válidos
+ */
 cardRouter.post('/add', [
     check('username').notEmpty().withMessage('Username is required'),
     check('cardId').notEmpty().withMessage('Card ID is required'),
-    check('price').isFloat({ min: 0 }).withMessage('Price must be a valid number'),
-    check('auctionId').optional().isString().withMessage('Invalid Auction ID'),
-    check('bidId').optional().isString().withMessage('Invalid Bid ID'),
-    check('cardPackId').optional().isString().withMessage('Invalid Card Pack ID'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -62,56 +81,6 @@ cardRouter.post('/add', [
         next();
     }
 ], addNewUserCard);
-
-
-cardRouter.post('/transfer', [
-    check('sellerUsername').notEmpty().withMessage('Seller ID is required'),
-    check('buyerUsername').notEmpty().withMessage('Buyer ID is required'),
-    check('cardId').notEmpty().withMessage('Card ID is required'),
-    check('userCardId').notEmpty().withMessage('User Card ID is required'),
-    check('salePrice').isFloat({ min: 0 }).withMessage('Sale price must be a valid number'),
-    check('auctionId').notEmpty().withMessage('Auction ID is required'),
-    check('bidId').notEmpty().withMessage('Bid ID is required'),
-    (req: Request, res: Response, next: any) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      next();
-    }
-  ], transferCard);
-
-  
-
-  cardRouter.post('/put-auction-card', [
-    check('sellerId').notEmpty().withMessage('Seller ID is required'),
-    check('userCardId').notEmpty().withMessage('User Card ID is required'),
-    check('saleBase').isFloat({ min: 0 }).withMessage('Base sale price must be a valid number'),
-    (req: Request, res: Response, next: any) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      next();
-    }
-  ], putUserCardUpForAuction);
-
-
-  cardRouter.post('/withdraw-auction-card', [
-    check('sellerId').notEmpty().withMessage('Seller ID is required'),
-    check('userCardId').notEmpty().withMessage('User Card ID is required'),
-    check('auctionId').optional().isMongoId().withMessage('Invalid Auction ID'),
-    (req: Request, res: Response, next: any) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-      next();
-    }
-  ], withdrawnUserCardFromAuction);
-  
-  
-
 
 
 export default cardRouter;

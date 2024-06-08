@@ -3,11 +3,19 @@ import UserCard from '../models/userCard';
 import { Request, Response } from 'express';
 import { CardStatus, TransactionConcept } from '../models/utils/enums';
 import Transaction from '../models/transaction';
+import User from '../models/user';
+import Card from '../models/card';
 
-// Obtener todas las cartas de un usuario
+/**
+ * Método para obtener todas las cartas de un usuario dado su username.
+ * @param req request con el username del usuario
+ * @param res response con la lista de cartas del usuario
+ * @returns lista de cartas del usuario
+ * @throws 500 - Si se produce un error al obtener las cartas del usuario
+ */
 const getUserCards = async (req: Request, res: Response) => {
     try {
-        const userCards = await UserCard.find({ user: req.params.userId });
+        const userCards = await UserCard.find({ username: req.params.username });
         res.status(200).json(userCards);
     }
     catch (error: any) {
@@ -16,13 +24,23 @@ const getUserCards = async (req: Request, res: Response) => {
     }
 };
 
-// Obtener una carta de un usuario por id de carta
+/**
+ * Método para obtener una carta de un usuario dado su username y el id de la carta.
+ * @param req request con el username del usuario y el id de la carta
+ * @param res response con la carta del usuario
+ * @returns carta del usuario
+ * @throws 404 - Si no se encuentra la carta del usuario
+ * @throws 500 - Si se produce un error al obtener la carta del usuario
+ */
 const getUserCard = async (req: Request, res: Response) => {
     try {
-        const userCard = await UserCard.findOne({ user: req.params.userId, card: req.params.cardId });
+
+        const userCard = await UserCard.findOne({ username: req.params.username, legibleCardId: req.params.cardId });
+
         if (!userCard) {
             return res.status(404).json({ message: 'Carta no encontrada.' });
         }
+
         res.status(200).json(userCard);
     }
     catch (error: any) {
@@ -32,35 +50,59 @@ const getUserCard = async (req: Request, res: Response) => {
 }
 
 /**
- * Esta función añade una carta a la colección de cartas de un usuario si se compra directamente en la tienda.
- * 
- * @param req 
- * @param res 
+ * Método para añadir una nueva carta a un usuario dado su username y el id de la carta. 
+ * El método está pensado para ser utilizado en el caso de que un usuario reciba una carta como regalo.
+ * @param req request con el id del usuario y la carta
+ * @param res response con la carta añadida al usuario
+ * @returns carta añadida al usuario
+ * @throws 500 - Si se produce un error al añadir la carta al usuario
  */
 const addNewUserCard = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();  // Iniciar una sesión de transacción
     session.startTransaction();  // Iniciar la transacción
     try {
+        const {username, cardId} = req.body;
+
+        // Verificar que el usuario exista
+        const user = await User.findById(username);
+        if (!user) {
+            throw new Error("Usuario no encontrado.");
+        }
+
+        // Verificar que la carta exista
+        const card = await Card.findOne({ cardId: cardId });
+        if (!card) {
+            throw new Error("Carta no encontrada.");
+        }
+
+        // Crear una nueva carta de usuario
+        const userCard = new UserCard({
+            user: user.id,
+            card:  card.id,
+            username: username,
+            legibleCardId: cardId,
+            status: CardStatus.NotForSale,
+            transactionHistory: []
+        });
+
         const newTransaction = new Transaction({
-            user: req.body.user,
+            user: user.id,
+            username: username,
             userCard: req.body.userCard,
-            concept: TransactionConcept.CardPack,
+            legibleCardId: req.body.legibleCardId,
+            concept: TransactionConcept.Gift,
             date: new Date(),
-            price: req.body.price,
+            price: 0,
             cardId: req.body.cardId,
             auctionId: req.body.auctionId,
-            cardPackId: req.body.cardPackId
+            cardPackId: req.body.cardPackId,
+            legibleCardPackId: req.body.legibleCardPackId
         });
 
-        // Guardar la transacción dentro de la sesión de transacción
-        await newTransaction.save({ session: session });
+         // Guardar la transacción dentro de la sesión de transacción
+         await newTransaction.save({ session: session });
 
-        const userCard = new UserCard({
-            user: req.params.userId,
-            card: req.params.cardId,
-            status: CardStatus.NotForSale,
-            transactionHistory: [newTransaction._id]
-        });
+         userCard.transactionHistory.push(newTransaction._id);
 
         // Guardar la carta de usuario dentro de la misma sesión de transacción
         await userCard.save({ session: session });
@@ -79,193 +121,8 @@ const addNewUserCard = async (req: Request, res: Response) => {
 }
 
 
-const putUserCardUpForAuction = async (req: Request, res: Response) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
-        // Extraer datos necesarios del request
-        const { sellerId, userCardId, saleBase, cardId, auctionId } = req.body;
-
-        // Actualizar la UserCard para transferirla al nuevo usuario
-        const updatedCard = await UserCard.findOneAndUpdate(
-            { user: sellerId, card: cardId },
-            { status:  CardStatus.OnAuction },  // Actualizar el estado
-            { new: true, session: session }  // Retorna el documento actualizado
-        );
-
-        if (!updatedCard) {
-            throw new Error("No se pudo poner la carta en subasta. La carta no se encontró o ya fue vendida.");
-        }
-
-        // Registrar la transacción de venta
-        const saleTransaction = new Transaction({
-            user: sellerId,
-            userCard: userCardId,
-            cardId: cardId,
-            concept: TransactionConcept.ForSale,
-            price: saleBase,
-            date: new Date(),
-            auctionId: auctionId,
-        });
-        await saleTransaction.save({ session });
-
-
-        // Añadir la referencia de la transacción a la carta
-        updatedCard.transactionHistory.push(saleTransaction._id);
-        await updatedCard.save({ session });
-
-        // Realizar la transacción si todo fue exitoso
-        await session.commitTransaction();
-        session.endSession();
-        res.status(200).json({ message: 'La carta se ha puesto en subasta.' });
-    } catch (error: any) {
-        // Si algo falla, abortar la transacción y manejar el error
-        await session.abortTransaction();
-        session.endSession();
-        console.error(error);
-        res.status(500).json({ message: error.message || 'No se pudo poner la carta en subasta.' });
-    }
-}
-
-/**
- * La carta se retira de la subasta y se devuelve al vendedor.
- * @param req 
- * @param res 
- */
-const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
-        // Extraer datos necesarios del request
-        const { sellerId, userCardId, saleBase, cardId, auctionId } = req.body;
-
-        // Actualizar la UserCard para transferirla al nuevo usuario
-        const updatedCard = await UserCard.findOneAndUpdate(
-            { user: sellerId, card: cardId },
-            { status:  CardStatus.NotForSale },  // Actualizar el estado
-            { new: true, session: session }  // Retorna el documento actualizado
-        );
-
-        if (!updatedCard) {
-            throw new Error("No se pudo retirar la carta de la subasta. La carta no se encontró o ya fue vendida.");
-        }
-
-        // Registrar la transacción de venta
-        const saleTransaction = new Transaction({
-            user: sellerId,
-            userCard: userCardId,
-            cardId: cardId,
-            concept: TransactionConcept.ForSale,
-            price: saleBase,
-            date: new Date(),
-            auctionId: auctionId,
-        });
-        await saleTransaction.save({ session });
-
-
-        // Añadir la referencia de la transacción a la carta
-        updatedCard.transactionHistory.push(saleTransaction._id);
-        await updatedCard.save({ session });
-
-        // Realizar la transacción si todo fue exitoso
-        await session.commitTransaction();
-        session.endSession();
-        res.status(200).json({ message: 'La carta se ha retirado de la subasta.' });
-    } catch (error: any) {
-        // Si algo falla, abortar la transacción y manejar el error
-        await session.abortTransaction();
-        session.endSession();
-        console.error(error);
-        res.status(500).json({ message: error.message || 'No se pudo retirar la carta de la subasta.' });
-    }
-}
-
-
-
-
-
-
-/**
- * Esta función transfiere una carta de un usuario a otro, registrando las transacciones de venta y compra.
- *  
- * @param req
- * @param res
- * @returns
- *  
- * @throws Error
- * - Si la carta no se encuentra o ya fue vendida.
- * - Si no se puede completar la transacción.
- **/
-const transferCard = async (req: Request, res: Response) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
-        // Extraer datos necesarios del request
-        const { sellerId, buyerId, userCardId, salePrice, cardId, auctionId, bidId } = req.body;
-
-        // Actualizar la UserCard para transferirla al nuevo usuario
-        const updatedCard = await UserCard.findOneAndUpdate(
-            { user: sellerId, card: cardId },
-            { user: buyerId, status:  CardStatus.NotForSale},  // Actualizar el usuario y el estado
-            { new: true, session: session }  // Retorna el documento actualizado
-        );
-
-        if (!updatedCard) {
-            throw new Error("Card not found or already transferred.");
-        }
-
-        // Registrar la transacción de venta
-        const saleTransaction = new Transaction({
-            user: sellerId,
-            userCard: userCardId,
-            cardId: cardId,
-            concept: TransactionConcept.Sold,
-            price: salePrice,
-            date: new Date(),
-            auctionId: auctionId,
-            bidId: bidId
-        });
-        await saleTransaction.save({ session });
-
-        // Registrar la transacción de compra
-        const purchaseTransaction = new Transaction({
-            user: buyerId,
-            userCard: userCardId,
-            cardId: cardId,
-            concept: TransactionConcept.Bid,
-            price: salePrice,
-            date: new Date(),
-            auctionId: auctionId,
-            bidId: bidId
-        });
-        await purchaseTransaction.save({ session });
-
-        // Añadir la referencia de la transacción a la carta
-        updatedCard.transactionHistory.push(saleTransaction._id, purchaseTransaction._id);
-        await updatedCard.save({ session });
-
-        // Realizar la transacción si todo fue exitoso
-        await session.commitTransaction();
-        session.endSession();
-        res.status(200).json({ message: 'Card transfer successful.' });
-    } catch (error: any) {
-        // Si algo falla, abortar la transacción y manejar el error
-        await session.abortTransaction();
-        session.endSession();
-        console.error(error);
-        res.status(500).json({ message: error.message || 'Failed to transfer card.' });
-    }
-};
-
-
 export {
     getUserCards,
     getUserCard,
-    addNewUserCard,
-    transferCard,
-    putUserCardUpForAuction,
-    withdrawnUserCardFromAuction
+    addNewUserCard
 };
