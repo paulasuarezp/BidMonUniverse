@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
 const cardPackRouter: Router = express.Router();
@@ -24,7 +24,8 @@ cardPackRouter.get('/', getCardPacks);
  * @param cardPackId id del sobre de cartas
  */
 cardPackRouter.get('/:cardPackId', [
-    check('cardPackId').notEmpty().withMessage('Card Pack ID is required'),
+    param('cardPackId').notEmpty().withMessage('Card Pack ID is required'),
+    param('cardPackId').isString().isLength({ min: 2, max: 10}).withMessage('Card Pack ID must be a valid string with a length between 2 and 10 characters'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

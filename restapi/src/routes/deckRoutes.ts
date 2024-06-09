@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { check, param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
 const deckRouter: Router = express.Router();
@@ -30,7 +30,7 @@ deckRouter.get('/', getDecks);
  * @throws 400 - Si deckId no es un string
  */
 deckRouter.get('/:deckId', [
-    check('deckId').notEmpty().withMessage('Deck ID is required'),
+    param('deckId').notEmpty().withMessage('Deck ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

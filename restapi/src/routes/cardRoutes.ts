@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
 const cardRouter: Router = express.Router();
@@ -28,7 +28,7 @@ cardRouter.get('/updateCardReferences', updateCardReferences);
  * @param cardId id de la carta
  */
 cardRouter.get('/:cardId', [
-    check('cardId').notEmpty().withMessage('Card ID is required'),
+    param('cardId').notEmpty().withMessage('Card ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

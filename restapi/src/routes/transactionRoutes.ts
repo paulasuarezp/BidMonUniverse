@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
 const transactionRouter: Router = express.Router();
@@ -33,7 +33,7 @@ transactionRouter.get('/', getTransactions);
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 transactionRouter.get('/:transactionId', [
-    check('transactionId').notEmpty().withMessage('Transaction ID is required'),
+    param('transactionId').notEmpty().withMessage('Transaction ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -53,7 +53,8 @@ transactionRouter.get('/:transactionId', [
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 transactionRouter.get('/user/:username', [
-    check('username').notEmpty().withMessage('Username is required'),
+    param('username').notEmpty().withMessage('Username is required'),
+    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -72,7 +73,7 @@ transactionRouter.get('/user/:username', [
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 transactionRouter.get('/card/:cardId', [
-    check('cardId').notEmpty().withMessage('Card ID is required'),
+    param('cardId').notEmpty().withMessage('Card ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -95,8 +96,9 @@ transactionRouter.get('/card/:cardId', [
  * 
  */
 transactionRouter.get('/user/:username/:cardId', [
-    check('cardId').notEmpty().withMessage('Card ID is required'),
-    check('username').notEmpty().withMessage('Username is required'),
+    param('cardId').notEmpty().withMessage('Card ID is required'),
+    param('username').notEmpty().withMessage('Username is required'),
+    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -46,6 +46,7 @@ bidRouter.post('/create-bid', [
  */
 bidRouter.get('/bid-history/:username', [
   param('username').notEmpty().withMessage('Username is required'),
+  param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
   (req: Request, res: Response, next: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -82,6 +83,7 @@ bidRouter.get('/bid-history/auction/:auctionId', [
  */
 bidRouter.get('/active-bids/:username', [
   param('username').notEmpty().withMessage('Username is required'),
+  param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
   (req: Request, res: Response, next: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -94,13 +96,15 @@ bidRouter.get('/active-bids/:username', [
 /**
  * Ruta para retirar una puja
  * @route PATCH /withdraw-bid/:id/:username
- * @param id ID de la puja
+ * @param bidId ID de la puja
+ * @param username Nombre de usuario que retira la puja
  * @returns {Bid} 200 - Puja retirada
  * @returns {Error} 400 - Error de validación
  */
-bidRouter.patch('/withdraw-bid/:id/:username', [
-  param('id').notEmpty().withMessage('Bid ID is required'),
+bidRouter.patch('/withdraw-bid/:bidId/:username', [
+  param('bidId').notEmpty().withMessage('Bid ID is required'),
   param('username').notEmpty().withMessage('Username is required'),
+  param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
   (req: Request, res: Response, next: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
