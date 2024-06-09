@@ -10,14 +10,47 @@ import transactionRouter from "./src/routes/transactionRoutes";
 import auctionRouter from "./src/routes/auctionRoutes";
 import bidRouter from "./src/routes/bidRoutes";
 import deckRouter from "./src/routes/deckRoutes";
+import notificationRouter from "./src/routes/notificationRoutes";
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose'; 
+
+import http from 'http';
+import { Server, Socket } from "socket.io";
+import authSocket from './src/middlewares/authSocket';
 
 dotenv.config();
 
 const app: Application = express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
 const mongoURI: string = process.env.MONGO_URI!;
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+      origin: "*", // Permitir cualquier origen
+      methods: ["GET", "POST"]
+  }
+});
+
+export { io };
+
+// Middleware para autenticar sockets
+io.use(authSocket);
+
+// Manejo de conexiones de sockets
+io.on('connection', (socket) => {
+  const username = socket.handshake.query.username; // username enviado como parte del handshake
+
+  if (username) {
+      socket.join(username); // Unir el socket a una sala con el nombre de usuario
+      console.log(`User ${username} connected with socket id ${socket.id}`);
+  }
+
+  socket.on('disconnect', () => {
+      console.log(`User ${username} disconnected`);
+  });
+});
+
 
 // Conexión a la base de datos
 mongoose.connect(mongoURI)
@@ -40,10 +73,11 @@ app.use("/purchases", purchasesRouter);
 app.use("/transactions", transactionRouter);
 app.use("/auctions", auctionRouter);
 app.use("/bids", bidRouter);
+app.use("/notifications", notificationRouter);
 
 
 // Arrancar servidor
-const server = app.listen(port, (): void => {
+server.listen(port, (): void => {
     console.log('Restapi listening on ' + port);
 }).on("error",(error: Error) => {
     console.error('Error occurred: ' + error.message);

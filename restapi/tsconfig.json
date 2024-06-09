@@ -3,7 +3,7 @@
         "target": "es6",                // Especifica la versión de ECMAScript de salida.
         "module": "commonjs",           // Especifica el módulo de código generado.
         "outDir": "./dist",             // Redirige la salida a la carpeta 'dist'.
-        "rootDir": "./src",             // Especifica la carpeta raíz desde donde se compilan los archivos.
+        "rootDir": "./",             // Especifica la carpeta raíz desde donde se compilan los archivos.
         "strict": false,                // Desactiva todas las opciones estrictas.
         "strictNullChecks": false,      // Desactiva la comprobación estricta de nulidad.
         "strictPropertyInitialization": false, // Desactiva la inicialización estricta de las propiedades de las clases.
@@ -14,7 +14,8 @@
         "forceConsistentCasingInFileNames": true // Asegura que el caso de los nombres de archivo sea consistente en las importaciones.
     },
     "include": [
-        "src/**/*"  // Incluye todos los archivos dentro de la carpeta 'src'.
+        "src/**/*",  // Incluye todos los archivos dentro de la carpeta 'src'.
+        "server.ts"  // Incluye el archivo 'server.ts'.
     ],
     "exclude": [
         "node_modules",  // Excluye la carpeta 'node_modules'.
