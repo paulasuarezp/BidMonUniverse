@@ -96,7 +96,7 @@ const createBid = async (req: Request, res: Response) => {
                 username: username,
                 legibleCardId: auction.legibleCardId,
                 userCard: auction.card,
-                concept: TransactionConcept.Bid,
+                concept: TransactionConcept.NewBid,
                 date: new Date(),
                 price: amount,
                 auctionId: auctionId,

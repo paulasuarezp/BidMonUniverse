@@ -1,4 +1,4 @@
-const { check, validationResult } = require('express-validator');
+const { check, param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
 const auctionRouter: Router = express.Router();
@@ -34,7 +34,7 @@ auctionRouter.get('/auctions', getAuctions);
  * @returns {Error}  400 - Error de validación
  */
 auctionRouter.get('/auction/:id', [
-    check('id').notEmpty().withMessage('Auction ID is required'),
+    param('id').notEmpty().withMessage('Auction ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -59,7 +59,7 @@ auctionRouter.get('/active-auctions', getActiveAuctions);
  * @returns {Error}  400 - Error de validación
  */
 auctionRouter.get('/active-auctions/:username', [
-    check('username').notEmpty().withMessage('Username is required'),
+    param('username').notEmpty().withMessage('Username is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -77,9 +77,9 @@ auctionRouter.get('/active-auctions/:username', [
  * @returns {Error}  400 - Error de validación
  */
 auctionRouter.get('/active-auctions/pokemon/:pokemon', [
-    check('pokemon').notEmpty().withMessage('Pokemon name is required'),
-    check('pokemon').isString().withMessage('Pokemon name must be a string'),
-    check('pokemon').isLength({ min: 1, max: 20}).withMessage('Pokemon name must be between 1 and 20 characters long'),
+    param('pokemon').notEmpty().withMessage('Pokemon name is required'),
+    param('pokemon').isString().withMessage('Pokemon name must be a string'),
+    param('pokemon').isLength({ min: 1, max: 20}).withMessage('Pokemon name must be between 1 and 20 characters long'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
