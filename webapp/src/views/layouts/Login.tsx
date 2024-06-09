@@ -4,8 +4,9 @@ import Paper from '../components/paper/Paper';
 import Button from '../components/buttons/Button';
 import { login as loginAPI } from '../../api/userAPI';
 import { useNavigate } from 'react-router-dom';
-import { setUser } from '../../redux/slices/userSlice';
+import { setSocketConnected, setUser } from '../../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
+import { connectSocket } from '../../socket/socketService';
 
 //#region COMPONENT Login
 export default function Login() {
@@ -30,6 +31,11 @@ export default function Login() {
               setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
               console.log('Usuario almacenado en el estado global desde Login.tsx -> ', data);
               dispatch(setUser(data.user));
+              if(data.token) {
+                console.log('Conectando socket desde Login.tsx -> ', data.token)
+                dispatch(setSocketConnected(true));
+                connectSocket(data.token, data.user.username);
+              }
               // Redirigir a la página de inicio
               navigate('/logueado');
           }

@@ -30,7 +30,7 @@ export async function login(username: string, password: string): Promise<any> {
 
         let user = data.user;
 
-        return { user };
+        return { user, token };
     } catch (error: any) {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
