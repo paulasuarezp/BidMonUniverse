@@ -7,6 +7,8 @@ import cardRouter from "./src/routes/cardRoutes";
 import userCardRouter from "./src/routes/userCardRoutes";
 import purchasesRouter from "./src/routes/purchasesRoutes";
 import transactionRouter from "./src/routes/transactionRoutes";
+import auctionRouter from "./src/routes/auctionRoutes";
+import bidRouter from "./src/routes/bidRoutes";
 import deckRouter from "./src/routes/deckRoutes";
 import * as dotenv from 'dotenv';
 import mongoose from 'mongoose'; 
@@ -36,6 +38,8 @@ app.use("/cards", cardRouter);
 app.use("/usercards", userCardRouter);
 app.use("/purchases", purchasesRouter);
 app.use("/transactions", transactionRouter);
+app.use("/auctions", auctionRouter);
+app.use("/bids", bidRouter);
 
 
 // Arrancar servidor

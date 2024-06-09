@@ -60,6 +60,7 @@ auctionRouter.get('/active-auctions', getActiveAuctions);
  */
 auctionRouter.get('/active-auctions/:username', [
     param('username').notEmpty().withMessage('Username is required'),
+    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

@@ -1,11 +1,11 @@
-const { check, validationResult } = require('express-validator');
+const { check, param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 
-const cardRouter: Router = express.Router();
+const userCardRouter: Router = express.Router();
 
 const auth = require('../middlewares/authMiddleware');
 
-cardRouter.use(auth);
+userCardRouter.use(auth);
 
 import {
     getUserCards,
@@ -21,10 +21,11 @@ import {
  * @throws 500 - Si se produce un error de conexión con la base de datos
  * @throws 400 - Si username no es un string
  */
-cardRouter.get('/:username', [
-    check('username').notEmpty().withMessage('Username is required'),
-    check('username').isString().withMessage('Username must be a string'),
-    check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
+userCardRouter.get('/:username', [
+    param('username').notEmpty().withMessage('Username is required'),
+    param('username').isString().withMessage('Username must be a string'),
+    param('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
+    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -44,12 +45,13 @@ cardRouter.get('/:username', [
  * @throws 500 - Si se produce un error de conexión con la base de datos
  * @throws 400 - Si username o cardId no son strings válidos
  */
-cardRouter.get('/:username/:cardId', [
-  check('username').notEmpty().withMessage('Username is required'),
-  check('username').isString().withMessage('Username must be a string'),
-  check('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
-  check('cardId').notEmpty().withMessage('Card ID is required'),
-  check('cardId').isString().withMessage('Card ID must be a string'),
+userCardRouter.get('/:username/:cardId', [
+  param('username').notEmpty().withMessage('Username is required'),
+  param('username').isString().withMessage('Username must be a string'),
+  param('username').isLength({ max: 12 }).withMessage('Username must be at most 12 characters long'),
+  param('username').isLowercase().withMessage('Username must be a valid string in lowercase'),
+  param('cardId').notEmpty().withMessage('Card ID is required'),
+  param('cardId').isString().withMessage('Card ID must be a string'),
   (req: Request, res: Response, next: any) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -70,7 +72,7 @@ cardRouter.get('/:username/:cardId', [
  * @throws 500 - Si se produce un error de conexión con la base de datos
  * @throws 400 - Si username o cardId no son strings válidos
  */
-cardRouter.post('/add', [
+userCardRouter.post('/add', [
     check('username').notEmpty().withMessage('Username is required'),
     check('cardId').notEmpty().withMessage('Card ID is required'),
     (req: Request, res: Response, next: any) => {
@@ -83,4 +85,4 @@ cardRouter.post('/add', [
 ], addNewUserCard);
 
 
-export default cardRouter;
+export default userCardRouter;
