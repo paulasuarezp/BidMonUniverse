@@ -1,6 +1,5 @@
 // enums.ts -> Purpose: Enums for the different types of Pokémon, gyms, card rarities, and card statuses.
 
-
 // POKEMON
 // Type of a pokemon
 export enum PokemonType {
@@ -62,17 +61,23 @@ export enum CardRarity {
 
 // Status of a card
 export enum CardStatus {
+    OnAuction = "onauction",
     Sold = "sold",
-    OnBid = "onbid",
     NotForSale = "notforsale"
 }
 
 // TRANSACTION
 // Transaction concept
 export enum TransactionConcept {
-    CardPack = "purchaseByCardPack",
-    Bid = "purchaseByBid",
-    Sale = "sale"
+    PurchaseByBid = "PurchaseByBid", // Purchase by bid
+    PurchaseByCardPack = "PurchaseByCardPack", // Purchase by card pack
+    SoldOnAuction = "SoldOnAuction", // Card sold on auction
+    ForSaleOnAuction = "ForSaleOnAuction", // Card for sale on auction
+    WithdrawnFromAuction = "WithdrawnFromAuction", // Card withdrawn from auction
+    BidCancelledFromAuction = "BidCancelledFromAuction", // Bid cancelled because the auction was cancelled
+    BidWithdrawn = "BidWithdrawn", // Bid withdrawn
+    NewBid = "NewBid", // New bid
+    Gift = "Gift" // Gift
 }
 
 // AUCTION
@@ -87,7 +92,26 @@ export enum AuctionStatus {
 // Bid status
 export enum BidStatus {
     Pending = "pending",
-    Accepted = "accepted",
+    Winner = "winner",
     Rejected = "rejected",
+    AuctionCancelled = "auctioncancelled",
     Withdrawn = "withdrawn"
+}
+
+// NOTIFICATION
+// Notification type
+export enum NotificationType {
+    BidWinner = "bidwinner",
+    AuctionCancelled = "auctioncancelled",
+    CardSold = "auctioncardsold",
+    CardNotSold = "auctioncardnotsold",
+    CardGifted = "cardgifted",
+    System = "system"
+}
+
+// Notification importance
+export enum NotificationImportance {
+    Low = "low",
+    Medium = "medium",
+    High = "high"
 }

@@ -6,7 +6,11 @@
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts",
     "test": "jest --runInBand --coverage",
-    "fetch-data": "ts-node src/scripts/fetchPokemonData.ts"
+    "fetch-data": "ts-node src/scripts/fetchPokemonData.ts",
+    "load-data": "ts-node src/scripts/loadPokemonData.ts",
+    "fetchDecksData": "ts-node src/scripts/fetchDecksData.ts",
+    "loadDecksData": "ts-node src/scripts/loadDecks.ts",
+    "loadCardPacksData": "ts-node src/scripts/loadCardPacks.ts"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +21,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
