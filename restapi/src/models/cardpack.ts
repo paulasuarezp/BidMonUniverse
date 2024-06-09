@@ -1,15 +1,21 @@
 import {model, Schema} from 'mongoose'
+import {Document} from 'mongoose'
 
-export const contentSchema = new Schema({
-    deckId: {  // Unique identifier for the deck, format "D-XXXX"
-        type: String,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true
-    }
-}, { _id: false });
+export interface ICardPack extends Document {
+    cardPackId: string;
+    name: string;
+    price: number;
+    releaseDate: Date;
+    numberOfCards: number;
+    availableQuantity: number;
+    available: boolean;
+    deckId1?: string;
+    quantity1?: number;
+    deckId2?: string;
+    quantity2?: number;
+    deckId3?: string;
+    quantity3?: number;
+}
 
 const cardPackSchema = new Schema(
     {

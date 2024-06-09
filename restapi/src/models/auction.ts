@@ -1,5 +1,24 @@
 import { model, Schema } from 'mongoose'
 import { AuctionStatus } from './utils/enums';
+import { Document, Types } from 'mongoose';
+
+export interface IAuction extends Document {
+    card: Types.ObjectId; // Referencia a UserCard
+    legibleCardId: string; // ID legible de la tarjeta
+    seller: Types.ObjectId; // Referencia a User
+    sellerUsername: string; // Nombre de usuario del vendedor
+    initialPrice: number; // Precio inicial de la subasta
+    currentPrice?: number; // Precio actual de la subasta
+    finalPrice?: number; // Precio final de la subasta
+    publicationDate: Date; // Fecha de publicación de la subasta
+    duration: number; // Duración de la subasta en horas o minutos, dependiendo de la unidad usada
+    estimatedEndDate: Date; // Fecha estimada de finalización de la subasta
+    endDate: Date; // Fecha de finalización de la subasta
+    status: AuctionStatus; // Estado de la subasta
+    winner?: Types.ObjectId; // Referencia a Bid, ganador de la subasta
+    winnerUsername?: string; // Nombre de usuario del ganador
+    bids: Types.ObjectId[]; // Array de referencias a Bid
+}
 
 const auctionSchema = new Schema({
     card: { // Card that is being auctioned

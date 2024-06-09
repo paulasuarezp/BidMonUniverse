@@ -1,6 +1,14 @@
-
+import { Document, Types } from 'mongoose'
 import { model, Schema } from 'mongoose'
 import { CardRarity } from "./utils/enums";
+
+export interface IDeck extends Document {
+    deckId: string;
+    name: string;
+    type: CardRarity;
+    publicationDate: Date;
+    cards: Types.ObjectId[];
+}
 
 const deckSchema = new Schema({
     deckId: {

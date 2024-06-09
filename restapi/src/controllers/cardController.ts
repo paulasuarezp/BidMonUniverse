@@ -1,7 +1,6 @@
-import Card from '../models/card';
+import Card, { ICard } from '../models/card';
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';  // Importa el tipo Session para TypeScript
-import { ICard } from './types/types';
 import UserCard from '../models/userCard';
 
 
