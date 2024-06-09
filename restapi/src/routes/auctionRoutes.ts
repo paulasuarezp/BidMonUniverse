@@ -12,6 +12,7 @@ import {
     getAuction,
     getActiveAuctions,
     getActiveAuctionByUser,
+    getActiveAuctionsByPokemonName,
     putUserCardUpForAuction,
     withdrawnUserCardFromAuction,
     checkAllActiveAuctions
@@ -67,6 +68,26 @@ auctionRouter.get('/active-auctions/:username', [
         next();
     }
 ], getActiveAuctionByUser);
+
+/**
+ * Ruta para obtener todas las subastas activas de un usuario
+ * @route GET /active-auctions/pokemon/:pokemonName
+ * @param pokemonName nombre del pokemon
+ * @returns {Auction[]} 200 - Lista de subastas activas del usuario
+ * @returns {Error}  400 - Error de validación
+ */
+auctionRouter.get('/active-auctions/pokemon/:pokemon', [
+    check('pokemon').notEmpty().withMessage('Pokemon name is required'),
+    check('pokemon').isString().withMessage('Pokemon name must be a string'),
+    check('pokemon').isLength({ min: 1, max: 20}).withMessage('Pokemon name must be between 1 and 20 characters long'),
+    (req: Request, res: Response, next: any) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    }
+], getActiveAuctionsByPokemonName);
 
 /**
  * Ruta para poner una carta en subasta
