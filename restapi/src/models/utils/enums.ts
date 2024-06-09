@@ -1,6 +1,5 @@
 // enums.ts -> Purpose: Enums for the different types of Pokémon, gyms, card rarities, and card statuses.
 
-
 // POKEMON
 // Type of a pokemon
 export enum PokemonType {
@@ -70,13 +69,15 @@ export enum CardStatus {
 // TRANSACTION
 // Transaction concept
 export enum TransactionConcept {
-    CardPack = "PurchaseByCardPack",
-    Bid = "PurchaseByBid",
-    Sold = "SoldOnAuction",
-    ForSale = "ForSaleOnAuction",
-    Withdrawn = "WithdrawnFromAuction",
-    BidWithdrawn = "BidWithdrawn",
-    Gift = "Gift",
+    PurchaseByBid = "PurchaseByBid", // Purchase by bid
+    PurchaseByCardPack = "PurchaseByCardPack", // Purchase by card pack
+    SoldOnAuction = "SoldOnAuction", // Card sold on auction
+    ForSaleOnAuction = "ForSaleOnAuction", // Card for sale on auction
+    WithdrawnFromAuction = "WithdrawnFromAuction", // Card withdrawn from auction
+    BidCancelledFromAuction = "BidCancelledFromAuction", // Bid cancelled because the auction was cancelled
+    BidWithdrawn = "BidWithdrawn", // Bid withdrawn
+    NewBid = "NewBid", // New bid
+    Gift = "Gift" // Gift
 }
 
 // AUCTION
@@ -93,6 +94,7 @@ export enum BidStatus {
     Pending = "pending",
     Winner = "winner",
     Rejected = "rejected",
+    AuctionCancelled = "auctioncancelled",
     Withdrawn = "withdrawn"
 }
 

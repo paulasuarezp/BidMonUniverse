@@ -216,7 +216,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
             userCard: userCardId,
             cardId: card.card,
             legibleCardId: req.body.legibleCardId,
-            concept: TransactionConcept.ForSale,
+            concept: TransactionConcept.ForSaleOnAuction,
             price: saleBase,
             date: new Date(),
             auctionId: new mongoose.Types.ObjectId()
@@ -280,8 +280,9 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
  * 5. Actualizar y cerrar la subasta.
  * 6. Registrar la transacción de retirada de la subasta.
  * 7. Añadir la referencia de la transacción a la carta.
- * 8. Confirmar la transacción en la base de datos.
- * 9. Devolver un mensaje de éxito.
+ * 8. Cancelar todas las pujas asociadas a la subasta.
+ * 9. Confirmar la transacción en la base de datos.
+ * 10. Devolver un mensaje de éxito.
  * 
  * @param {Request} req - Request con el username, userCardId y auctionId necesarios para identificar el usuario, la carta y la subasta.
  * @param {Response} res - Response donde se envía el resultado de la operación, incluyendo un mensaje de éxito o un error.
@@ -302,7 +303,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
             throw new Error("Usuario no encontrado.");
         }
 
-        // Actualizar la UserCard para transferirla al nuevo usuario
+        // Actualizar la UserCard para transferirla de nuevo al usuario
         const updatedCard = await UserCard.findOneAndUpdate(
             { id: userCardId},
             { status:  CardStatus.NotForSale },  // Actualizar el estado
@@ -347,24 +348,40 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         auction.status = AuctionStatus.Cancelled;
         await auction.save({ session });
 
-        // Registrar la transacción de venta
-        const saleTransaction = new Transaction({
+        // Registrar la transacción de retirada de la subasta
+        const withdrawTransaction = new Transaction({
             user: user.id,
             username: username, 
             userCard: userCardId,
             cardId: updatedCard.card,
             legibleCardId: updatedCard.legibleCardId,
-            concept: TransactionConcept.Withdrawn,
+            concept: TransactionConcept.WithdrawnFromAuction,
             price: 0,
             date: new Date(),
             auctionId: auctionId,
         });
-        await saleTransaction.save({ session });
+        await withdrawTransaction.save({ session });
 
 
-        // Añadir la referencia de la transacción a la carta
-        updatedCard.transactionHistory.push(saleTransaction._id);
-        await updatedCard.save({ session });
+        // Actualizar las pujas de la subasta a 'Subasta cancelada'
+        const bids = await Bid.find({ auction: auctionId });
+        for (let i = 0; i < bids.length; i++) {
+            bids[i].status = BidStatus.AuctionCancelled;
+            bids[i].endDate = new Date();
+            let cancelledBidTransaction = new Transaction({
+                user: bids[i].user,
+                username: bids[i].username,
+                userCard: userCardId,
+                legibleCardPackId: updatedCard.legibleCardId,
+                concept: TransactionConcept.BidCancelledFromAuction,
+                price: bids[i].price,
+                date: new Date(),
+                auctionId: auctionId,
+                bidId: bids[i]._id
+            });
+            await bids[i].save({ session });
+            await cancelledBidTransaction.save({ session });
+        }
 
         // Realizar la transacción si todo fue exitoso
         await session.commitTransaction();
@@ -599,7 +616,7 @@ const transferCard = async (auction:IAuction, bid: IBid, session:any) => {
             userCard: userCardId,
             cardId: updatedCard.card,
             legibleCardId: legibleCardId,
-            concept: TransactionConcept.Sold,
+            concept: TransactionConcept.SoldOnAuction,
             price: salePrice,
             date: new Date(),
             auctionId: auctionId,
@@ -614,7 +631,7 @@ const transferCard = async (auction:IAuction, bid: IBid, session:any) => {
             userCard: userCardId,
             cardId: updatedCard.card,
             legibleCardId: legibleCardId,
-            concept: TransactionConcept.Bid,
+            concept: TransactionConcept.PurchaseByBid,
             price: salePrice,
             date: new Date(),
             auctionId: auctionId,
