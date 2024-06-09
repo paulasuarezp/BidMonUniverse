@@ -1,13 +1,12 @@
-import Auction from '../models/auction';
+import Auction, { IAuction } from '../models/auction';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import UserCard from '../models/userCard';
 import { CardStatus, TransactionConcept, BidStatus } from '../models/utils/enums';
 import Transaction from '../models/transaction';
 import User from '../models/user';
-import Bid from '../models/bid';
+import Bid, { IBid } from '../models/bid';
 import { AuctionStatus } from '../models/utils/enums';
-import { IAuction, IBid } from './types/types';
 
 
 /**
@@ -360,30 +359,35 @@ const checkAllActiveAuctions = async (req: Request, res: Response) => {
 const chekWinnerBid = async (auction: IAuction, session: any) => {
     try {
         const bidsIds = auction.bids;
+        const basePrice = auction.initialPrice;
 
         if (bidsIds.length === 0) {
             return;
         }
 
-        let winnerBid: IBid | null = await Bid.findById(bidsIds[0]);
+        
 
         // Obtener todas las pujas para la subasta específica y que tengan estado 'Active'
         const allBids: IBid[] = await Bid.find({ auction: auction._id, status: BidStatus.Pending }).exec();
 
+        // Filtrar las pujas para incluir solo aquellas con un price >= basePrice
+        const filteredBids = allBids.filter(bid => bid.price >= basePrice);
+
         // Ordenar las pujas por precio de manera descendente
-        const sortedBids = allBids.sort((bidA, bidB) => bidB.price - bidA.price);
+        const sortedBids = filteredBids.sort((bidA, bidB) => bidB.price - bidA.price);
+
+        let winnerBid: IBid | null = null;
 
         let allChecked = false;
 
         for (let i = 0; i < sortedBids.length && !allChecked; i++) {
-            if (sortedBids[i].price >= auction.currentPrice) {
-                const user = await User.findById(sortedBids[i].user).exec();
-                if (user && user.balance >= sortedBids[i].price) {
-                    winnerBid = sortedBids[i];
-                    allChecked = true;
-                    break;
-                }
+            const user = await User.findById(sortedBids[i].user).exec();
+            if (user && user.balance >= sortedBids[i].price) {
+                auction.currentPrice = sortedBids[i].price;
+                winnerBid = sortedBids[i];
+                break;
             }
+            
         }
 
         if (winnerBid) {

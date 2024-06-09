@@ -1,8 +1,6 @@
-import exp from 'constants';
-import Deck from '../models/deck';
+import Deck,  { IDeck } from '../models/deck';
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose'; 
-import { IDeck } from './types/types';
 
 /**
  * Obtiene todos los mazos de cartas registrados en la base de datos.

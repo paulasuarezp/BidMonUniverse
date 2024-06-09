@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import CardPack from "../models/cardpack";
+import CardPack, { ICardPack }  from "../models/cardpack";
 import { getDeckByDeckId } from "./deckController";
-import Card from "../models/card";
+import Card, { ICard } from "../models/card";
 import  User from "../models/user";
 import Transaction from "../models/transaction";
 import UserCard from "../models/userCard";
 import mongoose from "mongoose";
 import { CardStatus, TransactionConcept } from "../models/utils/enums";
-import { IDeck, ICard, ICardPack} from "./types/types";
+import { IDeck } from "../models/deck";
 
 /**
  * Función que permite comprar un paquete de cartas.
