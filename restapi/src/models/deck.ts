@@ -10,7 +10,7 @@ export interface IDeck extends Document {
     cards: Types.ObjectId[];
 }
 
-const deckSchema = new Schema({
+const deckSchema = new Schema<IDeck>({
     deckId: {
         type: String, // Format: "d-000", "d-001", "d-002" ... "d-nnn"
         required: true

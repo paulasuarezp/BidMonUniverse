@@ -17,7 +17,7 @@ export interface ICardPack extends Document {
     quantity3?: number;
 }
 
-const cardPackSchema = new Schema(
+const cardPackSchema = new Schema<ICardPack>(
     {
         cardPackId: { // Unique identifier for the card pack, format "CP-XXXX"
             type: String,

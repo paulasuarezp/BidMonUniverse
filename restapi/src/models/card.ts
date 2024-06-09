@@ -25,10 +25,10 @@ export interface ICard extends Document {
     n_location_area: number;
     n_encounters: number;
     averageMaxChance: number;
-    gym: PokemonGym;
+    gym?: [PokemonGym];
 }
 
-const cardSchema = new Schema(
+const cardSchema = new Schema<ICard>(
     {
         cardId: {
             type: String, // Format: "c-<pokemonId>-n"
@@ -125,11 +125,11 @@ const cardSchema = new Schema(
             type: Number,
             required: true
         },
-        gym : { // Gym of the pokemon (it can be none if the pokemon is not the the gym leader)
-            type: Object.values(PokemonGym),
-            required: false,
-            default: PokemonGym.None
-        },
+        gym: { // Gym where the pokemon can be found
+            type: [String],
+            enum: Object.values(PokemonGym),
+            required: false
+        }
 
     }
 )
