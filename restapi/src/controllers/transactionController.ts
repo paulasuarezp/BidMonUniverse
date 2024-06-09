@@ -52,7 +52,10 @@ const getTransaction = async (req: Request, res: Response) => {
  */
 const getTransactionsByUserId = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ username: req.params.username });
+        let { username } = req.params;
+        username = username.toLowerCase();
+
+        const transactions = await Transaction.find({ username: username});
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -88,7 +91,10 @@ const getTransactionsByCardId = async (req: Request, res: Response) => {
  */
 const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ legibleCardId: req.params.cardId, username: req.params.username });
+        let { username, cardId } = req.params;
+        username = username.toLowerCase();
+        
+        const transactions = await Transaction.find({ legibleCardId: cardId, username: username });
         res.status(200).json(transactions);
     }
     catch (error: any) {

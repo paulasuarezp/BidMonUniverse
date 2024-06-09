@@ -168,7 +168,9 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
 
     try {
         // Extraer datos necesarios del request
-        const { username, userCardId, saleBase, duration } = req.body;
+        let { username, userCardId, saleBase, duration } = req.body;
+
+        username = username.toLowerCase();
 
         if (!saleBase || saleBase <= 0 || !Number.isInteger(saleBase) || saleBase > 1000000) {
             throw new Error("El precio base de la subasta debe ser mayor a 0.");
@@ -295,10 +297,11 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
     try {
         // Extraer datos necesarios del request
-        const { username, userCardId, auctionId } = req.body;
+        let { username, userCardId, auctionId } = req.body;
+        username = username.toLowerCase();
 
         // Verificar que el usuario exista
-        const user = await User.findOne({ username: username });
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             throw new Error("Usuario no encontrado.");
         }

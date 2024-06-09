@@ -35,7 +35,9 @@ const purchaseCardPack = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { username, cardPackId } = req.body;
+        let { username, cardPackId } = req.body;
+
+        username = username.toLowerCase();
 
         const cardPack = await CardPack.findOne({ cardPackId: cardPackId }).session(session);
         if (!cardPack) {
@@ -51,7 +53,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
         // Verificar que el usuario tenga suficiente saldo para comprar el paquete
         const price = cardPack.price;
 
-        let user = await User.findOne({ username: username }).session(session);
+        let user = await User.findOne({ username_lower: username }).session(session);
 
         if (!user) {
             throw new Error("El usuario no existe.");
@@ -101,7 +103,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
             const newUserCard = new UserCard({
                 user: user._id,
-                username: user.username,
+                username: user.username_lower,
                 card: card._id,
                 legibleCardId: card.cardId,
                 status: CardStatus.NotForSale,
@@ -110,8 +112,8 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
             const newTransaction = new Transaction({
                 user: user._id,
-                username: user.username,
-                concept: TransactionConcept.CardPack,
+                username: user.username_lower,
+                concept: TransactionConcept.PurchaseByCardPack,
                 date: new Date(),
                 userCard: newUserCard._id,
                 price: price,
