@@ -75,6 +75,7 @@ export enum TransactionConcept {
     Sold = "SoldOnAuction",
     ForSale = "ForSaleOnAuction",
     Withdrawn = "WithdrawnFromAuction",
+    BidWithdrawn = "BidWithdrawn",
     Gift = "Gift",
 }
 

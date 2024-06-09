@@ -7,7 +7,7 @@ export interface IBid extends Document {
     user: Types.ObjectId; // Referencia al documento User
     username: string; // Nombre de usuario que realizó la puja
     usercard: Types.ObjectId; // Referencia al documento UserCard
-    cardId: string; // ID de la carta que se está subastando
+    legibleCardId: string; // ID de la carta que se está subastando (cardId)
     initDate: Date; // Fecha en que se realizó la puja
     estimatedDate: Date; // Fecha estimada en que finaliza la puja
     endDate: Date; // Fecha en que finaliza la puja
@@ -35,7 +35,7 @@ const bidSchema = new Schema({
         required: true,
         ref: 'UserCard'
     },
-    cardId: { // ID of the card that is being bid
+    legibleCardId: { // ID of the card that is being bid (cardId)
         type: String,
         required: true
     },
