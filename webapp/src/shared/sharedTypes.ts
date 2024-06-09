@@ -15,6 +15,7 @@ export interface UserState {
     birthday: string;
     balance: number;
     profileImg: string;
+    socketConnected: boolean;
 }
 
 // Enumeración de niveles de acceso

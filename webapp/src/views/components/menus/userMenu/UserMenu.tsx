@@ -6,7 +6,8 @@ import ButtonLogin from '../../buttons/login/ButtonLogin';
 import { Logout } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../../redux/store';
-import { resetUser } from '../../../../redux/slices/userSlice';
+import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
+import { disconnectSocket } from '../../../../socket/socketService';
 
 
 //#region PROPS
@@ -40,6 +41,9 @@ export default function UserMenu({anchorElUser, handleUserMenu, handleCloseUserM
         dispatch(resetUser());
         // Limpiar el almacenamiento persistente
         localStorage.removeItem('persist:root');
+        // Desconectar el socket
+        disconnectSocket();
+        dispatch(setSocketConnected(false));
         // Redirigir a la página de inicio
         navigate('/');
 
