@@ -20,7 +20,7 @@ export interface IAuction extends Document {
     bids: Types.ObjectId[]; // Array de referencias a Bid
 }
 
-const auctionSchema = new Schema({
+const auctionSchema = new Schema<IAuction>({
     card: { // Card that is being auctioned
         type: Schema.Types.ObjectId,
         required: true,

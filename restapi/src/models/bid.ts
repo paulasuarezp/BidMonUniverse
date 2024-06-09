@@ -15,7 +15,7 @@ export interface IBid extends Document {
     status: BidStatus; // Estado de la puja, utilizando el enum BidStatus
 }
 
-const bidSchema = new Schema({
+const bidSchema = new Schema<IBid>({
     auction: { // Auction that the bid is for
         type: Schema.Types.ObjectId,
         required: true,
@@ -58,9 +58,9 @@ const bidSchema = new Schema({
     status: { // Status of the bid
         type: String,
         enum: Object.values(BidStatus),
-        default: "Pending",
+        default: BidStatus.Pending,
         required: true
-    },
+    }
 })
 const Bid = model("Bid", bidSchema);
 export default Bid;

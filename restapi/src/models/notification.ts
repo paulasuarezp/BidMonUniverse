@@ -1,19 +1,19 @@
 import { model, Schema, Document } from 'mongoose';
 import { NotificationImportance, NotificationType } from './utils/enums';
 
-export interface INotificacion extends Document {
-  usuarioId: Schema.Types.ObjectId;
-  username: string;
-  tipo: NotificationType;
-  mensaje: string;
-  leída: boolean;
-  fechaCreación: Date;
-  fechaLectura?: Date;
-  importancia: NotificationImportance;
-  tiempoReal: boolean;
+export interface INotification extends Document {
+  usuarioId: Schema.Types.ObjectId; // ObjectId de un usuario
+  username: string; // Nombre de usuario
+  type: NotificationType; // Tipo de notificación
+  message: string; // Mensaje de la notificación
+  read: boolean; // true si la notificación fue leída
+  creationDate: Date; // Fecha de creación de la notificación
+  readDate?: Date; // Fecha de lectura de la notificación
+  importance: NotificationImportance; // Importancia de la notificación
+  realTime: boolean; // true si la notificación se envía en tiempo real
 }
 
-const notificacionSchema = new Schema<INotificacion>({
+const notificationSchema = new Schema<INotification>({
   usuarioId: {
     type: Schema.Types.ObjectId,
     required: true,
@@ -23,40 +23,40 @@ const notificacionSchema = new Schema<INotificacion>({
     type: String,
     required: true
   },
-  tipo: {
+  type: {
     type: String,
     enum: Object.values(NotificationType),
     required: true,
     default: NotificationType.System
   },
-  mensaje: {
+  message: {
     type: String,
     required: true
   },
-  leída: {
+  read: {
     type: Boolean,
     required: true,
     default: false
   },
-  fechaCreación: {
+  creationDate: {
     type: Date,
     required: true
   },
-  fechaLectura: {
+  readDate: {
     type: Date,
     required: false
   },
-  importancia: {
+  importance: {
     type: String,
     enum: Object.values(NotificationImportance),
     required: true,
     default: NotificationImportance.Low
   },
-  tiempoReal: {
+  realTime: {
     type: Boolean,
     default: false
   }
 });
 
-const Notificacion = model<INotificacion>('Notificacion', notificacionSchema);
+const Notificacion = model<INotification>('Notification', notificationSchema);
 export default Notificacion;
