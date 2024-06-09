@@ -54,6 +54,7 @@ async function loadCSVData(filePath: string) {
                     console.log(`Deck ${item.name} does not existm creating it...`);
                     deck = new Deck({
                         ...item,
+                        deckId: item.deckId.toLowerCase(),
                         type: itemType,
                         cards: cards.map(card => card._id)
                     });

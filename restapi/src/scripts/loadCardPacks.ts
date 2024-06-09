@@ -81,6 +81,7 @@ async function loadCSVData(filePath: string) {
                     console.log(`Card pack ${item.name} does not exist, creating it...`);
                     cardPack = new CardPack({
                         ...item,
+                        cardPackId: item.cardPackId.toLowerCase(),
                         releaseDate: new Date(item.releaseDate),
                     });
                     await cardPack.save();

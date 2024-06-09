@@ -1,5 +1,4 @@
 import axios from 'axios';
-import Pokemon from '../models/pokemon'; // Asegúrate de que Pokemon sea un módulo ES6 exportado
 import { findGymByPokemon } from '../models/utils/gymLeaders';
 import { createObjectCsvWriter as createCsvWriter } from 'csv-writer';
 import { CardRarity, PokemonGym, PokemonRarity, PokemonType } from '../models/utils/enums';
@@ -94,6 +93,7 @@ async function fetchAndStorePokemon() {
     for (let { url } of pokemons) {
       const pokemon = await axios.get(url);
       const { id, name, types, sprites, stats, height, weight } = pokemon.data;
+      const pokemonName = name.toLowerCase();
       const speciesResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
       const encountersResponse = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}/encounters`);
 
@@ -124,7 +124,7 @@ async function fetchAndStorePokemon() {
       const card: CardData = {
         cardId: `c-${id}-${counter++}`,
         pokemonId: id,
-        name,
+        name: pokemonName,
         rarity: getCardRarity(),
         releaseDate: new Date(),
         availableQuantity: 100,
