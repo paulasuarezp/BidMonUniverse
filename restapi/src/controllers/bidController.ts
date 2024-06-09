@@ -255,11 +255,15 @@ const withdrawBid = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { bidId } = req.params;
+        const { bidId, username } = req.params;
 
         const bid = await Bid.findOne({ _id: bidId }).session(session);
         if (!bid) {
             throw new Error("La puja no existe.");
+        }
+
+        if (bid.username !== username) {
+            throw new Error("No puedes retirar una puja que no te pertenece.");
         }
 
         if (bid.status as BidStatus !== BidStatus.Pending) {
@@ -298,4 +302,4 @@ const withdrawBid = async (req: Request, res: Response) => {
     }
 }
 
-export default { createBid, getBidHistoryByUser, getBidHistoryByAuction, getActiveBidsByUser, withdrawBid };
+export { createBid, getBidHistoryByUser, getBidHistoryByAuction, getActiveBidsByUser, withdrawBid };
