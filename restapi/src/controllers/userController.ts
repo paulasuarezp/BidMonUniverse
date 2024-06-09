@@ -20,8 +20,10 @@ const createUser = async (req: Request, res: Response) => {
         return res.status(400).send('Debe de introducir un nombre de usuario y una contraseña.');
     }
 
+    const username = req.body.username.toLowerCase();
+
     try {
-        const userExists = await User.findOne({ username: req.body.username });
+        const userExists = await User.findOne({ username_lower: username });
         if (userExists) {
             return res.status(400).json({
                 message: 'El nombre de usuario ya existe. Por favor, elija otro.',
@@ -34,6 +36,7 @@ const createUser = async (req: Request, res: Response) => {
 
         const user = new User({
             username: req.body.username,
+            username_lower: username,
             birthday: req.body.birthday,
             password: hashedPassword,
             role: 'standard',
@@ -76,7 +79,9 @@ const createUser = async (req: Request, res: Response) => {
  */
 const loginUser = async (req: Request, res: Response) => {
     try {
-        const user = await User.findOne({ username: req.body.username });
+        const username = req.body.username.toLowerCase();
+
+        const user = await User.findOne({ username_lower: username});
         if (!user) {
             return res.status(401).json({
                 message: 'Usuario o contraseña incorrectos.',
@@ -130,7 +135,8 @@ const loginUser = async (req: Request, res: Response) => {
  */
 const getUser = async (req: Request, res: Response) => {
     try {
-        const user = await User.findOne({ username: req.params.username });
+        const username = req.params.username.toLowerCase();
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             return res.status(404).json({
                 message: 'Usuario no encontrado.'
