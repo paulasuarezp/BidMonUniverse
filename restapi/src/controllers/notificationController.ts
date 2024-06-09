@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Notification, {INotification} from '../models/notification';
 import User from '../models/user';
+import { io } from '../../server';
 
 /**
  * Recupera el histórico de notificaciones de un usuario específico.
@@ -49,6 +50,28 @@ const markAsRead = async (req: Request, res: Response) => {
         res.status(200).json({ message: "Notificación marcada como leída." });
     } catch (error) {
         res.status(500).json({ message: "Error al marcar la notificación como leída." });
+    }
+}
+
+/**
+ * Marca todas las notificaciones de un usuario como leídas.
+ * Esta función actualiza el estado de todas las notificaciones asociadas a un nombre de usuario específico, marcándolas como leídas y estableciendo la fecha de lectura.
+ * 
+ * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario
+ * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
+ * 
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
+ * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
+ * 
+ * @throws {Error} - Lanza un error con un mensaje explicativo si no se pueden marcar las notificaciones como leídas debido a problemas de conexión, falta de autorización,
+ */
+const markAllAsRead = async (req: Request, res: Response) => {
+    let username = req.params.username.toLowerCase();
+    try {
+        await Notification.updateMany({ username: username }, { read: true, readDate: new Date() });
+        res.status(200).json({ message: "Notificaciones marcadas como leídas." });
+    } catch (error) {
+        res.status(500).json({ message: "Error al marcar las notificaciones como leídas." });
     }
 }
 
@@ -131,7 +154,7 @@ const createNotification = async (req: Request, res: Response) => {
 
         // Si la notificación es en tiempo real, enviarla a través de un servicio de mensajería en tiempo real
         if (realTime) {
-            sendRealTimeNotification(notification);
+            sendRealTimeNotification(newNotification);
         }
         res.status(201).json({ message: "Notificación creada." });
     } catch (error) {
@@ -202,11 +225,34 @@ const sendNotification = async (notification: INotification) => {
     }
 }
 
+/**
+ * Envía una notificación en tiempo real.
+ * Esta función envía una notificación en tiempo real a través de un servicio de mensajería en tiempo real.
+ * En este caso, se supone que se utiliza Socket.IO para enviar notificaciones en tiempo real a los clientes.
+ *
+ * @param {INotification} notification - El objeto de notificación que contiene los datos necesarios para enviar la notificación en tiempo real.
+ *
+ * @throws {Error} - Lanza un error si ocurre algún problema al enviar la notificación en tiempo real.
+ */
+const sendRealTimeNotification = (notification: INotification) => {
+    try {
+        io.to(notification.username).emit('notification', {
+            type: notification.type,
+            message: notification.message,
+            importance: notification.importance,
+        });
+        console.log("Notificación en tiempo real enviada a " + notification.username + ": " + notification.message);
+    } catch (error) {
+        console.error("Error al enviar la notificación en tiempo real: ", error);
+        throw new Error("Error al enviar la notificación en tiempo real.");
+    }
+}
 
 
 export { 
     getNotifications, 
     markAsRead, 
+    markAllAsRead,
     deleteNotification, 
     deleteAllNotifications, 
     createNotification, 
