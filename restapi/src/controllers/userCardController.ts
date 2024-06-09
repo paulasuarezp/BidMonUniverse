@@ -15,7 +15,8 @@ import Card from '../models/card';
  */
 const getUserCards = async (req: Request, res: Response) => {
     try {
-        const userCards = await UserCard.find({ username: req.params.username });
+        let username = req.params.username.toLowerCase();
+        const userCards = await UserCard.find({ username: username });
         res.status(200).json(userCards);
     }
     catch (error: any) {
@@ -34,8 +35,10 @@ const getUserCards = async (req: Request, res: Response) => {
  */
 const getUserCard = async (req: Request, res: Response) => {
     try {
+        let { username, cardId } = req.params;
+        username = username.toLowerCase();
 
-        const userCard = await UserCard.findOne({ username: req.params.username, legibleCardId: req.params.cardId });
+        const userCard = await UserCard.findOne({ username: username, legibleCardId: cardId });
 
         if (!userCard) {
             return res.status(404).json({ message: 'Carta no encontrada.' });
@@ -61,10 +64,11 @@ const addNewUserCard = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();  // Iniciar una sesión de transacción
     session.startTransaction();  // Iniciar la transacción
     try {
-        const {username, cardId} = req.body;
+        let {username, cardId} = req.body;
+        username = username.toLowerCase();
 
         // Verificar que el usuario exista
-        const user = await User.findById(username);
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             throw new Error("Usuario no encontrado.");
         }

@@ -37,7 +37,9 @@ const createBid = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { username, auctionId, amount } = req.body;
+        let { username, auctionId, amount } = req.body;
+
+        username = username.toLowerCase();
 
         const auction: IAuction | null = await Auction.findOne({ auctionId: auctionId }).session(session);
         if (!auction) {
@@ -61,7 +63,7 @@ const createBid = async (req: Request, res: Response) => {
         }
 
         // Verificar que el usuario tenga suficiente saldo para realizar la puja
-        const user = await User.findOne({ username: username }).session(session);
+        const user = await User.findOne({ username_lower: username }).session(session);
         
         if (!user) {
             throw new Error("El usuario que intenta pujar no existe.");
@@ -137,9 +139,11 @@ const createBid = async (req: Request, res: Response) => {
  */
 const getBidHistoryByUser = async (req: Request, res: Response) => {
     try {
-        const { username } = req.params;
+        let { username } = req.params;
 
-        const user = await User.findOne({ username: username });
+        username = username.toLowerCase();
+
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             return res.status(404).json({
                 message: 'Usuario no encontrado.'
@@ -211,9 +215,11 @@ const getBidHistoryByAuction = async (req: Request, res: Response) => {
  */
 const getActiveBidsByUser = async (req: Request, res: Response) => {
     try {
-        const { username } = req.params;
+        let { username } = req.params;
 
-        const user = await User.findOne({ username: username });
+        username = username.toLowerCase();
+
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             return res.status(404).json({
                 message: 'Usuario no encontrado.'
