@@ -94,3 +94,21 @@ export enum BidStatus {
     Rejected = "rejected",
     Withdrawn = "withdrawn"
 }
+
+// NOTIFICATION
+// Notification type
+export enum NotificationType {
+    BidWinner = "bidwinner",
+    AuctionCancelled = "auctioncancelled",
+    CardSold = "auctioncardsold",
+    CardNotSold = "auctioncardnotsold",
+    CardGifted = "cardgifted",
+    System = "system"
+}
+
+// Notification importance
+export enum NotificationImportance {
+    Low = "low",
+    Medium = "medium",
+    High = "high"
+}
