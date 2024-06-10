@@ -22,7 +22,7 @@ dotenv.config();
 
 const app: Application = express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
-const mongoURI: string = process.env.MONGO_URI!;
+const mongoURI: string =  process.env.NODE_ENV === 'test' ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
 const server = http.createServer(app);
 const io = new Server(server, {

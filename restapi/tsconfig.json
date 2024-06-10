@@ -3,7 +3,7 @@
         "target": "es6",                // Especifica la versión de ECMAScript de salida.
         "module": "commonjs",           // Especifica el módulo de código generado.
         "outDir": "./dist",             // Redirige la salida a la carpeta 'dist'.
-        "rootDir": "./",             // Especifica la carpeta raíz desde donde se compilan los archivos.
+        "rootDir": "./",                // Especifica la carpeta raíz desde donde se compilan los archivos.
         "strict": false,                // Desactiva todas las opciones estrictas.
         "strictNullChecks": false,      // Desactiva la comprobación estricta de nulidad.
         "strictPropertyInitialization": false, // Desactiva la inicialización estricta de las propiedades de las clases.
@@ -11,7 +11,8 @@
         "noImplicitAny": false,         // Permite que los tipos implícitos sean 'any'.
         "esModuleInterop": true,        // Permite la interoperabilidad de módulos ES6 por defecto.
         "skipLibCheck": true,           // Omite la comprobación de los archivos de declaración de las bibliotecas.
-        "forceConsistentCasingInFileNames": true // Asegura que el caso de los nombres de archivo sea consistente en las importaciones.
+        "forceConsistentCasingInFileNames": true, // Asegura que el caso de los nombres de archivo sea consistente en las importaciones.
+        "types": ["node"]               // Añade esto para incluir las definiciones de tipo de Node.js
     },
     "include": [
         "src/**/*",  // Incluye todos los archivos dentro de la carpeta 'src'.

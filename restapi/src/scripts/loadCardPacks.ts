@@ -6,7 +6,8 @@ import CardPack from '../models/cardpack';
 
 dotenv.config();
 
-const mongoURI: string = process.env.MONGO_URI!;
+//const mongoURI: string = process.env.MONGO_URI!;
+const mongoURI: string = process.env.TEST_MONGO_URI!;
 
 interface CardPackData {
     cardPackId: string, // Del tipo CP-000, CP-001, CP-002 ... CP-NNN
