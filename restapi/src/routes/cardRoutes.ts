@@ -1,9 +1,8 @@
 const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
+import  auth  from '../middlewares/authMiddleware';
 
 const cardRouter: Router = express.Router();
-
-const auth = require('../middlewares/authMiddleware');
 
 cardRouter.use(auth);
 

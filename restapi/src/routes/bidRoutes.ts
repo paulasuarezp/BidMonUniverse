@@ -1,10 +1,8 @@
 const { check, param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
+import  auth  from '../middlewares/authMiddleware';
 
 const bidRouter: Router = express.Router();
-
-const auth = require('../middlewares/authMiddleware');
-
 bidRouter.use(auth);
 
 import {

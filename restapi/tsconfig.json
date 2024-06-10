@@ -12,11 +12,12 @@
         "esModuleInterop": true,        // Permite la interoperabilidad de módulos ES6 por defecto.
         "skipLibCheck": true,           // Omite la comprobación de los archivos de declaración de las bibliotecas.
         "forceConsistentCasingInFileNames": true, // Asegura que el caso de los nombres de archivo sea consistente en las importaciones.
-        "types": ["node"]               // Añade esto para incluir las definiciones de tipo de Node.js
+        "types": ["jest", "node"]               // Añade esto para incluir las definiciones de tipo de Node.js
     },
     "include": [
         "src/**/*",  // Incluye todos los archivos dentro de la carpeta 'src'.
-        "server.ts"  // Incluye el archivo 'server.ts'.
+        "server.ts",  // Incluye el archivo 'server.ts'.
+        "**/*.test.ts" 
     ],
     "exclude": [
         "node_modules",  // Excluye la carpeta 'node_modules'.
