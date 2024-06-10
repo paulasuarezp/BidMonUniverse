@@ -1,8 +1,10 @@
 import express, { Request, Response, Router } from 'express';
+import  auth  from '../middlewares/authMiddleware';
+
 const userRouter: Router = express.Router()
 
 const { createUser, loginUser, getUser } = require('../controllers/userController');
-const auth  = require('../middlewares/authMiddleware');
+
 
 userRouter.post("/signup", async (req: Request, res: Response): Promise<Response> => {
     return createUser(req, res);
