@@ -1,16 +1,13 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import path from 'path';
 import { loadDecksData, loadCardPacksData, loadCardsData } from './initialData';
 
-let mongoServer: MongoMemoryServer;
-
 module.exports = async () => {
-    mongoServer = new MongoMemoryServer();
-    await mongoServer.start();
-    const mongoUri = await mongoServer.getUri();
+    const mongoUri = process.env.TEST_MONGO_URI;
 
-    process.env.TEST_MONGO_URI = mongoUri;
+    if (!mongoUri) {
+        throw new Error('TEST_MONGO_URI is not defined');
+    }
 
     await mongoose.connect(mongoUri);
 
@@ -25,6 +22,4 @@ module.exports = async () => {
     await loadCardsData(cardsCsvPath);
 
     await mongoose.disconnect();
-
-    globalThis.__MONGOD__ = mongoServer; // Almacenar la instancia globalmente
 };

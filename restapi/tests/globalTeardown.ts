@@ -1,9 +1,13 @@
 import mongoose from 'mongoose';
 
 module.exports = async () => {
-    await mongoose.connection.dropDatabase();
-    await mongoose.connection.close();
+    if (mongoose.connection.readyState !== 0) {
+        const collections = await mongoose.connection.db.collections();
 
-    const mongoServer = globalThis.__MONGOD__;
-    await mongoServer.stop();
+        for (const collection of collections) {
+            await collection.drop();
+        }
+
+        await mongoose.connection.close();
+    }
 };

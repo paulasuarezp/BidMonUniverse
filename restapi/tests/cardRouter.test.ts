@@ -1,100 +1,96 @@
-import bcrypt from 'bcrypt';
+import request from 'supertest';
+import { app } from '../server';
 import jwt from 'jsonwebtoken';
-import { getCards, getCard, updateCardReferences } from '../src/controllers/cardController';
-import Card from '../src/models/card';
-import UserCard from '../src/models/userCard';
 import User from '../src/models/user';
-import { Request, Response } from 'express';
-
-jest.mock('../src/models/card');
-jest.mock('../src/models/userCard');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 describe('CardController', () => {
-  let req: Partial<Request>;
-  let res: Partial<Response>;
   let token: string;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('password123', salt);
+    const hashedPassword = await bcrypt.hash('Password123-', salt);
 
     const user = new User({
       username: 'testuser',
       username_lower: 'testuser',
       password: hashedPassword,
       role: 'standard',
-      birthday: '2000-01-01'
+      birthday: '2000-01-01',
     });
     await user.save();
 
     token = jwt.sign(
-      { username: user.username, role: user.role },
+      { username: user.username, role: user.role, time: Date.now() / 1000 },
       process.env.TOKEN_SECRET!,
       { expiresIn: '1h' }
     );
+  });
 
-    req = {
-      params: {},
-      body: {},
-      headers: {
-        authorization: `Bearer ${token}`
+  afterAll(async () => {
+    if (mongoose.connection.readyState !== 0) {
+      const collections = await mongoose.connection.db.collections();
+
+      for (const collection of collections) {
+        await collection.drop();
       }
-    };
-    res = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn(),
-      send: jest.fn()
-    };
-    jest.clearAllMocks();
+
+      await mongoose.connection.close();
+
+    }
   });
 
   describe('getCards', () => {
     it('should get all cards', async () => {
-      const mockCards = [{ id: 1, name: 'Test Card' }];
-      (Card.find as jest.Mock).mockResolvedValue(mockCards);
+      const response = await request(app)
+        .get('/cards')
+        .set('Authorization', `Bearer ${token}`);
 
-      await getCards(req as Request, res as Response);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(mockCards);
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(24);
     });
 
     it('should handle errors', async () => {
-      (Card.find as jest.Mock).mockRejectedValue(new Error('Database error'));
+      jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
 
-      await getCards(req as Request, res as Response);
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Se ha producido un error al obtener las cartas.' });
+      const response = await request(app)
+        .get('/cards')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ message: 'Se ha producido un error al obtener las cartas.' });
     });
   });
 
   describe('getCard', () => {
     it('should get a card by ID', async () => {
-      req.params = { cardId: '1' };
-      const mockCard = { id: '1', name: 'Test Card' };
-      (Card.findOne as jest.Mock).mockResolvedValue(mockCard);
+      const response = await request(app)
+        .get('/cards/c-1-0')
+        .set('Authorization', `Bearer ${token}`);
 
-      await getCard(req as Request, res as Response);
-      expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(mockCard);
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({ name: 'bulbasaur' }));
     });
 
     it('should return 404 if card not found', async () => {
-      req.params = { cardId: '1' };
-      (Card.findOne as jest.Mock).mockResolvedValue(null);
+      const response = await request(app)
+        .get('/cards/nonexistent')
+        .set('Authorization', `Bearer ${token}`);
 
-      await getCard(req as Request, res as Response);
-      expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Carta no encontrada.' });
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ message: 'Carta no encontrada.' });
     });
 
     it('should handle errors', async () => {
-      req.params = { cardId: '1' };
-      (Card.findOne as jest.Mock).mockRejectedValue(new Error('Database error'));
+      jest.spyOn(mongoose.Model, 'findOne').mockRejectedValueOnce(new Error('Database error'));
 
-      await getCard(req as Request, res as Response);
-      expect(res.status).toHaveBeenCalledWith(500);
-      expect(res.json).toHaveBeenCalledWith({ message: 'Se ha producido un error al obtener la carta.' });
+      const response = await request(app)
+        .get('/cards/c-1-0')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ message: 'Se ha producido un error al obtener la carta.' });
     });
   });
-
 });
