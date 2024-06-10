@@ -1,4 +1,3 @@
-// tests/userController.test.ts
 import { Request, Response } from 'express';
 import { createUser, loginUser, getUser } from '../src/controllers/userController';
 import User from '../src/models/user';
@@ -21,7 +20,8 @@ describe('UserController', () => {
     res = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
-      send: jest.fn()
+      send: jest.fn(),
+      header: jest.fn().mockReturnThis() // Agregar la propiedad header al mock
     };
     next = jest.fn();
   });
@@ -68,28 +68,28 @@ describe('UserController', () => {
     it('should return 401 if user does not exist', async () => {
       req.body = { username: 'testuser', password: 'password123' };
       (User.findOne as jest.Mock).mockResolvedValue(null);
-  
+
       await loginUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({ message: 'Usuario o contraseña incorrectos.', auth: false });
     });
-  
+
     it('should return 401 if password is invalid', async () => {
       req.body = { username: 'testuser', password: 'password123' };
       (User.findOne as jest.Mock).mockResolvedValue({ username: 'testuser', password: 'hashedPassword' });
       (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-  
+
       await loginUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(401);
       expect(res.json).toHaveBeenCalledWith({ message: 'Usuario o contraseña incorrectos.', auth: false });
     });
-  
+
     it('should return token if login is successful', async () => {
       req.body = { username: 'testuser', password: 'password123' };
       (User.findOne as jest.Mock).mockResolvedValue({ username: 'testuser', password: 'hashedPassword', role: 'standard', balance: 100, birthday: '2000-01-01', profileImg: 'img.png' });
       (bcrypt.compare as jest.Mock).mockResolvedValue(true);
       (jwt.sign as jest.Mock).mockReturnValue('token');
-  
+
       await loginUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -105,11 +105,11 @@ describe('UserController', () => {
         token: 'token'
       });
     });
-  
+
     it('should handle errors gracefully', async () => {
       req.body = { username: 'testuser', password: 'password123' };
       (User.findOne as jest.Mock).mockRejectedValue(new Error('Error'));
-  
+
       await loginUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ message: 'Se ha producido un error al verificar credenciales. Por favor, inténtelo de nuevo.', auth: false });
@@ -120,16 +120,16 @@ describe('UserController', () => {
     it('should return 404 if user is not found', async () => {
       req.params = { username: 'testuser' };
       (User.findOne as jest.Mock).mockResolvedValue(null);
-  
+
       await getUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ message: 'Usuario no encontrado.' });
     });
-  
+
     it('should return user if user is found', async () => {
       req.params = { username: 'testuser' };
       (User.findOne as jest.Mock).mockResolvedValue({ username: 'testuser', role: 'standard', balance: 100, birthday: '2000-01-01', profileImg: 'img.png' });
-  
+
       await getUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
@@ -142,16 +142,14 @@ describe('UserController', () => {
         }
       });
     });
-  
+
     it('should handle errors gracefully', async () => {
       req.params = { username: 'testuser' };
       (User.findOne as jest.Mock).mockRejectedValue(new Error('Error'));
-  
+
       await getUser(req as Request, res as Response);
       expect(res.status).toHaveBeenCalledWith(500);
       expect(res.json).toHaveBeenCalledWith({ message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.' });
     });
   });
-  
-  
 });

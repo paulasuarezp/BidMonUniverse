@@ -5,7 +5,7 @@
   "scripts": {
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts",
-    "test": "jest --runInBand --coverage",
+    "test": "NODE_ENV=test jest --runInBand --coverage",
     "fetch-data": "ts-node src/scripts/fetchPokemonData.ts",
     "load-data": "ts-node src/scripts/loadPokemonData.ts",
     "fetchDecksData": "ts-node src/scripts/fetchDecksData.ts",
