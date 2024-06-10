@@ -8,7 +8,8 @@ import { DeckData } from './fetchDecksData';
 
 dotenv.config();
 
-const mongoURI: string = process.env.MONGO_URI!;
+//const mongoURI: string = process.env.MONGO_URI!;
+const mongoURI: string = process.env.TEST_MONGO_URI!;
 
 async function connectToMongoDB() {
     try {
@@ -51,7 +52,7 @@ async function loadCSVData(filePath: string) {
                     await deck.save();
                 }
                 else {
-                    console.log(`Deck ${item.name} does not existm creating it...`);
+                    console.log(`Deck ${item.name} does not exist creating it...`);
                     deck = new Deck({
                         ...item,
                         deckId: item.deckId.toLowerCase(),
