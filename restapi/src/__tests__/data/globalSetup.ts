@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import path from 'path';
-import { loadDecksData, loadCardPacksData, loadCardsData } from './initialData';
+import { loadDecksData, loadCardPacksData, loadCardsData } from './data/initialData';
 
 module.exports = async () => {
     const mongoUri = process.env.TEST_MONGO_URI;

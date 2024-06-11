@@ -1,30 +1,17 @@
-import express, { Application } from "express";
-import cors from 'cors';
-import bp from 'body-parser';
-import userRouter from './src/routes/userRoutes';
-import cardPackRouter from "./src/routes/cardPackRoutes";
-import cardRouter from "./src/routes/cardRoutes";
-import userCardRouter from "./src/routes/userCardRoutes";
-import purchasesRouter from "./src/routes/purchasesRoutes";
-import transactionRouter from "./src/routes/transactionRoutes";
-import auctionRouter from "./src/routes/auctionRoutes";
-import bidRouter from "./src/routes/bidRoutes";
-import deckRouter from "./src/routes/deckRoutes";
-import notificationRouter from "./src/routes/notificationRoutes";
-import * as dotenv from 'dotenv';
-import mongoose from 'mongoose';
-
+import { app } from './app';
 import http from 'http';
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
+import mongoose from 'mongoose';
+import * as dotenv from 'dotenv';
 import authSocket from './src/middlewares/authSocket';
 
 dotenv.config();
 
-const app: Application = express();
 const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
 const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: "*", // Permitir cualquier origen
@@ -32,17 +19,15 @@ const io = new Server(server, {
   }
 });
 
-export { io, app };
-
 // Middleware para autenticar sockets
 io.use(authSocket);
 
 // Manejo de conexiones de sockets
 io.on('connection', (socket) => {
-  const username = socket.handshake.query.username; // username enviado como parte del handshake
+  const username = socket.handshake.query.username;
 
   if (username) {
-    socket.join(username); // Unir el socket a una sala con el nombre de usuario
+    socket.join(username);
     console.log(`User ${username} connected with socket id ${socket.id}`);
   }
 
@@ -51,30 +36,10 @@ io.on('connection', (socket) => {
   });
 });
 
-
 // Conexión a la base de datos
 mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
-
-// Permitir peticiones de webapp y parsear el body a JSON
-app.use(cors());
-
-
-app.use(bp.json());
-
-// Manejo de peticiones
-app.use("/users", userRouter);
-app.use("/cardpacks", cardPackRouter);
-app.use("/decks", deckRouter);
-app.use("/cards", cardRouter);
-app.use("/usercards", userCardRouter);
-app.use("/purchases", purchasesRouter);
-app.use("/transactions", transactionRouter);
-app.use("/auctions", auctionRouter);
-app.use("/bids", bidRouter);
-app.use("/notifications", notificationRouter);
-
 
 // Arrancar servidor
 server.listen(port, (): void => {
@@ -96,3 +61,5 @@ const closeServer = async () => {
 process.on('SIGINT', closeServer);
 process.on('SIGTERM', closeServer);
 process.on('SIGUSR2', closeServer);  // Para nodemon restart
+
+export { io, server, closeServer };

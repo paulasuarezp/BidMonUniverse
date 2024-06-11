@@ -1,6 +1,6 @@
-import Deck,  { IDeck } from '../models/deck';
+import Deck, { IDeck } from '../models/deck';
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose'; 
+import { ClientSession } from 'mongoose';
 
 /**
  * Obtiene todos los mazos de cartas registrados en la base de datos.
@@ -15,7 +15,6 @@ const getDecks = async (req: Request, res: Response) => {
         res.status(200).json(decks);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener los mazos de cartas.' });
     }
 };
@@ -37,7 +36,6 @@ const getDeck = async (req: Request, res: Response) => {
         res.status(200).json(deck);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener el mazo de cartas.' });
     }
 }
@@ -51,7 +49,7 @@ const getDeck = async (req: Request, res: Response) => {
  * @throws Error si ocurre un error al buscar el mazo.
  */
 async function getDeckByDeckId(deckId: string, session: ClientSession): Promise<IDeck | null> {
-   // return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
+    // return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
     return Deck.findOne({ deckId: deckId }).session(session).populate('cards').exec() as Promise<IDeck | null>;
 }
 

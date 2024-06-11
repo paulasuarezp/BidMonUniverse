@@ -1,0 +1,32 @@
+[
+    {
+        "_id": "66646d6ba10d744749820f34",
+        "username": "test",
+        "username_lower": "test",
+        "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+        "birthday": "2000-10-24",
+        "role" : "standard",
+        "balance":  100,
+        "profileImg": "avatar.png"
+    },
+    {
+        "_id": "66646d6ba10d744749820f35",
+        "username": "admin",
+        "username_lower": "admin",
+        "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+        "birthday": "2000-10-24",
+        "role" : "admin",
+        "balance":  0,
+        "profileImg": "avatar.png"
+    },
+    {
+        "_id": "66646d6ba10d744749820f36",
+        "username": "test2",
+        "username_lower": "test2",
+        "password": "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy",
+        "birthday": "2000-10-24",
+        "role" : "standard",
+        "balance":  100,
+        "profileImg": "avatar.png"
+    }
+]

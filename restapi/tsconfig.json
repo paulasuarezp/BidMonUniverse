@@ -6,6 +6,7 @@
         "rootDir": "./",                // Especifica la carpeta raíz desde donde se compilan los archivos.
         "strict": false,                // Desactiva todas las opciones estrictas.
         "strictNullChecks": false,      // Desactiva la comprobación estricta de nulidad.
+        "resolveJsonModule": true,     // Habilita la importación de archivos JSON.
         "strictPropertyInitialization": false, // Desactiva la inicialización estricta de las propiedades de las clases.
         "strictFunctionTypes": false,   // Desactiva la comprobación estricta en los tipos de funciones.
         "noImplicitAny": false,         // Permite que los tipos implícitos sean 'any'.
@@ -17,8 +18,9 @@
     "include": [
         "src/**/*",  // Incluye todos los archivos dentro de la carpeta 'src'.
         "server.ts",  // Incluye el archivo 'server.ts'.
-        "**/*.test.ts",
-        "tests/**.ts"
+        "app.ts",     // Incluye el archivo 'app.ts'.
+        "src/**/*.test.ts",
+        "src/**/*.json"
     ],
     "exclude": [
         "node_modules",  // Excluye la carpeta 'node_modules'.
