@@ -3,10 +3,10 @@ import fs from 'fs';
 import csvParser from 'csv-parser';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import Card from '../src/models/card';
-import Deck from '../src/models/deck';
-import CardPack from '../src/models/cardpack';
-import { CardRarity, PokemonGym, PokemonType } from '../src/models/utils/enums';
+import Card from '../../models/card';
+import Deck from '../../models/deck';
+import CardPack from '../../models/cardpack';
+import { CardRarity, PokemonGym, PokemonType } from '../../models/utils/enums';
 
 dotenv.config();
 

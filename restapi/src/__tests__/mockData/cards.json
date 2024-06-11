@@ -1,0 +1,368 @@
+[
+    {
+        "_id": "6661e0331e0b158d0f0cdb1f",
+        "cardId": "c-1-0",
+        "pokemonId": 1,
+        "name": "bulbasaur",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:07:07.000Z",
+        "availableQuantity": 100,
+        "cards": [
+            "66646db6a10d744749820f4b"
+        ],
+        "pokemonType": "grass",
+        "description": [
+            "Una rara semilla le fue plantada en el lomo al nacer. La planta brota y crece con este Pokémon.@NEWDESCRIPTION@Después de nacer, crece alimentándose de las semillas de su lomo.@NEWDESCRIPTION@A Bulbasaur es fácil verle echándose una siesta al sol. La semilla que tiene en el lomo va creciendo cada vez más a medida que absorbe los rayos del sol.@NEWDESCRIPTION@A Bulbasaur es fácil verle echándose una siesta al sol. La semilla que tiene en el lomo va creciendo cada vez más a medida que absorbe los rayos del sol.@NEWDESCRIPTION@Puede sobrevivir largo tiempo sin probar bocado gracias a los nutrientes que guarda en el bulbo del lomo.@NEWDESCRIPTION@Puede sobrevivir largo tiempo sin probar bocado gracias a los nutrientes que guarda en el bulbo del lomo.@NEWDESCRIPTION@Este Pokémon nace con una semilla en el lomo, que brota con el paso del tiempo.@NEWDESCRIPTION@Desde que nace, crece alimentándose de los nutrientes que contiene la semilla de su lomo."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/1.svg",
+        "hp": 45,
+        "attack": 49,
+        "defense": 49,
+        "speed": 45,
+        "weight": 69,
+        "height": 7,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 4,
+        "n_encounters": 11,
+        "averageMaxChance": 100,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb20",
+        "cardId": "c-2-1",
+        "pokemonId": 2,
+        "name": "ivysaur",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:07:07.000Z",
+        "availableQuantity": 100,
+        "cards": [
+            "66646db6a10d744749820f4f"
+        ],
+        "pokemonType": "grass",
+        "description": [
+            "Este Pokémon tiene un bulbo en el lomo. Dicen que, al absorber nutrientes, el bulbo se transforma en una flor grande.@NEWDESCRIPTION@Cuando el bulbo de su lomo se hincha, desprende un dulce aroma para indicar el florecimiento.@NEWDESCRIPTION@Este Pokémon lleva un bulbo en el lomo y, para poder con su peso, tiene unas patas y un tronco gruesos y fuertes. Si empieza a pasar más tiempo al sol, será porque el bulbo está a punto de hacerse una flor grande.@NEWDESCRIPTION@Este Pokémon lleva un bulbo en el lomo y, para poder con su peso, tiene unas patas y un tronco gruesos y fuertes. Si empieza a pasar más tiempo al sol, será porque el bulbo está a punto de hacerse una flor grande.@NEWDESCRIPTION@Su bulbo crece a medida que absorbe nutrientes. Desprende un cierto aroma cuando está a punto de florecer.@NEWDESCRIPTION@Su bulbo crece a medida que absorbe nutrientes. Desprende un cierto aroma cuando está a punto de florecer.@NEWDESCRIPTION@Cuando le crece bastante el bulbo del lomo, pierde la capacidad de erguirse sobre las patas traseras.@NEWDESCRIPTION@La luz del sol lo fortalece y hace que le crezca el capullo que tiene en el lomo."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/2.svg",
+        "hp": 60,
+        "attack": 62,
+        "defense": 63,
+        "speed": 60,
+        "weight": 130,
+        "height": 10,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb21",
+        "cardId": "c-3-2",
+        "pokemonId": 3,
+        "name": "venusaur",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:07:08.000Z",
+        "availableQuantity": 0,
+        "cards": [
+            "66646db6a10d744749820f53"
+        ],
+        "pokemonType": "grass",
+        "description": [
+            "Llena su cuerpo de energía con los rayos solares que captan los anchos pétalos de su flor.@NEWDESCRIPTION@Después de un día de lluvia, la flor de su lomo tiene un aroma más potente y atrae a otros Pokémon.@NEWDESCRIPTION@Venusaur tiene una flor enorme en el lomo que, según parece, adquiere unos colores muy vivos si está bien nutrido y le da mucho el sol. El aroma delicado de la flor tiene un efecto relajante en el ánimo de las personas.@NEWDESCRIPTION@Venusaur tiene una flor enorme en el lomo que, según parece, adquiere unos colores muy vivos si está bien nutrido y le da mucho el sol. El aroma delicado de la flor tiene un efecto relajante en el ánimo de las personas.@NEWDESCRIPTION@La flor que tiene en el lomo puede recoger los rayos solares para transformarlos en energía.@NEWDESCRIPTION@La flor que tiene en el lomo puede recoger los rayos solares para transformarlos en energía.@NEWDESCRIPTION@La planta florece cuando absorbe energía solar, lo cual le obliga a buscar siempre la luz del sol.@NEWDESCRIPTION@La flor que tiene en el lomo libera un delicado aroma, que tiene un efecto relajante en combate."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/3.svg",
+        "hp": 80,
+        "attack": 82,
+        "defense": 83,
+        "speed": 80,
+        "weight": 1000,
+        "height": 20,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+     {
+        "_id": "6661e0331e0b158d0f0cdb22",
+        "cardId": "c-4-3",
+        "pokemonId": 4,
+        "name": "charmander",
+        "rarity": "ultrarare",
+        "releaseDate": "2024-06-06T16:07:09.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "fire",
+        "description": [
+            "La llama de su cola indica la fuerza vital de Charmander. Será brillante si está sano.@NEWDESCRIPTION@Este Pokémon nace con una llama en la punta de la cola. Si la llama se apagara, el Pokémon se debilitaría.@NEWDESCRIPTION@La llama que tiene en la punta de la cola arde según sus sentimientos. Llamea levemente cuando está alegre y arde vigorosamente cuando está enfadado.@NEWDESCRIPTION@La llama que tiene en la punta de la cola arde según sus sentimientos. Llamea levemente cuando está alegre y arde vigorosamente cuando está enfadado.@NEWDESCRIPTION@En lugares silenciosos se puede oír el débil chisporroteo de la llama que le arde en la punta de la cola.@NEWDESCRIPTION@En lugares silenciosos se puede oír el débil chisporroteo de la llama que le arde en la punta de la cola.@NEWDESCRIPTION@Prefiere las cosas calientes. Dicen que cuando llueve le sale vapor de la punta de la cola.@NEWDESCRIPTION@Este Pokémon nace con una llama en la punta de la cola. Si se le apagara, fallecería."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/4.svg",
+        "hp": 39,
+        "attack": 52,
+        "defense": 43,
+        "speed": 65,
+        "weight": 85,
+        "height": 6,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 4,
+        "n_encounters": 11,
+        "averageMaxChance": 100,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb23",
+        "cardId": "c-5-4",
+        "pokemonId": 5,
+        "name": "charmeleon",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:07:09.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "fire",
+        "description": [
+            "Suele usar la cola para derribar a su rival. Cuando lo tira, se vale de sus afiladas garras para acabar con él.@NEWDESCRIPTION@Cuando balancea la ardiente cola, eleva la temperatura a niveles muy altos.@NEWDESCRIPTION@Charmeleon no tiene reparo en acabar con su rival usando las afiladas garras que tiene. Si su enemigo es fuerte, se vuelve agresivo, y la llama que tiene en el extremo de la cola empieza a arder con mayor intensidad tornándose azulada.@NEWDESCRIPTION@Charmeleon no tiene reparo en acabar con su rival usando las afiladas garras que tiene. Si su enemigo es fuerte, se vuelve agresivo, y la llama que tiene en el extremo de la cola empieza a arder con mayor intensidad tornándose azulada.@NEWDESCRIPTION@Librar combates intensos lo entusiasma tanto que en ocasiones lanza llamas de tono blanco azulado.@NEWDESCRIPTION@Librar combates intensos lo entusiasma tanto que en ocasiones lanza llamas de tono blanco azulado.@NEWDESCRIPTION@Este Pokémon de naturaleza agresiva ataca en combate con su cola llameante y hace trizas al rival con sus afiladas garras.@NEWDESCRIPTION@Si se exalta en combate, expulsa intensas llamaradas que incineran todo a su alrededor."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/5.svg",
+        "hp": 58,
+        "attack": 64,
+        "defense": 58,
+        "speed": 80,
+        "weight": 190,
+        "height": 11,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+     {
+        "_id": "6661e0331e0b158d0f0cdb24",
+        "cardId": "c-6-5",
+        "pokemonId": 6,
+        "name": "charizard",
+        "rarity": "ultrarare",
+        "releaseDate": "2024-06-06T16:07:10.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "fire",
+        "description": [
+            "Cuando lanza una descarga de fuego supercaliente, la roja llama de su cola brilla más intensamente.@NEWDESCRIPTION@Con las alas que tiene puede alcanzar una altura de casi 1400 m. Suele escupir fuego por la boca.@NEWDESCRIPTION@Charizard se dedica a volar por los cielos en busca de oponentes fuertes. Echa fuego por la boca y es capaz de derretir cualquier cosa. No obstante, si su rival es más débil que él, no usará este ataque.@NEWDESCRIPTION@Charizard se dedica a volar por los cielos en busca de oponentes fuertes. Echa fuego por la boca y es capaz de derretir cualquier cosa. No obstante, si su rival es más débil que él, no usará este ataque.@NEWDESCRIPTION@Cuando exhala fuego abrasador, la llama de la punta de la cola se aviva y adquiere un intenso color rojo.@NEWDESCRIPTION@Cuando exhala fuego abrasador, la llama de la punta de la cola se aviva y adquiere un intenso color rojo.@NEWDESCRIPTION@Escupe un fuego tan caliente que funde las rocas. Causa incendios forestales sin querer.@NEWDESCRIPTION@Sus potentes alas le permiten volar a una altura de 1400 m. Escupe llamaradas que llegan a alcanzar temperaturas elevadísimas."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/6.svg",
+        "hp": 78,
+        "attack": 84,
+        "defense": 78,
+        "speed": 100,
+        "weight": 905,
+        "height": 17,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb25",
+        "cardId": "c-7-6",
+        "pokemonId": 7,
+        "name": "squirtle",
+        "rarity": "rare",
+        "releaseDate": "2024-06-06T16:07:10.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "water",
+        "description": [
+            "Se protege con su caparazón y luego contraataca lanzando agua a presión cuando tiene oportunidad.@NEWDESCRIPTION@Lanza agua a su presa desde el agua. Se esconde en su concha cuando se siente en peligro.@NEWDESCRIPTION@El caparazón de Squirtle no le sirve de protección únicamente. Su forma redondeada y las hendiduras que tiene le ayudan a deslizarse en el agua y le permiten nadar a gran velocidad.@NEWDESCRIPTION@El caparazón de Squirtle no le sirve de protección únicamente. Su forma redondeada y las hendiduras que tiene le ayudan a deslizarse en el agua y le permiten nadar a gran velocidad.@NEWDESCRIPTION@Escupe chorros de agua mientras flota para capturar a sus presas. Se esconde en su caparazón cuando se siente en peligro.@NEWDESCRIPTION@Escupe chorros de agua mientras flota para capturar a sus presas. Se esconde en su caparazón cuando se siente en peligro.@NEWDESCRIPTION@Cuando retrae su largo cuello en el caparazón, dispara agua a una presión increíble.@NEWDESCRIPTION@Cuando se siente en peligro, se esconde en su caparazón y escupe chorros de agua por la boca."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/7.svg",
+        "hp": 44,
+        "attack": 48,
+        "defense": 65,
+        "speed": 43,
+        "weight": 90,
+        "height": 5,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 4,
+        "n_encounters": 11,
+        "averageMaxChance": 100,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb26",
+        "cardId": "c-8-7",
+        "pokemonId": 8,
+        "name": "wartortle",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:07:11.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "water",
+        "description": [
+            "Si es golpeado, esconderá su cabeza. Aun así, su cola puede seguir golpeando.@NEWDESCRIPTION@Se dice que vive 10 000 años. Su peluda cola es un símbolo de longevidad.@NEWDESCRIPTION@Tiene una cola larga y cubierta de un pelo abundante y grueso que se torna más oscuro a medida que crece. Los arañazos que tiene en el caparazón dan fe de lo buen guerrero que es.@NEWDESCRIPTION@Tiene una cola larga y cubierta de un pelo abundante y grueso que se torna más oscuro a medida que crece. Los arañazos que tiene en el caparazón dan fe de lo buen guerrero que es.@NEWDESCRIPTION@Si alguien le golpea la cabeza, se protege escondiéndose en su caparazón, aunque parte de la cola queda al descubierto.@NEWDESCRIPTION@Si alguien le golpea la cabeza, se protege escondiéndose en su caparazón, aunque parte de la cola queda al descubierto.@NEWDESCRIPTION@Se lo considera un símbolo de longevidad. Los ejemplares más ancianos tienen musgo sobre el caparazón.@NEWDESCRIPTION@Utiliza hábilmente sus peludas orejas y la cola para mantener el equilibrio al nadar."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/8.svg",
+        "hp": 59,
+        "attack": 63,
+        "defense": 80,
+        "speed": 58,
+        "weight": 225,
+        "height": 10,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb27",
+        "cardId": "c-9-8",
+        "pokemonId": 9,
+        "name": "blastoise",
+        "rarity": "legendary",
+        "releaseDate": "2024-06-06T16:07:12.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "water",
+        "description": [
+            "Para acabar con su enemigo, lo aplasta con el peso de su cuerpo. En momentos de apuro, se esconde en el caparazón.@NEWDESCRIPTION@Es un Pokémon imponente. Tiene reactores de agua en el caparazón, que le sirven para atacar con fuerza.@NEWDESCRIPTION@Blastoise lanza chorros de agua con gran precisión por los tubos que le salen del caparazón que tiene en la espalda. Puede disparar chorros de agua con tanta puntería que no fallaría al tirar contra una lata pequeña a 50 m.@NEWDESCRIPTION@Blastoise lanza chorros de agua con gran precisión por los tubos que le salen del caparazón que tiene en la espalda. Puede disparar chorros de agua con tanta puntería que no fallaría al tirar contra una lata pequeña a 50 m.@NEWDESCRIPTION@Tras fijar el blanco, ataca disparando un chorro de agua a una presión mayor que la manguera de un bombero.@NEWDESCRIPTION@Tras fijar el blanco, ataca disparando un chorro de agua a una presión mayor que la manguera de un bombero.@NEWDESCRIPTION@Para acabar con su enemigo, lo aplasta con el peso de su cuerpo. En momentos de apuro, se esconde en el caparazón.@NEWDESCRIPTION@Dispara chorros de agua a través de los cañones de su caparazón, capaces de agujerear incluso el acero."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/9.svg",
+        "hp": 79,
+        "attack": 83,
+        "defense": 100,
+        "speed": 78,
+        "weight": 855,
+        "height": 16,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 0,
+        "n_encounters": 0,
+        "averageMaxChance": 0,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdb28",
+        "cardId": "c-10-9",
+        "pokemonId": 10,
+        "name": "caterpie",
+        "rarity": "rare",
+        "releaseDate": "2024-06-06T16:07:13.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "bug",
+        "description": [
+            "Para protegerse despide un hedor horrible de sus antenas, con el que repele a sus enemigos.@NEWDESCRIPTION@Sus patas tienen ventosas con las que se adhiere a cualquier sitio. Escala árboles buscando forraje.@NEWDESCRIPTION@Caterpie tiene un apetito voraz. Es capaz de devorar hojas que superen su tamaño en un abrir y cerrar de ojos. Atención a la antena que tiene: libera un hedor realmente fuerte.@NEWDESCRIPTION@Caterpie tiene un apetito voraz. Es capaz de devorar hojas que superen su tamaño en un abrir y cerrar de ojos. Atención a la antena que tiene: libera un hedor realmente fuerte.@NEWDESCRIPTION@A menudo resulta presa de Pokémon pájaro, frente a los que su única defensa es el hedor repulsivo que libera por su antena.@NEWDESCRIPTION@Se desarrolla rápidamente y es fácil de atrapar. Es el compañero ideal para Entrenadores menos experimentados.@NEWDESCRIPTION@Muestra un apetito voraz, debido quizás a sus ganas de acelerar su desarrollo. Puede llegar a devorar un centenar de hojas al día.@NEWDESCRIPTION@Su cuerpo es blando y carente de fuerza. Parece que la naturaleza lo hubiera destinado a servir de sustento a otros Pokémon.@NEWDESCRIPTION@Cuando le tocan la antena roja que tiene en la frente, se defiende desprendiendo un hedor nauseabundo.@NEWDESCRIPTION@Cuando le tocan la antena roja que tiene en la frente, se defiende desprendiendo un hedor nauseabundo.@NEWDESCRIPTION@Para protegerse, despide un hedor horrible por las antenas con el que repele a sus enemigos.@NEWDESCRIPTION@Sus cortas patas están recubiertas de ventosas que le permiten subir incansable por muros y cuestas."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/10.svg",
+        "hp": 45,
+        "attack": 30,
+        "defense": 35,
+        "speed": 45,
+        "weight": 29,
+        "height": 3,
+        "is_legendary": false,
+        "is_mythical": false,
+        "n_location_area": 34,
+        "n_encounters": 81,
+        "averageMaxChance": 56.074074074074076,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdbb5",
+        "cardId": "c-151-150",
+        "pokemonId": 151,
+        "name": "mew",
+        "rarity": "common",
+        "releaseDate": "2024-06-06T16:08:35.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "psychic",
+        "description": [
+            "Varios científicos lo consideran el antecesor de los Pokémon porque usa todo tipo de movimientos.@NEWDESCRIPTION@Dicen que su ADN contiene el código genético de todos los Pokémon, por lo que conoce cualquier técnica.@NEWDESCRIPTION@Dicen que Mew posee el mapa genético de todos los Pokémon. Puede hacerse invisible cuando quiere, así que pasa desapercibido cada vez que se le acerca alguien.@NEWDESCRIPTION@Dicen que Mew posee el mapa genético de todos los Pokémon. Puede hacerse invisible cuando quiere, así que pasa desapercibido cada vez que se le acerca alguien.@NEWDESCRIPTION@Si se observa a través de un microscopio, puede distinguirse cuán corto, fino y delicado es el pelaje de este Pokémon.@NEWDESCRIPTION@Si se observa a través de un microscopio, puede distinguirse cuán corto, fino y delicado es el pelaje de este Pokémon."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/151.svg",
+        "hp": 100,
+        "attack": 100,
+        "defense": 100,
+        "speed": 100,
+        "weight": 40,
+        "height": 4,
+        "is_legendary": false,
+        "is_mythical": true,
+        "n_location_area": 1,
+        "n_encounters": 1,
+        "averageMaxChance": 100,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "6661e0331e0b158d0f0cdbae",
+        "cardId": "c-144-143",
+        "pokemonId": 144,
+        "name": "articuno",
+        "rarity": "rare",
+        "releaseDate": "2024-06-06T16:08:31.000Z",
+        "availableQuantity": 100,
+        "cards": [],
+        "pokemonType": "ice",
+        "description": [
+            "Legendario Pokémon pájaro capaz de generar ventiscas congelando la humedad del aire.@NEWDESCRIPTION@Es un legendario pájaro Pokémon. Se aparece a la gente que se ha perdido en las heladas montañas.@NEWDESCRIPTION@Articuno es un Pokémon pájaro legendario que puede controlar el hielo. El batir de sus alas congela el aire. Dicen que consigue hacer que nieve cuando vuela.@NEWDESCRIPTION@Articuno es un Pokémon pájaro legendario que puede controlar el hielo. El batir de sus alas congela el aire. Dicen que consigue hacer que nieve cuando vuela.@NEWDESCRIPTION@Un Pokémon pájaro legendario. En invierno, crea nieve congelando la humedad del aire.@NEWDESCRIPTION@Un Pokémon pájaro legendario. En invierno, crea nieve congelando la humedad del aire.@NEWDESCRIPTION@Se dice que sus bellas alas azules se componen de hielo. Vuela en torno a las montañas nevadas con su larga cola al viento.@NEWDESCRIPTION@Posee el poder de controlar el hielo a su antojo. Se dice que este Pokémon habita en montañas de nieves perpetuas."
+        ],
+        "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/144.svg",
+        "hp": 90,
+        "attack": 85,
+        "defense": 100,
+        "speed": 85,
+        "weight": 554,
+        "height": 17,
+        "is_legendary": true,
+        "is_mythical": false,
+        "n_location_area": 3,
+        "n_encounters": 10,
+        "averageMaxChance": 95,
+        "gym": [
+            "none"
+        ],
+        "__v": 0
+    }
+]

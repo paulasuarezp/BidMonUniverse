@@ -1,0 +1,50 @@
+[
+    {
+        "_id": "66646db6a10d744749820f4c",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-1-0",
+        "userCard": "66646db6a10d744749820f4b",
+        "concept": [
+            "PurchaseByCardPack"
+        ],
+        "date": "2024-06-08T14:41:58.564Z",
+        "price": 20,
+        "cardId": "6661e0331e0b158d0f0cdb1f",
+        "cardPackId": "666333f6b54e9f1aec141fad",
+        "legibleCardPackId": "CP-1",
+        "__v": 0
+    },
+    {
+        "_id": "66646db6a10d744749820f50",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-2-1",
+        "userCard": "66646db6a10d744749820f4f",
+        "concept": [
+            "PurchaseByCardPack"
+        ],
+        "date": "2024-06-08T14:41:58.677Z",
+        "price": 20,
+        "cardId": "6661e0331e0b158d0f0cdb20",
+        "cardPackId": "666333f6b54e9f1aec141fad",
+        "legibleCardPackId": "CP-1",
+        "__v": 0
+    },
+    {
+        "_id": "66646db6a10d744749820f54",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-3-2",
+        "userCard": "66646db6a10d744749820f53",
+        "concept": [
+            "PurchaseByCardPack"
+        ],
+        "date": "2024-06-08T14:41:58.791Z",
+        "price": 20,
+        "cardId": "6661e0331e0b158d0f0cdb21",
+        "cardPackId": "666333f6b54e9f1aec141fad",
+        "legibleCardPackId": "CP-1",
+        "__v": 0
+    }
+]
