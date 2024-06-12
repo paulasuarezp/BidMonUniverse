@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Avatar, Stack, Button, Typography, ButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
+import { useMediaQuery } from '@mui/material';
 
 interface UserButtonProps extends ButtonProps {
     name: string;
@@ -35,6 +37,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
 
 
 export default function UserProfileButton({ name, imageUrl, ...rest }: UserButtonProps) {
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <StyledButton {...rest}>
             <Stack direction="row" alignItems="center" spacing={2}>
@@ -53,7 +59,7 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
                 >
                     {name.charAt(0).toUpperCase()}
                 </Avatar>
-                <Typography>{name}</Typography>
+                {!isMobile && <Typography>{name}</Typography>}
             </Stack>
         </StyledButton>
     );
