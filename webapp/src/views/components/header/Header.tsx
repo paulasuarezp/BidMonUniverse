@@ -103,25 +103,50 @@ export default function Header({ toggleTheme }: HeaderProps) {
     <>
       <StyledAppBar scrollbarWidth={scrollbarWidth}>
         <Toolbar>
-          <Grid container alignItems="center">
-            <Grid item xs={3} display="flex" justifyContent="flex-start">
-              <GeneralMenu
-                anchorGeneralMenu={anchorGeneralMenu}
-                handleGeneralMenu={handleGeneralMenu}
-                handleGeneralMenuClose={() => setAnchorGeneralMenu(null)}
-                toggleTheme={toggleTheme}
-              />
-            </Grid>
-            <Grid item xs={6} display="flex" justifyContent="center">
-              <LogoBox title="BidMon Universe" />
-            </Grid>
-            <Grid item xs={3} display="flex" justifyContent="flex-end">
-              <UserMenu
-                anchorElUser={anchorElUser}
-                handleUserMenu={handleUserMenu}
-                handleCloseUserMenu={handleCloseUserMenu}
-              />
-            </Grid>
+          <Grid container alignItems="center" justifyContent="space-between">
+            {isMobile ? (
+              <>
+                <Grid item xs={6} display="flex" alignItems="center">
+                  <Box display="flex" alignItems="center" gap={1}>
+                    <GeneralMenu
+                      anchorGeneralMenu={anchorGeneralMenu}
+                      handleGeneralMenu={handleGeneralMenu}
+                      handleGeneralMenuClose={() => setAnchorGeneralMenu(null)}
+                      toggleTheme={toggleTheme}
+                    />
+                    <LogoBox title="BidMon Universe" />
+                  </Box>
+                </Grid>
+                <Grid item xs={6} display="flex" justifyContent="flex-end">
+                  <UserMenu
+                    anchorElUser={anchorElUser}
+                    handleUserMenu={handleUserMenu}
+                    handleCloseUserMenu={handleCloseUserMenu}
+                  />
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Grid item xs={3}>
+                  <GeneralMenu
+                    anchorGeneralMenu={anchorGeneralMenu}
+                    handleGeneralMenu={handleGeneralMenu}
+                    handleGeneralMenuClose={() => setAnchorGeneralMenu(null)}
+                    toggleTheme={toggleTheme}
+                  />
+                </Grid>
+                <Grid item xs={6} display="flex" justifyContent="center">
+                  <LogoBox title="BidMon Universe" />
+                </Grid>
+                <Grid item xs={3} display="flex" justifyContent="flex-end">
+                  <UserMenu
+                    anchorElUser={anchorElUser}
+                    handleUserMenu={handleUserMenu}
+                    handleCloseUserMenu={handleCloseUserMenu}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
         </Toolbar>
       </StyledAppBar>
