@@ -9,6 +9,7 @@ import { RootState } from '../../../../redux/store';
 import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
 import { disconnectSocket } from '../../../../socket/socketService';
 import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
+import CoinsButton from '../../buttons/coins/CoinsButton';
 
 
 //#region PROPS
@@ -53,10 +54,13 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   return (
     <>
       {isAuthenticated ? (
-        <UserProfileButton
-          name={sessionUser.username}
-          imageUrl={sessionUser.profileImg}
-          onClick={handleUserMenu} />
+        <>
+          <CoinsButton balance={sessionUser.balance} />
+          <UserProfileButton
+            name={sessionUser.username}
+            imageUrl={sessionUser.profileImg}
+            onClick={handleUserMenu} />
+        </>
       ) : (
         <ButtonLogin onClick={handleLoginClick} />
       )}
