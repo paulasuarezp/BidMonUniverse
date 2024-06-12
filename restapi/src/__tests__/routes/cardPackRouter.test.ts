@@ -1,14 +1,12 @@
-// tests/cardRouter.test.ts
+// tests/cardPackRouter.test.ts
 import request from 'supertest';
-import { api, dropEntireDatabase, hashPassword } from '../helpers';
+import { api, hashPassword, dropEntireDatabase } from '../helpers';
 import { server } from '../../../server';
 import mongoose from 'mongoose';
 import User from '../../models/user';
 import initialUsers from '../mockData/users.json';
-import initialCards from '../mockData/cards.json';
-import initialDecks from '../mockData/decks.json';
-import Card from '../../models/card';
-import Deck from '../../models/deck';
+import initialCardPacks from '../mockData/cardPacks.json';
+import CardPack from '../../models/cardpack';
 
 
 let token: string;
@@ -24,14 +22,9 @@ beforeEach(async () => {
         await newUser.save();
     }
 
-    for (const card of initialCards) {
-        const newCard = new Card(card);
+    for (const pack of initialCardPacks) {
+        const newCard = new CardPack(pack);
         await newCard.save();
-    }
-
-    for (const deck of initialDecks) {
-        const newDeck = new Deck(deck);
-        await newDeck.save();
     }
 
     const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
@@ -44,65 +37,69 @@ afterAll(async () => {
 });
 
 
-describe('DECK ROUTES', () => {
-    describe('GET /decks', () => {
-        it('should get all decks', async () => {
+describe('CARDPACK ROUTES', () => {
+    describe('GET /cardpacks', () => {
+        it('should get all card packs availables', async () => {
             const response = await api
-                .get('/decks')
+                .get('/cardpacks')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
-            expect(response.body).toHaveLength(4);
+            console.log('Response body:', response.body);
+
+            let initialCardPacksFiltered = initialCardPacks.filter(pack => pack.available);
+
+            expect(response.body).toHaveLength(initialCardPacksFiltered.length);
         });
 
         it('should handle errors', async () => {
             jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
 
             const response = await api
-                .get('/decks')
+                .get('/cardpacks')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(500);
-            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener los mazos de cartas.' });
+            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener los paquetes de cartas.' });
         });
     });
 
-    describe('GET /decks/:deckid', () => {
-        it('should get a deck by deckId', async () => {
+    describe('GET /cardpacks/:cardPackId', () => {
+        it('should get a card pack by cardPackid', async () => {
             const response = await api
-                .get('/decks/d-4')
+                .get('/cardpacks/CP-1')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
-
-            expect(response.body).toEqual(expect.objectContaining({
-                deckId: 'd-4',
-                name: 'Deck Legendary',
-                type: 'legendary',
-                publicationDate: '2024-06-06T18:33:25.000Z'
-            }));
-
+            expect(response.body).toEqual(expect.objectContaining({ name: 'Starter Pack' }));
         });
 
-        it('should return 404 if deck does not exist', async () => {
+        it('should return 404 if card pack not found', async () => {
             const response = await api
-                .get('/decks/999')
+                .get('/cardpacks/CP-6')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
-            expect(response.body).toEqual({ message: 'Mazo de cartas no encontrado.' });
+            expect(response.body).toEqual({ message: 'Paquete de cartas no encontrado.' });
+        });
+
+        it('shoul return 400 if cardPackId is invalid', async () => {
+            const response = await api
+                .get('/cardpacks/CP-tolaaaaargeeeee')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(400);
         });
 
         it('should handle errors', async () => {
             jest.spyOn(mongoose.Model, 'findOne').mockRejectedValueOnce(new Error('Database error'));
 
             const response = await api
-                .get('/decks/1')
+                .get('/cardpacks/CP-1')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(500);
-            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener el mazo de cartas.' });
+            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener el paquete de cartas.' });
         });
     });
 });
-

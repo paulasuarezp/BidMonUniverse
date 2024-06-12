@@ -1,6 +1,6 @@
 const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
-import  auth  from '../middlewares/authMiddleware';
+import auth, { verifyAdmin } from '../middlewares/authMiddleware';
 
 const transactionRouter: Router = express.Router();
 
@@ -21,7 +21,7 @@ import {
  * @returns todas las transacciones, puede ser un array vacío
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
-transactionRouter.get('/', getTransactions);
+transactionRouter.get('/', verifyAdmin, getTransactions);
 
 /**
  * Ruta para obtener una transacción por su ID

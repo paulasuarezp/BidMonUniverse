@@ -1,6 +1,6 @@
 // tests/cardRouter.test.ts
 import request from 'supertest';
-import { api, getToken, hashPassword } from '../helpers';
+import { api, hashPassword, dropEntireDatabase } from '../helpers';
 import { server } from '../../../server';
 import mongoose from 'mongoose';
 import User from '../../models/user';
@@ -12,8 +12,7 @@ import Card from '../../models/card';
 let token: string;
 
 beforeEach(async () => {
-    await User.deleteMany({});
-    await Card.deleteMany({});
+    await dropEntireDatabase();
 
     let hashedPassword = hashPassword('Password123-');
 
@@ -29,20 +28,17 @@ beforeEach(async () => {
     }
 
     const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
-    token = getToken(response.body.username, response.body.role);
+    token = response.body.token;
 });
 
 afterAll(async () => {
-    console.log('Deleting all data and closing connection...');
-    await User.deleteMany({});
-    await Card.deleteMany({});
     await mongoose.connection.close();
     await server.close();
 });
 
 
-describe('CardController', () => {
-    describe('getCards', () => {
+describe('CARD ROUTES', () => {
+    describe('GET /cards', () => {
         it('should get all cards', async () => {
             const response = await api
                 .get('/cards')
@@ -64,7 +60,7 @@ describe('CardController', () => {
         });
     });
 
-    describe('getCard', () => {
+    describe('GET /cards/:cardId', () => {
         it('should get a card by ID', async () => {
             const response = await api
                 .get('/cards/c-1-0')

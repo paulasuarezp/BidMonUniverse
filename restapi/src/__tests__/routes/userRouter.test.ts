@@ -1,6 +1,6 @@
 // tests/userRouter.test.ts
 import request from 'supertest';
-import { api, getToken, hashPassword } from '../helpers';
+import { api, hashPassword, dropEntireDatabase } from '../helpers';
 import { server } from '../../../server';
 import mongoose from 'mongoose';
 import User from '../../models/user';
@@ -10,7 +10,8 @@ import initialUsers from '../mockData/users.json';
 let token: string;
 
 beforeEach(async () => {
-  await User.deleteMany({});
+
+  await dropEntireDatabase();
 
   let hashedPassword = hashPassword('Password123-');
 
@@ -21,14 +22,14 @@ beforeEach(async () => {
   }
 
   const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
-  token = getToken(response.body.username, response.body.role);
+  token = response.body.token;
 });
 
 afterAll(async () => {
-  await User.deleteMany({});
   await mongoose.connection.close();
   await server.close();
 });
+
 describe('User Routes', () => {
   describe('POST /login', () => {
     it('should login an existing user', async () => {
@@ -81,99 +82,97 @@ describe('User Routes', () => {
     });
   });
 
-  describe('User Routes', () => {
-    describe('POST /signup', () => {
-      it('should create a new user', async () => {
-        const response = await api
-          .post('/users/signup')
-          .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
+  describe('POST /signup', () => {
+    it('should create a new user', async () => {
+      const response = await api
+        .post('/users/signup')
+        .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
 
-        expect(response.status).toBe(201);
-        expect(response.body).toEqual(expect.objectContaining({
-          message: 'Usuario creado con éxito.',
-          user: { username: 'newuser', role: 'standard' }
-        }));
-      });
-
-      it('should return 400 if username already exists', async () => {
-        const response = await api
-          .post('/users/signup')
-          .send({ username: 'test', password: 'Password123-', birthday: '2000-01-01' });
-
-        expect(response.status).toBe(400);
-        expect(response.body).toEqual(expect.objectContaining({
-          message: 'El nombre de usuario ya existe. Por favor, elija otro.',
-          auth: false
-        }));
-      });
-
-      it('should return 400 if username or password is missing', async () => {
-        const response = await api
-          .post('/users/signup')
-          .send({ username: '', password: '' });
-
-        expect(response.status).toBe(400);
-        expect(response.text).toBe('Debe de introducir un nombre de usuario y una contraseña.');
-      });
-
-      it('should handle errors gracefully', async () => {
-        jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
-
-        const response = await api
-          .post('/users/signup')
-          .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
-
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual(expect.objectContaining({
-          message: 'Se ha producido un error al crear el usuario. Por favor, inténtelo de nuevo.',
-          auth: false
-        }));
-      });
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual(expect.objectContaining({
+        message: 'Usuario creado con éxito.',
+        user: { username: 'newuser', role: 'standard' }
+      }));
     });
 
-    describe('GET /:username', () => {
-      it('should get user details with valid token', async () => {
-        const response = await api
-          .get('/users/test')
-          .set('Authorization', `Bearer ${token}`);
+    it('should return 400 if username already exists', async () => {
+      const response = await api
+        .post('/users/signup')
+        .send({ username: 'test', password: 'Password123-', birthday: '2000-01-01' });
 
-        expect(response.status).toBe(200);
-        expect(response.body).toEqual(expect.objectContaining({
-          user: expect.objectContaining({
-            username: 'test',
-            role: 'standard',
-            balance: 100,
-            birthday: '2000-10-24',
-            profileImg: 'avatar.png'
-          })
-        }));
-      });
+      expect(response.status).toBe(400);
+      expect(response.body).toEqual(expect.objectContaining({
+        message: 'El nombre de usuario ya existe. Por favor, elija otro.',
+        auth: false
+      }));
+    });
 
-      it('should return 401 if no token is provided', async () => {
-        const response = await api.get('/users/test');
+    it('should return 400 if username or password is missing', async () => {
+      const response = await api
+        .post('/users/signup')
+        .send({ username: '', password: '' });
 
-        expect(response.status).toBe(401);
-      });
+      expect(response.status).toBe(400);
+      expect(response.text).toBe('Debe de introducir un nombre de usuario y una contraseña.');
+    });
 
-      it('should return 404 if user is not found', async () => {
-        const response = await api
-          .get('/users/nonexistentuser')
-          .set('Authorization', `Bearer ${token}`);
+    it('should handle errors gracefully', async () => {
+      jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
 
-        expect(response.status).toBe(404);
-        expect(response.body).toEqual({ message: 'Usuario no encontrado.' });
-      });
+      const response = await api
+        .post('/users/signup')
+        .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
 
-      it('should handle errors gracefully', async () => {
-        jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual(expect.objectContaining({
+        message: 'Se ha producido un error al crear el usuario. Por favor, inténtelo de nuevo.',
+        auth: false
+      }));
+    });
+  });
 
-        const response = await api
-          .get('/users/testuser')
-          .set('Authorization', `Bearer ${token}`);
+  describe('GET /:username', () => {
+    it('should get user details with valid token', async () => {
+      const response = await api
+        .get('/users/test')
+        .set('Authorization', `Bearer ${token}`);
 
-        expect(response.status).toBe(500);
-        expect(response.body).toEqual({ message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.' });
-      });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(expect.objectContaining({
+        user: expect.objectContaining({
+          username: 'test',
+          role: 'standard',
+          balance: 100,
+          birthday: '2000-10-24',
+          profileImg: 'avatar.png'
+        })
+      }));
+    });
+
+    it('should return 401 if no token is provided', async () => {
+      const response = await api.get('/users/test');
+
+      expect(response.status).toBe(401);
+    });
+
+    it('should return 404 if user is not found', async () => {
+      const response = await api
+        .get('/users/nonexistentuser')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ message: 'Usuario no encontrado.' });
+    });
+
+    it('should handle errors gracefully', async () => {
+      jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
+
+      const response = await api
+        .get('/users/testuser')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.' });
     });
   });
 });
