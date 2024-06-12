@@ -45,7 +45,6 @@ describe('CARDPACK ROUTES', () => {
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
-            console.log('Response body:', response.body);
 
             let initialCardPacksFiltered = initialCardPacks.filter(pack => pack.available);
 

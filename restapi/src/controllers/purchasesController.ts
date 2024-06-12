@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import CardPack, { ICardPack }  from "../models/cardpack";
+import CardPack, { ICardPack } from "../models/cardpack";
 import { getDeckByDeckId } from "./deckController";
 import Card, { ICard } from "../models/card";
-import  User from "../models/user";
+import User from "../models/user";
 import Transaction from "../models/transaction";
 import UserCard from "../models/userCard";
 import mongoose from "mongoose";
@@ -69,14 +69,14 @@ const purchaseCardPack = async (req: Request, res: Response) => {
         }
 
         // Array para almacenar todas las cartas generadas
-        let allGeneratedCards: ICard[] = []; 
+        let allGeneratedCards: ICard[] = [];
 
         // Generar cartas para cada mazo definido en el paquete de cartas
         for (const [index, deckId] of [cardPack.deckId1, cardPack.deckId2, cardPack.deckId3].entries()) {
             const quantityKey = `quantity${index + 1}` as keyof ICardPack;
             const quantity = cardPack[quantityKey];
             if (deckId && quantity) {
-                console.log("Generar cartas del mazo " + deckId + " con cantidad " + quantity)
+                // console.log("Generar cartas del mazo " + deckId + " con cantidad " + quantity)
                 const cards = await generateCards(deckId, quantity, session);
                 allGeneratedCards = allGeneratedCards.concat(cards);
             }
@@ -138,11 +138,11 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
         await session.commitTransaction();
 
-        res.status(200).json({ message: "Las cartas se han comprado correctamente." , cards: allGeneratedCards});
+        res.status(200).json({ message: "Las cartas se han comprado correctamente.", cards: allGeneratedCards });
 
     } catch (error: any) {
 
-        console.error("Se ha producido un error al comprar el paquete de cartas:", error);
+        // console.error("Se ha producido un error al comprar el paquete de cartas:", error);
         await session.abortTransaction();
         res.status(500).json({ message: error.message || "Se ha producido un error al comprar el paquete de cartas." });
 
@@ -170,7 +170,7 @@ async function generateCards(deckId: string, quantity: number, session: any): Pr
 
     while (cards.length < quantity && cardsIds.length > 0) {
         const randomIndex = Math.floor(Math.random() * cardsIds.length);
-        const cardId = cardsIds.splice(randomIndex, 1)[0]; 
+        const cardId = cardsIds.splice(randomIndex, 1)[0];
 
         let generatedCardAux = await Card.findById(cardId).session(session);
         let generatedCard = generatedCardAux as unknown as ICard | null;
@@ -188,7 +188,7 @@ async function generateCards(deckId: string, quantity: number, session: any): Pr
                 cards.push(generatedCard);
             }
         }
-        
+
     }
 
     return cards;
@@ -196,5 +196,5 @@ async function generateCards(deckId: string, quantity: number, session: any): Pr
 
 
 export {
-    purchaseCardPack   
+    purchaseCardPack
 };

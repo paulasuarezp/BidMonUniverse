@@ -18,7 +18,7 @@
     "include": [
         "src/**/*",  // Incluye todos los archivos dentro de la carpeta 'src'.
         "server.ts",  // Incluye el archivo 'server.ts'.
-        "app.ts",     // Incluye el archivo 'app.ts'.
+        "app.ts",     // Incluye el archivo 'app.ts'
         "src/**/*.test.ts",
         "src/**/*.json"
     ],
