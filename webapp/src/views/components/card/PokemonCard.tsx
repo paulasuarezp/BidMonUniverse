@@ -63,7 +63,7 @@ function getBackgroundImage(pokemonType: string) {
   //return `/cardsBackgrounds/${pokemonType}.png`;
   switch (pokemonType) {
     case 'bug':
-      return '/cardsBackgrounds/bug.jpeg';
+      return '/cardsBackgrounds/bug.webp';
     case 'dark':
       return '/cardsBackgrounds/dark.avif';
     case 'dragon':
@@ -104,6 +104,10 @@ function getBackgroundImage(pokemonType: string) {
 
 }
 
+const getFloralSVG = (color) => {
+  return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23${color}'%3E...%3C/svg%3E")`;
+};
+
 
 
 export default function PokemonCard({ name, category, pokemonType, pokemonImage }: PokemonCardProps) {
@@ -112,46 +116,37 @@ export default function PokemonCard({ name, category, pokemonType, pokemonImage 
 
   return (
     <Card sx={{
-      width: {
-        xs: 150,
-        sm: 150,
-        md: 180,
-        lg: 200,
-        xl: 250
-      },
-      height: {
-        xs: 200,
-        sm: 200,
-        md: 220,
-        lg: 240,
-        xl: 300
-      },
+      width: { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
+      height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
       borderRadius: '10px',
       background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
-      border: `10px solid ${getCardColor(category)}`,
+      border: `10px solid ${borderColor}`,
       position: 'relative',
       color: 'white',
       overflow: 'visible',
-    }}>
-      <Box sx={{
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+      '&::before': {
+        content: '""',
         position: 'absolute',
         top: -10,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '90px',
-        height: '30px',
-        background: `linear-gradient(to bottom, ${getCardColor(category)} 0%, rgba(255,255,255,0) 100%)`,
-        borderRadius: '10px',
-        border: `5px solid ${getCardColor(category)}`,
-      }} />
-
-
-      <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
+        left: 0,
+        right: 0,
+        height: '40px',
+        background: `radial-gradient(circle at 20px 20px, ${borderColor}, transparent 30%)`,
+        backgroundSize: '40px 40px',
+        backgroundRepeat: 'repeat-x'
+      }
+    }}>
+      <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 2 }}>
         <Chip label={getCategoryName(category)}
           sx={{
             ...getCategoryStyles(category),
             color: 'white',
-          }} />
+            fontSize: '0.75rem',
+            fontWeight: 'bold',
+            textShadow: '1px 1px 2px black',
+          }}
+        />
       </Box>
       <CardMedia
         component="img"
@@ -177,17 +172,24 @@ export default function PokemonCard({ name, category, pokemonType, pokemonImage 
           paddingBottom: 0,
         },
       }}>
-        <Chip label={name} sx={{
-          position: 'absolute',
-          bottom: -7,
-          left: '50%',
-          transform: 'translateX(-50%)',
-          bgcolor: `${getCardColor(category)}`,
-          color: 'white',
-          fontSize: '1rem',
-          fontWeight: 'bold',
-        }} />
+        <Box sx={
+          {
+            position: 'absolute',
+            bottom: -7,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 1
+          }
+        }>
+          <Chip label={name} sx={{
+            bgcolor: `${borderColor}`,
+            color: 'white',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            textShadow: '1px 1px 2px black',
+          }} />
+        </Box>
       </CardContent>
     </Card>
   );
-};
+}
