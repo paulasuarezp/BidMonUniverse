@@ -2,11 +2,12 @@ import Container from "../components/container/Container";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import NavigationMenu from "../components/menus/principalNav/Navigation";
-import { Grid, Typography, useTheme } from "@mui/material";
+import { Grid, Typography, useTheme, IconButton, Stack } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
 import PokemonCard from "../components/card/PokemonCard";
 import DataTable from "../components/table/Table";
 import ResponsivePokemonGrid from "../components/container/gridContainer/ResponsivePokemonGrid";
+import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
 
 //#region COMPONENTE LOGIN
 export default function Login() {
@@ -15,6 +16,8 @@ export default function Login() {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  let username: string = sessionUser.username;
 
 
   return (
@@ -31,17 +34,30 @@ export default function Login() {
 
 
       <div style={{ marginBottom: '2em' }}>
-        <Typography variant="h4" align="left">
-          Mi colección
-          <ResponsivePokemonGrid />
-        </Typography>
+        <Stack spacing={0.5} direction="row" >
+
+          <Typography variant="h4" align="left">
+            Mi colección
+          </Typography>
+          <IconButton aria-label="delete" color="secondary">
+            <ArrowCircleRightTwoToneIcon fontSize="large" />
+          </IconButton>
+        </Stack>
+
+        <ResponsivePokemonGrid username={username} />
       </div>
 
       <div>
-        <Typography variant="h4" align="left">
-          Mis pujas
-          <DataTable />
-        </Typography>
+        <Stack spacing={0.5} direction="row" >
+
+          <Typography variant="h4" align="left">
+            Mis pujas
+          </Typography>
+          <IconButton aria-label="delete" color="secondary">
+            <ArrowCircleRightTwoToneIcon fontSize="large" />
+          </IconButton>
+        </Stack>
+        <DataTable />
       </div>
 
     </Container>

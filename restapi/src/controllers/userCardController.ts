@@ -25,6 +25,21 @@ const getUserCards = async (req: Request, res: Response) => {
     }
 };
 
+const getCardsOfUser = async (req: Request, res: Response) => {
+    try {
+        let username = req.params.username.toLowerCase();
+        const userCards = await UserCard
+            .find({ username: username });
+
+        const cards = await Card.find({ cardId: { $in: userCards.map((userCard) => userCard.legibleCardId) } });
+
+        res.status(200).json(cards);
+    }
+    catch (error: any) {
+        console.error(error);
+        res.status(500).json({ message: 'Se ha producido un error al obtener las cartas del usuario.' });
+    }
+}
 /**
  * Método para obtener una carta de un usuario dado su username y el id de la carta.
  * @param req request con el username del usuario y el id de la carta
@@ -64,7 +79,7 @@ const addNewUserCard = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();  // Iniciar una sesión de transacción
     session.startTransaction();  // Iniciar la transacción
     try {
-        let {username, cardId} = req.body;
+        let { username, cardId } = req.body;
         username = username.toLowerCase();
 
         // Verificar que el usuario exista
@@ -82,7 +97,7 @@ const addNewUserCard = async (req: Request, res: Response) => {
         // Crear una nueva carta de usuario
         const userCard = new UserCard({
             user: user.id,
-            card:  card.id,
+            card: card.id,
             username: username,
             legibleCardId: cardId,
             status: CardStatus.NotForSale,
@@ -103,10 +118,10 @@ const addNewUserCard = async (req: Request, res: Response) => {
             legibleCardPackId: req.body.legibleCardPackId
         });
 
-         // Guardar la transacción dentro de la sesión de transacción
-         await newTransaction.save({ session: session });
+        // Guardar la transacción dentro de la sesión de transacción
+        await newTransaction.save({ session: session });
 
-         userCard.transactionHistory.push(newTransaction._id);
+        userCard.transactionHistory.push(newTransaction._id);
 
         // Guardar la carta de usuario dentro de la misma sesión de transacción
         await userCard.save({ session: session });
@@ -128,5 +143,6 @@ const addNewUserCard = async (req: Request, res: Response) => {
 export {
     getUserCards,
     getUserCard,
-    addNewUserCard
+    addNewUserCard,
+    getCardsOfUser
 };
