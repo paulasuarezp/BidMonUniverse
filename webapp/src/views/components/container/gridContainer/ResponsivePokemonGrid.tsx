@@ -50,7 +50,7 @@ const ResponsivePokemonGrid = ({ username }: ResponsivePokemonGridProps) => {
                     <PokemonCard
                         name={cards[index].name}
                         category={cards[index].rarity}
-                        backgroundImage="/selva.avif"
+                        pokemonType={cards[index].pokemonType}
                         pokemonImage={cards[index].image}
                     />
                 </Grid>

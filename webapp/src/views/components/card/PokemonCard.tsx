@@ -3,7 +3,7 @@ import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 interface PokemonCardProps {
   name: string;
   category: string;
-  backgroundImage: string;
+  pokemonType: string;
   pokemonImage: string;
 }
 
@@ -59,7 +59,57 @@ function getCardColor(category: PokemonCardProps['category']) {
 }
 
 
-export default function PokemonCard({ name, category, backgroundImage, pokemonImage }: PokemonCardProps) {
+function getBackgroundImage(pokemonType: string) {
+  //return `/cardsBackgrounds/${pokemonType}.png`;
+  switch (pokemonType) {
+    case 'bug':
+      return '/cardsBackgrounds/bug.jpeg';
+    case 'dark':
+      return '/cardsBackgrounds/dark.avif';
+    case 'dragon':
+      return '/cardsBackgrounds/dragon.avif';
+    case 'fairy':
+      return '/cardsBackgrounds/fairy.jpeg';
+    case 'fighting':
+      return '/cardsBackgrounds/fighting.jpeg';
+    case 'flying':
+      return '/cardsBackgrounds/flying.avif';
+    case 'fire':
+      return '/cardsBackgrounds/fire.jpg';
+    case 'ghost':
+      return '/cardsBackgrounds/ghost.avif';
+    case 'grass':
+      return '/cardsBackgrounds/grass.webp';
+    case 'ground':
+      return '/cardsBackgrounds/ground.jpeg';
+    case 'ice':
+      return '/cardsBackgrounds/ice.avif';
+    case 'poison':
+      return '/cardsBackgrounds/poison.webp';
+    case 'rock':
+      return '/cardsBackgrounds/rocks.webp';
+    case 'water':
+      return '/cardsBackgrounds/water.jpeg';
+    case 'electric':
+      return '/cardsBackgrounds/electric.jpeg';
+    case 'psychic':
+      return '/cardsBackgrounds/psychic.jpeg';
+    case 'steel':
+      return '/cardsBackgrounds/steel.jpeg';
+    default:
+
+      return '/cardsBackgrounds/normal.webp';
+
+  }
+
+}
+
+
+
+export default function PokemonCard({ name, category, pokemonType, pokemonImage }: PokemonCardProps) {
+  const borderColor = getCardColor(category);
+  const backgroundImage = getBackgroundImage(pokemonType);
+
   return (
     <Card sx={{
       width: {
@@ -89,11 +139,13 @@ export default function PokemonCard({ name, category, backgroundImage, pokemonIm
         left: '50%',
         transform: 'translateX(-50%)',
         width: '90px',
-        height: '80px',
-        backgroundImage: `url(/borde.png)`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
+        height: '30px',
+        background: `linear-gradient(to bottom, ${getCardColor(category)} 0%, rgba(255,255,255,0) 100%)`,
+        borderRadius: '10px',
+        border: `5px solid ${getCardColor(category)}`,
       }} />
+
+
       <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
         <Chip label={getCategoryName(category)}
           sx={{
