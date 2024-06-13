@@ -2,25 +2,59 @@ import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 
 interface PokemonCardProps {
   name: string;
-  category: 'Common' | 'Rare' | 'Ultra Rare' | 'Legendary' | 'Mythical';
+  category: string;
   backgroundImage: string;
   pokemonImage: string;
 }
 
 function getCategoryStyles(category: PokemonCardProps['category']) {
   switch (category) {
-    case 'Common':
-      return { backgroundColor: 'grey' };
-    case 'Rare':
-      return { backgroundColor: 'blue' };
-    case 'Ultra Rare':
-      return { backgroundColor: 'purple' };
-    case 'Legendary':
-      return { backgroundColor: 'gold' };
-    case 'Mythical':
-      return { backgroundColor: 'red' };
+    case 'common':
+      return { backgroundColor: 'rgba(119,136,153,0.5)' };
+    case 'rare':
+      return { backgroundColor: 'rgba(65,105,225,0.5)' };
+    case 'ultrarare':
+      return { backgroundColor: 'rgba(255,215,0,0.5)' };
+    case 'legendary':
+      return { backgroundColor: 'rgba(138,43,226,0.5)' };
+    case 'mythical':
+      return { backgroundColor: 'rgba(220,20,60,0.5)' };
     default:
       return {};
+  }
+}
+
+function getCategoryName(category: PokemonCardProps['category']) {
+  switch (category) {
+    case 'common':
+      return 'Común';
+    case 'rare':
+      return 'Rara';
+    case 'ultrarare':
+      return 'Ultra rara';
+    case 'legendary':
+      return 'Legendaria';
+    case 'mythical':
+      return 'Mítica';
+    default:
+      return '';
+  }
+}
+
+function getCardColor(category: PokemonCardProps['category']) {
+  switch (category) {
+    case 'common':
+      return 'rgba(119,136,153,1)';
+    case 'rare':
+      return 'rgba(65,105,225,1)';
+    case 'ultrarare':
+      return 'rgba(255,215,0,1)';
+    case 'legendary':
+      return 'rgba(138,43,226,1)';
+    case 'mythical':
+      return 'rgba(220,20,60,1)';
+    default:
+      return '';
   }
 }
 
@@ -28,10 +62,23 @@ function getCategoryStyles(category: PokemonCardProps['category']) {
 export default function PokemonCard({ name, category, backgroundImage, pokemonImage }: PokemonCardProps) {
   return (
     <Card sx={{
-      maxWidth: 200,
+      width: {
+        xs: 150,
+        sm: 150,
+        md: 180,
+        lg: 200,
+        xl: 250
+      },
+      height: {
+        xs: 200,
+        sm: 200,
+        md: 220,
+        lg: 240,
+        xl: 300
+      },
       borderRadius: '10px',
-      background: `url(${backgroundImage}) center / cover no-repeat, #000`,
-      border: '10px solid #000',
+      background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
+      border: `10px solid ${getCardColor(category)}`,
       position: 'relative',
       color: 'white',
       overflow: 'visible',
@@ -48,7 +95,7 @@ export default function PokemonCard({ name, category, backgroundImage, pokemonIm
         backgroundRepeat: 'no-repeat',
       }} />
       <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 1 }}>
-        <Chip label={category}
+        <Chip label={getCategoryName(category)}
           sx={{
             ...getCategoryStyles(category),
             color: 'white',
@@ -83,7 +130,7 @@ export default function PokemonCard({ name, category, backgroundImage, pokemonIm
           bottom: -7,
           left: '50%',
           transform: 'translateX(-50%)',
-          bgcolor: 'black',
+          bgcolor: `${getCardColor(category)}`,
           color: 'white',
           fontSize: '1rem',
           fontWeight: 'bold',
