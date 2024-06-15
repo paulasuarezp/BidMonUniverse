@@ -91,6 +91,7 @@ export enum CardStatus {
 
 // Card
 export interface Card {
+    _id: string;
     cardId: string;
     pokemonId: number;
     name: string;

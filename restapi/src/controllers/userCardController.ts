@@ -55,11 +55,14 @@ const getUserCard = async (req: Request, res: Response) => {
 
         const userCard = await UserCard.findOne({ username: username, legibleCardId: cardId });
 
-        if (!userCard) {
+        const card = await Card.findOne({ cardId: cardId });
+
+        if (!userCard || !card) {
             return res.status(404).json({ message: 'Carta no encontrada.' });
         }
 
-        res.status(200).json(userCard);
+
+        res.status(200).json({ userCard, card });
     }
     catch (error: any) {
         console.error(error);

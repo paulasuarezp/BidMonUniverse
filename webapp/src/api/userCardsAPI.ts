@@ -58,3 +58,31 @@ export const getCardsOfUser = async (username: string) => {
         });
 };
 
+export const getUserCard = async (username: string, cardId: string) => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return { error: 'No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión' };
+    }
+
+    const url = `${apiEndPointBase}/${username.toLowerCase()}/${cardId}`
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                return { error: 'No se ha podido obtener la carta, inténtelo de nuevo más tarde' };
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Ha ocurrido un error al obtener la carta:', error.message);
+            return { error: 'No se ha podido obtener la carta, inténtelo de nuevo más tarde' };
+        });
+}
+
