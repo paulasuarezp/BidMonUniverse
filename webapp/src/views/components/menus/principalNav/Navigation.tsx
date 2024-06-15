@@ -4,17 +4,31 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function NavigationMenu() {
-    const [value, setValue] = React.useState('inicio');
+    const [value, setValue] = React.useState('logued');
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
+        if (newValue === 'logued') {
+            navigate('/logued');
+        }
+        if (newValue === 'album') {
+            navigate('/album');
+        }
     };
 
     const theme = useTheme();
 
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+    React.useEffect(() => {
+        const path = location.pathname.replace('/', '');
+        setValue(path === '' ? 'logued' : path);
+    }, [location.pathname]);
 
     return (
         <Box sx={{ width: '100%' }}>
@@ -25,7 +39,7 @@ export default function NavigationMenu() {
                 indicatorColor="secondary"
                 aria-label="secondary tabs example"
             >
-                <Tab value="inicio" label="Inicio" />
+                <Tab value="logued" label="Inicio" />
                 <Tab value="album" label="Mi colección" />
                 <Tab value="tienda" label="Tienda" />
                 {!isMobile && <Tab value="subastas" label="Subastas" />}

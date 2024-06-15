@@ -1,0 +1,43 @@
+/* cardPack.css */
+.card-sobre {
+    width: 200px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-family: Arial, sans-serif;
+    margin: 10px;
+    text-transform: capitalize;
+}
+
+.super-basico-bg {
+    background: linear-gradient(135deg, #e0e0e0, #f0f0f0);
+    color: #333;
+}
+
+.basico-bg {
+    background: linear-gradient(135deg, #cfcfcf, #e0e0e0);
+    color: #333;
+}
+
+.normal-bg {
+    background: linear-gradient(135deg, #bfbfbf, #d0d0d0);
+    color: #333;
+}
+
+.vip-bg {
+    background: linear-gradient(135deg, #afafaf, #c0c0c0);
+    color: #333;
+}
+
+.premium-bg {
+    background: linear-gradient(135deg, #9f9f9f, #b0b0b0);
+    color: #333;
+}
+
+.default-bg {
+    background: linear-gradient(135deg, #e0e0e0, #f0f0f0);
+    color: #333;
+}
