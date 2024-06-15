@@ -23,6 +23,24 @@ function getCategoryStyles(rarity: CardRarity) {
   }
 }
 
+function getCardGradient(rarity: CardRarity) {
+  if (!rarity) return '';
+  switch (rarity) {
+    case CardRarity.Common:
+      return 'linear-gradient(to top, #708090, #E0FFFF)'; // SlateGray to LightCyan
+    case CardRarity.Rare:
+      return 'linear-gradient(to top, #4169E1, #87CEFA)'; // RoyalBlue to LightSkyBlue
+    case CardRarity.UltraRare:
+      return 'linear-gradient(to top, #FFD700, #FFFACD)'; // Gold to LemonChiffon
+    case CardRarity.Legendary:
+      return 'linear-gradient(to top, #8A2BE2, #DDA0DD)'; // BlueViolet to Plum
+    case CardRarity.Mythical:
+      return 'linear-gradient(to top, #DC143C, #FFB6C1)'; // Crimson to LightPink
+    default:
+      return '';
+  }
+}
+
 function getCategoryName(rarity: CardRarity) {
   if (!rarity) return '';
   switch (rarity) {
@@ -144,6 +162,7 @@ export default function PokemonCard({ card }: PokemonCardProps) {
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
   const borderSVG = getSVG(borderColor);
+  const borderGradient = getCardGradient(rarity);
 
   return (
     <Card sx={{
@@ -151,22 +170,12 @@ export default function PokemonCard({ card }: PokemonCardProps) {
       height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
       borderRadius: '10px',
       background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
-      border: `10px solid ${borderColor}`,
+      border: `10px solid`,
+      borderImage: `${borderGradient} 1`,
       position: 'relative',
       color: 'white',
       overflow: 'visible',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: -10,
-        left: 0,
-        right: 0,
-        height: '40px',
-        background: borderSVG,
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat'
-      }
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'
     }}>
       {pokemonGymImg !== 'none' && (
         <Box sx={{
@@ -180,7 +189,7 @@ export default function PokemonCard({ card }: PokemonCardProps) {
         }} />
       )}
 
-      <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 2 }}>
+      <Box sx={{ position: 'absolute', top: 6, right: 6, zIndex: 2 }}>
         <Chip label={getCategoryName(rarity)}
           sx={{
             ...getCategoryStyles(rarity),
