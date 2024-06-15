@@ -116,4 +116,32 @@ export interface Card {
     gym?: [PokemonGym];
 }
 
-// CardRarity
+// TRANSACTION TYPES
+// Concept of a transaction
+export enum TransactionConcept {
+    PurchaseByBid = "PurchaseByBid", // Purchase by bid
+    PurchaseByCardPack = "PurchaseByCardPack", // Purchase by card pack
+    SoldOnAuction = "SoldOnAuction", // Card sold on auction
+    ForSaleOnAuction = "ForSaleOnAuction", // Card for sale on auction
+    WithdrawnFromAuction = "WithdrawnFromAuction", // Card withdrawn from auction
+    BidCancelledFromAuction = "BidCancelledFromAuction", // Bid cancelled because the auction was cancelled
+    BidWithdrawn = "BidWithdrawn", // Bid withdrawn
+    NewBid = "NewBid", // New bid
+    Gift = "Gift" // Gift
+}
+// Transaction
+export interface Transaction {
+    _id: string;
+    user: string;
+    username: string;
+    legibleCardId: string;
+    userCard: string;
+    concept: TransactionConcept;
+    date: Date;
+    price: number;
+    cardId?: string;
+    auctionId?: string;
+    bidId?: string;
+    cardPackId?: string;
+    legibleCardPackId?: string;
+}

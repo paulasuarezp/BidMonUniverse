@@ -6,6 +6,7 @@ import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/shared
 interface PokemonCardProps {
   card: CardType;
   canFlip?: boolean; // Propiedad opcional para habilitar el giro
+  maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
 }
 
 function getCategoryStyles(rarity: CardRarity) {
@@ -144,7 +145,7 @@ function getBackgroundImage(pokemonType: string) {
   }
 }
 
-export default function PokemonCard({ card, canFlip = false }: PokemonCardProps) {
+export default function PokemonCard({ card, canFlip = false, maxSize = false }: PokemonCardProps) {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
 
@@ -160,7 +161,7 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
   const borderGradient = getCardGradient(rarity);
 
   let backgroundImageCard = flipped ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/cardsBackgrounds/back.webp') center / cover no-repeat` : `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`;
-
+  let border = !flipped ? '10px solid' : `0px`;
   const handleCardClick = () => {
     if (canFlip) {
       setFlipped(!flipped);
@@ -174,11 +175,12 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
     <Card
       onClick={handleCardClick}
       sx={{
-        width: { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
-        height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
+        width: maxSize ? { xs: 200, sm: 200, md: 240, lg: 260, xl: 320 } : { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
+        height: maxSize ? { xs: 280, sm: 280, md: 320, lg: 340, xl: 400 } : { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
+
         borderRadius: '10px',
         background: backgroundImageCard,
-        border: `10px solid`,
+        border: border,
         borderImage: `${borderGradient} 1`,
         position: 'relative',
         color: 'white',
