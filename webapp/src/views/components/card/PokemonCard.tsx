@@ -1,8 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/sharedTypes";
 
 interface PokemonCardProps {
   card: CardType;
+  canFlip?: boolean; // Propiedad opcional para habilitar el giro
 }
 
 function getCategoryStyles(rarity: CardRarity) {
@@ -141,39 +144,53 @@ function getBackgroundImage(pokemonType: string) {
   }
 }
 
-const getSVG = (color) => {
-  return `url(/borde.svg)`;
-};
+export default function PokemonCard({ card, canFlip = false }: PokemonCardProps) {
+  const navigate = useNavigate();
+  const [flipped, setFlipped] = useState(false);
 
-export default function PokemonCard({ card }: PokemonCardProps) {
   let name = card?.name || 'Nombre no disponible';
   let rarity = card?.rarity || CardRarity.Common;
   let pokemonImage = card?.image || '/pokemon.png';
   let pokemonType = card?.pokemonType || 'normal';
   let pokemonGymImg = card?.gym[0] ? getPokemonGymImg(card?.gym[0]) : 'none';
+  let id = card?.cardId || 0;
 
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
   const borderGradient = getCardGradient(rarity);
 
+  const handleCardClick = () => {
+    if (canFlip) {
+      setFlipped(!flipped);
+    } else {
+      navigate(`/card/${id}`);
+    }
+  };
+
   return (
-    <Card sx={{
-      width: { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
-      height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
-      borderRadius: '10px',
-      background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
-      border: `10px solid`,
-      borderImage: `${borderGradient} 1`,
-      position: 'relative',
-      color: 'white',
-      overflow: 'visible',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
-      transition: 'transform 0.3s, box-shadow 0.3s',
-      '&:hover': {
-        transform: 'scale(1.05)',
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)'
-      }
-    }}>
+    <Card
+      onClick={handleCardClick}
+      sx={{
+        width: { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
+        height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
+        borderRadius: '10px',
+        background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
+        border: `10px solid`,
+        borderImage: `${borderGradient} 1`,
+        position: 'relative',
+        color: 'white',
+        overflow: 'visible',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+        transition: 'transform 0.6s',
+        transformStyle: 'preserve-3d',
+        transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+        cursor: 'pointer',
+        '&:hover': {
+          transform: !flipped ? 'scale(1.05)' : 'rotateY(180deg)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)'
+        }
+      }}
+    >
       {pokemonGymImg !== 'none' && (
         <Box sx={{
           position: 'absolute',
@@ -208,6 +225,7 @@ export default function PokemonCard({ card }: PokemonCardProps) {
           maxHeight: 'calc(100% - 64px)',
           margin: '32px auto',
           objectFit: 'contain',
+          backfaceVisibility: 'hidden'
         }}
       />
       <CardContent sx={{
@@ -220,16 +238,15 @@ export default function PokemonCard({ card }: PokemonCardProps) {
         '&:last-child': {
           paddingBottom: 0,
         },
+        backfaceVisibility: 'hidden'
       }}>
-        <Box sx={
-          {
-            position: 'absolute',
-            bottom: -7,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 1
-          }
-        }>
+        <Box sx={{
+          position: 'absolute',
+          bottom: -7,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 1
+        }}>
           <Chip label={name} sx={{
             bgcolor: `${borderColor}`,
             color: 'white',

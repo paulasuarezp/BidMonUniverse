@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
 import MyCollection from './views/pages/MyCollection';
+import CardDetail from './views/components/card/CardDetail';
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
@@ -40,6 +41,7 @@ function App() {
                   {/* Rutas protegidas */}
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
