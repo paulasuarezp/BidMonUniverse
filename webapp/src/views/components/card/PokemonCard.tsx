@@ -159,6 +159,8 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
   const backgroundImage = getBackgroundImage(pokemonType);
   const borderGradient = getCardGradient(rarity);
 
+  let backgroundImageCard = flipped ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/cardsBackgrounds/back.webp') center / cover no-repeat` : `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`;
+
   const handleCardClick = () => {
     if (canFlip) {
       setFlipped(!flipped);
@@ -167,6 +169,7 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
     }
   };
 
+
   return (
     <Card
       onClick={handleCardClick}
@@ -174,7 +177,7 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
         width: { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
         height: { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
         borderRadius: '10px',
-        background: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`,
+        background: backgroundImageCard,
         border: `10px solid`,
         borderImage: `${borderGradient} 1`,
         position: 'relative',
@@ -211,6 +214,7 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
             fontSize: '0.75rem',
             fontWeight: 'bold',
             textShadow: '1px 1px 2px black',
+            visibility: flipped ? 'hidden' : 'visible'  // Only show the chip when not flipped
           }}
         />
       </Box>
@@ -225,7 +229,8 @@ export default function PokemonCard({ card, canFlip = false }: PokemonCardProps)
           maxHeight: 'calc(100% - 64px)',
           margin: '32px auto',
           objectFit: 'contain',
-          backfaceVisibility: 'hidden'
+          backfaceVisibility: 'hidden',
+          visibility: flipped ? 'hidden' : 'visible'  // Only show the image when not flipped
         }}
       />
       <CardContent sx={{
