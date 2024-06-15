@@ -100,9 +100,7 @@ function getPokemonGymImg(pokemonGym: PokemonGym) {
   }
 }
 
-
 function getBackgroundImage(pokemonType: string) {
-  //return `/cardsBackgrounds/${pokemonType}.png`;
   switch (pokemonType) {
     case 'bug':
       return '/cardsBackgrounds/bug.webp';
@@ -139,18 +137,13 @@ function getBackgroundImage(pokemonType: string) {
     case 'steel':
       return '/cardsBackgrounds/steel.jpeg';
     default:
-
       return '/cardsBackgrounds/normal.webp';
-
   }
-
 }
 
 const getSVG = (color) => {
   return `url(/borde.svg)`;
 };
-
-
 
 export default function PokemonCard({ card }: PokemonCardProps) {
   let name = card?.name || 'Nombre no disponible';
@@ -161,7 +154,6 @@ export default function PokemonCard({ card }: PokemonCardProps) {
 
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
-  const borderSVG = getSVG(borderColor);
   const borderGradient = getCardGradient(rarity);
 
   return (
@@ -175,7 +167,12 @@ export default function PokemonCard({ card }: PokemonCardProps) {
       position: 'relative',
       color: 'white',
       overflow: 'visible',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+      transition: 'transform 0.3s, box-shadow 0.3s',
+      '&:hover': {
+        transform: 'scale(1.05)',
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)'
+      }
     }}>
       {pokemonGymImg !== 'none' && (
         <Box sx={{
