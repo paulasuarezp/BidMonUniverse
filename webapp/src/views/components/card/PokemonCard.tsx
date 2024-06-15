@@ -1,58 +1,82 @@
 import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
+import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/sharedTypes";
 
 interface PokemonCardProps {
-  name: string;
-  category: string;
-  pokemonType: string;
-  pokemonImage: string;
+  card: CardType;
 }
 
-function getCategoryStyles(category: PokemonCardProps['category']) {
-  switch (category) {
-    case 'common':
+function getCategoryStyles(rarity: CardRarity) {
+  if (!rarity) return {};
+  switch (rarity) {
+    case CardRarity.Common:
       return { backgroundColor: 'rgba(119,136,153,0.5)' };
-    case 'rare':
+    case CardRarity.Rare:
       return { backgroundColor: 'rgba(65,105,225,0.5)' };
-    case 'ultrarare':
+    case CardRarity.UltraRare:
       return { backgroundColor: 'rgba(255,215,0,0.5)' };
-    case 'legendary':
+    case CardRarity.Legendary:
       return { backgroundColor: 'rgba(138,43,226,0.5)' };
-    case 'mythical':
+    case CardRarity.Mythical:
       return { backgroundColor: 'rgba(220,20,60,0.5)' };
     default:
       return {};
   }
 }
 
-function getCategoryName(category: PokemonCardProps['category']) {
-  switch (category) {
-    case 'common':
+function getCategoryName(rarity: CardRarity) {
+  if (!rarity) return '';
+  switch (rarity) {
+    case CardRarity.Common:
       return 'Común';
-    case 'rare':
+    case CardRarity.Rare:
       return 'Rara';
-    case 'ultrarare':
+    case CardRarity.UltraRare:
       return 'Ultra rara';
-    case 'legendary':
+    case CardRarity.Legendary:
       return 'Legendaria';
-    case 'mythical':
+    case CardRarity.Mythical:
       return 'Mítica';
     default:
       return '';
   }
 }
 
-function getCardColor(category: PokemonCardProps['category']) {
-  switch (category) {
-    case 'common':
+function getCardColor(rarity: CardRarity) {
+  if (!rarity) return '';
+  switch (rarity) {
+    case CardRarity.Common:
       return 'rgba(119,136,153,1)';
-    case 'rare':
+    case CardRarity.Rare:
       return 'rgba(65,105,225,1)';
-    case 'ultrarare':
+    case CardRarity.UltraRare:
       return 'rgba(255,215,0,1)';
-    case 'legendary':
+    case CardRarity.Legendary:
       return 'rgba(138,43,226,1)';
-    case 'mythical':
+    case CardRarity.Mythical:
       return 'rgba(220,20,60,1)';
+    default:
+      return '';
+  }
+}
+
+function getPokemonGymImg(pokemonGym: PokemonGym) {
+  switch (pokemonGym) {
+    case PokemonGym.Saffron:
+      return '/gymBadges/saffron_marsh.png';
+    case PokemonGym.Pewter:
+      return '/gymBadges/pewter_boulder.png';
+    case PokemonGym.Cerulean:
+      return '/gymBadges/cerulean_cascade.png';
+    case PokemonGym.Vermilion:
+      return '/gymBadges/vermilion_thunder.png';
+    case PokemonGym.Celadon:
+      return '/gymBadges/celadon_rainbow.png';
+    case PokemonGym.Fuchsia:
+      return '/gymBadges/fuchsia_soul.png';
+    case PokemonGym.Cinnabar:
+      return '/gymBadges/cinnabar_volcano.png';
+    case PokemonGym.Viridian:
+      return '/gymBadges/viridian_earth.png';
     default:
       return '';
   }
@@ -104,15 +128,22 @@ function getBackgroundImage(pokemonType: string) {
 
 }
 
-const getFloralSVG = (color) => {
-  return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23${color}'%3E...%3C/svg%3E")`;
+const getSVG = (color) => {
+  return `url(/borde.svg)`;
 };
 
 
 
-export default function PokemonCard({ name, category, pokemonType, pokemonImage }: PokemonCardProps) {
-  const borderColor = getCardColor(category);
+export default function PokemonCard({ card }: PokemonCardProps) {
+  let name = card?.name || 'Nombre no disponible';
+  let rarity = card?.rarity || CardRarity.Common;
+  let pokemonImage = card?.image || '/pokemon.png';
+  let pokemonType = card?.pokemonType || 'normal';
+  let pokemonGymImg = card?.gym[0] ? getPokemonGymImg(card?.gym[0]) : 'none';
+
+  const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
+  const borderSVG = getSVG(borderColor);
 
   return (
     <Card sx={{
@@ -132,15 +163,27 @@ export default function PokemonCard({ name, category, pokemonType, pokemonImage 
         left: 0,
         right: 0,
         height: '40px',
-        background: `radial-gradient(circle at 20px 20px, ${borderColor}, transparent 30%)`,
-        backgroundSize: '40px 40px',
-        backgroundRepeat: 'repeat-x'
+        background: borderSVG,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat'
       }
     }}>
+      {pokemonGymImg !== 'none' && (
+        <Box sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: `url(${pokemonGymImg}) center / contain no-repeat`,
+          opacity: 0.5,
+        }} />
+      )}
+
       <Box sx={{ position: 'absolute', top: 16, right: 16, zIndex: 2 }}>
-        <Chip label={getCategoryName(category)}
+        <Chip label={getCategoryName(rarity)}
           sx={{
-            ...getCategoryStyles(category),
+            ...getCategoryStyles(rarity),
             color: 'white',
             fontSize: '0.75rem',
             fontWeight: 'bold',

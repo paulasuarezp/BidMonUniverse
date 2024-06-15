@@ -2,19 +2,22 @@ import { useState, useEffect } from 'react';
 import { Grid, useMediaQuery, useTheme, Box } from '@mui/material';
 import PokemonCard from '../../card/PokemonCard';
 import { getCardsOfUser } from '../../../../api/userCardsAPI';
+import { Card } from '../../../../shared/sharedTypes';
 
 interface ResponsivePokemonGridProps {
     username: string;
+    limit?: boolean;
 }
 
-const ResponsivePokemonGrid = ({ username }: ResponsivePokemonGridProps) => {
+const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGridProps) => {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
     const isSm = useMediaQuery(theme.breakpoints.down('sm'));
     const isMd = useMediaQuery(theme.breakpoints.down('md'));
     const isLg = useMediaQuery(theme.breakpoints.down('lg'));
 
-    const [cards, setCards] = useState([]);
+    const [cards, setCards] = useState<Card[]>([]);
+    const [numberOfCards, setNumberOfCards] = useState<number>(0);
 
     const getGridListCols = () => {
         if (isXs) return 1; // En teléfonos móviles, mostrar una sola columna
@@ -24,13 +27,20 @@ const ResponsivePokemonGrid = ({ username }: ResponsivePokemonGridProps) => {
         return 6; // En pantallas grandes, mostrar seis columnas
     };
 
-    const numberOfCards = getGridListCols();
 
     useEffect(() => {
         getCardsOfUser(username)
             .then((data) => {
                 setCards(data);
                 console.log('Cartas del usuario', data);
+                if (limit) {
+                    // Si hay límite, ajusta el número de cartas basado en el tamaño de la pantalla.
+                    const initialCount = isXs ? 1 : isSm ? 2 : isMd ? 3 : isLg ? 4 : 6;
+                    setNumberOfCards(Math.min(data.length, initialCount));
+                } else {
+                    // Si no hay límite, usa todas las cartas.
+                    setNumberOfCards(data.length);
+                }
             })
             .catch((error) => {
                 console.error('Error al obtener las cartas del usuario', error);
@@ -45,13 +55,10 @@ const ResponsivePokemonGrid = ({ username }: ResponsivePokemonGridProps) => {
             justifyContent="center"
             alignItems="center"
         >
-            {Array.from({ length: cards.length }, (_, index) => (
+            {Array.from({ length: numberOfCards }, (_, index) => (
                 <Grid item key={index} style={{ flex: '0 0 auto' }}>
                     <PokemonCard
-                        name={cards[index].name}
-                        category={cards[index].rarity}
-                        pokemonType={cards[index].pokemonType}
-                        pokemonImage={cards[index].image}
+                        card={cards[index] as Card}
                     />
                 </Grid>
             ))}

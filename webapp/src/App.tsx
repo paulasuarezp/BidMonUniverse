@@ -14,10 +14,11 @@ import { AccessLevel } from './shared/sharedTypes';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
+import MyCollection from './views/pages/MyCollection';
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
-  
+
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -27,24 +28,25 @@ function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
-      <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
-        <CssBaseline />
-        <Router>
-          <BasePage toggleTheme={toggleMode} >
-            <>
-              <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/login" element={<RouteRedirector initRoute={<Login/>} redirectPath="/logueado" accessLevel={AccessLevel.Guest}/>}/>
-                <Route path="/signup" element={<RouteRedirector initRoute={<Signup/>} redirectPath="/login" accessLevel={AccessLevel.Guest}/>}/>
-                {/* Rutas protegidas */}
-                <Route path="/logueado" element={<RouteRedirector initRoute={<Logueado/>} redirectPath="/login" accessLevel={AccessLevel.Standard}/>}/>
-                {/* Página de Error */}
-                <Route path="*" element={<NotFoundPage/>}/>
-              </Routes>
-            </>
-          </BasePage>
-        </Router>
-      </ThemeProvider>
+        <ThemeProvider theme={mode === 'light' ? lightTheme : darkTheme}>
+          <CssBaseline />
+          <Router>
+            <BasePage toggleTheme={toggleMode} >
+              <>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<RouteRedirector initRoute={<Login />} redirectPath="/logued" accessLevel={AccessLevel.Guest} />} />
+                  <Route path="/signup" element={<RouteRedirector initRoute={<Signup />} redirectPath="/login" accessLevel={AccessLevel.Guest} />} />
+                  {/* Rutas protegidas */}
+                  <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  {/* Página de Error */}
+                  <Route path="*" element={<NotFoundPage />} />
+                </Routes>
+              </>
+            </BasePage>
+          </Router>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );
