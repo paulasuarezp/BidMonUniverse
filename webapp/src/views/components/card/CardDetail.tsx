@@ -69,8 +69,9 @@ const CardDetail = () => {
                                 color: 'gold',
                                 borderColor: 'gold',
                                 '&:hover': {
-                                    borderColor: 'darkgoldenrod',
-                                    backgroundColor: 'rgba(218,165,32,0.1)'
+                                    color: 'white',
+                                    backgroundColor: 'gold',
+                                    borderColor: 'gold'
                                 }
                             }}
                         >
@@ -83,31 +84,27 @@ const CardDetail = () => {
                     <Typography><strong>Nombre:</strong> {card.name}</Typography>
                     <Typography><strong>Rareza:</strong> {card.rarity}</Typography>
                     <Typography><strong>Tipo:</strong> {card.pokemonType}</Typography>
-                    <TableContainer component={Paper}>
+                    <TableContainer component={Paper} sx={{ width: '100%' }}>
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Fecha</TableCell>
-                                    <TableCell align="right">Concepto</TableCell>
-                                    <TableCell align="right">Precio</TableCell>
+                                    <TableCell width="30%">Fecha</TableCell>
+                                    <TableCell width="40%">Concepto</TableCell>
+                                    <TableCell width="30%">Precio</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {transactions.map((transaction) => (
-                                    <TableRow
-                                        key={transaction._id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {new Date(transaction.date).toLocaleDateString()}
-                                        </TableCell>
-                                        <TableCell align="right">{TransactionConcept[transaction.concept]}</TableCell>
-                                        <TableCell align="right">${transaction.price.toFixed(2)}</TableCell>
+                                    <TableRow key={transaction._id}>
+                                        <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
+                                        <TableCell>{TransactionConcept[transaction.concept[0]]}</TableCell>
+                                        <TableCell >{transaction.price}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
+
                 </Grid>
             </Grid>
         </Box>
