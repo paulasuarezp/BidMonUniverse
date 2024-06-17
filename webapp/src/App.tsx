@@ -35,7 +35,7 @@ function App() {
             <BasePage toggleTheme={toggleMode} >
               <>
                 <Routes>
-                  <Route path="/" element={<Home />} />
+                  <Route path="/" element={<RouteRedirector initRoute={<Home />} redirectPath="/logued" accessLevel={AccessLevel.Guest} />} />
                   <Route path="/login" element={<RouteRedirector initRoute={<Login />} redirectPath="/logued" accessLevel={AccessLevel.Guest} />} />
                   <Route path="/signup" element={<RouteRedirector initRoute={<Signup />} redirectPath="/login" accessLevel={AccessLevel.Guest} />} />
                   {/* Rutas protegidas */}

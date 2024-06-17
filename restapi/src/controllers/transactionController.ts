@@ -92,7 +92,7 @@ const getTransactionsByCardId = async (req: Request, res: Response) => {
 const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
     try {
         let { username, cardId } = req.params;
-        username = username.toLowerCase();
+        // username = username.toLowerCase();
 
         const transactions = await Transaction.find({ legibleCardId: cardId, username: username });
         res.status(200).json(transactions);

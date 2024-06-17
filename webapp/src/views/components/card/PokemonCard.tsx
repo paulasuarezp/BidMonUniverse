@@ -160,7 +160,7 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
   const backgroundImage = getBackgroundImage(pokemonType);
   const borderGradient = getCardGradient(rarity);
 
-  let backgroundImageCard = flipped ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/cardsBackgrounds/back.webp') center / cover no-repeat` : `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url(${backgroundImage}) center / cover no-repeat`;
+  let backgroundImageCard = flipped ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/cardsBackgrounds/back.webp') center / cover no-repeat` : `url(${backgroundImage}) center / cover no-repeat`;
   let border = !flipped ? '10px solid' : `0px`;
   const handleCardClick = () => {
     if (canFlip) {
@@ -216,7 +216,7 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
             fontSize: '0.75rem',
             fontWeight: 'bold',
             textShadow: '1px 1px 2px black',
-            visibility: flipped ? 'hidden' : 'visible'  // Only show the chip when not flipped
+            visibility: flipped ? 'hidden' : 'visible'
           }}
         />
       </Box>
@@ -225,14 +225,12 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
         image={pokemonImage}
         alt={name}
         sx={{
-          height: 'auto',
-          width: 'auto',
-          maxWidth: '100%',
-          maxHeight: 'calc(100% - 64px)',
-          margin: '32px auto',
+          width: '100%',
+          height: '100%',
           objectFit: 'contain',
+          margin: 'auto',
           backfaceVisibility: 'hidden',
-          visibility: flipped ? 'hidden' : 'visible'  // Only show the image when not flipped
+          visibility: flipped ? 'hidden' : 'visible'
         }}
       />
       <CardContent sx={{

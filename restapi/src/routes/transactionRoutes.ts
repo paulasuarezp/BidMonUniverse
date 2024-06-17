@@ -78,7 +78,7 @@ transactionRouter.get('/card/:cardId', [
 transactionRouter.get('/user/:username/:cardId', [
     param('cardId').notEmpty().withMessage('Card ID is required'),
     param('username').notEmpty().withMessage('Username is required'),
-    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
+    param('username').isString().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

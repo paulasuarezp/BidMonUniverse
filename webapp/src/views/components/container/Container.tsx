@@ -8,7 +8,6 @@ const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => 
     marginTop: '1.5em', // Margen superior para separar el contenido del borde superior
     display: 'flex', // Usa flex para facilitar el diseño responsivo
     flexDirection: 'column', // Alinea los elementos verticalmente
-    minHeight: '100vh', // Asegura que el Container ocupe al menos toda la altura de la pantalla
     width: '100vw', // Asegura que el Container ocupe todo el ancho disponible
     maxWidth: '100% !important', // Asegura que el Container no se desborde
     boxSizing: 'border-box', // Asegura que el padding no afecte el ancho definido
