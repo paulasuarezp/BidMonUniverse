@@ -13,12 +13,17 @@ import { getTransactionsForCard } from '../../../api/transactionsAPI';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import PokemonCard from './PokemonCard';
+import AddAuctionForm from '../modals/AddAuctionForm';
 
 const CardDetail = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
     const [transactions, setTransactions] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
 
     const sessionUser = useSelector((state: RootState) => state.user);
     const username = sessionUser.username;
@@ -65,9 +70,11 @@ const CardDetail = () => {
                             variant="contained"
                             sx={{ marginTop: 2, marginBottom: 2, backgroundColor: 'gray', '&:hover': { backgroundColor: '#404040' } }}
                             fullWidth
+                            onClick={handleOpen}
                         >
                             Realizar subasta
                         </Button>
+                        <AddAuctionForm open={openModal} handleClose={handleClose} />
 
                         <TableContainer component={Paper} sx={{ width: '100%' }}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
