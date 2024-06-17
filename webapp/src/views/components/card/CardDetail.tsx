@@ -74,7 +74,7 @@ const CardDetail = () => {
                         >
                             Realizar subasta
                         </Button>
-                        <AddAuctionForm open={openModal} handleClose={handleClose} />
+                        <AddAuctionForm cardId={card._id} open={openModal} handleClose={handleClose} />
 
                         <TableContainer component={Paper} sx={{ width: '100%' }}>
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
