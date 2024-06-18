@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/sharedTypes";
 import { capitalizeFirstLetter } from '../../../utils/utils';
 
@@ -146,6 +146,180 @@ function getBackgroundImage(pokemonType: string) {
   }
 }
 
+function getTypeBadge(pokemonType: string) {
+  switch (pokemonType) {
+    case 'bug':
+      return '/pokemonTypesBadges/bug.svg';
+    case 'dark':
+      return '/pokemonTypesBadges/dark.svg';
+    case 'dragon':
+      return '/pokemonTypesBadges/dragon.svg';
+    case 'fairy':
+      return '/pokemonTypesBadges/fairy.svg';
+    case 'fighting':
+      return '/pokemonTypesBadges/fighting.svg';
+    case 'flying':
+      return '/pokemonTypesBadges/flying.svg';
+    case 'fire':
+      return '/pokemonTypesBadges/fire.svg';
+    case 'ghost':
+      return '/pokemonTypesBadges/ghost.svg';
+    case 'grass':
+      return '/pokemonTypesBadges/grass.svg';
+    case 'ground':
+      return '/pokemonTypesBadges/ground.svg';
+    case 'ice':
+      return '/pokemonTypesBadges/ice.svg';
+    case 'poison':
+      return '/pokemonTypesBadges/poison.svg';
+    case 'rock':
+      return '/pokemonTypesBadges/rock.svg';
+    case 'water':
+      return '/pokemonTypesBadges/water.svg';
+    case 'electric':
+      return '/pokemonTypesBadges/electric.svg';
+    case 'psychic':
+      return '/pokemonTypesBadges/psychic.svg';
+    case 'steel':
+      return '/pokemonTypesBadges/steel.svg';
+    default:
+      return 'pokemonTypesBadges/normal.svg';
+  }
+}
+
+function getTypeName(pokemonType: string) {
+  switch (pokemonType) {
+    case 'bug':
+      return 'Bicho';
+    case 'dark':
+      return 'Siniestro';
+    case 'dragon':
+      return 'Dragón';
+    case 'fairy':
+      return 'Hada';
+    case 'fighting':
+      return 'Lucha';
+    case 'flying':
+      return 'Volador';
+    case 'fire':
+      return 'Fuego';
+    case 'ghost':
+      return 'Fantasma';
+    case 'grass':
+      return 'Planta';
+    case 'ground':
+      return 'Tierra';
+    case 'ice':
+      return 'Hielo';
+    case 'poison':
+      return 'Veneno';
+    case 'rock':
+      return 'Roca';
+    case 'water':
+      return 'Agua';
+    case 'electric':
+      return 'Eléctrico';
+    case 'psychic':
+      return 'Psíquico';
+    case 'steel':
+      return 'Acero';
+    default:
+      return 'Normal';
+  }
+}
+const typeStyles = {
+  bug: {
+    background: '#92BC2C',
+    boxShadow: '0 0 20px #92BC2C',
+    filter: 'brightness(1.2)',
+  },
+  dark: {
+    background: '#595761',
+    boxShadow: '0 0 20px #595761',
+    filter: 'brightness(1.2)',
+  },
+  dragon: {
+    background: '#0C69C8',
+    boxShadow: '0 0 20px #0C69C8',
+    filter: 'brightness(1.2)',
+  },
+  fairy: {
+    background: '#EE90E6',
+    boxShadow: '0 0 20px #EE90E6',
+    filter: 'brightness(1.2)',
+  },
+  fighting: {
+    background: '#D3425F',
+    boxShadow: '0 0 20px #D3425F',
+    filter: 'brightness(1.2)',
+  },
+  flying: {
+    background: '#A1BBEC',
+    boxShadow: '0 0 20px #A1BBEC',
+    filter: 'brightness(1.2)',
+  },
+  fire: {
+    background: '#FBA54C',
+    boxShadow: '0 0 20px #FBA54C',
+    filter: 'brightness(1.2)',
+  },
+  ghost: {
+    background: '#5F6DBC',
+    boxShadow: '0 0 20px #5F6DBC',
+    filter: 'brightness(1.2)',
+  },
+  grass: {
+    background: '#5FBD58',
+    boxShadow: '0 0 20px #5FBD58',
+    filter: 'brightness(1.2)',
+  },
+  ground: {
+    background: '#DA7C4D',
+    boxShadow: '0 0 20px #DA7C4D',
+    filter: 'brightness(1.2)',
+  },
+  ice: {
+    background: '#75D0C1',
+    boxShadow: '0 0 20px #75D0C1',
+    filter: 'brightness(1.2)',
+  },
+  normal: {
+    background: '#A0A29F',
+    boxShadow: '0 0 20px #A0A29F',
+    filter: 'brightness(1.2)',
+  },
+  poison: {
+    background: '#B763CF',
+    boxShadow: '0 0 20px #B763CF',
+    filter: 'brightness(1.2)',
+  },
+  psychic: {
+    background: '#FA8581',
+    boxShadow: '0 0 20px #FA8581',
+    filter: 'brightness(1.2)',
+  },
+  rock: {
+    background: '#C9BB8A',
+    boxShadow: '0 0 20px #C9BB8A',
+    filter: 'brightness(1.2)',
+  },
+  steel: {
+    background: '#5695A3',
+    boxShadow: '0 0 20px #5695A3',
+    filter: 'brightness(1.2)',
+  },
+  water: {
+    background: '#539DDF',
+    boxShadow: '0 0 20px #539DDF',
+    filter: 'brightness(1.2)',
+  },
+  electric: {
+    background: '#F2D94E',
+    boxShadow: '0 0 20px #F2D94E',
+    filter: 'brightness(1)',
+  },
+};
+
 export default function PokemonCard({ card, canFlip = false, maxSize = false }: PokemonCardProps) {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
@@ -160,6 +334,8 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
   const borderGradient = getCardGradient(rarity);
+  const typeImg = getTypeBadge(pokemonType);
+  const typeName = getTypeName(pokemonType);
 
   let backgroundImageCard = flipped ? `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('/cardsBackgrounds/back.webp') center / cover no-repeat` : `url(${backgroundImage}) center / cover no-repeat`;
   let border = !flipped ? '10px solid' : `0px`;
@@ -208,6 +384,22 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
           opacity: 0.5,
         }} />
       )}
+      <Box sx={{ position: 'absolute', top: 6, left: 6, zIndex: 2 }}>
+        <Avatar
+          src={typeImg}
+          alt={typeName}
+
+          sx={{
+            ...typeStyles[pokemonType],
+            width: 30,
+            padding: 0.2,
+            height: 'auto',
+            color: 'white',
+            textShadow: '1px 1px 2px black',
+            visibility: flipped ? 'hidden' : 'visible'
+          }}
+        />
+      </Box>
 
       <Box sx={{ position: 'absolute', top: 6, right: 6, zIndex: 2 }}>
         <Chip label={getCategoryName(rarity)}
