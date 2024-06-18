@@ -7,6 +7,14 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
 import GavelIcon from '@mui/icons-material/Gavel';
+import HealthIcon from '@mui/icons-material/Favorite';
+import AttackIcon from '@mui/icons-material/FlashOn';
+import DefenseIcon from '@mui/icons-material/Security';
+import SpeedIcon from '@mui/icons-material/Speed';
+import WeightIcon from '@mui/icons-material/FitnessCenter';
+import HeightIcon from '@mui/icons-material/Height';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import QuantityIcon from '@mui/icons-material/Inbox';
 import { Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
 import { getUserCard } from '../../../api/userCardsAPI';
 import { getTransactionsForCard } from '../../../api/transactionsAPI';
@@ -73,6 +81,7 @@ const CardDetail = () => {
     }
 
     const handleBack = () => navigate('/album');
+
     return (
         <Box sx={{ maxWidth: 1200, width: '100%', margin: 'auto', marginTop: 5, padding: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button startIcon={<ArrowBackIcon />}
@@ -84,9 +93,9 @@ const CardDetail = () => {
             />
             <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <Typography variant="h4" align="center" fontFamily={'Pokemon'} gutterBottom>{card.name}</Typography>
-                <Grid container spacing={2} justifyContent="center">
+                <Grid container spacing={2} justifyContent="center" alignItems="stretch">
                     <Grid item xs={12} md={6}>
-                        <Card sx={{ width: '100%', padding: 2 }}>
+                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <PokemonCard card={card} canFlip={true} maxSize={true} />
                                 <Button startIcon={<StarIcon />}
@@ -94,27 +103,26 @@ const CardDetail = () => {
                                     sx={{ marginTop: 2, marginBottom: 2 }}
                                     buttonType="ghost"
                                     onClick={handleOpen}
-                                    label='Realizar subasta'
+                                    label='Destacar carta'
                                 />
                             </CardContent>
                         </Card>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <Card sx={{ width: '100%', padding: 2 }}>
-                            <CardContent>
+                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
+                            <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" gutterBottom>Detalles de la carta</Typography>
-                                <Typography><strong>Nombre:</strong> {card.name}</Typography>
-                                <Typography><strong>Rareza:</strong> {card.rarity}</Typography>
-                                <Typography><strong>Tipo:</strong> {card.pokemonType}</Typography>
-                                <Typography><strong>HP:</strong> {card.hp}</Typography>
-                                <Typography><strong>Ataque:</strong> {card.attack}</Typography>
-                                <Typography><strong>Defensa:</strong> {card.defense}</Typography>
-                                <Typography><strong>Velocidad:</strong> {card.speed}</Typography>
-                                <Typography><strong>Peso:</strong> {card.weight}</Typography>
-                                <Typography><strong>Altura:</strong> {card.height}</Typography>
-                                <Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography>
-                                <Typography><strong>Cantidad disponible:</strong> {card.availableQuantity}</Typography>
-                                <Typography><strong>Descripción:</strong> {descriptions[0]}</Typography>
+                                <Box display="flex" alignItems="center"><HealthIcon sx={{ mr: 1, color: '#e91e63' }} /><Typography><strong>HP:</strong> {card.hp}</Typography></Box>
+                                <Box display="flex" alignItems="center"><AttackIcon sx={{ mr: 1, color: '#ff9800' }} /><Typography><strong>Ataque:</strong> {card.attack}</Typography></Box>
+                                <Box display="flex" alignItems="center"><DefenseIcon sx={{ mr: 1, color: '#3f51b5' }} /><Typography><strong>Defensa:</strong> {card.defense}</Typography></Box>
+                                <Box display="flex" alignItems="center"><SpeedIcon sx={{ mr: 1, color: '#4caf50' }} /><Typography><strong>Velocidad:</strong> {card.speed}</Typography></Box>
+                                <Box display="flex" alignItems="center"><WeightIcon sx={{ mr: 1, color: '#9c27b0' }} /><Typography><strong>Peso:</strong> {card.weight}</Typography></Box>
+                                <Box display="flex" alignItems="center"><HeightIcon sx={{ mr: 1, color: '#00bcd4' }} /><Typography><strong>Altura:</strong> {card.height}</Typography></Box>
+                                <Box display="flex" alignItems="center"><CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} /><Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography></Box>
+                                <Box display="flex" alignItems="center"><QuantityIcon sx={{ mr: 1, color: '#ff5722' }} /><Typography><strong>Cantidad disponible:</strong> {card.availableQuantity}</Typography></Box>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: 2, borderRadius: 2, mt: 2 }}>
+                                    <Typography>{descriptions[0]}</Typography>
+                                </Box>
                                 {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
                                 {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
                                 {hasGym && <Typography><strong>Gimnasio:</strong> {card.gym.map((gym) => <img key={gym} src={getPokemonGymImg(gym)} alt={gym} style={{ width: 50, height: 50, margin: 5 }} />)}</Typography>}
