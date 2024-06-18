@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, TextField } from '@mui/material';
+import { Box, TextField, Typography, Link } from '@mui/material';
 import Paper from '../components/paper/Paper';
 import Button from '../components/buttons/Button';
 import { login as loginAPI } from '../../api/userAPI';
@@ -33,7 +33,7 @@ export default function Login() {
             connectSocket(data.token, data.user.username);
           }
           // Redirigir a la página de inicio
-          navigate('/logueado');
+          navigate('/logued');
         }
       })
       .catch(error => {
@@ -56,10 +56,30 @@ export default function Login() {
       }}
     >
       <Box sx={{ pl: 2, pr: 2, pb: 2 }}>
-        <TextField fullWidth label="Usuario" margin="normal" value={username} onChange={(e) => setUsername(e.target.value)} />
-        <TextField fullWidth label="Contraseña" type="password" margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <TextField
+          fullWidth
+          error={errorMessage ? true : false}
+          label="Usuario"
+          margin="normal"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          fullWidth
+          error={errorMessage ? true : false}
+          label="Contraseña"
+          type="password"
+          margin="normal"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {errorMessage && <Typography color="error">{errorMessage}</Typography>}
         <Button buttonType="primary" label='Iniciar sesión' fullWidth sx={{ mt: 2 }} onClick={handleLogin} />
+        <Box sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography variant="body2">
+            ¿No tienes cuenta? <Link href="/signup">Regístrate aquí</Link>
+          </Typography>
+        </Box>
       </Box>
     </Paper>
   );

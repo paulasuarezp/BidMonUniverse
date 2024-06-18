@@ -10,8 +10,8 @@ import { birthdayDatePickerTheme } from '../../../themes';
 interface BirthdayDatePickerProps {
     onChange: (date: any) => void;
     error?: string;
-  }
-  
+}
+
 
 export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
     const minDate = dayjs().subtract(120, 'year'); // Mínimo hace 120 años
@@ -20,32 +20,30 @@ export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
 
     const datePickerTheme = birthdayDatePickerTheme(useTheme());
 
-  
+
 
     return (
         <ThemeProvider theme={datePickerTheme}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-            label="Fecha de nacimiento"
-            onChange={props.onChange}
-            slotProps={{
-                textField: {
-                    helperText: errrorMessage? errrorMessage : ' ',
-                    sx: {
-                        mb: 1.4,
-                    },
-                },
-                layout: {
-                    sx: {
-                    margin: 'dense',
-                    },
-                },
-              }}
-              minDate={minDate}
-              maxDate={maxDate}
-              views={['year', 'month', 'day']}
-            />
-        </LocalizationProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                    label="Fecha de nacimiento"
+                    onChange={props.onChange}
+                    slotProps={{
+                        textField: {
+                            helperText: errrorMessage ? errrorMessage : ' ',
+
+                        },
+                        layout: {
+                            sx: {
+                                margin: 'dense',
+                            },
+                        },
+                    }}
+                    minDate={minDate}
+                    maxDate={maxDate}
+                    views={['year', 'month', 'day']}
+                />
+            </LocalizationProvider>
         </ThemeProvider>
     );
-  }
+}

@@ -61,6 +61,7 @@ export const lightTheme = createTheme({
         },
       },
     },
+
   },
   // Otros ajustes de personalización...
 });
