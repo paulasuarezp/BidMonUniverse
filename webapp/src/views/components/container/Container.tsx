@@ -11,6 +11,7 @@ const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => 
     width: '100vw', // Asegura que el Container ocupe todo el ancho disponible
     maxWidth: '100% !important', // Asegura que el Container no se desborde
     boxSizing: 'border-box', // Asegura que el padding no afecte el ancho definido
+    height: '100%', // Asegura que el contenedor ocupe toda la altura disponible
     '@media (max-width: 600px)': {
         padding: '0.5em', // Reduce el padding en dispositivos móviles
         marginTop: '1.5em', // Añade un margen superior en dispositivos móviles
