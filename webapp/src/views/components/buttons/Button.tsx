@@ -93,7 +93,7 @@ const StyledButton = styled(MuiButton, {
       border: 'none', // Sin borde
       '&:hover': {
         backgroundColor: theme.palette.error.light,
-        color: theme.palette.mode === 'light' ? theme.palette.error.main : '#000000', // Color del texto dependiendo del tema
+        color: theme.palette.mode === 'light' ? theme.palette.error.main : theme.palette.error.contrastText, // Color del texto dependiendo del tema
       },
       '&:active': {
         border: 'none', // Sin borde
@@ -131,7 +131,7 @@ const StyledButton = styled(MuiButton, {
       },
     }),
     ...(buttonType === 'cancel' && {
-      color: theme.palette.error.contrastText,
+      color: theme.palette.mode === 'light' ? theme.palette.error.main : '#000000', // Color del texto dependiendo del tema
       backgroundColor: theme.palette.error.light,
       fontWeight: 'bold', // Texto en negrita
       variant: 'contained',
