@@ -26,50 +26,9 @@ import AddAuctionForm from '../modals/AddAuctionForm';
 import Button from '../buttons/Button';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import CodeIcon from '@mui/icons-material/Code';
-import LabelIcon from '@mui/icons-material/Label';
+import { getCategoryIcon, getCardGradient, getPokemonGymImg, getCategoryName } from './CardUtils';
 
 
-
-function getCardGradient(rarity: CardRarity) {
-    if (!rarity) return '';
-    switch (rarity) {
-        case CardRarity.Common:
-            return 'linear-gradient(to top, #708090, #E0FFFF)'; // SlateGray to LightCyan
-        case CardRarity.Rare:
-            return 'linear-gradient(to top, #4169E1, #87CEFA)'; // RoyalBlue to LightSkyBlue
-        case CardRarity.UltraRare:
-            return 'linear-gradient(to top, #FFD700, #FFFACD)'; // Gold to LemonChiffon
-        case CardRarity.Legendary:
-            return 'linear-gradient(to top, #8A2BE2, #DDA0DD)'; // BlueViolet to Plum
-        case CardRarity.Mythical:
-            return 'linear-gradient(to top, #DC143C, #FFB6C1)'; // Crimson to LightPink
-        default:
-            return '';
-    }
-}
-
-function getPokemonGymImg(pokemonGym: PokemonGym) {
-    switch (pokemonGym) {
-        case PokemonGym.Saffron:
-            return '/gymBadges/saffron_marsh.png';
-        case PokemonGym.Pewter:
-            return '/gymBadges/pewter_boulder.png';
-        case PokemonGym.Cerulean:
-            return '/gymBadges/cerulean_cascade.png';
-        case PokemonGym.Vermilion:
-            return '/gymBadges/vermilion_thunder.png';
-        case PokemonGym.Celadon:
-            return '/gymBadges/celadon_rainbow.png';
-        case PokemonGym.Fuchsia:
-            return '/gymBadges/fuchsia_soul.png';
-        case PokemonGym.Cinnabar:
-            return '/gymBadges/cinnabar_volcano.png';
-        case PokemonGym.Viridian:
-            return '/gymBadges/viridian_earth.png';
-        default:
-            return '';
-    }
-}
 
 const CardDetail = () => {
     const navigate = useNavigate();
@@ -162,6 +121,7 @@ const CardDetail = () => {
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" gutterBottom>Detalles de la carta</Typography>
                                 <Box display="flex" alignItems="center"><CodeIcon sx={{ mr: 1 }} /><Typography><strong>ID:</strong> {card._id}</Typography></Box>
+                                <Box display="flex" alignItems="center">{getCategoryIcon(card.rarity)}<Typography><strong>Rareza:</strong> {getCategoryName(card.rarity)}</Typography></Box>
                                 <Box display="flex" alignItems="center"><HealthIcon sx={{ mr: 1, color: '#e91e63' }} /><Typography><strong>HP:</strong> {card.hp}</Typography></Box>
                                 <Box display="flex" alignItems="center"><AttackIcon sx={{ mr: 1, color: '#ff9800' }} /><Typography><strong>Ataque:</strong> {card.attack}</Typography></Box>
                                 <Box display="flex" alignItems="center"><DefenseIcon sx={{ mr: 1, color: '#3f51b5' }} /><Typography><strong>Defensa:</strong> {card.defense}</Typography></Box>
