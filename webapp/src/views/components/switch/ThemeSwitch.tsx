@@ -28,12 +28,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#FFFFFF',
+        backgroundColor: '#8796A5',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : theme.palette.secondary.main,
+    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#FFD700',
     width: 32,
     height: 32,
     '&::before': {
@@ -65,8 +65,8 @@ export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
   const texto = theme.palette.mode === 'dark' ? 'Modo oscuro' : 'Modo claro';
   return (
     <FormGroup>
-       <FormControlLabel
-        control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme}/>}
+      <FormControlLabel
+        control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme} />}
         label={isMobile ? texto : ''}
       />
     </FormGroup>
