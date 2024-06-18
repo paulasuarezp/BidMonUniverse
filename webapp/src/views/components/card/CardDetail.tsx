@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     Box, Typography, Grid, CircularProgress, IconButton, Table, TableBody, TableCell,
-    TableContainer, TableHead, TableRow, Paper, Card, CardContent, CardActions
+    TableContainer, TableHead, TableRow, Paper, Card, CardContent, CardActions, useTheme
 } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import StarIcon from '@mui/icons-material/Star';
@@ -15,7 +15,8 @@ import WeightIcon from '@mui/icons-material/FitnessCenter';
 import HeightIcon from '@mui/icons-material/Height';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import QuantityIcon from '@mui/icons-material/Inbox';
-import { Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { CardRarity, Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
 import { getUserCard } from '../../../api/userCardsAPI';
 import { getTransactionsForCard } from '../../../api/transactionsAPI';
 import { useSelector } from 'react-redux';
@@ -23,6 +24,25 @@ import { RootState } from '../../../redux/store';
 import PokemonCard from './PokemonCard';
 import AddAuctionForm from '../modals/AddAuctionForm';
 import Button from '../buttons/Button';
+import { capitalizeFirstLetter } from '../../../utils/utils';
+
+function getCardGradient(rarity: CardRarity) {
+    if (!rarity) return '';
+    switch (rarity) {
+        case CardRarity.Common:
+            return 'linear-gradient(to top, #708090, #E0FFFF)'; // SlateGray to LightCyan
+        case CardRarity.Rare:
+            return 'linear-gradient(to top, #4169E1, #87CEFA)'; // RoyalBlue to LightSkyBlue
+        case CardRarity.UltraRare:
+            return 'linear-gradient(to top, #FFD700, #FFFACD)'; // Gold to LemonChiffon
+        case CardRarity.Legendary:
+            return 'linear-gradient(to top, #8A2BE2, #DDA0DD)'; // BlueViolet to Plum
+        case CardRarity.Mythical:
+            return 'linear-gradient(to top, #DC143C, #FFB6C1)'; // Crimson to LightPink
+        default:
+            return '';
+    }
+}
 
 function getPokemonGymImg(pokemonGym: PokemonGym) {
     switch (pokemonGym) {
@@ -49,6 +69,8 @@ function getPokemonGymImg(pokemonGym: PokemonGym) {
 
 const CardDetail = () => {
     const navigate = useNavigate();
+    const theme = useTheme();
+
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
     const [transactions, setTransactions] = useState([]);
@@ -58,6 +80,7 @@ const CardDetail = () => {
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
+
 
     const sessionUser = useSelector((state: RootState) => state.user);
     const username = sessionUser.username;
@@ -91,8 +114,30 @@ const CardDetail = () => {
                 onClick={handleBack}
                 label='Volver'
             />
-            <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                <Typography variant="h4" align="center" fontFamily={'Pokemon'} gutterBottom>{card.name}</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <Typography
+                    variant="h2"
+                    align="center"
+                    fontFamily={'Pokemon'}
+                    mb={2}
+                    sx={{
+                        color: theme.palette.text.primary,
+                        letterSpacing: 2,
+                        textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
+                    }}
+                >
+                    {capitalizeFirstLetter(card.name)}
+                </Typography>
+                <Box
+                    sx={{
+                        background: getCardGradient(card.rarity),
+                        borderRadius: 2,
+                        px: 3,
+                        py: 1,
+                        mb: 2,
+                    }}
+                >
+                </Box>
                 <Grid container spacing={2} justifyContent="center" alignItems="stretch">
                     <Grid item xs={12} md={6}>
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
@@ -120,12 +165,16 @@ const CardDetail = () => {
                                 <Box display="flex" alignItems="center"><HeightIcon sx={{ mr: 1, color: '#00bcd4' }} /><Typography><strong>Altura:</strong> {card.height}</Typography></Box>
                                 <Box display="flex" alignItems="center"><CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} /><Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography></Box>
                                 <Box display="flex" alignItems="center"><QuantityIcon sx={{ mr: 1, color: '#ff5722' }} /><Typography><strong>Cantidad disponible:</strong> {card.availableQuantity}</Typography></Box>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: 2, borderRadius: 2, mt: 2 }}>
-                                    <Typography>{descriptions[0]}</Typography>
-                                </Box>
                                 {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
                                 {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
                                 {hasGym && <Typography><strong>Gimnasio:</strong> {card.gym.map((gym) => <img key={gym} src={getPokemonGymImg(gym)} alt={gym} style={{ width: 50, height: 50, margin: 5 }} />)}</Typography>}
+
+                                <Typography align="center" gutterBottom sx={{ mt: 4 }}>
+                                    <AutoAwesomeIcon sx={{ mr: 1 }} style={{ color: '#FFD700' }} />
+                                    {descriptions[0]}
+                                    <AutoAwesomeIcon sx={{ ml: 1 }} style={{ color: '#FFD700' }} />
+                                </Typography>
+
                             </CardContent>
                             <CardActions>
                                 <Button

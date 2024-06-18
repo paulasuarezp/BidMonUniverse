@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
 import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/sharedTypes";
+import { capitalizeFirstLetter } from '../../../utils/utils';
 
 interface PokemonCardProps {
   card: CardType;
@@ -149,7 +150,7 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
 
-  let name = card?.name || 'Nombre no disponible';
+  let name = card?.name ? capitalizeFirstLetter(card?.name) : 'Pokemon';
   let rarity = card?.rarity || CardRarity.Common;
   let pokemonImage = card?.image || '/pokemon.png';
   let pokemonType = card?.pokemonType || 'normal';
