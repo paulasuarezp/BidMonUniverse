@@ -95,7 +95,7 @@ export const darkTheme = createTheme({
     },
     success: {
       main: '#6AE66F', // Verde más claro
-      contrastText: '#000000', // Texto de contraste blanco
+      contrastText: '#FFFFFF', // Texto de contraste blanco
     },
     warning: {
       main: '#FFB74D', // Naranja más claro y visible

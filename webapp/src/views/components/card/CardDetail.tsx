@@ -25,6 +25,10 @@ import PokemonCard from './PokemonCard';
 import AddAuctionForm from '../modals/AddAuctionForm';
 import Button from '../buttons/Button';
 import { capitalizeFirstLetter } from '../../../utils/utils';
+import CodeIcon from '@mui/icons-material/Code';
+import LabelIcon from '@mui/icons-material/Label';
+
+
 
 function getCardGradient(rarity: CardRarity) {
     if (!rarity) return '';
@@ -157,6 +161,7 @@ const CardDetail = () => {
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" gutterBottom>Detalles de la carta</Typography>
+                                <Box display="flex" alignItems="center"><CodeIcon sx={{ mr: 1 }} /><Typography><strong>ID:</strong> {card._id}</Typography></Box>
                                 <Box display="flex" alignItems="center"><HealthIcon sx={{ mr: 1, color: '#e91e63' }} /><Typography><strong>HP:</strong> {card.hp}</Typography></Box>
                                 <Box display="flex" alignItems="center"><AttackIcon sx={{ mr: 1, color: '#ff9800' }} /><Typography><strong>Ataque:</strong> {card.attack}</Typography></Box>
                                 <Box display="flex" alignItems="center"><DefenseIcon sx={{ mr: 1, color: '#3f51b5' }} /><Typography><strong>Defensa:</strong> {card.defense}</Typography></Box>
@@ -164,7 +169,6 @@ const CardDetail = () => {
                                 <Box display="flex" alignItems="center"><WeightIcon sx={{ mr: 1, color: '#9c27b0' }} /><Typography><strong>Peso:</strong> {card.weight}</Typography></Box>
                                 <Box display="flex" alignItems="center"><HeightIcon sx={{ mr: 1, color: '#00bcd4' }} /><Typography><strong>Altura:</strong> {card.height}</Typography></Box>
                                 <Box display="flex" alignItems="center"><CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} /><Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography></Box>
-                                <Box display="flex" alignItems="center"><QuantityIcon sx={{ mr: 1, color: '#ff5722' }} /><Typography><strong>Cantidad disponible:</strong> {card.availableQuantity}</Typography></Box>
                                 {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
                                 {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
                                 {hasGym && <Typography><strong>Gimnasio:</strong> {card.gym.map((gym) => <img key={gym} src={getPokemonGymImg(gym)} alt={gym} style={{ width: 50, height: 50, margin: 5 }} />)}</Typography>}
@@ -190,21 +194,32 @@ const CardDetail = () => {
                         </Card>
                     </Grid>
                 </Grid>
+                <AddAuctionForm open={openModal} handleClose={handleClose} cardId={card._id} />
                 <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>
                             <TableRow>
-                                <TableCell colSpan={3} align="center" style={{ fontWeight: 'bold' }}>Historial de transacciones de la carta</TableCell>
+                                <TableCell colSpan={3} align="center" style={{ fontWeight: 'bold', color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : '#000000', borderBottom: `3px solid ${theme.palette.primary.main}` }}>
+                                    Historial de transacciones de la carta
+                                </TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell width="30%">Fecha</TableCell>
-                                <TableCell width="40%">Concepto</TableCell>
-                                <TableCell width="30%">Precio</TableCell>
+                                <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Fecha</TableCell>
+                                <TableCell width="40%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Concepto</TableCell>
+                                <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Precio</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {transactions.map((transaction) => (
-                                <TableRow key={transaction._id}>
+                            {transactions.map((transaction, index) => (
+                                <TableRow
+                                    key={transaction._id}
+                                    sx={{
+                                        backgroundColor: index % 2 ? theme.palette.action.hover : 'transparent',
+                                        '&:hover': {
+                                            backgroundColor: theme.palette.action.selected,
+                                        }
+                                    }}
+                                >
                                     <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
                                     <TableCell>{TransactionConcept[transaction.concept]}</TableCell>
                                     <TableCell>{transaction.price}</TableCell>
