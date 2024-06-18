@@ -60,7 +60,7 @@ const CardDetail = () => {
             getTransactionsForCard(username, id).then(setTransactions).catch(console.error);
             let descrs = data.card.description[0].split('@NEWDESCRIPTION@');
             setDescriptions(descrs);
-            if (data.card.gym && data.card.gym[0] != 'none') {
+            if (data.card.gym && data.card.gym[0] !== 'none') {
                 setHasGym(true);
             }
         }).catch(console.error);
@@ -118,8 +118,6 @@ const CardDetail = () => {
                                 {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
                                 {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
                                 {hasGym && <Typography><strong>Gimnasio:</strong> {card.gym.map((gym) => <img key={gym} src={getPokemonGymImg(gym)} alt={gym} style={{ width: 50, height: 50, margin: 5 }} />)}</Typography>}
-
-                                <Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography>
                             </CardContent>
                             <CardActions>
                                 <Button
@@ -133,33 +131,31 @@ const CardDetail = () => {
                                 />
                             </CardActions>
                         </Card>
-                        <AddAuctionForm cardId={card._id} open={openModal} handleClose={handleClose} />
-
-                        <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
-                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell colSpan={3} align="center" style={{ fontWeight: 'bold' }}>Historial de transacciones de la carta</TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell width="30%">Fecha</TableCell>
-                                        <TableCell width="40%">Concepto</TableCell>
-                                        <TableCell width="30%">Precio</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {transactions.map((transaction) => (
-                                        <TableRow key={transaction._id}>
-                                            <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
-                                            <TableCell>{TransactionConcept[transaction.concept]}</TableCell>
-                                            <TableCell>{transaction.price}</TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
                     </Grid>
                 </Grid>
+                <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell colSpan={3} align="center" style={{ fontWeight: 'bold' }}>Historial de transacciones de la carta</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell width="30%">Fecha</TableCell>
+                                <TableCell width="40%">Concepto</TableCell>
+                                <TableCell width="30%">Precio</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {transactions.map((transaction) => (
+                                <TableRow key={transaction._id}>
+                                    <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
+                                    <TableCell>{TransactionConcept[transaction.concept]}</TableCell>
+                                    <TableCell>{transaction.price}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Box>
         </Box>
     );
