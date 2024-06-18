@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
-    Button, TextField, Dialog, DialogContent, DialogActions, Typography, Grow, GrowProps, CircularProgress, useTheme, Box, Fade
+    TextField, Dialog, DialogContent, DialogActions, Typography, Grow, GrowProps, CircularProgress, useTheme, Box, Fade
 } from '@mui/material';
+import Button from '../buttons/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import { makeStyles } from '@mui/material/styles';
@@ -138,11 +139,15 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
                     />
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
-                    <Button onClick={handleClose} variant="outlined" color="error">
-                        Cancelar
+                    <Button onClick={handleClose}
+                        buttonType='back'
+                        label='Cancelar'
+                    >
                     </Button>
-                    <Button onClick={handleCreateAuction} variant="contained" color="success">
-                        Crear Subasta
+                    <Button onClick={handleCreateAuction}
+                        buttonType='confirm'
+                        label='Crear subasta'
+                    >
                     </Button>
                 </DialogActions>
             </Dialog>

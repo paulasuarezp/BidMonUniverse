@@ -47,6 +47,7 @@ const StyledButton = styled(MuiButton, {
       border: `0.1em solid ${theme.palette.primary.main}`,
       fontWeight: 'bold', // Texto en negrita
       variant: 'outlined',
+      backgroundColor: 'transparent',
       '&:hover': {
         backgroundColor: theme.palette.primary.light,
         color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000', // Color del texto dependiendo del tema
@@ -85,14 +86,14 @@ const StyledButton = styled(MuiButton, {
       },
     }),
     ...(buttonType === 'back' && {
-      color: theme.palette.primary.main,
+      color: theme.palette.error.main,
       backgroundColor: 'transparent',
       fontWeight: 'bold', // Texto en negrita
       variant: 'text',
       border: 'none', // Sin borde
       '&:hover': {
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.mode === 'light' ? '#000000' : '#000000', // Color del texto dependiendo del tema
+        backgroundColor: theme.palette.error.light,
+        color: theme.palette.mode === 'light' ? theme.palette.error.main : '#000000', // Color del texto dependiendo del tema
       },
       '&:active': {
         border: 'none', // Sin borde

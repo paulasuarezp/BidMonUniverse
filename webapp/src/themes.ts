@@ -24,14 +24,14 @@ export const lightTheme = createTheme({
     },
     error: {
       main: '#B30001', // Rojo para texto de error
-      light: '#A90505', // Rojo para elementos interactivos y errores
+      light: '#F7DEDF', // A90505 Rojo para elementos interactivos y errores
       dark: '#8B0000', // Rojo para elementos interactivos y errores
       contrastText: '#FFFFFF', // Texto de contraste blanco
     },
     success: {
-      main: '#6AE66F', // 6AE66F Verde suave para mensajes de éxito
-      light: '#81EA85', // Verde suave para mensajes de éxito
-      dark: '#96D398', // 85D088 Verde suave para mensajes de éxito
+      main: '#0AFF22', // 6AE66F Verde suave para mensajes de éxito
+      light: '#96D398', // Verde suave para mensajes de éxito
+      dark: '#6AE66F', //  Verde suave para mensajes de éxito
       contrastText: '#000000', // Texto de contraste 
     },
     warning: {
