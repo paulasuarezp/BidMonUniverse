@@ -54,6 +54,7 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
             direction="row"
             justifyContent="center"
             alignItems="center"
+            style={{ padding: '1em', marginBottom: '2em' }}
         >
             {Array.from({ length: numberOfCards }, (_, index) => (
                 <Grid item key={index} style={{ flex: '0 0 auto' }}>
