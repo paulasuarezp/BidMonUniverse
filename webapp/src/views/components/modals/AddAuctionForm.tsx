@@ -9,6 +9,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { addAuction } from '../../../api/auctionsAPI';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import { ErrorTwoTone } from '@mui/icons-material';
 
 
 
@@ -39,6 +40,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [closing, setClosing] = useState(false);
+    const [error, setError] = useState(false);
     const theme = useTheme();
 
     const handleCreateAuction = () => {
@@ -71,6 +73,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
             .then(() => {
                 setLoading(false);
                 setSuccess(true);
+                setError(false);
 
                 setTimeout(() => {
                     setSuccess(false);
@@ -82,6 +85,11 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                         handleClose();
                     }, 500);
                 }, 2000);
+            }).catch(() => {
+                setError(true);
+                setLoading(false);
+                setSuccess(false);
+                setConfirmDialogOpen(false);
             });
     };
 
@@ -220,6 +228,20 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                         </DialogContent>
                     </Grow>
                 }
+
+                {error && !loading && !closing &&
+                    <Grow in={error} timeout={{ enter: 500, exit: 500 }}>
+                        <DialogContent>
+                            <Box display="flex" flexDirection="column" alignItems="center">
+                                <ErrorTwoTone style={{ fontSize: 50, color: theme.palette.error.main }} />
+                                <Typography variant="h6" gutterBottom>
+                                    Ha ocurrido un error, por favor inténtalo de nuevo.
+                                </Typography>
+                            </Box>
+                        </DialogContent>
+                    </Grow>
+                }
+
                 {!loading && !success && !closing && (
                     <DialogActions style={{ justifyContent: 'center' }}>
                         <Button onClick={() => setConfirmDialogOpen(false)}
