@@ -154,7 +154,7 @@ const CardDetail = () => {
                         </Card>
                     </Grid>
                 </Grid>
-                <AddAuctionForm open={openModal} handleClose={handleClose} cardId={card._id} />
+                <AddAuctionForm open={openModal} handleClose={handleClose} userCardId={card._id} />
                 <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

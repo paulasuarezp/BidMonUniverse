@@ -19,6 +19,15 @@ export default function NavigationMenu() {
         if (newValue === 'album') {
             navigate('/album');
         }
+        if (newValue === 'shop') {
+            navigate('/shop');
+        }
+        if (newValue === 'auctions') {
+            navigate('/auctions');
+        }
+        if (newValue === 'transactions') {
+            navigate('/transactions');
+        }
     };
 
     const theme = useTheme();
@@ -41,9 +50,9 @@ export default function NavigationMenu() {
             >
                 <Tab value="logued" label="Inicio" />
                 <Tab value="album" label="Mi colección" />
-                <Tab value="tienda" label="Tienda" />
-                {!isMobile && <Tab value="subastas" label="Subastas" />}
-                {!isMobile && <Tab value="transacciones" label="Histórico de transacciones" />}
+                <Tab value="shop" label="Tienda" />
+                {!isMobile && <Tab value="auctions" label="Subastas" />}
+                {!isMobile && <Tab value="transactions" label="Histórico de transacciones" />}
             </Tabs>
         </Box>
     );

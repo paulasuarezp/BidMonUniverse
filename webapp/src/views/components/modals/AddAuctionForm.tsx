@@ -6,7 +6,11 @@ import Button from '../buttons/Button';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import { addAuction } from '../../../api/auctionsAPI';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
+
+
 
 const Transition = React.forwardRef(function Transition(
     props: GrowProps & { children: React.ReactElement<any, any> },
@@ -18,10 +22,15 @@ const Transition = React.forwardRef(function Transition(
 interface AuctionModalProps {
     open: boolean;
     handleClose: () => void;
-    cardId: string;
+    userCardId: string;
 }
 
-function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
+function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
+    const dispatch = useDispatch();
+
+    const sessionUser = useSelector((state: RootState) => state.user);
+
+
     const [basePrice, setBasePrice] = useState('1');
     const [duration, setDuration] = useState('72');
     const [basePriceError, setBasePriceError] = useState(false);
@@ -35,14 +44,14 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
     const handleCreateAuction = () => {
         let valid = true;
 
-        if (isNaN(Number(basePrice)) || Number(basePrice) < 0) {
+        if (isNaN(Number(basePrice)) || Number(basePrice) < 1) {
             setBasePriceError(true);
             valid = false;
         } else {
             setBasePriceError(false);
         }
 
-        if (isNaN(Number(duration)) || Number(duration) <= 0) {
+        if (isNaN(Number(duration)) || Number(duration) < 24 || Number(duration) > 96) {
             setDurationError(true);
             valid = false;
         } else {
@@ -58,26 +67,22 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
 
     const handleConfirmAuction = () => {
         setLoading(true);
-
-        new Promise<void>((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, 2000);
-        }).then(() => {
-            setLoading(false);
-            setSuccess(true);
-
-            setTimeout(() => {
-                setSuccess(false);
-                setClosing(true);
+        addAuction(sessionUser.username, userCardId, Number(basePrice), Number(duration))
+            .then(() => {
+                setLoading(false);
+                setSuccess(true);
 
                 setTimeout(() => {
-                    setClosing(false);
-                    setConfirmDialogOpen(false);
-                    handleClose();
-                }, 500);
-            }, 2000);
-        });
+                    setSuccess(false);
+                    setClosing(true);
+
+                    setTimeout(() => {
+                        setClosing(false);
+                        setConfirmDialogOpen(false);
+                        handleClose();
+                    }, 500);
+                }, 2000);
+            });
     };
 
     return (
@@ -108,7 +113,7 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
                         type="text"
                         fullWidth
                         variant="outlined"
-                        value={cardId}
+                        value={userCardId}
                         InputProps={{
                             readOnly: true,
                             style: {
@@ -127,7 +132,7 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
                         value={basePrice}
                         onChange={e => setBasePrice(e.target.value)}
                         error={basePriceError}
-                        helperText={basePriceError ? 'Por favor, introduce un precio base válido' : 'Valor predeterminado: 1'}
+                        helperText={basePriceError ? 'Por favor, introduce un precio base válido. Mínimo: 1 zen' : 'Valor predeterminado: 1 zen.'}
                     />
                     <TextField
                         margin="dense"
@@ -139,7 +144,7 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
                         value={duration}
                         onChange={e => setDuration(e.target.value)}
                         error={durationError}
-                        helperText={durationError ? 'Por favor, introduce una duración válida' : 'Valor predeterminado: 72 horas'}
+                        helperText={durationError ? 'Por favor, introduce una duración válida. Mínimo: 24 horas, Máximo: 96 horas' : 'Valor predeterminado: 72 horas.'}
                     />
                 </DialogContent>
                 <DialogActions style={{ justifyContent: 'center' }}>
@@ -179,7 +184,7 @@ function AddAuctionForm({ open, handleClose, cardId }: AuctionModalProps) {
                                 <Typography variant="h4" gutterBottom>
                                     Confirmar subasta
                                 </Typography>
-                                <Typography variant="body2">ID de la Carta: {cardId}</Typography>
+                                <Typography variant="body2">ID de la Carta: {userCardId}</Typography>
                                 <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
                                     <Typography variant="body2">Precio Base: {basePrice}</Typography>
                                     <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
