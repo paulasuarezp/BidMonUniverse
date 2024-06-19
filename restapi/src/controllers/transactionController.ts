@@ -14,7 +14,6 @@ const getTransactions = async (req: Request, res: Response) => {
         res.status(200).json(transactions);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener las transacciones.' });
     }
 };
@@ -38,7 +37,6 @@ const getTransaction = async (req: Request, res: Response) => {
         res.status(200).json(transaction);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener la transacción.' });
     }
 }
@@ -59,7 +57,6 @@ const getTransactionsByUsername = async (req: Request, res: Response) => {
         res.status(200).json(transactions);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener las transacciones.' });
     }
 }
@@ -77,7 +74,6 @@ const getTransactionsByUserCardId = async (req: Request, res: Response) => {
         res.status(200).json(transactions);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener las transacciones.' });
     }
 }
