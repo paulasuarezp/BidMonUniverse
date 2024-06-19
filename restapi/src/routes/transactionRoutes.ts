@@ -10,9 +10,8 @@ transactionRouter.use(auth);
 import {
     getTransactions,
     getTransaction,
-    getTransactionsByCardId,
-    getTransactionsByUsername,
-    getTransactionsByCardIdAndUsername
+    getTransactionsByUserCardId,
+    getTransactionsByUsername
 } from '../controllers/transactionController';
 
 /**
@@ -32,7 +31,7 @@ transactionRouter.get('/', verifyAdmin, getTransactions);
  * @throws 400 - Si el username no es válido
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
-transactionRouter.get('/user/:username', [
+transactionRouter.get('/u/:username', [
     param('username').notEmpty().withMessage('Username is required'),
     param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
     (req: Request, res: Response, next: any) => {
@@ -52,8 +51,9 @@ transactionRouter.get('/user/:username', [
  * @throws 400 - Si el cardId no es válido
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
-transactionRouter.get('/card/:cardId', [
-    param('cardId').notEmpty().withMessage('Card ID is required'),
+transactionRouter.get('/c/:userCardId', [
+    param('userCardId').notEmpty().withMessage('User Card ID is required'),
+    param('userCardId').isString().isMongoId().withMessage('User Card ID must be a valid MongoID'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -61,32 +61,9 @@ transactionRouter.get('/card/:cardId', [
         }
         next();
     }
-], getTransactionsByCardId);
+], getTransactionsByUserCardId);
 
 
-/**
- * Ruta para obtener todas las transacciones de una carta, por su cardId y username
- * @route GET /transactions/user/:username/:cardId
- * @param username nombre de usuario
- * @param cardId id de la carta
- * @returns todas las transacciones de la carta realizadas por el usuario, puede ser un array vacío
- * @throws 400 - Si el username o el cardId no son válidos
- * @throws 500 - Si se produce un error de conexión con la base de datos
- * @throws 404 - Si no se encuentra la transacción
- * 
- */
-transactionRouter.get('/user/:username/:cardId', [
-    param('cardId').notEmpty().withMessage('Card ID is required'),
-    param('username').notEmpty().withMessage('Username is required'),
-    param('username').isString().withMessage('Username must be a valid string in lowercase'),
-    (req: Request, res: Response, next: any) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    }
-], getTransactionsByCardIdAndUsername);
 
 /**
  * Ruta para obtener una transacción por su ID

@@ -96,11 +96,11 @@ describe('TRANSACTION ROUTES', () => {
 
     });
 
-    describe('GET /transactions/user/:username', () => {
+    describe('GET /transactions/u/:username', () => {
         it('should return transactions for a valid username', async () => {
-            const username = 'test'; // Asegúrate de que este nombre de usuario tenga transacciones
+            const username = 'test';
             const response = await api
-                .get(`/transactions/user/${username}`)
+                .get(`/transactions/u/${username}`)
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -109,11 +109,11 @@ describe('TRANSACTION ROUTES', () => {
 
     });
 
-    describe('GET /transactions/card/:cardId', () => {
-        it('should return transactions for a valid cardId', async () => {
-            const cardId = 'c-1-0'; // Asegúrate de que esta carta tenga transacciones
+    describe('GET /transactions/c/:userCardId', () => {
+        it('should return transactions for a valid userCardId', async () => {
+            const userCardId = '66646db6a10d744749820f4b';
             const response = await api
-                .get(`/transactions/card/${cardId}`)
+                .get(`/transactions/c/${userCardId}`)
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -122,23 +122,11 @@ describe('TRANSACTION ROUTES', () => {
 
     });
 
-    describe('GET /transactions/card/:cardId/user/:username', () => {
-        it('should return transactions for a valid cardId and username', async () => {
-            const cardId = 'c-1-0'; // Asegúrate de que esta carta tenga transacciones
-            const username = 'test'; // Asegúrate de que este nombre de
-            const response = await api
-                .get(`/transactions/user/${username}/${cardId}`)
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toHaveLength(1);
-        });
-    });
 
 
 });
 
-describe('Transaction Routes Error Handling', () => {
+describe('TRANSACTION ROUTES Error Handling', () => {
     describe('GET /transactions/:transactionId', () => {
         it('should return 400 for invalid transactionId', async () => {
             const response = await api
@@ -156,10 +144,10 @@ describe('Transaction Routes Error Handling', () => {
         });
     });
 
-    describe('GET /transactions/user/:username', () => {
+    describe('GET /transactions/u/:username', () => {
         it('should return 400 for invalid username', async () => {
             const response = await api
-                .get('/transactions/user/INVALIDUSERNAME2022')
+                .get('/transactions/u/INVALIDUSERNAME2022')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(400);
@@ -172,23 +160,4 @@ describe('Transaction Routes Error Handling', () => {
         });
     });
 
-    describe('GET /transactions/user/:username/:cardId', () => {
-        it('should return 400 for invalid username and cardId', async () => {
-            const response = await api
-                .get('/transactions/user/INVALIDUSERNAME2022/invalid-card-id')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(400);
-            expect(response.body.errors).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        msg: 'Username must be a valid string in lowercase',
-                        param: 'username'
-                    })
-                ])
-            );
-
-            expect(response.body.errors.length).toBe(1);
-        });
-    });
 });

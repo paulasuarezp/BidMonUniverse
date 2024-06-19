@@ -10,7 +10,7 @@ import {
     getAuctions,
     getAuction,
     getActiveAuctions,
-    getActiveAuctionByUser,
+    getActiveAuctionsByUser,
     getActiveAuctionsByPokemonName,
     putUserCardUpForAuction,
     withdrawnUserCardFromAuction,
@@ -48,15 +48,6 @@ auctionRouter.get('/auction/:id', [
  * @route GET /active-auctions
  * @returns {Auction[]} 200 - Lista de subastas activas
  */
-auctionRouter.get('/active-auctions', getActiveAuctions);
-
-/**
- * Ruta para obtener todas las subastas activas de un usuario
- * @route GET /active-auctions/:username
- * @param username del usuario
- * @returns {Auction[]} 200 - Lista de subastas activas del usuario
- * @returns {Error}  400 - Error de validación
- */
 auctionRouter.get('/active-auctions/:username', [
     param('username').notEmpty().withMessage('Username is required'),
     param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
@@ -67,7 +58,26 @@ auctionRouter.get('/active-auctions/:username', [
         }
         next();
     }
-], getActiveAuctionByUser);
+], getActiveAuctions);
+
+/**
+ * Ruta para obtener todas las subastas activas de un usuario
+ * @route GET /active-auctions/:username
+ * @param username del usuario
+ * @returns {Auction[]} 200 - Lista de subastas activas del usuario
+ * @returns {Error}  400 - Error de validación
+ */
+auctionRouter.get('/active-auctions/u/:username', [
+    param('username').notEmpty().withMessage('Username is required'),
+    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
+    (req: Request, res: Response, next: any) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    }
+], getActiveAuctionsByUser);
 
 /**
  * Ruta para obtener todas las subastas activas de un usuario

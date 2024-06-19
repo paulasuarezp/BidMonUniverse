@@ -44,10 +44,10 @@ afterAll(async () => {
 });
 
 describe('USERCARD ROUTES', () => {
-    describe('GET /usercards/:username', () => {
+    describe('GET /usercards/u/:username', () => {
         it('should return user usercards for a valid username', async () => {
             const response = await api
-                .get('/usercards/test')
+                .get('/usercards/u/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -55,9 +55,44 @@ describe('USERCARD ROUTES', () => {
         });
 
 
+    });
+
+    describe('GET /usercards/:id', () => {
+        it('should return a specific user card', async () => {
+            const response = await api
+                .get('/usercards/66646db6a10d744749820f4b')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveProperty('legibleCardId', 'c-1-0');
+        });
+
+        it('should return 404 if does not exist', async () => {
+            const response = await api
+                .get('/usercards/86646db6a10d744749820f4b')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(404);
+        });
+    });
+
+});
+
+describe('USERCARD ROUTES Error Handling', () => {
+    describe('GET /usercards/:id', () => {
+        it('should return 400 for invalid userCardId', async () => {
+            const response = await api
+                .get('/usercards/invalid-id')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(400);
+        });
+    });
+
+    describe('GET /usercards/u/:username', () => {
         it('should return 400 if username is too long', async () => {
             const response = await api
-                .get('/usercards/thisusernameiswaytoolongtobevalid')
+                .get('/usercards/u/thisusernameiswaytoolongtobevalid')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(400);
@@ -68,24 +103,4 @@ describe('USERCARD ROUTES', () => {
             );
         });
     });
-
-    describe('GET /usercards/:username/:cardId', () => {
-        it('should return a specific user card', async () => {
-            const response = await api
-                .get('/usercards/test/c-1-0')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toHaveProperty('legibleCardId', 'c-1-0');
-        });
-
-        it('should return 404 if cardId is not a valid cardId', async () => {
-            const response = await api
-                .get('/usercards/test/1')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(404);
-        });
-    });
-
 });

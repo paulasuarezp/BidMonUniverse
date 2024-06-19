@@ -55,71 +55,11 @@ const getCardById = async (id: any, session: ClientSession): Promise<ICard | nul
   return card as unknown as ICard | null;
 }
 
-/**
- * Función auxiliar para actualizar las referencias de las userCards en las cards
- * @returns void
- * @throws Error si no se puede actualizar la referencia
- */
-const updateCardReferences = async () => {
-  try {
-    // Obtener todas las UserCards
-    const userCards = await UserCard.find().exec();
 
-    // Recorrer cada UserCard y actualizar la Card correspondiente
-    for (const userCard of userCards) {
-      const cardId = userCard.card;
-      await Card.updateOne(
-        { _id: cardId },
-        { $addToSet: { cards: userCard._id } } // Utiliza $addToSet para evitar duplicados
-      );
-    }
-
-    console.log('All card references have been updated.');
-  } catch (error) {
-    console.error('Failed to update card references:', error);
-  }
-};
-
-// Pipeline de agregación para comprobar las referencias de las cartas
-/** 
-import { MongoClient } from 'mongodb';
-
-
- * Requires the MongoDB Node.js Driver
- * https://mongodb.github.io/node-mongodb-native
- 
-
-const agg = [
-  {
-    '$match': {
-      '$expr': {
-        '$gte': [
-          {
-            '$size': '$cards'
-          }, 1
-        ]
-      }
-    }
-  }, {
-    '$count': 'id'
-  }
-];
-
-const client = await MongoClient.connect(
-  ''
-);
-const coll = client.db('test').collection('cards');
-const cursor = coll.aggregate(agg);
-const result = await cursor.toArray();
-await client.close();
-
-console.log(result);
-*/
 
 // Exportar funciones de controlador
 export {
   getCards,
   getCard,
-  getCardById,
-  updateCardReferences
+  getCardById
 };

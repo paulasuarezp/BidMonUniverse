@@ -55,16 +55,6 @@ describe('DECK ROUTES', () => {
             expect(response.body).toHaveLength(4);
         });
 
-        it('should handle errors', async () => {
-            jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
-
-            const response = await api
-                .get('/decks')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(500);
-            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener los mazos de cartas.' });
-        });
     });
 
     describe('GET /decks/:deckid', () => {
@@ -83,6 +73,25 @@ describe('DECK ROUTES', () => {
             }));
 
         });
+
+    });
+});
+
+describe('DECK ROUTES Error Handling', () => {
+    describe('GET /decks', () => {
+        it('should handle errors', async () => {
+            jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
+
+            const response = await api
+                .get('/decks')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(500);
+            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener los mazos de cartas.' });
+        });
+    });
+
+    describe('GET /decks/:deckid', () => {
 
         it('should return 404 if deck does not exist', async () => {
             const response = await api
@@ -105,4 +114,3 @@ describe('DECK ROUTES', () => {
         });
     });
 });
-
