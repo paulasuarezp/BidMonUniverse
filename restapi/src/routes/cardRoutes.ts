@@ -1,26 +1,22 @@
 const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
+import auth from '../middlewares/authMiddleware';
 
 const cardRouter: Router = express.Router();
 
-const auth = require('../middlewares/authMiddleware');
-
 cardRouter.use(auth);
 
-import { 
+import {
     getCards,
     getCard,
     updateCardReferences
-  } from '../controllers/cardController';
+} from '../controllers/cardController';
 
 /**
  * Ruta para obtener todas las cartas
  * @route GET /cards
  */
 cardRouter.get('/', getCards);
-
-cardRouter.get('/updateCardReferences', updateCardReferences);
-
 
 /**
  * Ruta para obtener una carta por su ID

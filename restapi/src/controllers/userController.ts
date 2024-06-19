@@ -60,7 +60,6 @@ const createUser = async (req: Request, res: Response) => {
                 auth: false
             });
         }
-        console.error(error);
         return res.status(500).json({
             message: 'Se ha producido un error al crear el usuario. Por favor, inténtelo de nuevo.',
             auth: false
@@ -116,7 +115,6 @@ const loginUser = async (req: Request, res: Response) => {
             token: token
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             message: 'Se ha producido un error al verificar credenciales. Por favor, inténtelo de nuevo.',
             auth: false
@@ -154,7 +152,6 @@ const getUser = async (req: Request, res: Response) => {
         });
     
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.'
         });

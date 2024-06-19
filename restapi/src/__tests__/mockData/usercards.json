@@ -1,0 +1,38 @@
+[
+    {
+        "_id": "66646db6a10d744749820f4b",
+        "card": "6661e0331e0b158d0f0cdb1f",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-1-0",
+        "status": "notforsale",
+        "transactionHistory": [
+            "66646db6a10d744749820f4c"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "66646db6a10d744749820f4f",
+        "card": "6661e0331e0b158d0f0cdb20",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-2-1",
+        "status": "notforsale",
+        "transactionHistory": [
+            "66646db6a10d744749820f50"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "66646db6a10d744749820f53",
+        "card": "6661e0331e0b158d0f0cdb21",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "legibleCardId": "c-3-2",
+        "status": "notforsale",
+        "transactionHistory": [
+            "66646db6a10d744749820f54"
+        ],
+        "__v": 0
+    }
+]

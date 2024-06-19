@@ -12,14 +12,13 @@ import UserCard from '../models/userCard';
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getCards = async (req: Request, res: Response) => {
-    try {
-        const cards = await Card.find();
-        res.status(200).json(cards);
-    }
-    catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: 'Se ha producido un error al obtener las cartas.' });
-    }
+  try {
+    const cards = await Card.find();
+    res.status(200).json(cards);
+  }
+  catch (error: any) {
+    res.status(500).json({ message: 'Se ha producido un error al obtener las cartas.' });
+  }
 };
 
 /**
@@ -31,18 +30,17 @@ const getCards = async (req: Request, res: Response) => {
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
 const getCard = async (req: Request, res: Response) => {
-    try {
-        const
-            card = await Card.findOne({ cardId: req.params.cardId });
-        if (!card) {
-            return res.status(404).json({ message: 'Carta no encontrada.' });
-        }
-        res.status(200).json(card);
+  try {
+    const
+      card = await Card.findOne({ cardId: req.params.cardId });
+    if (!card) {
+      return res.status(404).json({ message: 'Carta no encontrada.' });
     }
-    catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: 'Se ha producido un error al obtener la carta.' });
-    }
+    res.status(200).json(card);
+  }
+  catch (error: any) {
+    res.status(500).json({ message: 'Se ha producido un error al obtener la carta.' });
+  }
 }
 
 
@@ -53,33 +51,33 @@ const getCard = async (req: Request, res: Response) => {
  * @returns carta o null si no se encuentra
  */
 const getCardById = async (id: any, session: ClientSession): Promise<ICard | null> => {
-    const card: any = await Card.findById(id).session(session).populate('cards').exec();
-    return card as unknown as ICard | null;
-  }
-  
-  /**
-   * Función auxiliar para actualizar las referencias de las userCards en las cards
-   * @returns void
-   * @throws Error si no se puede actualizar la referencia
-   */
-  const updateCardReferences = async () => {
-    try {
-        // Obtener todas las UserCards
-        const userCards = await UserCard.find().exec();
+  const card: any = await Card.findById(id).session(session).populate('cards').exec();
+  return card as unknown as ICard | null;
+}
 
-        // Recorrer cada UserCard y actualizar la Card correspondiente
-        for (const userCard of userCards) {
-            const cardId = userCard.card;
-            await Card.updateOne(
-                { _id: cardId },
-                { $addToSet: { cards: userCard._id } } // Utiliza $addToSet para evitar duplicados
-            );
-        }
+/**
+ * Función auxiliar para actualizar las referencias de las userCards en las cards
+ * @returns void
+ * @throws Error si no se puede actualizar la referencia
+ */
+const updateCardReferences = async () => {
+  try {
+    // Obtener todas las UserCards
+    const userCards = await UserCard.find().exec();
 
-        console.log('All card references have been updated.');
-    } catch (error) {
-        console.error('Failed to update card references:', error);
+    // Recorrer cada UserCard y actualizar la Card correspondiente
+    for (const userCard of userCards) {
+      const cardId = userCard.card;
+      await Card.updateOne(
+        { _id: cardId },
+        { $addToSet: { cards: userCard._id } } // Utiliza $addToSet para evitar duplicados
+      );
     }
+
+    console.log('All card references have been updated.');
+  } catch (error) {
+    console.error('Failed to update card references:', error);
+  }
 };
 
 // Pipeline de agregación para comprobar las referencias de las cartas
@@ -120,8 +118,8 @@ console.log(result);
 
 // Exportar funciones de controlador
 export {
-    getCards,
-    getCard,
-    getCardById,
-    updateCardReferences
+  getCards,
+  getCard,
+  getCardById,
+  updateCardReferences
 };

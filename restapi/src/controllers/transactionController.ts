@@ -33,7 +33,7 @@ const getTransaction = async (req: Request, res: Response) => {
             transaction = await Transaction.findById(req.params.transactionId);
         if (!transaction) {
             return res.status(404
-                ).json({ message: 'Transacción no encontrada.' });
+            ).json({ message: 'Transacción no encontrada.' });
         }
         res.status(200).json(transaction);
     }
@@ -50,12 +50,12 @@ const getTransaction = async (req: Request, res: Response) => {
  * @returns lista de transacciones
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
-const getTransactionsByUserId = async (req: Request, res: Response) => {
+const getTransactionsByUsername = async (req: Request, res: Response) => {
     try {
         let { username } = req.params;
         username = username.toLowerCase();
 
-        const transactions = await Transaction.find({ username: username});
+        const transactions = await Transaction.find({ username: username });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -92,8 +92,8 @@ const getTransactionsByCardId = async (req: Request, res: Response) => {
 const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
     try {
         let { username, cardId } = req.params;
-        username = username.toLowerCase();
-        
+        // username = username.toLowerCase();
+
         const transactions = await Transaction.find({ legibleCardId: cardId, username: username });
         res.status(200).json(transactions);
     }
@@ -107,7 +107,7 @@ const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) =
 export {
     getTransactions,
     getTransaction,
-    getTransactionsByUserId,
+    getTransactionsByUsername,
     getTransactionsByCardId,
     getTransactionsByCardIdAndUsername
 };

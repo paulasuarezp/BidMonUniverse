@@ -15,7 +15,6 @@ const getCardPacks = async (req: Request, res: Response) => {
         res.status(200).json(cardPacks);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener los paquetes de cartas.' });
     }
 };
@@ -38,7 +37,6 @@ const getCardPack = async (req: Request, res: Response) => {
         res.status(200).json(cardPack);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener el paquete de cartas.' });
     }
 }

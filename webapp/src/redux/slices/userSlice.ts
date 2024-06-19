@@ -6,7 +6,8 @@ const initialState: UserState = {
     role: AccessLevel.Guest,
     birthday: '',
     balance: 0,
-    profileImg: ''
+    profileImg: '',
+    socketConnected: false
 }
 
 const userSlice = createSlice({
@@ -26,10 +27,13 @@ const userSlice = createSlice({
             state.birthday = '';
             state.balance = 0;
             state.profileImg = '';
+        },
+        setSocketConnected(state, action: PayloadAction<boolean>) {
+            state.socketConnected = action.payload;
         }
     }
 });
 
-export const { setUser, resetUser } = userSlice.actions;
+export const { setUser, resetUser, setSocketConnected } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,0 +1,56 @@
+[
+    {
+        "_id": "666208be2b058394b3fd78d6",
+        "deckId": "d-2",
+        "name": "Deck Rare",
+        "type": "rare",
+        "publicationDate": "2024-06-06T18:33:25.000Z",
+        "cards": [
+            "6661e0331e0b158d0f0cdb25",  
+            "6661e0331e0b158d0f0cdb28",  
+            "6661e0331e0b158d0f0cdbae"
+           
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "666208be2b058394b3fd78d8",
+        "deckId": "d-3",
+        "name": "Deck UltraRare",
+        "type": "ultrarare",
+        "publicationDate": "2024-06-06T18:33:25.000Z",
+        "cards": [
+            "6661e0331e0b158d0f0cdb22",  
+            "6661e0331e0b158d0f0cdb24"
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "666208be2b058394b3fd78dd",
+        "deckId": "d-1",
+        "name": "Deck Common",
+        "type": "common",
+        "publicationDate": "2024-06-06T18:33:25.000Z",
+        "cards": [
+            "6661e0331e0b158d0f0cdb1f", 
+            "6661e0331e0b158d0f0cdb20",  
+            "6661e0331e0b158d0f0cdb21",  
+            "6661e0331e0b158d0f0cdb23",  
+            "6661e0331e0b158d0f0cdb26",  
+            "6661e0331e0b158d0f0cdbb5"
+
+        ],
+        "__v": 0
+    },
+    {
+        "_id": "666208be2b058394b3fd78e1",
+        "deckId": "d-4",
+        "name": "Deck Legendary",
+        "type": "legendary",
+        "publicationDate": "2024-06-06T18:33:25.000Z",
+        "cards": [
+            "6661e0331e0b158d0f0cdb27"
+        ],
+        "__v": 0
+    }
+]
