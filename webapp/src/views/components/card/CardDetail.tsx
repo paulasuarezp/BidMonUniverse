@@ -26,6 +26,7 @@ import Button from '../buttons/Button';
 import { capitalizeFirstLetter } from '../../../utils/utils';
 import CodeIcon from '@mui/icons-material/Code';
 import { getCategoryIcon, getCardGradient, getPokemonGymImg, getCategoryName } from './CardUtils';
+import ErrorMessageBox from '../error/ErrorMessageBox';
 
 
 
@@ -76,9 +77,7 @@ const CardDetail = () => {
 
     if (error) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <Typography variant="h6" color="error">{error}</Typography>
-            </Box>
+            <ErrorMessageBox />
         );
     }
 

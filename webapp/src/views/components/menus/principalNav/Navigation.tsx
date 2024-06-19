@@ -2,6 +2,11 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import HomeIcon from '@mui/icons-material/Home';
+import CollectionsIcon from '@mui/icons-material/Collections';
+import StoreIcon from '@mui/icons-material/Store';
+import GavelIcon from '@mui/icons-material/Gavel';
+import HistoryIcon from '@mui/icons-material/History';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -10,29 +15,30 @@ export default function NavigationMenu() {
     const [value, setValue] = React.useState('logued');
     const navigate = useNavigate();
     const location = useLocation();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
-        if (newValue === 'logued') {
-            navigate('/logued');
-        }
-        if (newValue === 'album') {
-            navigate('/album');
-        }
-        if (newValue === 'shop') {
-            navigate('/shop');
-        }
-        if (newValue === 'auctions') {
-            navigate('/auctions');
-        }
-        if (newValue === 'transactions') {
-            navigate('/transactions');
+        switch (newValue) {
+            case 'logued':
+                navigate('/logued');
+                break;
+            case 'album':
+                navigate('/album');
+                break;
+            case 'shop':
+                navigate('/shop');
+                break;
+            case 'auctions':
+                navigate('/auctions');
+                break;
+            case 'transactions':
+                navigate('/transactions');
+                break;
         }
     };
 
-    const theme = useTheme();
-
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     React.useEffect(() => {
         const path = location.pathname.replace('/', '');
@@ -46,13 +52,14 @@ export default function NavigationMenu() {
                 onChange={handleChange}
                 textColor="secondary"
                 indicatorColor="secondary"
-                aria-label="secondary tabs example"
+                aria-label="navigation tabs"
+                TabIndicatorProps={{ style: { height: '3px', bottom: '10px' } }}
             >
-                <Tab value="logued" label="Inicio" />
-                <Tab value="album" label="Mi colección" />
-                <Tab value="shop" label="Tienda" />
-                {!isMobile && <Tab value="auctions" label="Subastas" />}
-                {!isMobile && <Tab value="transactions" label="Histórico de transacciones" />}
+                <Tab icon={<HomeIcon />} value="logued" iconPosition="start" />
+                <Tab icon={<CollectionsIcon />} value="album" iconPosition="start" label={isMobile ? '' : 'Mi colección'} />
+                <Tab icon={<StoreIcon />} value="shop" iconPosition="start" label={isMobile ? '' : 'Tienda'} />
+                {!isMobile && <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' />}
+                {!isMobile && <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' />}
             </Tabs>
         </Box>
     );
