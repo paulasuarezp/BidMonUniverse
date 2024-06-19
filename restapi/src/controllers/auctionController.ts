@@ -177,19 +177,19 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         }
 
         // Verificar que el usuario exista
-        const user = await User.findOne({ username: username });
+        const user = await User.findOne({ username_lower: username });
         if (!user) {
             throw new Error("Usuario no encontrado.");
         }
 
         // Verificar que la carta exista
-        const card = await UserCard.findOne({ id: userCardId });
+        const card = await UserCard.findById(userCardId);
         if (!card) {
             throw new Error("Carta no encontrada.");
         }
 
         // Verificar que el usuario sea el dueño de la carta o un administrador
-        if (card.user !== user.id && user.role !== 'admin') {
+        if (card.user == user._id) {
             throw new Error("El usuario no es el dueño de la carta que intenta poner en subasta.");
         }
 
@@ -213,11 +213,11 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
 
         // Registrar la transacción de venta
         const saleTransaction = new Transaction({
-            user: user.id,
+            user: user._id,
             username: username,
             userCard: userCardId,
             cardId: card.card,
-            legibleCardId: req.body.legibleCardId,
+            legibleCardId: card.legibleCardId,
             concept: TransactionConcept.ForSaleOnAuction,
             price: saleBase,
             date: new Date(),
@@ -231,7 +231,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         await updatedCard.save({ session });
 
         let calculatedDuration = 48 * 60 * 60 * 1000; // 48 horas por defecto (en milisegundos)
-        if (duration && duration >= 2 && duration <= 72) {
+        if (duration && duration >= 2 && duration <= 96) {
             calculatedDuration = duration * 60 * 60 * 1000;
         }
 
@@ -239,7 +239,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         const auction = new Auction({
             card: userCardId,
             legibleCardId: updatedCard.legibleCardId,
-            seller: user.id,
+            seller: user._id,
             sellerUsername: username,
             initialPrice: saleBase,
             publicationDate: new Date(),

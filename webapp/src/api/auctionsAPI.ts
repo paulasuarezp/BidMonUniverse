@@ -6,7 +6,7 @@ export const addAuction = async (username: string, userCardId: string, saleBase:
         throw new Error('No token found');
     }
 
-    const url = `${apiEndPointBase}/put-auction-card'`
+    const url = `${apiEndPointBase}/add`
 
     return fetch(url, {
         method: 'POST',
