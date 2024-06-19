@@ -8,8 +8,7 @@ cardRouter.use(auth);
 
 import {
     getCards,
-    getCard,
-    updateCardReferences
+    getCard
 } from '../controllers/cardController';
 
 /**

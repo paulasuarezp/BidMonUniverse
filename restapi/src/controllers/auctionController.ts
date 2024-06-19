@@ -63,7 +63,7 @@ const getAuction = async (req: Request, res: Response) => {
 
 
 /**
- * Recupera todas las subastas activas en el sistema.
+ * Recupera todas las subastas activas en el sistema, excluyendo las subastas del usuario actual.
  * Esta función busca en la base de datos todas las subastas que se encuentran con el estado 'open' y las devuelve.
  * Es útil para mostrar a los usuarios una lista de subastas en las que pueden participar actualmente.
  * 
@@ -76,7 +76,7 @@ const getAuction = async (req: Request, res: Response) => {
  */
 const getActiveAuctions = async (req: Request, res: Response) => {
     try {
-        const auctions = await Auction.find({ status: 'open' });
+        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: { $ne: req.params.username } });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);
@@ -98,7 +98,7 @@ const getActiveAuctions = async (req: Request, res: Response) => {
  * @throws {Error} 500 - Si se produce un error durante la recuperación de las subastas activas del usuario.
  */
 
-const getActiveAuctionByUser = async (req: Request, res: Response) => {
+const getActiveAuctionsByUser = async (req: Request, res: Response) => {
     try {
         const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: req.params.username });
         res.status(200).json(auctions);
@@ -189,7 +189,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         }
 
         // Verificar que el usuario sea el dueño de la carta o un administrador
-        if (card.user !== user.id && user.role !== 'admin'){
+        if (card.user !== user.id && user.role !== 'admin') {
             throw new Error("El usuario no es el dueño de la carta que intenta poner en subasta.");
         }
 
@@ -201,7 +201,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         // Actualizar la UserCard para transferirla al nuevo usuario
         const updatedCard = await UserCard.findOneAndUpdate(
             { _id: userCardId },
-            { status:  CardStatus.OnAuction },  // Actualizar el estado
+            { status: CardStatus.OnAuction },  // Actualizar el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
 
@@ -209,7 +209,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
             throw new Error("No se pudo poner la carta en subasta. La carta no se encontró o ya fue vendida.");
         }
 
-        
+
 
         // Registrar la transacción de venta
         const saleTransaction = new Transaction({
@@ -231,7 +231,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
         await updatedCard.save({ session });
 
         let calculatedDuration = 48 * 60 * 60 * 1000; // 48 horas por defecto (en milisegundos)
-        if(duration && duration >= 2 && duration <= 72) {
+        if (duration && duration >= 2 && duration <= 72) {
             calculatedDuration = duration * 60 * 60 * 1000;
         }
 
@@ -308,8 +308,8 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
         // Actualizar la UserCard para transferirla de nuevo al usuario
         const updatedCard = await UserCard.findOneAndUpdate(
-            { id: userCardId},
-            { status:  CardStatus.NotForSale },  // Actualizar el estado
+            { id: userCardId },
+            { status: CardStatus.NotForSale },  // Actualizar el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
 
@@ -324,7 +324,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         }
 
         // Verificar que el usuario sea el dueño de la carta o un administrador
-        if (card.user !== user.id && user.role !== 'admin'){
+        if (card.user !== user.id && user.role !== 'admin') {
             throw new Error("El usuario no es el dueño de la carta que intenta retirar de la subasta.");
         }
 
@@ -354,7 +354,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         // Registrar la transacción de retirada de la subasta
         const withdrawTransaction = new Transaction({
             user: user.id,
-            username: username, 
+            username: username,
             userCard: userCardId,
             cardId: updatedCard.card,
             legibleCardId: updatedCard.legibleCardId,
@@ -430,9 +430,9 @@ const checkAllActiveAuctions = async (req: Request, res: Response) => {
         }
 
         // Realizar la transacción si todo fue exitoso
-         await session.commitTransaction();
-         session.endSession();
-         res.status(200).json({ message: 'Se han cerrado las subastas que han finalizado.', auctions: updateAuctions });
+        await session.commitTransaction();
+        session.endSession();
+        res.status(200).json({ message: 'Se han cerrado las subastas que han finalizado.', auctions: updateAuctions });
 
     } catch (error: any) {
         console.error(error);
@@ -471,7 +471,7 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
             return;
         }
 
-        
+
         // Obtener todas las pujas para la subasta específica y que tengan estado 'Pending'
         const allBids: IBid[] = await Bid.find({ auction: auction._id, status: BidStatus.Pending }).exec();
 
@@ -492,7 +492,7 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
                 winnerBid = sortedBids[i];
                 break;
             }
-            
+
         }
 
         if (winnerBid) {
@@ -563,7 +563,7 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
  *  - Si la carta no se encuentra o ya ha sido vendida.
  *  - Si no se puede completar la transacción por cualquier otro motivo técnico.
  */
-const transferCard = async (auction:IAuction, bid: IBid, session:any) => {
+const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
     try {
 
         const sellerId = auction.seller;
@@ -588,7 +588,7 @@ const transferCard = async (auction:IAuction, bid: IBid, session:any) => {
             throw new Error("Comprador no encontrado.");
         }
 
-        if(buyer.balance < salePrice) {
+        if (buyer.balance < salePrice) {
             throw new Error("El comprador no tiene suficiente saldo para comprar la carta.");
         }
 
@@ -604,7 +604,7 @@ const transferCard = async (auction:IAuction, bid: IBid, session:any) => {
         // Actualizar la UserCard para transferirla al nuevo usuario
         const updatedCard = await UserCard.findOneAndUpdate(
             { id: userCardId },
-            { user: buyerId, status: CardStatus.NotForSale},  // Actualizar el usuario y el estado
+            { user: buyerId, status: CardStatus.NotForSale },  // Actualizar el usuario y el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
 
@@ -660,7 +660,7 @@ export {
     getAuctions,
     getAuction,
     getActiveAuctions,
-    getActiveAuctionByUser,
+    getActiveAuctionsByUser,
     getActiveAuctionsByPokemonName,
     putUserCardUpForAuction,
     withdrawnUserCardFromAuction,

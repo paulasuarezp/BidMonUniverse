@@ -65,15 +65,15 @@ const getTransactionsByUsername = async (req: Request, res: Response) => {
 }
 
 /**
- * Devuelve todas las transacciones de cartas por su cardId
+ * Devuelve todas las transacciones de cartas para el id (ObjectId) de la userCard de un usuario
  * @param req 
  * @param res 
  * @returns lista de transacciones
  * @throws 500 - Si se produce un error de conexión con la base de datos
  */
-const getTransactionsByCardId = async (req: Request, res: Response) => {
+const getTransactionsByUserCardId = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ legibleCardId: req.params.cardId });
+        const transactions = await Transaction.find({ userCard: req.params.userCardId });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -82,32 +82,11 @@ const getTransactionsByCardId = async (req: Request, res: Response) => {
     }
 }
 
-/**
- * Devuelve todas las transacciones de cartas por su cardId pertenecientes a un usuario
- * @param req
- * @param res
- * @returns
- * @throws 500 - Si se produce un error de conexión con la base de datos
- */
-const getTransactionsByCardIdAndUsername = async (req: Request, res: Response) => {
-    try {
-        let { username, cardId } = req.params;
-        // username = username.toLowerCase();
-
-        const transactions = await Transaction.find({ legibleCardId: cardId, username: username });
-        res.status(200).json(transactions);
-    }
-    catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: 'Se ha producido un error al obtener las transacciones.' });
-    }
-}
 
 // Exportar funciones de controlador
 export {
     getTransactions,
     getTransaction,
     getTransactionsByUsername,
-    getTransactionsByCardId,
-    getTransactionsByCardIdAndUsername
+    getTransactionsByUserCardId
 };

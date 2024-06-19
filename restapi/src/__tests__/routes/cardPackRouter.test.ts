@@ -50,7 +50,25 @@ describe('CARDPACK ROUTES', () => {
 
             expect(response.body).toHaveLength(initialCardPacksFiltered.length);
         });
+    });
 
+    describe('GET /cardpacks/:cardPackId', () => {
+        it('should get a card pack by cardPackid', async () => {
+            const response = await api
+                .get('/cardpacks/CP-1')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual(expect.objectContaining({ name: 'Starter Pack' }));
+        });
+
+    });
+});
+
+
+
+describe('CARDPACK ROUTES Error Handling', () => {
+    describe('GET /cardpacks', () => {
         it('should handle errors', async () => {
             jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
 
@@ -64,15 +82,6 @@ describe('CARDPACK ROUTES', () => {
     });
 
     describe('GET /cardpacks/:cardPackId', () => {
-        it('should get a card pack by cardPackid', async () => {
-            const response = await api
-                .get('/cardpacks/CP-1')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toEqual(expect.objectContaining({ name: 'Starter Pack' }));
-        });
-
         it('should return 404 if card pack not found', async () => {
             const response = await api
                 .get('/cardpacks/CP-6')

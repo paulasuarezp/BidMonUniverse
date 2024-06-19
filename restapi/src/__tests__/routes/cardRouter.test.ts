@@ -47,7 +47,22 @@ describe('CARD ROUTES', () => {
             expect(response.status).toBe(200);
             expect(response.body).toHaveLength(12);
         });
+    });
 
+    describe('GET /cards/:cardId', () => {
+        it('should get a card by ID', async () => {
+            const response = await api
+                .get('/cards/c-1-0')
+                .set('Authorization', `Bearer ${token}`);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual(expect.objectContaining({ name: 'bulbasaur' }));
+        });
+    });
+});
+
+describe('CARD ROUTES Error Handling', () => {
+    describe('GET /cards', () => {
         it('should handle errors', async () => {
             jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
 
@@ -61,15 +76,6 @@ describe('CARD ROUTES', () => {
     });
 
     describe('GET /cards/:cardId', () => {
-        it('should get a card by ID', async () => {
-            const response = await api
-                .get('/cards/c-1-0')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toEqual(expect.objectContaining({ name: 'bulbasaur' }));
-        });
-
         it('should return 404 if card not found', async () => {
             const response = await api
                 .get('/cards/nonexistent')
