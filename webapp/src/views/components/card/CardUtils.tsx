@@ -209,7 +209,7 @@ export function getTypeBadge(pokemonType: string) {
         case 'steel':
             return '/pokemonTypesBadges/steel.svg';
         default:
-            return 'pokemonTypesBadges/normal.svg';
+            return '/pokemonTypesBadges/normal.svg';
     }
 }
 
