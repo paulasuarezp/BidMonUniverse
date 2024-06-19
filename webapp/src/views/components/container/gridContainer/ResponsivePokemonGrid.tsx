@@ -35,7 +35,7 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
                 console.log('Cartas del usuario', data);
                 if (limit) {
                     // Si hay límite, ajusta el número de cartas basado en el tamaño de la pantalla.
-                    const initialCount = isXs ? 1 : isSm ? 2 : isMd ? 3 : isLg ? 4 : 6;
+                    const initialCount = getGridListCols();
                     setNumberOfCards(Math.min(data.length, initialCount));
                 } else {
                     // Si no hay límite, usa todas las cartas.

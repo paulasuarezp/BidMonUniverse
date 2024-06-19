@@ -4,6 +4,7 @@ import { RootState } from "../../redux/store";
 import NavigationMenu from "../components/menus/principalNav/Navigation";
 import { Typography } from "@mui/material";
 import ResponsiveActiveAuctionsGrid from "../components/container/gridContainer/ResponsiveActiveAuctionsGrid";
+import PokeballsBox from "../components/ornament/PokeballsBox";
 
 //#region COMPONENTE LOGIN
 export default function MyCollection() {
@@ -15,13 +16,13 @@ export default function MyCollection() {
     return (
         <Container>
             <NavigationMenu />
-            <Typography variant="h4" align="center" component="div">
-                Subastas activas
+            <PokeballsBox titulo="Subastas activas" sx={{ marginBottom: '0.2em', marginTop: '3em' }} />
+
+            <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
+                Aquí encontrarás las subastas activas actualmente.<br />
+                <strong>¡Participa en ellas!</strong>
             </Typography>
-            <Typography variant="body1" align="center" component="div">
-                Aquí encontrarás las subastas activas actualmente.
-                {'\n'}¡Participa en ellas!
-            </Typography>
+
 
             <div style={{ marginBottom: '2em' }}>
                 <ResponsiveActiveAuctionsGrid limit={false} username={username} />
