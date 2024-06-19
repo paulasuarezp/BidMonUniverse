@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Grid, useMediaQuery, useTheme, Box } from '@mui/material';
 import PokemonCard from '../../card/PokemonCard';
-import { getCardsOfUser } from '../../../../api/userCardsAPI';
-import { Card } from '../../../../shared/sharedTypes';
+import { getUserCardCollection } from '../../../../api/api';
+import { Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../auction/AuctionCard';
 
 interface ResponsiveActiveAuctionsGridProps {
@@ -17,7 +17,7 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
     const isMd = useMediaQuery(theme.breakpoints.down('md'));
     const isLg = useMediaQuery(theme.breakpoints.down('lg'));
 
-    const [cards, setCards] = useState<Card[]>([]);
+    const [cards, setCards] = useState<UserCard[]>([]);
     const [numberOfCards, setNumberOfCards] = useState<number>(0);
 
     const getGridListCols = () => {
@@ -30,7 +30,7 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
 
 
     useEffect(() => {
-        getCardsOfUser(username)
+        getUserCardCollection(username)
             .then((data) => {
                 setCards(data);
                 console.log('Cartas del usuario', data);
@@ -60,7 +60,8 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
             {Array.from({ length: numberOfCards }, (_, index) => (
                 <Grid item key={index} style={{ flex: '0 0 auto' }}>
                     <AuctionCard
-                        card={cards[index] as Card}
+                        card={cards[index].item as Card}
+                        userCardId={cards[index]._id}
                         duration={24}
                     />
                 </Grid>

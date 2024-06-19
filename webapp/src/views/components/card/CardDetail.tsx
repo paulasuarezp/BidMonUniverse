@@ -14,11 +14,10 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import WeightIcon from '@mui/icons-material/FitnessCenter';
 import HeightIcon from '@mui/icons-material/Height';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import QuantityIcon from '@mui/icons-material/Inbox';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { CardRarity, Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
-import { getUserCard } from '../../../api/userCardsAPI';
-import { getTransactionsForCard } from '../../../api/transactionsAPI';
+import { Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
+import { getCardFromUserCollection } from '../../../api/api';
+import { getTransactionsForUserCard } from '../../../api/transactionsAPI';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import PokemonCard from './PokemonCard';
@@ -40,6 +39,7 @@ const CardDetail = () => {
     const [openModal, setOpenModal] = useState(false);
     const [descriptions, setDescriptions] = useState([]);
     const [hasGym, setHasGym] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
@@ -48,23 +48,49 @@ const CardDetail = () => {
     const sessionUser = useSelector((state: RootState) => state.user);
     const username = sessionUser.username;
 
+
     useEffect(() => {
-        getUserCard(username, id).then((data) => {
-            setCard(data.card);
-            getTransactionsForCard(username, id).then(setTransactions).catch(console.error);
-            let descrs = data.card.description[0].split('@NEWDESCRIPTION@');
-            setDescriptions(descrs);
-            if (data.card.gym && data.card.gym[0] !== 'none') {
-                setHasGym(true);
-            }
-        }).catch(console.error);
+        const timer = setTimeout(() => {
+            setError('Error: The request is taking too long to load.');
+        }, 10000); // 10 segundos
+
+        getCardFromUserCollection(id)
+            .then((data) => {
+                clearTimeout(timer);
+                setCard(data.item);
+                let descrs = data.item.description[0].split('@NEWDESCRIPTION@');
+                setDescriptions(descrs);
+                if (data.item.gym && data.item.gym[0] !== 'none') {
+                    setHasGym(true);
+                }
+                return getTransactionsForUserCard(data._id);
+            })
+            .then(setTransactions)
+            .catch((error) => {
+                clearTimeout(timer);
+                setError(error.message || 'Error: An unexpected error occurred.');
+            });
+
+        return () => clearTimeout(timer);
     }, [id, username]);
 
-    if (!card) {
-        return <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <CircularProgress />
-        </Box>;
+    if (error) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <Typography variant="h6" color="error">{error}</Typography>
+            </Box>
+        );
     }
+
+    if (!card) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
+
+
 
     const handleBack = () => navigate('/album');
 
@@ -105,7 +131,7 @@ const CardDetail = () => {
                     <Grid item xs={12} md={6}>
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
-                                <PokemonCard card={card} canFlip={true} maxSize={true} />
+                                <PokemonCard card={card} userCardId={id} canFlip={true} maxSize={true} />
                                 <Button startIcon={<StarIcon />}
                                     variant="contained"
                                     sx={{ marginTop: 2, marginBottom: 2 }}

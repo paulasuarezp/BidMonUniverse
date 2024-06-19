@@ -2,12 +2,10 @@ import Container from "../components/container/Container";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import NavigationMenu from "../components/menus/principalNav/Navigation";
-import { Grid, Typography, useTheme, IconButton, Stack } from "@mui/material";
+import { Typography, useTheme, Box } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import PokemonCard from "../components/card/PokemonCard";
-import DataTable from "../components/table/Table";
 import ResponsivePokemonGrid from "../components/container/gridContainer/ResponsivePokemonGrid";
-import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
+import PokeballsBox from "../components/ornament/PokeballsBox";
 
 //#region COMPONENTE LOGIN
 export default function MyCollection() {
@@ -23,15 +21,10 @@ export default function MyCollection() {
     return (
         <Container>
             <NavigationMenu />
-            <Typography variant="h4" align="center" component="div">
-                Mi colección
-            </Typography>
 
-
+            <PokeballsBox titulo="Mi colección" sx={{ marginBottom: '1em', marginTop: '3em' }} />
 
             <div style={{ marginBottom: '2em' }}>
-
-
                 <ResponsivePokemonGrid limit={false} username={username} />
             </div>
 

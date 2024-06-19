@@ -7,11 +7,13 @@ import { getCategoryName, getCategoryStyles, getCardColor, getCardGradient, getB
 
 interface PokemonCardProps {
   card: CardType;
+  userCardId: string; // Propiedad opcional para identificar la carta del usuario
   canFlip?: boolean; // Propiedad opcional para habilitar el giro
   maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
+  type?: 'auction' | 'album' | 'bid'; // Propiedad obligatoria para determinar el tipo de tarjeta
 }
 
-export default function PokemonCard({ card, canFlip = false, maxSize = false }: PokemonCardProps) {
+export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, type = 'album' }: PokemonCardProps) {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
 
@@ -20,7 +22,7 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
   let pokemonImage = card?.image || '/pokemon.png';
   let pokemonType = card?.pokemonType || 'normal';
   let pokemonGymImg = card?.gym[0] ? getPokemonGymImg(card?.gym[0]) : 'none';
-  let id = card?.cardId || 0;
+  let id = card?._id || 0;
 
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
@@ -34,7 +36,9 @@ export default function PokemonCard({ card, canFlip = false, maxSize = false }: 
     if (canFlip) {
       setFlipped(!flipped);
     } else {
-      navigate(`/card/${id}`);
+      if (type === 'album') navigate(`/card/${userCardId}`);
+      if (type === 'auction') navigate(`/auctions/${userCardId}`);
+      if (type === 'bid') navigate(`/bid/${userCardId}`);
     }
   };
 
