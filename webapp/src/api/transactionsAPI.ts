@@ -1,12 +1,21 @@
 const apiEndPointBase = 'http://localhost:5001/transactions'; // Base URL for the Transaction API endpoints
 
-export const getTransactionsForCard = async (username: string, cardId: string) => {
+/**
+ * Obtiene las transacciones de la carta del usuario desde el servidor utilizando una API.
+ * 
+ * @param {string} userCardId - El ID de la carta del usuario para la que se obtendrán las transacciones. 
+ * @returns {Promise<Object>} Un objeto que contiene las transacciones de la carta del usuario o un mensaje de error.
+ * 
+ * @throws {Error} Si no se encuentra un token de usuario válido.
+ */
+
+export const getTransactionsForUserCard = async (userCardId: string) => {
     const token = localStorage.getItem('userToken');
     if (!token) {
-        return { error: 'No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión' };
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
     }
 
-    const url = `${apiEndPointBase}/user/${username}/${cardId}`
+    const url = `${apiEndPointBase}/c/${userCardId}`
 
     return fetch(url, {
         method: 'GET',
@@ -17,15 +26,13 @@ export const getTransactionsForCard = async (username: string, cardId: string) =
     })
         .then(response => {
             if (!response.ok) {
-                return { error: 'No se han podido obtener las transacciones de la carta, inténtelo de nuevo más tarde' };
+                throw new Error('No se han podido obtener las transacciones de la carta, inténtelo de nuevo más tarde');
             }
-            console.log('Response', response);
 
             return response.json();
         })
         .catch(error => {
-            console.error('Ha ocurrido un error al obtener  las transacciones de la carta:', error.message);
-            return { error: 'No se han podido obtener las transacciones de la carta, inténtelo de nuevo más tarde' };
+            throw new Error('No se han podido obtener las transacciones de la carta, inténtelo de nuevo más tarde');
         });
 }
 

@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 interface AuctionCardProps {
     card: CardType;
     duration: number;
+    userCardId: string;
 }
 
 const HoverEffectContainer = styled('div')(({ theme }) => ({
@@ -26,11 +27,10 @@ const HoverEffectContainer = styled('div')(({ theme }) => ({
 }));
 
 
-export default function AuctionCard({ card, duration }: AuctionCardProps) {
+export default function AuctionCard({ card, userCardId, duration }: AuctionCardProps) {
     return (
         <HoverEffectContainer>
-            <PokemonCard card={card} />
-
+            <PokemonCard card={card} type="auction" userCardId={userCardId} />
             <DurationButton duration={duration} sx={{ marginTop: '10px' }} className="hover-effect" />
 
         </HoverEffectContainer>

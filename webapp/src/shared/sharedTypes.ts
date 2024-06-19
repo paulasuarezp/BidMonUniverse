@@ -116,6 +116,18 @@ export interface Card {
     gym?: [PokemonGym];
 }
 
+// UserCard
+export interface UserCard {
+    _id: string;
+    card: string;
+    user: string;
+    username: string;
+    legibleCardId: string;
+    status: CardStatus;
+    transactionHistory: string[];
+    item: Card;
+}
+
 // TRANSACTION TYPES
 // Concept of a transaction
 export enum TransactionConcept {
