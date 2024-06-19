@@ -145,7 +145,7 @@ const CardDetail = () => {
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                             <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h5" gutterBottom>Detalles de la carta</Typography>
-                                <Box display="flex" alignItems="center"><CodeIcon sx={{ mr: 1 }} /><Typography><strong>ID:</strong> {card._id}</Typography></Box>
+                                <Box display="flex" alignItems="center"><CodeIcon sx={{ mr: 1 }} /><Typography><strong>ID:</strong> {id}</Typography></Box>
                                 <Box display="flex" alignItems="center">{getCategoryIcon(card.rarity)}<Typography><strong>Rareza:</strong> {getCategoryName(card.rarity)}</Typography></Box>
                                 <Box display="flex" alignItems="center"><HealthIcon sx={{ mr: 1, color: '#e91e63' }} /><Typography><strong>HP:</strong> {card.hp}</Typography></Box>
                                 <Box display="flex" alignItems="center"><AttackIcon sx={{ mr: 1, color: '#ff9800' }} /><Typography><strong>Ataque:</strong> {card.attack}</Typography></Box>
@@ -179,7 +179,7 @@ const CardDetail = () => {
                         </Card>
                     </Grid>
                 </Grid>
-                <AddAuctionForm open={openModal} handleClose={handleClose} userCardId={card._id} />
+                <AddAuctionForm open={openModal} handleClose={handleClose} userCardId={id} />
                 <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

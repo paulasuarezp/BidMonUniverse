@@ -20,10 +20,10 @@ import {
 
 /**
  * Ruta para obtener todas las subastas
- * @route GET /auctions
+ * @route GET /
  * @returns {Auction[]} 200 - Lista de subastas
  */
-auctionRouter.get('/auctions', getAuctions);
+auctionRouter.get('/', getAuctions);
 
 /**
  * Ruta para obtener una subasta por su ID
@@ -101,7 +101,7 @@ auctionRouter.get('/active-auctions/pokemon/:pokemon', [
 
 /**
  * Ruta para poner una carta en subasta
- * @route POST /put-auction-card
+ * @route POST /add
  * @param username del usuario
  * @param userCardId id de la carta del usuario (MongoDB ID)
  * @param cardId id de la carta (card ID)
@@ -111,7 +111,7 @@ auctionRouter.get('/active-auctions/pokemon/:pokemon', [
  * @throws {Error}  400 - Error de validación
  * @throws {Error}  500 - Error al poner la carta en subasta
  */
-auctionRouter.post('/put-auction-card', [
+auctionRouter.post('/add', [
     check('username').notEmpty().withMessage('Username is required'),
     check('userCardId').notEmpty().withMessage('User Card ID is required'),
     check('saleBase').isInt({ min: 1 }).withMessage('Sale base must be a valid number'),

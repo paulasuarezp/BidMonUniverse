@@ -11,8 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import { ErrorTwoTone } from '@mui/icons-material';
 
-
-
 const Transition = React.forwardRef(function Transition(
     props: GrowProps & { children: React.ReactElement<any, any> },
     ref: React.Ref<unknown>,
@@ -28,9 +26,7 @@ interface AuctionModalProps {
 
 function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
     const dispatch = useDispatch();
-
     const sessionUser = useSelector((state: RootState) => state.user);
-
 
     const [basePrice, setBasePrice] = useState('1');
     const [duration, setDuration] = useState('72');
@@ -43,6 +39,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
     const [error, setError] = useState(false);
     const theme = useTheme();
 
+    let id = userCardId;
     const handleCreateAuction = () => {
         let valid = true;
 
@@ -69,7 +66,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
 
     const handleConfirmAuction = () => {
         setLoading(true);
-        addAuction(sessionUser.username, userCardId, Number(basePrice), Number(duration))
+        addAuction(sessionUser.username, id, Number(basePrice), Number(duration))
             .then(() => {
                 setLoading(false);
                 setSuccess(true);
@@ -89,7 +86,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                 setError(true);
                 setLoading(false);
                 setSuccess(false);
-                setConfirmDialogOpen(false);
+                setConfirmDialogOpen(true); // Mantener el diálogo abierto para mostrar el error
             });
     };
 
@@ -184,8 +181,8 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                 }}
             >
 
-                {!loading && !success && !closing &&
-                    <Grow in={!loading && !success && !closing} timeout={{ enter: 500, exit: 500 }}>
+                {!loading && !success && !closing && !error &&
+                    <Grow in={!loading && !success && !closing && !error} timeout={{ enter: 500, exit: 500 }}>
                         <DialogContent>
                             <Box display="flex" flexDirection="column" alignItems="center">
                                 <WarningIcon style={{ fontSize: 50, color: theme.palette.warning.main }} />
@@ -242,7 +239,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                     </Grow>
                 }
 
-                {!loading && !success && !closing && (
+                {!loading && !success && !closing && !error && (
                     <DialogActions style={{ justifyContent: 'center' }}>
                         <Button onClick={() => setConfirmDialogOpen(false)}
                             buttonType='cancel'
@@ -251,6 +248,15 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                         <Button onClick={handleConfirmAuction}
                             buttonType='confirm'
                             label='Confirmar'
+                        />
+                    </DialogActions>
+                )}
+
+                {!loading && !success && !closing && error && (
+                    <DialogActions style={{ justifyContent: 'center' }}>
+                        <Button onClick={() => setConfirmDialogOpen(false)}
+                            buttonType='cancel'
+                            label='Cerrar'
                         />
                     </DialogActions>
                 )}
