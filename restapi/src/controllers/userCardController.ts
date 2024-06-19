@@ -20,7 +20,6 @@ const getUserCards = async (req: Request, res: Response) => {
         res.status(200).json(userCards);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener las cartas del usuario.' });
     }
 };
@@ -39,14 +38,12 @@ const getUserCard = async (req: Request, res: Response) => {
 
         const userCard = await UserCard.findOne({ _id: id });
 
-        console.log(userCard);
         if (!userCard)
             return res.status(404).json({ message: 'Carta de usuario no encontrada.' });
 
         res.status(200).json(userCard);
     }
     catch (error: any) {
-        console.error(error);
         res.status(500).json({ message: 'Se ha producido un error al obtener la carta del usuario.' });
     }
 }
