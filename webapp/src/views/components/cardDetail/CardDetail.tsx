@@ -1,37 +1,33 @@
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import GavelIcon from '@mui/icons-material/Gavel';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import StarIcon from '@mui/icons-material/Star';
 import {
     Box,
     CardActions,
-    CircularProgress,
-    useTheme
+    CircularProgress
 } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { getCardFromAuction, getShopTransactionsCard } from '../../../api/api';
+import { useParams } from 'react-router-dom';
+import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import Button from '../buttons/Button';
-import DurationButton from '../buttons/duration/DurationButton';
-import GeneralCardDetail from '../cardDetail/GeneralCardDetail';
 import ErrorMessageBox from '../error/ErrorMessageBox';
+import AddAuctionForm from '../modals/AddAuctionForm';
+import GeneralCardDetail from './GeneralCardDetail';
 
 
-
-const AuctionCardDetail = () => {
-    const navigate = useNavigate();
-    const theme = useTheme();
-
+const CardDetail = () => {
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
-    const [duration, setDuration] = useState<number>(0);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-
+    const [openModal, setOpenModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [canBid, setCanBid] = useState<boolean>(false);
+    const [inAuction, setInAuction] = useState<boolean>(false);
 
-    const handleOpenBid = () => navigate(`/bid/${id}`);
+    const handleOpen = () => setOpenModal(true);
+    const handleClose = () => setOpenModal(false);
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -41,20 +37,20 @@ const AuctionCardDetail = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setError('Error: The request is taking too long to load.');
-        }, 5000); // 5 segundos
+        }, 10000); // 10 segundos
 
-        getCardFromAuction(id)
+        getCardFromUserCollection(id)
             .then((data) => {
                 clearTimeout(timer);
                 setCard(data.item);
-                setDuration(data.duration);
-                setCanBid(false);
+
+                setInAuction(false);
 
                 if (data.status === CardStatus.OnAuction && data.username == username) {
-                    setCanBid(false);
+                    setInAuction(true);
                 }
                 if (data.status === CardStatus.OnAuction && data.username != username) {
-                    setCanBid(true);
+                    setInAuction(true);
                 }
                 return getShopTransactionsCard(data._id);
             })
@@ -65,7 +61,7 @@ const AuctionCardDetail = () => {
             });
 
         return () => clearTimeout(timer);
-    }, [id, username]);
+    }, [id, username, inAuction]);
 
     if (error) {
         return (
@@ -86,31 +82,42 @@ const AuctionCardDetail = () => {
             card={card}
             id={id}
             transactions={transactions}
-            pokemonBoxChildren={<DurationButton duration={duration} />}
-            cardInformationChildren={canBid ? (<CardActions>
+            pokemonBoxChildren={
+                <Button startIcon={<StarIcon />}
+                    variant="contained"
+                    sx={{ marginTop: 2, marginBottom: 2 }}
+                    buttonType="ghost"
+                    onClick={handleOpen}
+                    label='Destacar carta'
+                />}
+
+            cardInformationChildren={inAuction ? (<CardActions>
+
                 <Button
-                    startIcon={<AddCircleOutlineIcon />}
+                    startIcon={<RemoveCircleOutlineIcon />}
                     variant="contained"
                     sx={{ marginTop: 2, marginBottom: 2 }}
                     fullWidth
-                    buttonType="primary"
-                    onClick={handleOpenBid}
-                    label='Realizar puja'
+                    buttonType="ghost"
+                    label='Retirar subasta'
                 />
             </CardActions>)
                 : (<CardActions>
-
                     <Button
-                        startIcon={<RemoveCircleOutlineIcon />}
+                        startIcon={<GavelIcon />}
                         variant="contained"
                         sx={{ marginTop: 2, marginBottom: 2 }}
                         fullWidth
-                        buttonType="ghost"
-                        label='Retirar subasta'
+                        buttonType="primary"
+                        onClick={handleOpen}
+                        label='Realizar subasta'
                     />
                 </CardActions>)
-            } />
+
+            }
+            form={<AddAuctionForm open={openModal} handleClose={handleClose} userCardId={id} />}
+        />
     );
 };
 
-export default AuctionCardDetail;
+export default CardDetail;

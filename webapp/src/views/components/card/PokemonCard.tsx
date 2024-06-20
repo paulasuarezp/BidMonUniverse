@@ -24,7 +24,6 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
   let pokemonImage = card?.image || '/pokemon.png';
   let pokemonType = card?.pokemonType || 'normal';
   let pokemonGymImg = card?.gym[0] ? getPokemonGymImg(card?.gym[0]) : 'none';
-  let id = card?._id || 0;
 
   const borderColor = getCardColor(rarity);
   const backgroundImage = getBackgroundImage(pokemonType);
@@ -41,7 +40,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
       if (onClick) {
         onClick();
       } else {
-        navigate(`/card/${id}`);
+        navigate(`/card/${userCardId}`);
       }
     }
   };
