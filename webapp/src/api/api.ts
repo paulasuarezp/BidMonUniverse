@@ -1,5 +1,6 @@
-import { UserCard } from "../shared/sharedTypes";
+import { Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { getCard } from "./cardAPI";
+import { getTransactionsForUserCard } from "./transactionsAPI";
 import { getUserCards, getUserCard } from "./userCardsAPI";
 
 
@@ -61,5 +62,27 @@ export const getCardFromUserCollection = async (userCardId: string): Promise<Use
         }));
     } catch (error) {
         throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+/**
+ * Obtiene las transacciones de compra de una carta. 
+ * Se filtran las transacciones por adquisición de la carta mediante sobre, subasta o regalo.
+ * 
+ * @param {string} userCardId ID de la carta del usuario 
+ * @returns {Promise<Transaction>} transacciones de compra de la carta
+ * 
+ * @throws {Error} si se produce un error
+ */
+export const getShopTransactionsCard = async (userCardId: string): Promise<Transaction[]> => {
+    try {
+        const transactions = await getTransactionsForUserCard(userCardId);
+        console.log(transactions);
+        const filteredTransactions = transactions.filter(transaction =>
+            [TransactionConcept.PurchaseByCardPack, TransactionConcept.PurchaseByBid, TransactionConcept.Gift].includes(transaction.concept[0])
+        );
+        return filteredTransactions;
+    } catch (error) {
+        throw new Error('Se ha producido un error al obtener las transacciones de la carta. Por favor, inténtelo de nuevo más tarde.');
     }
 }

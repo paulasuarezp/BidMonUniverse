@@ -15,18 +15,20 @@ import WeightIcon from '@mui/icons-material/FitnessCenter';
 import HeightIcon from '@mui/icons-material/Height';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { Card as CardType, PokemonGym, TransactionConcept } from "../../../shared/sharedTypes";
-import { getCardFromUserCollection } from '../../../api/api';
+import { CardStatus, Card as CardType, PokemonGym, Transaction, TransactionConcept } from "../../../shared/sharedTypes";
+import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { getTransactionsForUserCard } from '../../../api/transactionsAPI';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
 import PokemonCard from './PokemonCard';
 import AddAuctionForm from '../modals/AddAuctionForm';
 import Button from '../buttons/Button';
-import { capitalizeFirstLetter } from '../../../utils/utils';
+import { capitalizeFirstLetter, getTransactionMessage } from '../../../utils/utils';
 import CodeIcon from '@mui/icons-material/Code';
 import { getCategoryIcon, getCardGradient, getPokemonGymImg, getCategoryName } from './CardUtils';
 import ErrorMessageBox from '../error/ErrorMessageBox';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 
 
@@ -36,18 +38,21 @@ const CardDetail = () => {
 
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
-    const [transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [descriptions, setDescriptions] = useState([]);
     const [hasGym, setHasGym] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [canBid, setCanBid] = useState<boolean>(false);
+    const [inAuction, setInAuction] = useState<boolean>(false);
 
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
+    const handleOpenBid = () => navigate(`/bid/${id}`);
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
-    const username = sessionUser.username;
+    const username = sessionUser.username.toLowerCase();
 
 
     useEffect(() => {
@@ -64,7 +69,19 @@ const CardDetail = () => {
                 if (data.item.gym && data.item.gym[0] !== 'none') {
                     setHasGym(true);
                 }
-                return getTransactionsForUserCard(data._id);
+
+                setInAuction(false);
+                setCanBid(false);
+
+                if (data.status === CardStatus.OnAuction && data.username == username) {
+                    setInAuction(true);
+                    setCanBid(false);
+                }
+                if (data.status === CardStatus.OnAuction && data.username != username) {
+                    setInAuction(true);
+                    setCanBid(true);
+                }
+                return getShopTransactionsCard(data._id);
             })
             .then(setTransactions)
             .catch((error) => {
@@ -131,13 +148,15 @@ const CardDetail = () => {
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
                             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
                                 <PokemonCard card={card} userCardId={id} canFlip={true} maxSize={true} />
-                                <Button startIcon={<StarIcon />}
-                                    variant="contained"
-                                    sx={{ marginTop: 2, marginBottom: 2 }}
-                                    buttonType="ghost"
-                                    onClick={handleOpen}
-                                    label='Destacar carta'
-                                />
+                                {!canBid &&
+                                    <Button startIcon={<StarIcon />}
+                                        variant="contained"
+                                        sx={{ marginTop: 2, marginBottom: 2 }}
+                                        buttonType="ghost"
+                                        onClick={handleOpen}
+                                        label='Destacar carta'
+                                    />
+                                }
                             </CardContent>
                         </Card>
                     </Grid>
@@ -165,17 +184,42 @@ const CardDetail = () => {
                                 </Typography>
 
                             </CardContent>
-                            <CardActions>
+                            {inAuction && canBid && <CardActions>
                                 <Button
-                                    startIcon={<GavelIcon />}
+                                    startIcon={<AddCircleOutlineIcon />}
                                     variant="contained"
                                     sx={{ marginTop: 2, marginBottom: 2 }}
                                     fullWidth
                                     buttonType="primary"
-                                    onClick={handleOpen}
-                                    label='Realizar subasta'
+                                    onClick={handleOpenBid}
+                                    label='Realizar puja'
                                 />
                             </CardActions>
+                            } {inAuction && !canBid && <CardActions>
+
+                                <Button
+                                    startIcon={<RemoveCircleOutlineIcon />}
+                                    variant="contained"
+                                    sx={{ marginTop: 2, marginBottom: 2 }}
+                                    fullWidth
+                                    buttonType="ghost"
+                                    label='Retirar subasta'
+                                />
+                            </CardActions>
+                            }
+                            {!inAuction && !canBid &&
+                                <CardActions>
+                                    <Button
+                                        startIcon={<GavelIcon />}
+                                        variant="contained"
+                                        sx={{ marginTop: 2, marginBottom: 2 }}
+                                        fullWidth
+                                        buttonType="primary"
+                                        onClick={handleOpen}
+                                        label='Realizar subasta'
+                                    />
+                                </CardActions>
+                            }
                         </Card>
                     </Grid>
                 </Grid>
@@ -206,7 +250,7 @@ const CardDetail = () => {
                                     }}
                                 >
                                     <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
-                                    <TableCell>{TransactionConcept[transaction.concept]}</TableCell>
+                                    <TableCell>{getTransactionMessage(TransactionConcept[transaction.concept])}</TableCell>
                                     <TableCell>{transaction.price}</TableCell>
                                 </TableRow>
                             ))}
