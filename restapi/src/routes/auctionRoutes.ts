@@ -7,16 +7,15 @@ const auctionRouter: Router = express.Router();
 auctionRouter.use(auth);
 
 import {
-    getAuctions,
-    getAuction,
+    checkAllActiveAuctions,
     getActiveAuctions,
-    getActiveAuctionsByUser,
     getActiveAuctionsByPokemonName,
+    getActiveAuctionsByUser,
+    getAuction,
+    getAuctions,
     putUserCardUpForAuction,
-    withdrawnUserCardFromAuction,
-    checkAllActiveAuctions
+    withdrawnUserCardFromAuction
 } from '../controllers/auctionController';
-
 
 /**
  * Ruta para obtener todas las subastas
@@ -27,12 +26,12 @@ auctionRouter.get('/', getAuctions);
 
 /**
  * Ruta para obtener una subasta por su ID
- * @route GET /auction/:id
+ * @route GET /a/:id
  * @param id id de la subasta
  * @returns {Auction} 200 - Subasta
  * @returns {Error}  400 - Error de validación
  */
-auctionRouter.get('/auction/:id', [
+auctionRouter.get('/a/:id', [
     param('id').notEmpty().withMessage('Auction ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
@@ -45,14 +44,15 @@ auctionRouter.get('/auction/:id', [
 
 /**
  * Ruta para obtener todas las subastas activas
- * @route GET /active-auctions
+ * @route GET /active
  * @returns {Auction[]} 200 - Lista de subastas activas
  */
-auctionRouter.get('/active-auctions/:username', [
+auctionRouter.get('/active/:username', [
     param('username').notEmpty().withMessage('Username is required'),
-    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
+    param('username').isString().withMessage('Username must be a valid string'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
+        console.log(errors);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
@@ -62,14 +62,14 @@ auctionRouter.get('/active-auctions/:username', [
 
 /**
  * Ruta para obtener todas las subastas activas de un usuario
- * @route GET /active-auctions/:username
+ * @route GET /active/:username
  * @param username del usuario
  * @returns {Auction[]} 200 - Lista de subastas activas del usuario
  * @returns {Error}  400 - Error de validación
  */
-auctionRouter.get('/active-auctions/u/:username', [
+auctionRouter.get('/active/u/:username', [
     param('username').notEmpty().withMessage('Username is required'),
-    param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
+    param('username').isString().withMessage('Username must be a valid string'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -81,12 +81,12 @@ auctionRouter.get('/active-auctions/u/:username', [
 
 /**
  * Ruta para obtener todas las subastas activas de un usuario
- * @route GET /active-auctions/pokemon/:pokemonName
+ * @route GET /active/pokemon/:pokemonName
  * @param pokemonName nombre del pokemon
  * @returns {Auction[]} 200 - Lista de subastas activas del usuario
  * @returns {Error}  400 - Error de validación
  */
-auctionRouter.get('/active-auctions/pokemon/:pokemon', [
+auctionRouter.get('/active/pokemon/:pokemon', [
     param('pokemon').notEmpty().withMessage('Pokemon name is required'),
     param('pokemon').isString().withMessage('Pokemon name must be a string'),
     param('pokemon').isLength({ min: 1, max: 20 }).withMessage('Pokemon name must be between 1 and 20 characters long'),
@@ -128,7 +128,7 @@ auctionRouter.post('/add', [
 
 /**
  * Ruta para retirar una carta de una subasta
- * @route POST /withdraw-auction-card
+ * @route POST /withdraw
  * @param username del usuario
  * @param userCardId id de la carta del usuario (MongoDB ID)
  * @param auctionId id de la subasta
@@ -136,7 +136,7 @@ auctionRouter.post('/add', [
  * @throws {Error}  400 - Error de validación
  * @throws {Error}  500 - Error al retirar la carta de la subasta
  */
-auctionRouter.post('/withdraw-auction-card', [
+auctionRouter.post('/withdraw', [
     check('username').notEmpty().withMessage('Username is required'),
     check('userCardId').notEmpty().withMessage('User Card ID is required'),
     check('auctionId').notEmpty().withMessage('Auction ID is required'),
@@ -152,11 +152,11 @@ auctionRouter.post('/withdraw-auction-card', [
 
 /**
  * Ruta para verificar todas las subastas activas, y si alguna ha finalizado, se actualiza su estado y se notifica al ganador.
- * @route GET /check-all-active-auctions
+ * @route GET /check
  * @returns {Auction[]} 200 - Lista de subastas actualizadas, con sus respectivos ganadores notificados
  */
 
-auctionRouter.get('/check-all-active-auctions', checkAllActiveAuctions);
+auctionRouter.get('/check', checkAllActiveAuctions);
 
 
 export default auctionRouter;

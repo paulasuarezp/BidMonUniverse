@@ -1,13 +1,13 @@
-import Auction, { IAuction } from '../models/auction';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import UserCard from '../models/userCard';
-import { CardStatus, TransactionConcept, BidStatus } from '../models/utils/enums';
+import Auction, { IAuction } from '../models/auction';
+import Bid, { IBid } from '../models/bid';
+import Card from '../models/card';
 import Transaction from '../models/transaction';
 import User from '../models/user';
-import Bid, { IBid } from '../models/bid';
-import { AuctionStatus } from '../models/utils/enums';
-import Card from '../models/card';
+import UserCard from '../models/userCard';
+import { AuctionStatus, BidStatus, CardStatus, TransactionConcept } from '../models/utils/enums';
+
 
 
 /**
@@ -76,7 +76,8 @@ const getAuction = async (req: Request, res: Response) => {
  */
 const getActiveAuctions = async (req: Request, res: Response) => {
     try {
-        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: { $ne: req.params.username } });
+        let username = req.params.username.toLowerCase();
+        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: { $ne: username } });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);
@@ -100,7 +101,8 @@ const getActiveAuctions = async (req: Request, res: Response) => {
 
 const getActiveAuctionsByUser = async (req: Request, res: Response) => {
     try {
-        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: req.params.username });
+        let username = req.params.username.toLowerCase();
+        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: username });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);
@@ -657,13 +659,7 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
 
 
 export {
-    getAuctions,
-    getAuction,
-    getActiveAuctions,
-    getActiveAuctionsByUser,
-    getActiveAuctionsByPokemonName,
-    putUserCardUpForAuction,
-    withdrawnUserCardFromAuction,
-    checkAllActiveAuctions
-}
+    checkAllActiveAuctions, getActiveAuctions, getActiveAuctionsByPokemonName, getActiveAuctionsByUser, getAuction, getAuctions, putUserCardUpForAuction,
+    withdrawnUserCardFromAuction
+};
 

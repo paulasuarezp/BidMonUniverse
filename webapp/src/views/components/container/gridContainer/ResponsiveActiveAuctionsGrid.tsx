@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Grid, useMediaQuery, useTheme, Box } from '@mui/material';
-import PokemonCard from '../../card/PokemonCard';
-import { getUserCardCollection } from '../../../../api/api';
+import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { getAuctionCards } from '../../../../api/api';
+import { getActiveAuctions } from '../../../../api/auctionsAPI';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../auction/AuctionCard';
 
@@ -9,6 +9,7 @@ interface ResponsiveActiveAuctionsGridProps {
     username: string;
     limit?: boolean;
 }
+
 
 const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActiveAuctionsGridProps) => {
     const theme = useTheme();
@@ -30,18 +31,22 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
 
 
     useEffect(() => {
-        getUserCardCollection(username)
+        getActiveAuctions(username)
             .then((data) => {
-                setCards(data);
-                console.log('Cartas del usuario', data);
-                if (limit) {
-                    // Si hay límite, ajusta el número de cartas basado en el tamaño de la pantalla.
-                    const initialCount = isXs ? 1 : isSm ? 2 : isMd ? 3 : isLg ? 4 : 6;
-                    setNumberOfCards(Math.min(data.length, initialCount));
-                } else {
-                    // Si no hay límite, usa todas las cartas.
-                    setNumberOfCards(data.length);
-                }
+                getAuctionCards(data).then((cards) => {
+                    setCards(cards);
+                    console.log('Cartas del usuario', cards);
+                    if (limit) {
+                        // Si hay límite, ajusta el número de cartas basado en el tamaño de la pantalla.
+                        const initialCount = getGridListCols();
+                        setNumberOfCards(Math.min(cards.length, initialCount));
+                    } else {
+                        // Si no hay límite, usa todas las cartas.
+                        setNumberOfCards(cards.length);
+                    }
+                }).catch((error) => {
+                    console.error('Error al obtener las cartas del usuario', error);
+                });
             })
             .catch((error) => {
                 console.error('Error al obtener las cartas del usuario', error);

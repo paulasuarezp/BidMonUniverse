@@ -1,22 +1,23 @@
-import React from 'react';
-import { ThemeProvider } from '@mui/system';
 import CssBaseline from '@mui/material/CssBaseline';
-import { lightTheme, darkTheme } from './themes';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './views/pages/Home';
-import BasePage from './views/pages/BasePage';
-import NotFoundPage from './views/pages/NotFoundPage';
-import Login from './views/pages/Login';
-import Signup from './views/pages/Signup';
-import Logueado from './views/pages/Logueado';
-import { RouteRedirector } from './utils/RouteRedirector';
-import { AccessLevel } from './shared/sharedTypes';
+import { ThemeProvider } from '@mui/system';
+import React from 'react';
 import { Provider } from 'react-redux';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from './redux/store';
-import MyCollection from './views/pages/MyCollection';
+import { persistor, store } from './redux/store';
+import { AccessLevel } from './shared/sharedTypes';
+import { darkTheme, lightTheme } from './themes';
+import { RouteRedirector } from './utils/RouteRedirector';
 import CardDetail from './views/components/card/CardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
+import BasePage from './views/pages/BasePage';
+import Home from './views/pages/Home';
+import Login from './views/pages/Login';
+import Logueado from './views/pages/Logueado';
+import MyCollection from './views/pages/MyCollection';
+import NotFoundPage from './views/pages/NotFoundPage';
+import Signup from './views/pages/Signup';
+
 
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
@@ -43,6 +44,8 @@ function App() {
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions" element={<RouteRedirector initRoute={<ActiveAuctions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/auctions/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/bid/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />
