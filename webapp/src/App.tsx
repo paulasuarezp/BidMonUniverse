@@ -9,7 +9,7 @@ import { AccessLevel } from './shared/sharedTypes';
 import { darkTheme, lightTheme } from './themes';
 import { RouteRedirector } from './utils/RouteRedirector';
 import AuctionCardDetail from './views/components/auction/AuctionCardDetail';
-import CardDetail from './views/components/card/CardDetail';
+import CardDetail from './views/components/cardDetail/CardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
 import BasePage from './views/pages/BasePage';
 import Home from './views/pages/Home';

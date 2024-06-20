@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { Card as CardType } from "../../../shared/sharedTypes";
-import { getCategoryIcon, getCategoryName, getPokemonGymImg } from './CardUtils';
+import { getCategoryIcon, getCategoryName, getPokemonGymImg } from '../card/CardUtils';
 
 
 interface CardDetailProps {
