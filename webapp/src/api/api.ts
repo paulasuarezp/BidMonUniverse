@@ -1,7 +1,8 @@
-import { Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { Auction, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { getCard } from "./cardAPI";
 import { getTransactionsForUserCard } from "./transactionsAPI";
-import { getUserCards, getUserCard } from "./userCardsAPI";
+import { getUserCard, getUserCards } from "./userCardsAPI";
+
 
 
 /**
@@ -77,12 +78,36 @@ export const getCardFromUserCollection = async (userCardId: string): Promise<Use
 export const getShopTransactionsCard = async (userCardId: string): Promise<Transaction[]> => {
     try {
         const transactions = await getTransactionsForUserCard(userCardId);
-        console.log(transactions);
+
         const filteredTransactions = transactions.filter(transaction =>
             [TransactionConcept.PurchaseByCardPack, TransactionConcept.PurchaseByBid, TransactionConcept.Gift].includes(transaction.concept[0])
         );
         return filteredTransactions;
     } catch (error) {
         throw new Error('Se ha producido un error al obtener las transacciones de la carta. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+
+export const getAuctionCards = async (auctions: Auction[]): Promise<UserCard[]> => {
+    try {
+        const userCardPromises = auctions.map(auction =>
+            getUserCard(auction.card).then(userCard =>
+                getCard(userCard.legibleCardId).then(card => ({
+                    _id: userCard._id,
+                    card: card._id,
+                    legibleCardId: userCard.legibleCardId,
+                    user: userCard.user,
+                    username: userCard.username,
+                    status: userCard.status,
+                    transactionHistory: userCard.transactionHistory,
+                    item: card,
+                }))
+            )
+        );
+
+        return await Promise.all(userCardPromises);
+    } catch (error) {
+        throw new Error('Se ha producido un error al obtener las cartas de las subastas. Por favor, inténtelo de nuevo más tarde.');
     }
 }

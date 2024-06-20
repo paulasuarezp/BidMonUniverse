@@ -1,34 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import {
-    Box, Typography, Grid, CircularProgress, IconButton, Table, TableBody, TableCell,
-    TableContainer, TableHead, TableRow, Paper, Card, CardContent, CardActions, useTheme
-} from "@mui/material";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import StarIcon from '@mui/icons-material/Star';
-import GavelIcon from '@mui/icons-material/Gavel';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CodeIcon from '@mui/icons-material/Code';
 import HealthIcon from '@mui/icons-material/Favorite';
+import WeightIcon from '@mui/icons-material/FitnessCenter';
 import AttackIcon from '@mui/icons-material/FlashOn';
+import GavelIcon from '@mui/icons-material/Gavel';
+import HeightIcon from '@mui/icons-material/Height';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import DefenseIcon from '@mui/icons-material/Security';
 import SpeedIcon from '@mui/icons-material/Speed';
-import WeightIcon from '@mui/icons-material/FitnessCenter';
-import HeightIcon from '@mui/icons-material/Height';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import { CardStatus, Card as CardType, PokemonGym, Transaction, TransactionConcept } from "../../../shared/sharedTypes";
-import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
-import { getTransactionsForUserCard } from '../../../api/transactionsAPI';
+import StarIcon from '@mui/icons-material/Star';
+import {
+    Box,
+    Card,
+    CardActions,
+    CardContent,
+    CircularProgress,
+    Grid,
+    Paper,
+    Table, TableBody, TableCell,
+    TableContainer, TableHead, TableRow,
+    Typography,
+    useTheme
+} from "@mui/material";
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { RootState } from '../../../redux/store';
-import PokemonCard from './PokemonCard';
-import AddAuctionForm from '../modals/AddAuctionForm';
-import Button from '../buttons/Button';
+import { CardStatus, Card as CardType, Transaction, TransactionConcept } from "../../../shared/sharedTypes";
 import { capitalizeFirstLetter, getTransactionMessage } from '../../../utils/utils';
-import CodeIcon from '@mui/icons-material/Code';
-import { getCategoryIcon, getCardGradient, getPokemonGymImg, getCategoryName } from './CardUtils';
+import Button from '../buttons/Button';
 import ErrorMessageBox from '../error/ErrorMessageBox';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddAuctionForm from '../modals/AddAuctionForm';
+import { getCardGradient, getCategoryIcon, getCategoryName, getPokemonGymImg } from './CardUtils';
+import PokemonCard from './PokemonCard';
 
 
 
@@ -108,7 +116,7 @@ const CardDetail = () => {
 
 
 
-    const handleBack = () => navigate('/album');
+    const handleBack = () => navigate(-1);
 
     return (
         <Box sx={{ maxWidth: 1200, width: '100%', margin: 'auto', marginTop: 5, padding: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -251,7 +259,11 @@ const CardDetail = () => {
                                 >
                                     <TableCell>{new Date(transaction.date).toLocaleDateString()}</TableCell>
                                     <TableCell>{getTransactionMessage(TransactionConcept[transaction.concept])}</TableCell>
-                                    <TableCell>{transaction.price}</TableCell>
+                                    <TableCell>
+                                        <span style={{ verticalAlign: 'middle' }}>{transaction.price}</span>
+                                        <img src="/zen.png" alt="Zen" style={{ width: 20, height: 20, marginLeft: 5, verticalAlign: 'middle' }} />
+                                    </TableCell>
+
                                 </TableRow>
                             ))}
                         </TableBody>

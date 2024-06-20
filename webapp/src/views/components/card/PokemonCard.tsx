@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 import { Avatar, Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
-import { CardRarity, Card as CardType, PokemonGym } from "../../../shared/sharedTypes";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CardRarity, Card as CardType } from "../../../shared/sharedTypes";
 import { capitalizeFirstLetter } from '../../../utils/utils';
-import { getCategoryName, getCategoryStyles, getCardColor, getCardGradient, getBackgroundImage, getTypeBadge, getTypeName, getPokemonGymImg, typeStyles } from './CardUtils';
+import { getBackgroundImage, getCardColor, getCardGradient, getCategoryName, getCategoryStyles, getPokemonGymImg, getTypeBadge, getTypeName, typeStyles } from './CardUtils';
 
 interface PokemonCardProps {
   card: CardType;
@@ -12,6 +12,7 @@ interface PokemonCardProps {
   maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
   type?: 'auction' | 'album' | 'bid'; // Propiedad obligatoria para determinar el tipo de tarjeta
 }
+
 
 export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, type = 'album' }: PokemonCardProps) {
   const navigate = useNavigate();
