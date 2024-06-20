@@ -7,9 +7,10 @@ import {
     CircularProgress
 } from "@mui/material";
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
+import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import Button from '../buttons/Button';
@@ -20,24 +21,49 @@ import GeneralCardDetail from './GeneralCardDetail';
 
 const CardDetail = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
+
     const [card, setCard] = useState<CardType | null>(null);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [openModal, setOpenModal] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [inAuction, setInAuction] = useState<boolean>(false);
 
-    const handleOpen = () => setOpenModal(true);
-    const handleClose = () => setOpenModal(false);
+
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
     const username = sessionUser.username.toLowerCase();
+    const { update, updateId } = useSelector((state: RootState) => state.update);
+
+    const checkAvailableCard = async (id: string) => {
+        try {
+            const data = await getCardFromUserCollection(id);
+            if (data.status === CardStatus.OnAuction) {
+                return false; // Retorna false para indicar que no se debe proceder
+            }
+            return true; // Retorna true si la carta no está en subasta y se puede proceder
+        } catch (error) {
+            return false; // Retorna false en caso de error al obtener los datos de la carta
+        }
+    };
+
+    const handleOpen = async () => {
+        const canProceed = await checkAvailableCard(id);
+        if (!canProceed) {
+            setInAuction(true);
+            return;
+        }
+        setOpenModal(true);
 
 
-    useEffect(() => {
+    }
+    const handleClose = () => setOpenModal(false);
+
+    const processCard = (id: string) => {
         const timer = setTimeout(() => {
             setError('Error: The request is taking too long to load.');
-        }, 10000); // 10 segundos
+        }, 5000); // 5 segundos
 
         getCardFromUserCollection(id)
             .then((data) => {
@@ -60,8 +86,20 @@ const CardDetail = () => {
                 setError(error.message || 'Error: An unexpected error occurred.');
             });
 
+
         return () => clearTimeout(timer);
-    }, [id, username, inAuction]);
+    }
+
+    useEffect(() => {
+        if (update && updateId === id) {
+            processCard(id);
+            dispatch(resetUpdate());
+        }
+    }, [id, username, update, updateId]);
+
+    useEffect(() => {
+        processCard(id);
+    }, []);
 
     if (error) {
         return (
