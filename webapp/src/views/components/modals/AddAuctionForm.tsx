@@ -1,15 +1,27 @@
-import React, { useState } from 'react';
-import {
-    TextField, Dialog, DialogContent, DialogActions, Typography, Grow, GrowProps, CircularProgress, useTheme, Box, Divider
-} from '@mui/material';
-import Button from '../buttons/Button';
+import { ErrorTwoTone } from '@mui/icons-material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { addAuction } from '../../../api/auctionsAPI';
+import {
+    Box,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    Divider,
+    Grow, GrowProps,
+    TextField,
+    Typography,
+    useTheme
+} from '@mui/material';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { getCardFromUserCollection } from '../../../api/api';
+import { addAuction } from '../../../api/auctionsAPI';
+import { setUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
-import { ErrorTwoTone } from '@mui/icons-material';
+import { CardStatus } from '../../../shared/sharedTypes';
+import Button from '../buttons/Button';
 
 const Transition = React.forwardRef(function Transition(
     props: GrowProps & { children: React.ReactElement<any, any> },
@@ -37,6 +49,7 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
     const [success, setSuccess] = useState(false);
     const [closing, setClosing] = useState(false);
     const [error, setError] = useState(false);
+    const [alreadyOnAuction, setAlreadyOnAuction] = useState(false);
     const theme = useTheme();
 
     let id = userCardId;
@@ -64,31 +77,58 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
         setConfirmDialogOpen(true);
     };
 
-    const handleConfirmAuction = () => {
+    const handleConfirmAuction = async () => {
         setLoading(true);
-        addAuction(sessionUser.username, id, Number(basePrice), Number(duration))
-            .then(() => {
-                setLoading(false);
-                setSuccess(true);
-                setError(false);
+        const canProceed = await checkAvailableCard(id);
+        if (!canProceed) {
+            setLoading(false);
+            setError(false);
+            setAlreadyOnAuction(true);
+            setLoading(false);
+            setSuccess(false);
+            setConfirmDialogOpen(true);
 
-                setTimeout(() => {
-                    setSuccess(false);
-                    setClosing(true);
+        } else {
+
+
+            addAuction(sessionUser.username, id, Number(basePrice), Number(duration))
+                .then(() => {
+                    setLoading(false);
+                    setSuccess(true);
+                    setError(false);
+                    dispatch(setUpdate({ update: true, updateId: id }));
 
                     setTimeout(() => {
-                        setClosing(false);
-                        setConfirmDialogOpen(false);
-                        handleClose();
-                    }, 500);
-                }, 2000);
-            }).catch(() => {
-                setError(true);
-                setLoading(false);
-                setSuccess(false);
-                setConfirmDialogOpen(true); // Mantener el diálogo abierto para mostrar el error
-            });
+                        setSuccess(false);
+                        setClosing(true);
+
+                        setTimeout(() => {
+                            setClosing(false);
+                            setConfirmDialogOpen(false);
+                            handleClose();
+                        }, 500);
+                    }, 2000);
+                }).catch(() => {
+                    setError(true);
+                    setLoading(false);
+                    setSuccess(false);
+                    setConfirmDialogOpen(true); // Mantener el diálogo abierto para mostrar el error
+                });
+        }
     };
+
+    const checkAvailableCard = async (id: string) => {
+        try {
+            const data = await getCardFromUserCollection(id);
+            if (data.status === CardStatus.OnAuction) {
+                return false; // Retorna false para indicar que no se debe proceder
+            }
+            return true; // Retorna true si la carta no está en subasta y se puede proceder
+        } catch (error) {
+            return false; // Retorna false en caso de error al obtener los datos de la carta
+        }
+    };
+
 
     return (
         <div>
@@ -233,6 +273,19 @@ function AddAuctionForm({ open, handleClose, userCardId }: AuctionModalProps) {
                                 <ErrorTwoTone style={{ fontSize: 50, color: theme.palette.error.main }} />
                                 <Typography variant="h6" gutterBottom>
                                     Ha ocurrido un error, por favor inténtalo de nuevo.
+                                </Typography>
+                            </Box>
+                        </DialogContent>
+                    </Grow>
+                }
+
+                {alreadyOnAuction && !loading && !closing &&
+                    <Grow in={error} timeout={{ enter: 500, exit: 500 }}>
+                        <DialogContent>
+                            <Box display="flex" flexDirection="column" alignItems="center">
+                                <ErrorTwoTone style={{ fontSize: 50, color: theme.palette.error.main }} />
+                                <Typography variant="h6" gutterBottom>
+                                    ¡Ya tienes una subasta activa para esta carta!
                                 </Typography>
                             </Box>
                         </DialogContent>
