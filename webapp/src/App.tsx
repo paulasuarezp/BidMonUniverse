@@ -8,6 +8,7 @@ import { persistor, store } from './redux/store';
 import { AccessLevel } from './shared/sharedTypes';
 import { darkTheme, lightTheme } from './themes';
 import { RouteRedirector } from './utils/RouteRedirector';
+import AuctionCardDetail from './views/components/auction/AuctionCardDetail';
 import CardDetail from './views/components/card/CardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
 import BasePage from './views/pages/BasePage';
@@ -44,7 +45,7 @@ function App() {
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions" element={<RouteRedirector initRoute={<ActiveAuctions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
-                  <Route path="/auctions/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/auctions/:id" element={<RouteRedirector initRoute={<AuctionCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/bid/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Página de Error */}
