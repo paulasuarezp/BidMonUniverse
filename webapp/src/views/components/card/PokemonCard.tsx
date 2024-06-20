@@ -11,10 +11,11 @@ interface PokemonCardProps {
   canFlip?: boolean; // Propiedad opcional para habilitar el giro
   maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
   type?: 'auction' | 'album' | 'bid'; // Propiedad obligatoria para determinar el tipo de tarjeta
+  onClick?: () => void; // Propiedad opcional para manejar el evento de clic
 }
 
 
-export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, type = 'album' }: PokemonCardProps) {
+export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick }: PokemonCardProps) {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(false);
 
@@ -37,9 +38,11 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
     if (canFlip) {
       setFlipped(!flipped);
     } else {
-      if (type === 'album') navigate(`/card/${userCardId}`);
-      if (type === 'auction') navigate(`/auctions/${userCardId}`);
-      if (type === 'bid') navigate(`/bid/${userCardId}`);
+      if (onClick) {
+        onClick();
+      } else {
+        navigate(`/card/${id}`);
+      }
     }
   };
 

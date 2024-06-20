@@ -1,4 +1,6 @@
 import { Auction, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { calculateRemainingTime } from "../utils/utils";
+import { getAuction } from "./auctionsAPI";
 import { getCard } from "./cardAPI";
 import { getTransactionsForUserCard } from "./transactionsAPI";
 import { getUserCard, getUserCards } from "./userCardsAPI";
@@ -67,6 +69,38 @@ export const getCardFromUserCollection = async (userCardId: string): Promise<Use
 }
 
 /**
+ * Método para obtener una carta de una subasta.
+ * 
+ * @param {string} userCardId ID de la carta del usuario
+ * @returns {Promise<UserCard>} carta del usuario
+ * 
+ * @throws {Error} si se produce un error al obtener la carta del usuario
+ */
+export const getCardFromAuction = async (auctionId: string): Promise<UserCard> => {
+    try {
+        const auction: Auction = await getAuction(auctionId);
+
+        let duration = calculateRemainingTime(auction.estimatedEndDate);
+
+        const userCard = await getUserCard(auction.card);
+        return await getCard(userCard.legibleCardId).then(card => ({
+            _id: userCard._id,
+            card: card._id,
+            legibleCardId: userCard.legibleCardId,
+            user: userCard.user,
+            username: userCard.username,
+            status: userCard.status,
+            transactionHistory: userCard.transactionHistory,
+            item: card,
+            duration,
+        }));
+    } catch (error) {
+        throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+
+/**
  * Obtiene las transacciones de compra de una carta. 
  * Se filtran las transacciones por adquisición de la carta mediante sobre, subasta o regalo.
  * 
@@ -88,7 +122,13 @@ export const getShopTransactionsCard = async (userCardId: string): Promise<Trans
     }
 }
 
-
+/**
+ * Obtiene las cartas que están en subasta.
+ * 
+ * @param {Auction[]} auctions subastas
+ * @returns {Promise<UserCard[]>} cartas de las subastas
+ * 
+ */
 export const getAuctionCards = async (auctions: Auction[]): Promise<UserCard[]> => {
     try {
         const userCardPromises = auctions.map(auction =>
@@ -102,6 +142,7 @@ export const getAuctionCards = async (auctions: Auction[]): Promise<UserCard[]> 
                     status: userCard.status,
                     transactionHistory: userCard.transactionHistory,
                     item: card,
+                    duration: calculateRemainingTime(auction.estimatedEndDate),
                 }))
             )
         );

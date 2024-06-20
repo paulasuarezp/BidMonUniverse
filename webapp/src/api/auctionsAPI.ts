@@ -1,3 +1,5 @@
+import { Auction } from "../shared/sharedTypes";
+
 const apiEndPointBase = 'http://localhost:5001/auctions'; // Base URL for the Auction API endpoints
 
 /**
@@ -113,3 +115,41 @@ export const getUserActiveAuctions = async (username: string): Promise<any[]> =>
             throw new Error(error);
         });
 }
+
+/**
+ * Obtiene la subasta cuyo id se pasa como parámetro.
+ * 
+ * @param {string} username - Nombre de usuario
+ * 
+ * @returns {Promise<Auction[]>} - Promesa con las subastas activas
+ * 
+ * @throws {Error} - Error al obtener las subastas
+ */
+export const getAuction = async (id: string): Promise<Auction> => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/a/${id}`;
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener las subastas activas');
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            throw new Error(error);
+        });
+}
+
+

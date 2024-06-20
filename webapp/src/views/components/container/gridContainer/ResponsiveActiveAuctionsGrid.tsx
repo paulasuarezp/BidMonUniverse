@@ -30,18 +30,6 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
         return 6; // En pantallas grandes, mostrar seis columnas
     };
 
-    function millisecondsToHours(milliseconds: number) {
-        let hours = milliseconds / 1000 / 60 / 60;
-        return Math.round(hours);
-    }
-
-    function calculateRemainingTime(date: Date) {
-        const now = new Date();
-        const endDate = new Date(date);
-        const diff = endDate.getTime() - now.getTime();
-        return millisecondsToHours(diff);
-    }
-
 
     useEffect(() => {
         getActiveAuctions(username)
@@ -81,7 +69,8 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
                     <AuctionCard
                         card={cards[index].item as Card}
                         userCardId={cards[index]._id}
-                        duration={calculateRemainingTime(auctions[index].estimatedEndDate)}
+                        duration={cards[index].duration}
+                        auctionId={auctions[index]._id}
                     />
                 </Grid>
             ))}

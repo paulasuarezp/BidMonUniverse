@@ -126,6 +126,7 @@ export interface UserCard {
     status: CardStatus;
     transactionHistory: string[];
     item: Card;
+    duration?: number;
 }
 
 // TRANSACTION TYPES
@@ -161,6 +162,7 @@ export interface Transaction {
 // AUCTION TYPES
 // Auction
 export interface Auction {
+    _id: string; // ID de la subasta
     card: string; // Referencia a UserCard
     legibleCardId: string; // ID legible de la tarjeta
     seller: string; // Referencia a User
