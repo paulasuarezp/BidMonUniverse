@@ -2,7 +2,7 @@ import { Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions } from '../../../../api/auctionsAPI';
-import { Card, UserCard } from '../../../../shared/sharedTypes';
+import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../auction/AuctionCard';
 
 interface ResponsiveActiveAuctionsGridProps {
@@ -20,6 +20,7 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
 
     const [cards, setCards] = useState<UserCard[]>([]);
     const [numberOfCards, setNumberOfCards] = useState<number>(0);
+    const [auctions, setAuctions] = useState<Auction[]>([]);
 
     const getGridListCols = () => {
         if (isXs) return 1; // En teléfonos móviles, mostrar una sola columna
@@ -29,10 +30,23 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
         return 6; // En pantallas grandes, mostrar seis columnas
     };
 
+    function millisecondsToHours(milliseconds: number) {
+        let hours = milliseconds / 1000 / 60 / 60;
+        return Math.round(hours);
+    }
+
+    function calculateRemainingTime(date: Date) {
+        const now = new Date();
+        const endDate = new Date(date);
+        const diff = endDate.getTime() - now.getTime();
+        return millisecondsToHours(diff);
+    }
+
 
     useEffect(() => {
         getActiveAuctions(username)
             .then((data) => {
+                setAuctions(data);
                 getAuctionCards(data).then((cards) => {
                     setCards(cards);
                     console.log('Cartas del usuario', cards);
@@ -67,7 +81,7 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true }: ResponsiveActi
                     <AuctionCard
                         card={cards[index].item as Card}
                         userCardId={cards[index]._id}
-                        duration={24}
+                        duration={calculateRemainingTime(auctions[index].estimatedEndDate)}
                     />
                 </Grid>
             ))}
