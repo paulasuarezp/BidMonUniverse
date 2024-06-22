@@ -127,6 +127,7 @@ export interface UserCard {
     transactionHistory: string[];
     item: Card;
     duration?: number;
+    initialPrice?: number;
 }
 
 // TRANSACTION TYPES

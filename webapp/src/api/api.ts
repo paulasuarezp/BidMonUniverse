@@ -1,4 +1,4 @@
-import { Auction, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { Auction, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { calculateRemainingTime } from "../utils/utils";
 import { getAuction } from "./auctionsAPI";
 import { getCard } from "./cardAPI";
@@ -18,7 +18,11 @@ import { getUserCard, getUserCards } from "./userCardsAPI";
 export const getUserCardCollection = async (username: string): Promise<UserCard[]> => {
     try {
         // Obtener los datos iniciales de las cartas del usuario.
-        const userCards = await getUserCards(username);
+        let userCards = await getUserCards(username);
+
+        // Filtrar las cartas que no están a la venta.
+        userCards = userCards.filter(userCard => userCard.status === CardStatus.NotForSale);
+
 
         // Crear una lista de promesas para cada carta del usuario.
         const cardPromises = userCards.map(userCard =>
@@ -93,6 +97,7 @@ export const getCardFromAuction = async (auctionId: string): Promise<UserCard> =
             transactionHistory: userCard.transactionHistory,
             item: card,
             duration,
+            initialPrice: auction.initialPrice,
         }));
     } catch (error) {
         throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');

@@ -1,6 +1,6 @@
 const { check, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
-import  auth  from '../middlewares/authMiddleware';
+import auth from '../middlewares/authMiddleware';
 
 const purchasesRouter: Router = express.Router();
 
@@ -26,8 +26,6 @@ purchasesRouter.post('/cardpack', [
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        console.log('Validations passed');
-        console.log("Username: " + req.body.username);
         next();
     }
 ], purchaseCardPack);

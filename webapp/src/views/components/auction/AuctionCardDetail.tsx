@@ -1,9 +1,13 @@
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import TimerIcon from '@mui/icons-material/Timer';
 import {
     Box,
     CardActions,
+    CardContent,
     CircularProgress,
+    Grid,
+    Typography,
     useTheme
 } from "@mui/material";
 import { useEffect, useState } from 'react';
@@ -26,6 +30,7 @@ const AuctionCardDetail = () => {
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
     const [duration, setDuration] = useState<number>(0);
+    const [initialPrice, setInitialPrice] = useState<number>(0);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     const [error, setError] = useState<string | null>(null);
@@ -48,6 +53,7 @@ const AuctionCardDetail = () => {
                 clearTimeout(timer);
                 setCard(data.item);
                 setDuration(data.duration);
+                setInitialPrice(data.initialPrice);
                 setCanBid(false);
 
                 if (data.status === CardStatus.OnAuction && data.username == username) {
@@ -98,17 +104,40 @@ const AuctionCardDetail = () => {
                     label='Realizar puja'
                 />
             </CardActions>)
-                : (<CardActions>
 
-                    <Button
-                        startIcon={<RemoveCircleOutlineIcon />}
-                        variant="contained"
-                        sx={{ marginTop: 2, marginBottom: 2 }}
-                        fullWidth
-                        buttonType="ghost"
-                        label='Retirar subasta'
-                    />
-                </CardActions>)
+                : (
+                    <>
+                        <CardContent sx={{ flexGrow: 1 }}>
+                            <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                        <Typography><strong>Precio inicial:</strong>  {initialPrice}</Typography>
+                                        <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+                                    </Box>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                        <Typography><strong>Tiempo restante:</strong> {duration} horas</Typography>
+                                        <TimerIcon sx={{ marginLeft: 1, color: theme.palette.info.main }} />
+                                    </Box>
+                                </Grid>
+                            </Grid>
+                        </CardContent>
+
+                        <CardActions>
+
+
+                            <Button
+                                startIcon={<RemoveCircleOutlineIcon />}
+                                variant="contained"
+                                sx={{ marginTop: 2, marginBottom: 2 }}
+                                fullWidth
+                                buttonType="ghost"
+                                label='Retirar subasta'
+                            />
+                        </CardActions>
+                    </>)
             } />
     );
 };

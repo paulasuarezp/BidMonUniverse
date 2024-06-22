@@ -77,7 +77,8 @@ const getAuction = async (req: Request, res: Response) => {
 const getActiveAuctions = async (req: Request, res: Response) => {
     try {
         let username = req.params.username.toLowerCase();
-        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: { $ne: username } });
+        let today = new Date();
+        const auctions = await Auction.find({ status: AuctionStatus.Open, estimatedEndDate: { $gte: today }, sellerUsername: { $ne: username } });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);
@@ -102,7 +103,8 @@ const getActiveAuctions = async (req: Request, res: Response) => {
 const getActiveAuctionsByUser = async (req: Request, res: Response) => {
     try {
         let username = req.params.username.toLowerCase();
-        const auctions = await Auction.find({ status: AuctionStatus.Open, sellerUsername: username });
+        let today = new Date();
+        const auctions = await Auction.find({ status: AuctionStatus.Open, estimatedEndDate: { $gte: today }, sellerUsername: username });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);

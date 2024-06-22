@@ -1,9 +1,10 @@
-import Container from "../components/container/Container";
+import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import NavigationMenu from "../components/menus/principalNav/Navigation";
-import { Typography } from "@mui/material";
+import Container from "../components/container/Container";
 import ResponsiveActiveAuctionsGrid from "../components/container/gridContainer/ResponsiveActiveAuctionsGrid";
+import NavigationMenu from "../components/menus/principalNav/Navigation";
 import PokeballsBox from "../components/ornament/PokeballsBox";
 
 //#region COMPONENTE LOGIN
@@ -11,6 +12,10 @@ export default function MyCollection() {
     const sessionUser = useSelector((state: RootState) => state.user);
 
     let username: string = sessionUser.username;
+
+    // Estado para manejar el interruptor de subastas activas de la app vs. subastas activas del usuario
+    const [showUserAuctions, setShowUserAuctions] = useState(false);
+
 
 
     return (
@@ -23,9 +28,16 @@ export default function MyCollection() {
                 <strong>¡Participa en ellas!</strong>
             </Typography>
 
+            <FormGroup>
+                <FormControlLabel
+                    control={<Switch checked={showUserAuctions} onChange={() => setShowUserAuctions(!showUserAuctions)} />}
+                    label={showUserAuctions ? "Mis subastas" : "Todas las subastas"}
+                />
+            </FormGroup>
+
 
             <div style={{ marginBottom: '2em' }}>
-                <ResponsiveActiveAuctionsGrid limit={false} username={username} />
+                <ResponsiveActiveAuctionsGrid limit={false} username={username} showUserAuctions={showUserAuctions} />
             </div>
 
 
