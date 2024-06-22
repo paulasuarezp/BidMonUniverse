@@ -13,15 +13,15 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
-import { resetUpdate } from '../../../redux/slices/updateSlice';
-import { RootState } from '../../../redux/store';
-import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
-import Button from '../buttons/Button';
-import DurationButton from '../buttons/duration/DurationButton';
-import GeneralCardDetail from '../cardDetail/GeneralCardDetail';
-import ErrorMessageBox from '../error/ErrorMessageBox';
-import WithdrawnAuctionForm from '../forms/auction/WithdrawnAuctionForm';
+import { getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
+import { resetUpdate } from '../../../../redux/slices/updateSlice';
+import { RootState } from '../../../../redux/store';
+import { CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
+import Button from '../../buttons/Button';
+import DurationButton from '../../buttons/duration/DurationButton';
+import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
+import ErrorMessageBox from '../../error/ErrorMessageBox';
+import WithdrawnAuctionForm from '../../forms/auction/WithdrawnAuctionForm';
 
 
 
