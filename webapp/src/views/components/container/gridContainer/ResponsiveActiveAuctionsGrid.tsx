@@ -1,10 +1,11 @@
 import { CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { getAuctionCards } from '../../../../api/api';
+import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
+import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
+import InfoMessageBox from '../../MessagesBox/InfoMessageBox';
 import AuctionCard from '../../cardDetail/auction/AuctionCard';
-import ErrorMessageBox from '../../error/ErrorMessageBox';
 
 interface ResponsiveActiveAuctionsGridProps {
     username: string;
@@ -38,8 +39,9 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true, showUserAuctions
         setError(null);
         try {
             const auctionData = isUserAuctions ? await getUserActiveAuctions(username) : await getActiveAuctions(username);
-            setAuctions(auctionData);
-            const cardsData = await getAuctionCards(auctionData);
+            const filteredAuctions = await filterAuctionsByUserActiveBid(auctionData, username);
+            setAuctions(filteredAuctions);
+            const cardsData = await getAuctionCards(filteredAuctions);
             setCards(cardsData);
             const numberOfCards = limit ? Math.min(cardsData.length, getGridListCols()) : cardsData.length;
             setNumberOfCards(numberOfCards);
@@ -81,6 +83,7 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true, showUserAuctions
                     />
                 </Grid>
             ))}
+            {numberOfCards === 0 && <InfoMessageBox />}
         </Grid>
     );
 };

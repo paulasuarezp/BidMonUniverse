@@ -17,10 +17,10 @@ import { checkActiveBid, getCardFromAuction, getCardFromUserCollection, getShopT
 import { resetUpdate } from '../../../../redux/slices/updateSlice';
 import { RootState } from '../../../../redux/store';
 import { Auction, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
+import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
-import ErrorMessageBox from '../../error/ErrorMessageBox';
 import WithdrawnAuctionForm from '../../forms/auction/WithdrawnAuctionForm';
 import AddBidForm from '../../forms/bid/AddBidForm';
 import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
@@ -65,6 +65,8 @@ const AuctionCardDetail = () => {
         setBidId(null);
         setHaveBid(false);
 
+
+
         getCardFromAuction(id)
             .then((data) => {
                 clearTimeout(timer);
@@ -85,6 +87,7 @@ const AuctionCardDetail = () => {
                         if (bid) {
                             setHaveBid(true);
                             setBidId(bid._id);
+                            navigate(`/bids/${bid._id}`);
                         } else {
                             setHaveBid(false);
                             setBidId(null);
@@ -163,7 +166,7 @@ const AuctionCardDetail = () => {
         setOpenBidModal(true);
     }
 
-    if (error || !onAuction && !isOwner) {
+    if (error) {
         return (
             <ErrorMessageBox message={error || 'Se ha producido un error al obtener los datos de la subasta.'} />
         );

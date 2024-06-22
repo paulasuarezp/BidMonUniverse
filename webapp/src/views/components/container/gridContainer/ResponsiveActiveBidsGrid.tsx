@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react';
 import { getBidsCards } from '../../../../api/api';
 import { getUserActiveBids } from '../../../../api/bidsAPI';
 import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
+import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
+import InfoMessageBox from '../../MessagesBox/InfoMessageBox';
 import BidCard from '../../cardDetail/bid/BidCard';
-import ErrorMessageBox from '../../error/ErrorMessageBox';
 
 interface ResponsiveActiveAuctionsGridProps {
     username: string;
@@ -81,6 +82,7 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
                     />
                 </Grid>
             ))}
+            {numberOfCards === 0 && <InfoMessageBox message="¡Es un buen momento para relajarte y planear tu próxima estrategia de puja!" />}
         </Grid>
     );
 };

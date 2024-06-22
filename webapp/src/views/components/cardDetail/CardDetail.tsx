@@ -13,8 +13,8 @@ import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
+import ErrorMessageBox from '../MessagesBox/ErrorMessageBox';
 import Button from '../buttons/Button';
-import ErrorMessageBox from '../error/ErrorMessageBox';
 import AddAuctionForm from '../forms/auction/AddAuctionForm';
 import GeneralCardDetail from './GeneralCardDetail';
 

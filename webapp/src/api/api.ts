@@ -1,4 +1,4 @@
-import { Auction, Bid, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { Auction, Bid, BidStatus, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { calculateRemainingTime } from "../utils/utils";
 import { getAuction } from "./auctionsAPI";
 import { getBidById, getUserActiveBids } from "./bidsAPI";
@@ -252,3 +252,38 @@ export const getCardFromBid = async (bidId: string): Promise<UserCard> => {
         throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');
     }
 }
+
+
+/**
+ * Filtrar subastas para solo mostrar aquellas en las que no tenga una puja en estado 'Pending' para el usuario.
+ * 
+ * @param {Auction[]} auctions - subastas
+ * @param {string} username - nombre de usuario
+ * 
+ * @returns {Promise<Auction[]>} subastas filtradas
+ * 
+ * @throws {Error} si se produce un error al filtrar las subastas
+ */
+export const filterAuctionsByUserActiveBid = async (auctions: Auction[], username: string): Promise<Auction[]> => {
+    const filteredAuctions = [];
+
+    for (const auction of auctions) {
+        if (auction.bids && auction.bids.length > 0) {
+            // Obtener todas las pujas de una subasta de forma asíncrona y revisar condiciones
+            const bids = await Promise.all(auction.bids.map(bidId => getBidById(bidId)));
+
+            // Comprobar si alguna puja del usuario está en estado 'Pending'
+            const hasPendingBid = bids.some(bid => bid.username === username.toLowerCase() && bid.status === BidStatus.Pending);
+
+            // Si no hay pujas 'Pending' del usuario, incluir la subasta
+            if (!hasPendingBid) {
+                filteredAuctions.push(auction);
+            }
+        } else {
+            // Incluir subasta si no hay pujas asociadas
+            filteredAuctions.push(auction);
+        }
+    }
+
+    return filteredAuctions;
+};
