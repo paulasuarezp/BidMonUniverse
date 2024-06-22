@@ -1,15 +1,15 @@
-import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import HomeIcon from '@mui/icons-material/Home';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import StoreIcon from '@mui/icons-material/Store';
 import GavelIcon from '@mui/icons-material/Gavel';
 import HistoryIcon from '@mui/icons-material/History';
+import HomeIcon from '@mui/icons-material/Home';
+import StoreIcon from '@mui/icons-material/Store';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import Tabs from '@mui/material/Tabs';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { useNavigate, useLocation } from 'react-router-dom';
+import * as React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function NavigationMenu() {
     const [value, setValue] = React.useState('logued');
@@ -42,7 +42,17 @@ export default function NavigationMenu() {
 
     React.useEffect(() => {
         const path = location.pathname.replace('/', '');
-        setValue(path === '' ? 'logued' : path);
+        switch (path) {
+            case '':
+                setValue('logued');
+                break;
+            case 'bids':
+                setValue('auctions');
+                break;
+            default:
+                setValue(path);
+                break;
+        }
     }, [location.pathname]);
 
     return (

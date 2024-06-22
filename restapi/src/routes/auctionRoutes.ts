@@ -42,6 +42,7 @@ auctionRouter.get('/a/:id', [
     }
 ], getAuction);
 
+
 /**
  * Ruta para obtener todas las subastas activas
  * @route GET /active

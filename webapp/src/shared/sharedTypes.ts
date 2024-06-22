@@ -128,6 +128,8 @@ export interface UserCard {
     item: Card;
     duration?: number;
     initialPrice?: number;
+    auction?: Auction;
+    bid?: Bid;
 }
 
 // TRANSACTION TYPES
@@ -196,4 +198,19 @@ export enum BidStatus {
     Rejected = "rejected",
     AuctionCancelled = "auctioncancelled",
     Withdrawn = "withdrawn"
+}
+
+export interface Bid {
+    _id: string; // ID de la puja
+    auctionItem?: Auction; // Auction
+    auction: string; // Referencia a Auction
+    user: string; // Referencia al documento User
+    username: string; // Nombre de usuario que realizó la puja
+    usercard: string; // Referencia al documento UserCard
+    legibleCardId: string; // ID de la carta que se está subastando (cardId)
+    initDate: Date; // Fecha en que se realizó la puja
+    estimatedDate: Date; // Fecha estimada en que finaliza la puja
+    endDate: Date; // Fecha en que finaliza la puja
+    price: number; // Precio ofrecido en la puja
+    status: BidStatus; // Estado de la puja, utilizando el enum BidStatus
 }

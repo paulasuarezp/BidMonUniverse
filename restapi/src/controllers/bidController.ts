@@ -1,11 +1,10 @@
-import Bid from '../models/bid';
 import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import UserCard from '../models/userCard';
-import { AuctionStatus, BidStatus, CardStatus, TransactionConcept } from '../models/utils/enums';
-import Transaction from '../models/transaction';
 import Auction, { IAuction } from '../models/auction';
+import Bid from '../models/bid';
+import Transaction from '../models/transaction';
 import User from '../models/user';
+import { AuctionStatus, BidStatus, TransactionConcept } from '../models/utils/enums';
 
 
 
@@ -29,7 +28,7 @@ import User from '../models/user';
  * @param {Request} req - La solicitud HTTP, debe incluir el nombre de usuario, el identificador de la subasta y el monto de la puja.
  * @param {Response} res - La respuesta HTTP, devuelve un mensaje de éxito con los detalles de la puja o un mensaje de error en caso de fallo.
  * 
- * @returns {Promise<Bid>} - Una promesa que resuelve con los detalles de la puja realizada si el proceso es exitoso.
+ * @returns {Promise<void>} - Una promesa que resuelve con los detalles de la puja realizada si el proceso es exitoso.
  * 
  * @throws {Error} 500 - Si se produce un error durante el proceso de realizar la puja.
  */
@@ -41,7 +40,7 @@ const createBid = async (req: Request, res: Response) => {
 
         username = username.toLowerCase();
 
-        const auction: IAuction | null = await Auction.findOne({ auctionId: auctionId }).session(session);
+        const auction: IAuction | null = await Auction.findById(auctionId).session(session);
         if (!auction) {
             throw new Error("La subasta no existe.");
         }
@@ -57,65 +56,61 @@ const createBid = async (req: Request, res: Response) => {
         }
 
         // Verificar que no haya una puja previa del mismo usuario
-        const previousBid = await Bid.findOne({ auctionId: auctionId, username: username }).session(session);
+        const previousBid = await Bid.findOne({ auction: auctionId, username: username }).session(session);
         if (previousBid) {
             throw new Error("Ya has realizado una puja en esta subasta.");
         }
 
         // Verificar que el usuario tenga suficiente saldo para realizar la puja
         const user = await User.findOne({ username_lower: username }).session(session);
-        
+
         if (!user) {
             throw new Error("El usuario que intenta pujar no existe.");
         }
 
-        if (user && user.balance && user.balance < amount) {
-            throw new Error("Saldo insuficiente para realizar la puja.");
-        } else if (!user.balance) {
-            throw new Error("El usuario no tiene saldo.");
-        } else {
 
-            const bid = new Bid({
-                auction: auctionId,
-                user: user._id,
-                username: username,
-                usercard: auction.card,
-                legibleCardId: auction.legibleCardId,
-                initDate: new Date(),
-                estimatedDate: auction.estimatedEndDate,
-                endDate: auction.estimatedEndDate,
-                price: amount,
-                status: BidStatus.Pending
-            });
+        const bid = new Bid({
+            auction: auctionId,
+            user: user._id,
+            username: username,
+            usercard: auction.card,
+            legibleCardId: auction.legibleCardId,
+            initDate: new Date(),
+            estimatedDate: auction.estimatedEndDate,
+            endDate: auction.estimatedEndDate,
+            price: amount,
+            status: BidStatus.Pending
+        });
 
-            await bid.save({ session: session });
+        await bid.save({ session: session });
 
-            auction.bids.push(bid._id);
-            await auction.save({ session: session });
+        auction.bids.push(bid._id);
+        await auction.save({ session: session });
 
-            const transaction = new Transaction({
-                user: user._id,
-                username: username,
-                legibleCardId: auction.legibleCardId,
-                userCard: auction.card,
-                concept: TransactionConcept.NewBid,
-                date: new Date(),
-                price: amount,
-                auctionId: auctionId,
-                bidId: bid._id
-            });
+        const transaction = new Transaction({
+            user: user._id,
+            username: username,
+            legibleCardId: auction.legibleCardId,
+            userCard: auction.card,
+            concept: TransactionConcept.NewBid,
+            date: new Date(),
+            price: amount,
+            auctionId: auctionId,
+            bidId: bid._id
+        });
 
-            await transaction.save({ session: session });
+        await transaction.save({ session: session });
 
-            await session.commitTransaction();
-            session.endSession();
+        await session.commitTransaction();
+        session.endSession();
 
-            res.status(200).json({
-                message: "Puja realizada con éxito.",
-                bid: bid
-            });
-        }
+        res.status(200).json({
+            message: "Puja realizada con éxito.",
+            bid: bid
+        });
+
     } catch (error) {
+        console.log(error);
         await session.abortTransaction();
         session.endSession();
         res.status(500).json({ message: error.message });
@@ -178,7 +173,7 @@ const getBidHistoryByAuction = async (req: Request, res: Response) => {
     try {
         const { auctionId } = req.params;
 
-        const auction = await Auction.findOne({ auction : auctionId });
+        const auction = await Auction.findOne({ auction: auctionId });
         if (!auction) {
             return res.status(404).json({
                 message: 'Subasta no encontrada.'
@@ -221,13 +216,14 @@ const getActiveBidsByUser = async (req: Request, res: Response) => {
 
         const user = await User.findOne({ username_lower: username });
         if (!user) {
+            console.log('Usuario no encontrado');
             return res.status(404).json({
                 message: 'Usuario no encontrado.'
             });
         }
-        
+
         const auctions = await Auction.find({ status: AuctionStatus.Open });
-        const bids = await Bid.find({ username: username, auction: { $in: auctions.map(auction => auction._id) } });
+        const bids = await Bid.find({ username: username, status: BidStatus.Pending, auction: { $in: auctions.map(auction => auction._id) } });
 
         res.status(200).json(bids);
     } catch (error) {
@@ -261,7 +257,9 @@ const withdrawBid = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
     try {
         session.startTransaction();
-        const { bidId, username } = req.params;
+        let { username, bidId } = req.body;
+
+        username = username.toLowerCase();
 
         const bid = await Bid.findOne({ _id: bidId }).session(session);
         if (!bid) {
@@ -302,10 +300,45 @@ const withdrawBid = async (req: Request, res: Response) => {
             bid: bid
         });
     } catch (error) {
+        console.log(error);
         await session.abortTransaction();
         session.endSession();
         res.status(500).json({ message: error.message });
     }
 }
 
-export { createBid, getBidHistoryByUser, getBidHistoryByAuction, getActiveBidsByUser, withdrawBid };
+/**
+ * Recupera una puja específica por su identificador.
+ * Devuelve la puja si existe, de lo contrario, devuelve un mensaje de error.
+ * 
+ * @param {Request} req - El objeto de solicitud HTTP, que debe incluir el ID de la puja en `req.params.id`.
+ * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar la puja recuperada o un mensaje de error.
+ * 
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP. Si la puja se encuentra,
+ * devuelve un estado 200 y la puja en formato JSON. Si la puja no se encuentra, devuelve un estado 404 con un mensaje de error.
+ * Si ocurre un error al recuperar la puja, se devuelve un estado 500 con un mensaje de error.
+ * 
+ * @throws {Error} 404 - Si no se encuentra la puja con el ID proporcionado.
+ * @throws {Error} 500 - Si se produce un error durante el proceso de recuperación de la puja.
+ */
+const getBidById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const bid = await Bid.findById(id);
+        if (!bid) {
+            return res.status(404).json({
+                message: 'Puja no encontrada.'
+            });
+        }
+        res.status(200).json(bid);
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Se ha producido un error al buscar la puja. Por favor, inténtelo de nuevo.'
+        });
+    }
+}
+
+
+
+export { createBid, getActiveBidsByUser, getBidById, getBidHistoryByAuction, getBidHistoryByUser, withdrawBid };
+

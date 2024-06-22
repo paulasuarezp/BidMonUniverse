@@ -1,8 +1,7 @@
-import React from 'react';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
-import Button from '../buttons/Button';
-import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import Button from '../buttons/Button';
 
 //#region STYLES
 const StyledPaper = styled(Paper)(({ theme }) => ({
@@ -19,8 +18,12 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 //#endregion
 
+interface ErrorMessageBoxProps {
+    message?: string;
+}
+
 //#region COMPONENTE ERRORMESSAGEBOX
-export default function ErrorMessageBox() {
+export default function ErrorMessageBox({ message }: ErrorMessageBoxProps) {
     const navigate = useNavigate();
     const theme = useTheme();
 
@@ -42,8 +45,8 @@ export default function ErrorMessageBox() {
                         <img src={imageSource} alt="Pokémon Mimikyu" style={{ maxWidth: '40%', height: 'auto' }} />
                     </Box>
                     <Typography sx={{ marginBottom: '1em' }}>
-                        Nuestro equipo está trabajando duro para desenmascarar el problema.
-                        <strong><br />Por favor, intenta cargar tus datos de nuevo más tarde. <br />¡Gracias por tu paciencia y sigue siendo un maestro Pokémon! 💪🔍🔄</strong>
+                        {message}
+                        <strong><br />Por favor, inténtalo de nuevo más tarde. <br />¡Gracias por tu paciencia y sigue siendo un maestro Pokémon! 💪🔍🔄</strong>
                     </Typography>
                 </Box>
 
