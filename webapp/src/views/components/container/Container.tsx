@@ -1,4 +1,4 @@
-import { Container as MuiContainer, ContainerProps } from '@mui/material';
+import { ContainerProps, Container as MuiContainer } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 //#region STYLES
@@ -23,7 +23,9 @@ const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => 
 export default function Container({ children }: ContainerProps) {
     return (
         <ResponsiveContainer>
-            {children}
+            <div style={{ marginBottom: '2em' }}>
+                {children}
+            </div>
         </ResponsiveContainer>
     );
 }

@@ -149,6 +149,8 @@ export const getAuctionCards = async (auctions: Auction[]): Promise<UserCard[]> 
                     status: userCard.status,
                     transactionHistory: userCard.transactionHistory,
                     item: card,
+                    initialPrice: auction.initialPrice,
+                    auction: auction,
                     duration: calculateRemainingTime(auction.estimatedEndDate),
                 }))
             )
@@ -208,6 +210,8 @@ export const getBidsCards = async (bids: Bid[]): Promise<UserCard[]> => {
                         status: userCard.status,
                         transactionHistory: userCard.transactionHistory,
                         item: card,
+                        initialPrice: bid.price,
+                        bid: bid,
                         duration: calculateRemainingTime(auction.estimatedEndDate),
                     }))
                 )

@@ -1,5 +1,5 @@
 import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 //#region PROPS
 // Only include variant, size, and color
@@ -10,7 +10,7 @@ type ButtonBaseProps = Omit<MuiButtonProps, "disableRipple">;
 
 export interface ButtonProps extends ButtonBaseProps {
   label?: string;
-  buttonType?: 'primary' | 'secondary' | 'ghost' | 'back' | 'confirm' | 'cancel';
+  buttonType?: 'primary' | 'secondary' | 'ghost' | 'back' | 'confirm' | 'cancel' | 'section';
 }
 //#endregion
 
@@ -153,6 +153,41 @@ const StyledButton = styled(MuiButton, {
         outline: 'none', // Sin outline
         boxShadow: 'none', // Sin sombra
       },
+    }),
+
+    ...(buttonType === 'section' && {
+      color: theme.palette.mode === 'light' ? theme.palette.primary.main : '#FFFFFF', // Color del texto dependiendo del tema
+      backgroundColor: 'transparent',
+      border: 'none',
+      boxShadow: 'none',
+      fontSize: '1.4em', // Tamaño de fuente
+      fontWeight: 'bold', // Texto normal sin negrita
+      padding: 0, // Sin padding extra
+
+      '& .MuiSvgIcon-root': {
+        color: theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.secondary.main,
+      },
+      '&:hover': {
+        // Al hacer hover, se muestra como un botón más tradicional
+        color: theme.palette.mode === 'light' ? '#FFFFFF' : '#FFFFFF',
+        backgroundColor: theme.palette.primary.main,
+        fontWeight: 'bold',
+        boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+        padding: theme.spacing(1), // Agregar un poco de padding
+        '& .MuiSvgIcon-root': {
+          color: theme.palette.primary.contrastText,
+        },
+      },
+
+      // Eliminar estilos de foco y activo para mantener un diseño limpio
+      '&:active, &:focus, &.Mui-focusVisible': {
+        outline: 'none',
+        boxShadow: 'none',
+      },
+
+      // Transiciones suaves para cambios en el hover
+      transition: 'background-color 0.3s ease, color 0.3s ease, padding 0.3s ease',
+
     }),
 
     textTransform: 'none',
