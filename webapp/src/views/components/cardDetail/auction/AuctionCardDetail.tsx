@@ -142,7 +142,7 @@ const AuctionCardDetail = () => {
         setOpenWithdrawnModal(false);
     }
 
-    const openWithdrawnBidModal = async () => {
+    const handleOpenWithdrawnBidModal = async () => {
         if (!haveBid) {
             setOpenWithWarning(true);
         }
@@ -182,12 +182,12 @@ const AuctionCardDetail = () => {
     }
 
     return (
-        <GeneralCardDetail
+        <GeneralCardDetail title="Detalles de la subasta" backLabel="Volver a subastas" handleBack={() => navigate('/auctions')}
             card={card}
             id={id}
             transactions={transactions}
             pokemonBoxChildren={<DurationButton duration={duration} />}
-            cardInformationChildren={onAuction && canBid ? (<CardActions>
+            cardInformationChildren={onAuction && canBid && !haveBid ? (<CardActions>
                 <Button
                     startIcon={<AddCircleOutlineIcon />}
                     variant="contained"
@@ -202,52 +202,53 @@ const AuctionCardDetail = () => {
 
                 : (
                     <>
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                                        <Typography><strong>Precio inicial:</strong>  {initialPrice}</Typography>
-                                        <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
-                                    </Box>
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                                        <Typography><strong>Tiempo restante:</strong> {duration} horas</Typography>
-                                        <TimerIcon sx={{ marginLeft: 1, color: theme.palette.info.main }} />
-                                    </Box>
-                                </Grid>
-                            </Grid>
-                        </CardContent>
-
-                        {!isOwner && onAuction && !canBid && haveBid && (
+                        {!isOwner && onAuction && haveBid && (
                             <CardActions>
                                 <Button
                                     startIcon={<RemoveCircleOutlineIcon />}
                                     variant="contained"
                                     sx={{ marginTop: 2, marginBottom: 2 }}
                                     fullWidth
-                                    onClick={handleWithdrawnOpen}
+                                    onClick={handleOpenWithdrawnBidModal}
                                     buttonType="ghost"
                                     label='Retirar puja'
                                 />
-                                <WithdrawnBidForm bidId={bidId} open={openWithdrawnBidModal} handleClose={handleWithdrawnClose} warning={openWithWarning} />
+                                <WithdrawnBidForm bidId={bidId} open={openWithdrawnModal} handleClose={handleWithdrawnClose} warning={openWithWarning} />
                             </CardActions>
                         )}
 
                         {isOwner && onAuction && (
-                            <CardActions>
-                                <Button
-                                    startIcon={<RemoveCircleOutlineIcon />}
-                                    variant="contained"
-                                    sx={{ marginTop: 2, marginBottom: 2 }}
-                                    fullWidth
-                                    onClick={handleWithdrawnOpen}
-                                    buttonType="ghost"
-                                    label='Retirar subasta'
-                                />
-                                <WithdrawnAuctionForm auctionId={id} open={openWithdrawnModal} handleClose={handleWithdrawnClose} />
-                            </CardActions>
+                            <>
+                                <CardContent sx={{ flexGrow: 1 }}>
+                                    <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                                <Typography><strong>Precio inicial:</strong>  {initialPrice}</Typography>
+                                                <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+                                                <Typography><strong>Tiempo restante:</strong> {duration} horas</Typography>
+                                                <TimerIcon sx={{ marginLeft: 1, color: theme.palette.info.main }} />
+                                            </Box>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                                <CardActions>
+                                    <Button
+                                        startIcon={<RemoveCircleOutlineIcon />}
+                                        variant="contained"
+                                        sx={{ marginTop: 2, marginBottom: 2 }}
+                                        fullWidth
+                                        onClick={handleWithdrawnOpen}
+                                        buttonType="ghost"
+                                        label='Retirar subasta'
+                                    />
+                                    <WithdrawnAuctionForm auctionId={id} open={openWithdrawnModal} handleClose={handleWithdrawnClose} />
+                                </CardActions>
+                            </>
                         )}
                     </>)
             } />

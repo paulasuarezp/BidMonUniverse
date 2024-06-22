@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getCardFromBid, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
 import { resetUpdate } from '../../../../redux/slices/updateSlice';
 import { RootState } from '../../../../redux/store';
@@ -23,6 +23,7 @@ import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
 
 const BidCardDetail = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { id } = useParams();
     const [card, setCard] = useState<CardType | null>(null);
@@ -141,7 +142,7 @@ const BidCardDetail = () => {
     }
 
     return (
-        <GeneralCardDetail
+        <GeneralCardDetail title="Detalles de la puja" backLabel="Volver a mis pujas" handleBack={() => navigate('/bids')}
             card={card}
             id={id}
             transactions={transactions}
