@@ -49,6 +49,8 @@ export default function NavigationMenu() {
             else if (path.includes('auction')) setValue('auctions');
             else if (path.includes('card')) setValue('album');
             else if (path.includes('transaction')) setValue('transactions');
+            else if (path.includes('shop')) setValue('shop');
+            else if (path.includes('album')) setValue('album');
             else
                 setValue('logued');
         }
