@@ -42,16 +42,15 @@ export default function NavigationMenu() {
 
     React.useEffect(() => {
         const path = location.pathname.replace('/', '');
-        switch (path) {
-            case '':
-                setValue('logued');
-                break;
-            case 'bids':
-                setValue('auctions');
-                break;
-            default:
+
+        if (path === '') setValue('logued');
+        else {
+            if (path.includes('bid')) setValue('auctions');
+            else if (path.includes('auction')) setValue('auctions');
+            else if (path.includes('card')) setValue('album');
+            else if (path.includes('transaction')) setValue('transactions');
+            else
                 setValue(path);
-                break;
         }
     }, [location.pathname]);
 

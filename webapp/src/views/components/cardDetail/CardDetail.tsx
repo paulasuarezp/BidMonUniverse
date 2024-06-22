@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
@@ -21,6 +21,7 @@ import GeneralCardDetail from './GeneralCardDetail';
 
 const CardDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [card, setCard] = useState<CardType | null>(null);
@@ -116,7 +117,7 @@ const CardDetail = () => {
     }
 
     return (
-        <GeneralCardDetail
+        <GeneralCardDetail title="Mi colección" backLabel="Volver a mi colección" handleBack={() => navigate("/album")}
             card={card}
             id={id}
             transactions={transactions}
