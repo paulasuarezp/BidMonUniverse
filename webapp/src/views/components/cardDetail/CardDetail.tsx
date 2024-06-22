@@ -15,7 +15,7 @@ import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import Button from '../buttons/Button';
 import ErrorMessageBox from '../error/ErrorMessageBox';
-import AddAuctionForm from '../modals/AddAuctionForm';
+import AddAuctionForm from '../forms/AddAuctionForm';
 import GeneralCardDetail from './GeneralCardDetail';
 
 

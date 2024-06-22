@@ -52,7 +52,6 @@ auctionRouter.get('/active/:username', [
     param('username').isString().withMessage('Username must be a valid string'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);
-        console.log(errors);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
