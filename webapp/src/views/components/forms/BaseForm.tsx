@@ -19,8 +19,9 @@ interface BaseFormProps {
     loading: boolean;
     error: string;
     warning?: string;
-    successMessage: string;
+    successMessage?: string;
     actions: Action[];
+    showIcon?: 'warning' | 'error' | 'success' | 'none';
 }
 
 const Transition = React.forwardRef(function Transition(
@@ -30,7 +31,22 @@ const Transition = React.forwardRef(function Transition(
     return <Grow {...props} ref={ref} />;
 });
 
-const BaseForm = ({ open, onClose, title, content, loading, error, warning = '', successMessage, actions }: BaseFormProps) => {
+const BaseForm = ({ open, onClose, title, content, loading, error, warning = '', successMessage, actions, showIcon = 'none' }: BaseFormProps) => {
+
+
+    const chooseIcon = () => {
+        switch (showIcon) {
+            case 'warning':
+                return <WarningIcon style={{ fontSize: 50, color: 'orange' }} />;
+            case 'error':
+                return <ErrorTwoTone style={{ fontSize: 50, color: 'red' }} />;
+            case 'success':
+                return <CheckCircleIcon style={{ fontSize: 50, color: 'green' }} />;
+            default:
+                return null;
+        }
+    }
+
     return (
         <Dialog open={open} onClose={onClose}
             aria-labelledby="form-dialog-title"
@@ -70,6 +86,7 @@ const BaseForm = ({ open, onClose, title, content, loading, error, warning = '',
                     </Grow>
                 ) : (
                     <>
+                        {showIcon && chooseIcon()}
                         {title && <Typography variant="h6">{title}</Typography>}
                         {content}
                     </>

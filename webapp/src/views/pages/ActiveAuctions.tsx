@@ -1,14 +1,19 @@
-import { FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import { Box, FormControlLabel, FormGroup, Switch, Typography } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { RootState } from "../../redux/store";
+import Button from "../components/buttons/Button";
 import Container from "../components/container/Container";
 import ResponsiveActiveAuctionsGrid from "../components/container/gridContainer/ResponsiveActiveAuctionsGrid";
 import NavigationMenu from "../components/menus/principalNav/Navigation";
 import PokeballsBox from "../components/ornament/PokeballsBox";
 
 //#region COMPONENTE LOGIN
-export default function MyCollection() {
+export default function ActiveAuctions() {
+    const navigate = useNavigate();
+
     const sessionUser = useSelector((state: RootState) => state.user);
 
     let username: string = sessionUser.username;
@@ -17,6 +22,9 @@ export default function MyCollection() {
     const [showUserAuctions, setShowUserAuctions] = useState(false);
 
 
+    const handleNavigate = () => {
+        navigate('/bids');
+    };
 
     return (
         <Container>
@@ -28,12 +36,17 @@ export default function MyCollection() {
                 <strong>¡Participa en ellas!</strong>
             </Typography>
 
-            <FormGroup>
-                <FormControlLabel
-                    control={<Switch checked={showUserAuctions} onChange={() => setShowUserAuctions(!showUserAuctions)} />}
-                    label={showUserAuctions ? "Mis subastas" : "Todas las subastas"}
-                />
-            </FormGroup>
+
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <FormGroup>
+                    <FormControlLabel
+                        control={<Switch checked={showUserAuctions} onChange={() => setShowUserAuctions(!showUserAuctions)} />}
+                        label={showUserAuctions ? "Mis subastas" : "Todas las subastas"}
+                    />
+                </FormGroup>
+                <Button startIcon={<SearchIcon />} onClick={handleNavigate} variant="contained" color="primary" label="Mis pujas" />
+            </Box>
+
 
 
             <div style={{ marginBottom: '2em' }}>

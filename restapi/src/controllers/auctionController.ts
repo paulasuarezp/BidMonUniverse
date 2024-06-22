@@ -62,6 +62,8 @@ const getAuction = async (req: Request, res: Response) => {
 }
 
 
+
+
 /**
  * Recupera todas las subastas activas en el sistema, excluyendo las subastas del usuario actual.
  * Esta función busca en la base de datos todas las subastas que se encuentran con el estado 'open' y las devuelve.

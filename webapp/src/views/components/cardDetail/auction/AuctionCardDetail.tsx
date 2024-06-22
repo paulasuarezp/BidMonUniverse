@@ -13,15 +13,17 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
+import { checkActiveBid, getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
 import { resetUpdate } from '../../../../redux/slices/updateSlice';
 import { RootState } from '../../../../redux/store';
-import { CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
+import { Auction, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
 import ErrorMessageBox from '../../error/ErrorMessageBox';
 import WithdrawnAuctionForm from '../../forms/auction/WithdrawnAuctionForm';
+import AddBidForm from '../../forms/bid/AddBidForm';
+import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
 
 
 
@@ -36,16 +38,18 @@ const AuctionCardDetail = () => {
     const [duration, setDuration] = useState<number>(0);
     const [initialPrice, setInitialPrice] = useState<number>(0);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [auction, setAuction] = useState<Auction | null>(null)
 
     const [error, setError] = useState<string | null>(null);
     const [canBid, setCanBid] = useState<boolean>(false);
     const [onAuction, setOnAuction] = useState<boolean>(false);
     const [isOwner, setIsOwner] = useState<boolean>(false);
+    const [haveBid, setHaveBid] = useState<boolean>(false);
+    const [bidId, setBidId] = useState<string | null>(null)
 
     const [openWithdrawnModal, setOpenWithdrawnModal] = useState(false);
-
-    const handleOpenBid = () => navigate(`/bid/${id}`);
-
+    const [openWithWarning, setOpenWithWarning] = useState(false);
+    const [openBidModal, setOpenBidModal] = useState(false);
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -58,6 +62,8 @@ const AuctionCardDetail = () => {
         }, 5000); // 5 segundos
 
         setOnAuction(false);
+        setBidId(null);
+        setHaveBid(false);
 
         getCardFromAuction(id)
             .then((data) => {
@@ -68,13 +74,24 @@ const AuctionCardDetail = () => {
                 setInitialPrice(data.initialPrice);
                 setCanBid(false);
                 setOnAuction(true);
+                setAuction(data.auction);
                 setIsOwner(data.username === username);
-
                 if (data.status === CardStatus.OnAuction && data.username == username) {
                     setCanBid(false);
                 }
                 if (data.status === CardStatus.OnAuction && data.username != username) {
                     setCanBid(true);
+                    checkActiveBid(username, data.auction).then((bid) => {
+                        if (bid) {
+                            setHaveBid(true);
+                            setBidId(bid._id);
+                        } else {
+                            setHaveBid(false);
+                            setBidId(null);
+                        }
+                    }).catch((error) => {
+                        setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
+                    });
                 }
                 return getShopTransactionsCard(data._id);
             })
@@ -82,7 +99,7 @@ const AuctionCardDetail = () => {
             .catch((error) => {
                 setOnAuction(false);
                 clearTimeout(timer);
-                setError(error.message || 'Error: An unexpected error occurred.');
+                setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
             });
 
         return () => clearTimeout(timer);
@@ -116,8 +133,7 @@ const AuctionCardDetail = () => {
     const handleWithdrawnOpen = async () => {
         const canProceed = await checkAvailableCard(userCardId);
         if (!canProceed) {
-            setOpenWithdrawnModal(false);
-            return;
+            setOpenWithWarning(true);
         }
         setOpenWithdrawnModal(true);
     }
@@ -126,10 +142,30 @@ const AuctionCardDetail = () => {
         setOpenWithdrawnModal(false);
     }
 
+    const openWithdrawnBidModal = async () => {
+        if (!haveBid) {
+            setOpenWithWarning(true);
+        }
+        handleWithdrawnOpen();
+    }
+
+    const handleOpenBid = async () => {
+        if (haveBid) {
+            setOpenWithWarning(true);
+            setOpenBidModal(true);
+            return;
+        }
+        const canProceed = await checkAvailableCard(userCardId);
+        if (!canProceed) {
+            setCanBid(false);
+            return;
+        }
+        setOpenBidModal(true);
+    }
 
     if (error || !onAuction && !isOwner) {
         return (
-            <ErrorMessageBox />
+            <ErrorMessageBox message={error || 'Se ha producido un error al obtener los datos de la subasta.'} />
         );
     }
 
@@ -161,6 +197,7 @@ const AuctionCardDetail = () => {
                     onClick={handleOpenBid}
                     label='Realizar puja'
                 />
+                <AddBidForm open={openBidModal} handleClose={() => setOpenBidModal(false)} warning={openWithWarning} auction={auction} />
             </CardActions>)
 
                 : (
@@ -182,6 +219,22 @@ const AuctionCardDetail = () => {
                                 </Grid>
                             </Grid>
                         </CardContent>
+
+                        {!isOwner && onAuction && !canBid && haveBid && (
+                            <CardActions>
+                                <Button
+                                    startIcon={<RemoveCircleOutlineIcon />}
+                                    variant="contained"
+                                    sx={{ marginTop: 2, marginBottom: 2 }}
+                                    fullWidth
+                                    onClick={handleWithdrawnOpen}
+                                    buttonType="ghost"
+                                    label='Retirar puja'
+                                />
+                                <WithdrawnBidForm bidId={bidId} open={openWithdrawnBidModal} handleClose={handleWithdrawnClose} warning={openWithWarning} />
+                            </CardActions>
+                        )}
+
                         {isOwner && onAuction && (
                             <CardActions>
                                 <Button

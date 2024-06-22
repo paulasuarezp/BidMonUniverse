@@ -10,7 +10,9 @@ import { darkTheme, lightTheme } from './themes';
 import { RouteRedirector } from './utils/RouteRedirector';
 import CardDetail from './views/components/cardDetail/CardDetail';
 import AuctionCardDetail from './views/components/cardDetail/auction/AuctionCardDetail';
+import BidCardDetail from './views/components/cardDetail/bid/BidCardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
+import ActiveBids from './views/pages/ActiveBids';
 import BasePage from './views/pages/BasePage';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
@@ -46,7 +48,8 @@ function App() {
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions" element={<RouteRedirector initRoute={<ActiveAuctions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions/:id" element={<RouteRedirector initRoute={<AuctionCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
-                  <Route path="/bid/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/bids" element={<RouteRedirector initRoute={<ActiveBids />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/bids/:id" element={<RouteRedirector initRoute={<BidCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />

@@ -1,6 +1,7 @@
-import { Auction, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { Auction, Bid, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { calculateRemainingTime } from "../utils/utils";
 import { getAuction } from "./auctionsAPI";
+import { getBidById, getUserActiveBids } from "./bidsAPI";
 import { getCard } from "./cardAPI";
 import { getTransactionsForUserCard } from "./transactionsAPI";
 import { getUserCard, getUserCards } from "./userCardsAPI";
@@ -98,6 +99,7 @@ export const getCardFromAuction = async (auctionId: string): Promise<UserCard> =
             item: card,
             duration,
             initialPrice: auction.initialPrice,
+            auction: auction
         }));
     } catch (error) {
         throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');
@@ -155,5 +157,98 @@ export const getAuctionCards = async (auctions: Auction[]): Promise<UserCard[]> 
         return await Promise.all(userCardPromises);
     } catch (error) {
         throw new Error('Se ha producido un error al obtener las cartas de las subastas. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+
+/**
+ * Comprueba si en la subasta que se pasa por parámetro, hay una puja activa del usuario.
+ * 
+ * @param {string} username nombre de usuario
+ * @param {Auction} auction subasta
+ * 
+ * @returns {Promise<Bid>} puja activa del usuario
+ * 
+ */
+export const checkActiveBid = async (username: string, auction: Auction): Promise<Bid> => {
+    try {
+        const activeBids: Bid[] = await getUserActiveBids(username);
+        let bid: Bid = activeBids.find(bid => bid.auction === auction._id);
+
+        if (bid) {
+            bid.auctionItem = auction;
+        }
+
+        return bid;
+
+    } catch (error) {
+        throw new Error('Se ha producido un error al comprobar si hay una puja activa. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+
+/**
+ * Obtiene las cartas por las que ha pujado un usuario.
+ * 
+ * @param {Bid[]} bids - pujas
+ * @returns {Promise<UserCard[]>} cartas de las pujas
+ * 
+ */
+export const getBidsCards = async (bids: Bid[]): Promise<UserCard[]> => {
+    try {
+        const userCardPromises = bids.map(bid =>
+            getAuction(bid.auction).then(auction =>
+                getUserCard(bid.usercard).then(userCard =>
+                    getCard(userCard.legibleCardId).then(card => ({
+                        _id: userCard._id,
+                        card: card._id,
+                        legibleCardId: userCard.legibleCardId,
+                        user: userCard.user,
+                        username: userCard.username,
+                        status: userCard.status,
+                        transactionHistory: userCard.transactionHistory,
+                        item: card,
+                        duration: calculateRemainingTime(auction.estimatedEndDate),
+                    }))
+                )
+            )
+        );
+
+        return await Promise.all(userCardPromises);
+    } catch (error) {
+        throw new Error('Se ha producido un error al obtener las cartas de las subastas. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
+
+/**
+ * Método para obtener una carta de una puja.
+ * 
+ * @param {string} bidId  - ID de la puja
+ * @returns {Promise<UserCard>} carta del usuario
+ * 
+ * @throws {Error} si se produce un error al obtener la carta del usuario
+ */
+export const getCardFromBid = async (bidId: string): Promise<UserCard> => {
+    try {
+        const bid: Bid = await getBidById(bidId);
+
+        let duration = calculateRemainingTime(bid.estimatedDate);
+
+        const userCard = await getUserCard(bid.usercard);
+        return await getCard(userCard.legibleCardId).then(card => ({
+            _id: userCard._id,
+            card: card._id,
+            legibleCardId: userCard.legibleCardId,
+            user: userCard.user,
+            username: userCard.username,
+            status: userCard.status,
+            transactionHistory: userCard.transactionHistory,
+            item: card,
+            duration,
+            initialPrice: bid.price,
+            bid: bid
+        }));
+    } catch (error) {
+        throw new Error('Se ha producido un error al obtener la carta del usuario. Por favor, inténtelo de nuevo más tarde.');
     }
 }
