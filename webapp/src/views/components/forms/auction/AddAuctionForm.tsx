@@ -16,12 +16,12 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCardFromUserCollection } from '../../../api/api';
-import { addAuction } from '../../../api/auctionsAPI';
-import { setUpdate } from '../../../redux/slices/updateSlice';
-import { RootState } from '../../../redux/store';
-import { CardStatus } from '../../../shared/sharedTypes';
-import Button from '../buttons/Button';
+import { getCardFromUserCollection } from '../../../../api/api';
+import { addAuction } from '../../../../api/auctionsAPI';
+import { setUpdate } from '../../../../redux/slices/updateSlice';
+import { RootState } from '../../../../redux/store';
+import { CardStatus } from '../../../../shared/sharedTypes';
+import Button from '../../buttons/Button';
 
 const Transition = React.forwardRef(function Transition(
     props: GrowProps & { children: React.ReactElement<any, any> },

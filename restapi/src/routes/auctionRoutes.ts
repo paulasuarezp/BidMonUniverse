@@ -135,9 +135,8 @@ auctionRouter.post('/add', [
  * @throws {Error}  400 - Error de validación
  * @throws {Error}  500 - Error al retirar la carta de la subasta
  */
-auctionRouter.post('/withdraw', [
+auctionRouter.patch('/withdraw', [
     check('username').notEmpty().withMessage('Username is required'),
-    check('userCardId').notEmpty().withMessage('User Card ID is required'),
     check('auctionId').notEmpty().withMessage('Auction ID is required'),
     (req: Request, res: Response, next: any) => {
         const errors = validationResult(req);

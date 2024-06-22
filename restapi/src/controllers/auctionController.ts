@@ -301,7 +301,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
     try {
         // Extraer datos necesarios del request
-        let { username, userCardId, auctionId } = req.body;
+        let { username, auctionId } = req.body;
         username = username.toLowerCase();
 
         // Verificar que el usuario exista
@@ -310,9 +310,42 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
             throw new Error("Usuario no encontrado.");
         }
 
+        // Verificar que la subasta exista
+        const auction = await Auction.findOne({ _id: auctionId });
+        if (!auction) {
+            throw new Error("Subasta no encontrada.");
+        }
+
+        let userCardId = auction.card;
+
+        // Verificar que la carta exista
+        const card = await UserCard.findOne({ _id: userCardId });
+        if (!card) {
+            throw new Error("Carta no encontrada.");
+        }
+
+        // Verificar que el usuario sea el dueño de la carta o un administrador
+        if (user.role !== 'admin') {
+            if (card.user.toString() != user._id.toString()) {
+                console.log(card.user, user._id);
+                throw new Error("El usuario no es el dueño de la carta que intenta retirar de la subasta.");
+            }
+        }
+
+
+        // Verificar que la carta esté en subasta
+        if (card.status !== CardStatus.OnAuction) {
+            throw new Error("La carta no está en subasta.");
+        }
+
+        // Verificar que la subasta esté abierta
+        if (auction.status as AuctionStatus !== AuctionStatus.Open) {
+            throw new Error("La subasta no está abierta.");
+        }
+
         // Actualizar la UserCard para transferirla de nuevo al usuario
         const updatedCard = await UserCard.findOneAndUpdate(
-            { id: userCardId },
+            { _id: userCardId },
             { status: CardStatus.NotForSale },  // Actualizar el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
@@ -321,32 +354,6 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
             throw new Error("No se pudo retirar la carta de la subasta. La carta no se encontró o ya fue vendida.");
         }
 
-        // Verificar que la carta exista
-        const card = await UserCard.findOne({ id: userCardId });
-        if (!card) {
-            throw new Error("Carta no encontrada.");
-        }
-
-        // Verificar que el usuario sea el dueño de la carta o un administrador
-        if (card.user !== user.id && user.role !== 'admin') {
-            throw new Error("El usuario no es el dueño de la carta que intenta retirar de la subasta.");
-        }
-
-        // Verificar que la carta esté en subasta
-        if (card.status !== CardStatus.OnAuction) {
-            throw new Error("La carta no está en subasta.");
-        }
-
-        // Verificar que la subasta exista
-        const auction = await Auction.findOne({ _id: auctionId });
-        if (!auction) {
-            throw new Error("Subasta no encontrada.");
-        }
-
-        // Verificar que la subasta esté abierta
-        if (auction.status as AuctionStatus !== AuctionStatus.Open) {
-            throw new Error("La subasta no está abierta.");
-        }
 
         // Actualizar la subasta
         auction.endDate = new Date();
@@ -357,7 +364,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
         // Registrar la transacción de retirada de la subasta
         const withdrawTransaction = new Transaction({
-            user: user.id,
+            user: user._id,
             username: username,
             userCard: userCardId,
             cardId: updatedCard.card,
@@ -607,7 +614,7 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
 
         // Actualizar la UserCard para transferirla al nuevo usuario
         const updatedCard = await UserCard.findOneAndUpdate(
-            { id: userCardId },
+            { _id: userCardId },
             { user: buyerId, status: CardStatus.NotForSale },  // Actualizar el usuario y el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
