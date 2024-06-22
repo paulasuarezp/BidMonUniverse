@@ -1,17 +1,19 @@
-import Container from "../components/container/Container";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import NavigationMenu from "../components/menus/principalNav/Navigation";
-import { Grid, Typography, useTheme, IconButton, Stack } from "@mui/material";
-import { useMediaQuery } from "@mui/material";
-import PokemonCard from "../components/card/PokemonCard";
-import DataTable from "../components/table/Table";
-import ResponsivePokemonGrid from "../components/container/gridContainer/ResponsivePokemonGrid";
 import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
+import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { RootState } from "../../redux/store";
+import Button from '../components/buttons/Button';
+import Container from "../components/container/Container";
+import ResponsivePokemonGrid from "../components/container/gridContainer/ResponsivePokemonGrid";
+import NavigationMenu from "../components/menus/principalNav/Navigation";
+import AuctionSummaryTable from '../components/table/AuctionSummaryTable';
+import BidSummaryTable from "../components/table/BidSummaryTable";
 
 //#region COMPONENTE LOGIN
 export default function Login() {
   const sessionUser = useSelector((state: RootState) => state.user);
+  const navigate = useNavigate();
 
   const theme = useTheme();
 
@@ -35,29 +37,41 @@ export default function Login() {
 
       <div style={{ marginBottom: '2em' }}>
         <Stack spacing={0.5} direction="row" >
-
-          <Typography variant="h4" align="left">
-            Mi colección
-          </Typography>
-          <IconButton aria-label="delete" color="secondary">
-            <ArrowCircleRightTwoToneIcon fontSize="large" />
-          </IconButton>
+          <Button
+            buttonType="section"
+            onClick={() => navigate('/album')}
+            label='Mi colección'
+            endIcon={<ArrowCircleRightTwoToneIcon />}
+          />
         </Stack>
 
         <ResponsivePokemonGrid username={username} />
       </div>
 
-      <div>
+      <div style={{ marginBottom: '2em' }}>
         <Stack spacing={0.5} direction="row" >
+          <Button
+            buttonType="section"
+            onClick={() => navigate('/auctions')}
+            label='Mis subastas'
+            endIcon={<ArrowCircleRightTwoToneIcon />}
+          />
 
-          <Typography variant="h4" align="left">
-            Mis pujas
-          </Typography>
-          <IconButton aria-label="delete" color="secondary">
-            <ArrowCircleRightTwoToneIcon fontSize="large" />
-          </IconButton>
         </Stack>
-        <DataTable />
+        <AuctionSummaryTable />
+      </div>
+
+      <div style={{ marginBottom: '2em' }}>
+        <Stack spacing={0.5} direction="row" >
+          <Button
+            buttonType="section"
+            onClick={() => navigate('/bids')}
+            label='Mis pujas'
+            endIcon={<ArrowCircleRightTwoToneIcon />}
+          />
+
+        </Stack>
+        <BidSummaryTable />
       </div>
 
     </Container>

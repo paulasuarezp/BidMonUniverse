@@ -1,7 +1,8 @@
-import { Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
+import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
 import SurpriseMessageBox from '../../MessagesBox/SurpriseMessageBox';
 import PokemonCard from '../../card/PokemonCard';
 
@@ -18,7 +19,9 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
     const isLg = useMediaQuery(theme.breakpoints.down('lg'));
 
     const [cards, setCards] = useState<UserCard[]>([]);
-    const [numberOfCards, setNumberOfCards] = useState<number>(0);
+    const [numberOfCards, setNumberOfCards] = useState<number>(-1);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const getGridListCols = () => {
         if (isXs) return 1; // En teléfonos móviles, mostrar una sola columna
@@ -30,10 +33,12 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
 
 
     useEffect(() => {
+        setLoading(true);
+
         getUserCardCollection(username)
             .then((data) => {
                 setCards(data);
-                console.log('Cartas del usuario', data);
+                setLoading(false);
                 if (limit) {
                     // Si hay límite, ajusta el número de cartas basado en el tamaño de la pantalla.
                     const initialCount = getGridListCols();
@@ -44,9 +49,20 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
                 }
             })
             .catch((error) => {
-                console.error('Error al obtener las cartas del usuario', error);
+                setLoading(false);
+                setError('Error al obtener la colección de cartas');
+                setNumberOfCards(0);
             });
+
     }, []);
+
+    if (loading) {
+        return <Box style={{ textAlign: 'center' }}><CircularProgress /></Box>;
+    }
+
+    if (error) {
+        return <ErrorMessageBox message={error} />;
+    }
 
 
     return (
