@@ -50,7 +50,7 @@ export default function NavigationMenu() {
             else if (path.includes('card')) setValue('album');
             else if (path.includes('transaction')) setValue('transactions');
             else
-                setValue(path);
+                setValue('logued');
         }
     }, [location.pathname]);
 

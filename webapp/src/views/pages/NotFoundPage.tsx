@@ -1,8 +1,9 @@
-import React from 'react';
 import { Box, Paper, Typography, useTheme } from '@mui/material';
-import Button from '../components/buttons/Button';
-import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import Button from '../components/buttons/Button';
+import Container from '../components/container/Container';
+import NavigationMenu from '../components/menus/principalNav/Navigation';
 
 
 //#region STYLES
@@ -44,27 +45,30 @@ export default function NotFoundPage() {
   const imageSource = theme.palette.mode === 'light' ? '/404_light.png' : '/404_dark.png';
 
   return (
-    <StyledPaper
-      elevation={3}
-      sx={{
-        mt: { xs: '5.5em', sm: 'auto' } // marginTop de 5.5em en xs (móviles) y 'auto' en sm y tamaños mayores
-      }}
-    >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center', pl: 2, pr: 2, pb: 2 }}>
-        <SecondaryText sx={{ marginBottom: '0.2em', marginTop: '1em' }}>
-          Parece que has intentado explorar una zona cubierta por niebla...
-        </SecondaryText>
-        <PrincipalText sx={{ marginBottom: '1em' }}>
-          ¡No podemos encontrar esta página!
-        </PrincipalText>
+    <Container>
+      <NavigationMenu />
+      <StyledPaper
+        elevation={3}
+        sx={{
+          mt: { xs: '5.5em', sm: 'auto' } // marginTop de 5.5em en xs (móviles) y 'auto' en sm y tamaños mayores
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center', pl: 2, pr: 2, pb: 2 }}>
+          <SecondaryText sx={{ marginBottom: '0.2em', marginTop: '1em' }}>
+            Parece que has intentado explorar una zona cubierta por niebla...
+          </SecondaryText>
+          <PrincipalText sx={{ marginBottom: '1em' }}>
+            ¡No podemos encontrar esta página!
+          </PrincipalText>
 
-        <img src={imageSource} alt="Pokémon Confundido" style={{ alignSelf: 'center', maxWidth: '80%', height: 'auto' }} />
+          <img src={imageSource} alt="Pokémon Confundido" style={{ alignSelf: 'center', maxWidth: '80%', height: 'auto' }} />
 
 
-        <Button buttonType="primary" label='Volver al inicio' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
+          <Button buttonType="primary" label='Volver al inicio' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
 
-      </Box>
-    </StyledPaper>
+        </Box>
+      </StyledPaper>
+    </Container>
   );
 };
 //#endregion

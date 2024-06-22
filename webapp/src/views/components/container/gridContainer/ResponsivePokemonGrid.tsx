@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
 import { Grid, useMediaQuery, useTheme } from '@mui/material';
-import PokemonCard from '../../card/PokemonCard';
+import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
+import SurpriseMessageBox from '../../MessagesBox/SurpriseMessageBox';
+import PokemonCard from '../../card/PokemonCard';
 
 interface ResponsivePokemonGridProps {
     username: string;
@@ -64,6 +65,7 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
                     />
                 </Grid>
             ))}
+            {numberOfCards === 0 && <SurpriseMessageBox />}
         </Grid>
     );
 };

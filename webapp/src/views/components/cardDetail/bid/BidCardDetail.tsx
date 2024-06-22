@@ -13,10 +13,10 @@ import { getCardFromBid, getCardFromUserCollection, getShopTransactionsCard } fr
 import { resetUpdate } from '../../../../redux/slices/updateSlice';
 import { RootState } from '../../../../redux/store';
 import { BidStatus, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
+import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
-import ErrorMessageBox from '../../error/ErrorMessageBox';
 import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
 
 
@@ -127,7 +127,7 @@ const BidCardDetail = () => {
         handleWithdrawnOpen();
     }
 
-    if (error || !onAuction && !isOwner) {
+    if (error) {
         return (
             <ErrorMessageBox message={error || 'Se ha producido un error al obtener los datos de la subasta.'} />
         );
