@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
-import { Card as CardType } from "../../../shared/sharedTypes";
-import DurationButton from "../buttons/duration/DurationButton";
-import PokemonCard from "../card/PokemonCard";
+import { Card as CardType } from "../../../../shared/sharedTypes";
+import DurationButton from "../../buttons/duration/DurationButton";
+import PokemonCard from "../../card/PokemonCard";
 
 interface AuctionCardProps {
     card: CardType;
@@ -39,7 +39,6 @@ export default function AuctionCard({ card, userCardId, duration, auctionId }: A
         <HoverEffectContainer>
             <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} />
             <DurationButton duration={duration} sx={{ marginTop: '10px' }} className="hover-effect" />
-
         </HoverEffectContainer>
     );
 }

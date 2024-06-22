@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
-import AuctionCard from '../../auction/AuctionCard';
+import AuctionCard from '../../cardDetail/auction/AuctionCard';
 import ErrorMessageBox from '../../error/ErrorMessageBox';
 
 interface ResponsiveActiveAuctionsGridProps {
