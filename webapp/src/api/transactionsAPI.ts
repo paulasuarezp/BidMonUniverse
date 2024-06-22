@@ -36,3 +36,37 @@ export const getTransactionsForUserCard = async (userCardId: string) => {
         });
 }
 
+/**
+ * Obtiene las transacciones de un usuario usuario desde el servidor utilizando una API.
+ * 
+ * @param {string} username - El nombre de usuario para el que se obtendrán las transacciones.
+ * @returns {Promise<Object>} Un objeto que contiene las transacciones del usuario o un mensaje de error.
+ * 
+ * @throws {Error} Si no se encuentra un token de usuario válido.
+ */
+export const getTransactionsForUser = async (username: string) => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/u/${username.toLowerCase()}`
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se han podido obtener las transacciones del usuario, inténtelo de nuevo más tarde');
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            throw new Error('No se han podido obtener las transacciones del usuario, inténtelo de nuevo más tarde');
+        });
+}

@@ -20,6 +20,7 @@ import Logueado from './views/pages/Logueado';
 import MyCollection from './views/pages/MyCollection';
 import NotFoundPage from './views/pages/NotFoundPage';
 import Signup from './views/pages/Signup';
+import UserTransactions from './views/pages/UserTransactions';
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
                   {/* Rutas protegidas */}
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/transactions" element={<RouteRedirector initRoute={<UserTransactions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions" element={<RouteRedirector initRoute={<ActiveAuctions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions/:id" element={<RouteRedirector initRoute={<AuctionCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/bids" element={<RouteRedirector initRoute={<ActiveBids />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
