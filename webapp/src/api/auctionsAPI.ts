@@ -44,6 +44,46 @@ export const addAuction = async (username: string, userCardId: string, saleBase:
 
 
 /**
+ * Retirar una subasta para una carta.
+ * @param {string} username - Nombre de usuario
+ * @param  {string} auctionId - ID de la subasta
+ *  
+ * @returns {Promise<Auction>} - Promesa con la subasta retirada
+ * 
+ * @throws {Error} - Error al retirar la subasta
+ */
+export const withdrawAuction = async (username: string, auctionId: string) => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No token found');
+    }
+
+    const url = `${apiEndPointBase}/withdraw`
+
+    return fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username, auctionId }),
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Error al retirar la subasta');
+        }
+        console.log('Response', response);
+
+        return response.json();
+    })
+        .catch(error => {
+            throw new Error(error);
+        });
+
+}
+
+
+
+/**
  * Obtiene las subastas activas, que no pertenecen al usuario.
  * 
  * @param {string} username - Nombre de usuario
