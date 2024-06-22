@@ -1,7 +1,8 @@
 import { ErrorTwoTone } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
-import { Box, CircularProgress, Dialog, DialogActions, DialogContent, Grow, Typography } from '@mui/material';
+import { Box, CircularProgress, Dialog, DialogActions, DialogContent, Grow, GrowProps, Typography } from '@mui/material';
+import React from 'react';
 import Button from '../buttons/Button';
 
 interface Action {
@@ -22,9 +23,27 @@ interface BaseFormProps {
     actions: Action[];
 }
 
+const Transition = React.forwardRef(function Transition(
+    props: GrowProps & { children: React.ReactElement<any, any> },
+    ref: React.Ref<unknown>,
+) {
+    return <Grow {...props} ref={ref} />;
+});
+
 const BaseForm = ({ open, onClose, title, content, loading, error, warning = '', successMessage, actions }: BaseFormProps) => {
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm">
+        <Dialog open={open} onClose={onClose}
+            aria-labelledby="form-dialog-title"
+            TransitionComponent={Transition}
+            fullWidth
+            maxWidth="sm"
+            PaperProps={{
+                style: {
+                    borderRadius: 15,
+                    padding: '20px',
+                    textAlign: 'center'
+                }
+            }}>
             <DialogContent>
                 {loading ? (
                     <CircularProgress />
@@ -57,7 +76,7 @@ const BaseForm = ({ open, onClose, title, content, loading, error, warning = '',
                 )}
             </DialogContent>
             {!loading && !error && !warning && !successMessage && (
-                <DialogActions>
+                <DialogActions style={{ justifyContent: 'center' }}>
                     {actions.map((action, index) => (
                         <Button key={index} onClick={action.onClick} {...action} />
                     ))}
