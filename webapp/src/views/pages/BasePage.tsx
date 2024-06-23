@@ -9,7 +9,7 @@ export const BasePage = (props: { toggleTheme: any, children: any }) => {
 
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
-      <Header toggleTheme={() => { }} />
+      <Header toggleTheme={props.toggleTheme} />
       <Box component="main" flexGrow={1} mt={2} mb={2}>
         {/* Aquí va el contenido principal de la página */}
         {props.children}

@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
     padding: '0.5em', // Espaciado interno para el contenido
-    marginTop: '3.5em', // Márgenes ajustados para que coincidan con el diseño de Login y Signup
+    marginTop: '6.5em', // Márgenes ajustados para que coincidan con el diseño de Login y Signup
     marginBottom: '1.5em', // Márgenes ajustados para que coincidan con el diseño de Login y Signup
     display: 'flex', // Usa flex para facilitar el diseño responsivo
     flexDirection: 'column', // Alinea los elementos verticalmente

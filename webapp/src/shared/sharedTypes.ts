@@ -227,11 +227,24 @@ export interface CardPack {
     availableQuantity: number;
     available: boolean;
     deckId1?: string;
+    deck1?: Deck;
     quantity1?: number;
     deckId2?: string;
+    deck2?: Deck;
     quantity2?: number;
     deckId3?: string;
+    deck3?: Deck;
     quantity3?: number;
     image?: string;
     description?: string;
+}
+
+// Deck
+export interface Deck {
+    _id: string;
+    deckId: string;
+    name: string;
+    type: CardRarity;
+    publicationDate: Date;
+    cards: string[];
 }
