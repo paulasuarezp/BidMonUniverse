@@ -26,7 +26,8 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   const dispatch = useDispatch();
 
   const sessionUser = useSelector((state: RootState) => state.user);
-  let isAuthenticated = sessionUser?.username ? true : false;
+  const balance = useSelector((state: RootState) => state.user.balance);
+  const isAuthenticated = sessionUser?.username ? true : false;
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -49,12 +50,11 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     navigate('/');
 
   }
-
   return (
     <>
       {isAuthenticated ? (
         <>
-          <CoinsButton balance={sessionUser.balance} onClick={() => navigate('/recharge')} />
+          <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />
           <UserProfileButton
             name={sessionUser.username}
             imageUrl={sessionUser.profileImg}
@@ -66,20 +66,13 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       <Menu
         id="menu-appbar-user"
         anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
         {isAuthenticated && (
-          // Opciones del menú para usuario autenticado
           <div>
             <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>
             <MenuItem onClick={handleLogout}>
@@ -92,5 +85,3 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     </>
   );
 };
-
-//#endregion
