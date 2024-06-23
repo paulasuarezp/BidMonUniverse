@@ -214,3 +214,24 @@ export interface Bid {
     price: number; // Precio ofrecido en la puja
     status: BidStatus; // Estado de la puja, utilizando el enum BidStatus
 }
+
+// CARD PACK TYPES
+// CardPack
+export interface CardPack {
+    _id: string;
+    cardPackId: string;
+    name: string;
+    price: number;
+    releaseDate: Date;
+    numberOfCards: number;
+    availableQuantity: number;
+    available: boolean;
+    deckId1?: string;
+    quantity1?: number;
+    deckId2?: string;
+    quantity2?: number;
+    deckId3?: string;
+    quantity3?: number;
+    image?: string;
+    description?: string;
+}
