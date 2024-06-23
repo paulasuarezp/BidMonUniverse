@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, MenuItem, IconButton } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ButtonLogin from '../../buttons/login/ButtonLogin';
 import { Logout } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { Menu, MenuItem } from '@mui/material';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
+import { RootState } from '../../../../redux/store';
 import { disconnectSocket } from '../../../../socket/socketService';
-import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
 import CoinsButton from '../../buttons/coins/CoinsButton';
+import ButtonLogin from '../../buttons/login/ButtonLogin';
+import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
 
 
 //#region PROPS
@@ -55,7 +54,7 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     <>
       {isAuthenticated ? (
         <>
-          <CoinsButton balance={sessionUser.balance} />
+          <CoinsButton balance={sessionUser.balance} onClick={() => navigate('/recharge')} />
           <UserProfileButton
             name={sessionUser.username}
             imageUrl={sessionUser.profileImg}
