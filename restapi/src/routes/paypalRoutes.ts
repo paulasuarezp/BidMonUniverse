@@ -1,11 +1,8 @@
 import express, { Request, Response, Router } from 'express';
 import { check, validationResult } from 'express-validator';
 import { completeOrder, createOrder, handleSuccess } from '../controllers/paypalController';
-import auth from '../middlewares/authMiddleware';
 
 const paypalRouter: Router = express.Router();
-
-paypalRouter.use(auth);
 
 /**
  * Ruta para crear una orden de pago

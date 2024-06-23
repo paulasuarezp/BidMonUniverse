@@ -12,8 +12,8 @@ export const createOrder = (req: Request, res: Response): void => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": `http://localhost:3000/api/paypal/success?username=${username}&total=${total}&balance=${balance}`,
-            "cancel_url": "http://localhost:3000/api/paypal/cancel"
+            "return_url": `http://localhost:5001/paypal/success?username=${username}&total=${total}&balance=${balance}`,
+            "cancel_url": "http://localhost:5001/paypal/cancel"
         },
         "transactions": [{
             "item_list": {
@@ -91,20 +91,32 @@ export const handleSuccess = async (req: Request, res: Response): Promise<any> =
 
 
 
+
 export const completeOrder = async (req: Request, res: Response): Promise<any> => {
     const { orderID, username, balance, total } = req.body;
 
-    const execute_payment_json = {
-        "payer_id": orderID,
-        "transactions": [{
-            "amount": {
-                "currency": "EUR",
-                "total": total
-            }
-        }]
-    };
-
     try {
+        const paymentDetails = await new Promise<any>((resolve, reject) => {
+            paypal.payment.get(orderID, (error, payment) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(payment);
+            });
+        });
+
+        const payerId = paymentDetails.payer.payer_info.payer_id;
+
+        const execute_payment_json = {
+            "payer_id": payerId, // Usar el payer_id obtenido de paymentDetails
+            "transactions": [{
+                "amount": {
+                    "currency": "EUR",
+                    "total": total
+                }
+            }]
+        };
+
         const payment = await new Promise<any>((resolve, reject) => {
             paypal.payment.execute(orderID, execute_payment_json, (error, payment) => {
                 if (error) {
