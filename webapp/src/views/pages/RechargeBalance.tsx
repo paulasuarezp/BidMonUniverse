@@ -15,25 +15,25 @@ export default function RechargeBalance() {
 
     const sessionUser = useSelector((state: RootState) => state.user);
 
-    const [balance, setBalance] = useState(1);
+    const [balance, setBalance] = useState(1); // 1 EUR = 10 zens
     const [errorMessage, setErrorMessage] = useState('');
-    const [total, setTotal] = useState(1); // Asumimos que 1 balance cuesta 1 EUR
+    const [total, setTotal] = useState(1);
     const username = sessionUser.username.toLowerCase();
 
 
-    const handleBalanceChange = (value: string) => {
+    const handleTotalChange = (value: string) => {
         if (value === '' || parseInt(value) < 1) {
             setErrorMessage('Por favor, introduce una cantidad válida para recargar. Mínimo: 1 zen');
         } else {
             setErrorMessage('');
-            const balanceValue = parseInt(value);
-            setBalance(balanceValue);
-            setTotal(balanceValue); // Ajustar la lógica de cálculo de total si es necesario
+            const total = parseInt(value);
+            setBalance(total * 10);
+            setTotal(total);
         }
     };
 
     const handleApprove = async (orderID: string) => {
-        await handlePay(orderID, total, username, total * 10);
+        await handlePay(orderID, total, username, balance);
     };
 
     return (
@@ -58,8 +58,8 @@ export default function RechargeBalance() {
                         type="number"
                         fullWidth
                         variant="outlined"
-                        value={balance}
-                        onChange={e => handleBalanceChange(e.target.value)}
+                        value={total}
+                        onChange={e => handleTotalChange(e.target.value)}
                         error={errorMessage !== ''}
                         helperText={errorMessage ? 'Por favor, introduce una cantidad válida para recarar. Mínimo: 1 zen' : 'Valor predeterminado: 1 zen.'}
                     />
@@ -78,7 +78,7 @@ export default function RechargeBalance() {
                             }}
                             onApprove={(data, actions) => {
                                 return actions.order.capture().then(details => {
-                                    handleApprove(data.orderID);
+                                    handleApprove(details.id);
                                 });
                             }}
                             onError={(err) => {
