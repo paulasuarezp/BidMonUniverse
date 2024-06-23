@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu, MenuItem, IconButton } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ButtonLogin from '../../buttons/login/ButtonLogin';
 import { Logout } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../../../redux/store';
+import { Menu, MenuItem } from '@mui/material';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
+import { RootState } from '../../../../redux/store';
 import { disconnectSocket } from '../../../../socket/socketService';
-import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
 import CoinsButton from '../../buttons/coins/CoinsButton';
+import ButtonLogin from '../../buttons/login/ButtonLogin';
+import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
 
 
 //#region PROPS
@@ -27,7 +26,8 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   const dispatch = useDispatch();
 
   const sessionUser = useSelector((state: RootState) => state.user);
-  let isAuthenticated = sessionUser?.username ? true : false;
+  const balance = useSelector((state: RootState) => state.user.balance);
+  const isAuthenticated = sessionUser?.username ? true : false;
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -50,12 +50,11 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     navigate('/');
 
   }
-
   return (
     <>
       {isAuthenticated ? (
         <>
-          <CoinsButton balance={sessionUser.balance} />
+          <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />
           <UserProfileButton
             name={sessionUser.username}
             imageUrl={sessionUser.profileImg}
@@ -67,20 +66,13 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       <Menu
         id="menu-appbar-user"
         anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
-        }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={Boolean(anchorElUser)}
         onClose={handleCloseUserMenu}
       >
         {isAuthenticated && (
-          // Opciones del menú para usuario autenticado
           <div>
             <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>
             <MenuItem onClick={handleLogout}>
@@ -93,5 +85,3 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     </>
   );
 };
-
-//#endregion

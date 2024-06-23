@@ -11,10 +11,12 @@ import {
     Typography,
     useTheme
 } from '@mui/material';
+import { useState } from 'react';
 import { CardPack as CardPackType } from '../../../shared/sharedTypes';
 import Button from '../buttons/Button';
 import CoinsButton from '../buttons/coins/CoinsButton';
 import { getCategoryIcon } from '../card/CardUtils';
+import PurchaseCardpackConfirm from '../forms/cardpack/CardpackForm';
 import './cardPack.css';
 
 interface PackProps {
@@ -39,8 +41,18 @@ function getDeckName(name: string): string {
     }
 }
 
-export default function CardPack({ cardpack, onOpen }: PackProps) {
+export default function CardPack({ cardpack }: PackProps) {
     const theme = useTheme();
+
+    const [openModal, setOpenModal] = useState(false);
+
+    const handleOpen = () => {
+        setOpenModal(true);
+    }
+
+    const handleClose = () => {
+        setOpenModal(false);
+    }
 
     return (
         <Card sx={{
@@ -98,7 +110,8 @@ export default function CardPack({ cardpack, onOpen }: PackProps) {
                 </List>
             </CardContent>
             <CardActions sx={{ justifyContent: 'center', paddingBottom: theme.spacing(2) }}>
-                <Button buttonType='primary' label='Comprar sobre' fullWidth onClick={onOpen} />
+                <Button buttonType='primary' label='Comprar sobre' fullWidth onClick={handleOpen} />
+                <PurchaseCardpackConfirm open={openModal} handleClose={handleClose} cardpack={cardpack} />
             </CardActions>
         </Card>
     );

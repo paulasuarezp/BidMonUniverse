@@ -19,6 +19,7 @@ import Login from './views/pages/Login';
 import Logueado from './views/pages/Logueado';
 import MyCollection from './views/pages/MyCollection';
 import NotFoundPage from './views/pages/NotFoundPage';
+import RechargeBalance from './views/pages/RechargeBalance';
 import Shop from './views/pages/Shop';
 import Signup from './views/pages/Signup';
 import UserTransactions from './views/pages/UserTransactions';
@@ -48,6 +49,7 @@ function App() {
                   {/* Rutas protegidas */}
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/recharge" element={<RouteRedirector initRoute={<RechargeBalance />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/shop" element={<RouteRedirector initRoute={<Shop />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/transactions" element={<RouteRedirector initRoute={<UserTransactions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/auctions" element={<RouteRedirector initRoute={<ActiveAuctions />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />

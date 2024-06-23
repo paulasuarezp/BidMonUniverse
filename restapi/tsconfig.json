@@ -21,9 +21,9 @@
         "app.ts",     // Incluye el archivo 'app.ts'
         "src/**/*.test.ts",
         "src/**/*.json"
-    ],
+, "paypal.ts"    ],
     "exclude": [
         "node_modules",  // Excluye la carpeta 'node_modules'.
         "**/*.spec.ts"   // Excluye todos los archivos de prueba.
     ]
-}
+} 
