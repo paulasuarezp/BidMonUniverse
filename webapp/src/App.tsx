@@ -13,6 +13,7 @@ import AuctionCardDetail from './views/components/cardDetail/auction/AuctionCard
 import BidCardDetail from './views/components/cardDetail/bid/BidCardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
 import ActiveBids from './views/pages/ActiveBids';
+import AdminPage from './views/pages/AdminPage';
 import BasePage from './views/pages/BasePage';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
@@ -25,9 +26,10 @@ import Signup from './views/pages/Signup';
 import UserTransactions from './views/pages/UserTransactions';
 
 
+
+
 function App() {
   const [mode, setMode] = React.useState('light'); // Tema claro por defecto
-
 
   const toggleMode = () => {
     setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
@@ -57,6 +59,8 @@ function App() {
                   <Route path="/bids" element={<RouteRedirector initRoute={<ActiveBids />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/bids/:id" element={<RouteRedirector initRoute={<BidCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  {/* Rutas administrador */}
+                  <Route path="/admin" element={<RouteRedirector initRoute={<AdminPage />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>

@@ -34,7 +34,9 @@ export default function Login() {
             connectSocket(data.token, data.user.username);
           }
           // Redirigir a la página de inicio
-          navigate('/logued');
+          if (data.user.role == 'admin') navigate('/admin');
+          else
+            navigate('/logued');
         }
       })
       .catch(error => {
