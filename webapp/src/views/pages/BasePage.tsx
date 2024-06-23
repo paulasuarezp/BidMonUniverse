@@ -1,21 +1,21 @@
-import Header from '../components/header/Header';
-import Container from '../components/container/Container';
 import { Box } from '@mui/material';
-import { useState, useEffect } from 'react';
+import Footer from '../components/footer/Footer';
+import Header from '../components/header/Header';
 
 
 //#region COMPONENT BasePage
 export const BasePage = (props: { toggleTheme: any, children: any }) => {
 
+
   return (
-    <Container disableGutters style={{ height: '100vh' }}>
-      <Header toggleTheme={props.toggleTheme} />
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-        <Container>
-          {props.children}
-        </Container>
+    <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Header toggleTheme={() => { }} />
+      <Box component="main" flexGrow={1} mt={2} mb={2}>
+        {/* Aquí va el contenido principal de la página */}
+        {props.children}
       </Box>
-    </Container>
+      <Footer />
+    </Box>
   );
 }
 //#endregion

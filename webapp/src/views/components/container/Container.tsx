@@ -5,16 +5,20 @@ import { styled } from '@mui/material/styles';
 const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => ({
     backgroundColor: theme.palette.background.default,
     padding: '0.5em', // Espaciado interno para el contenido
-    marginTop: '1.5em', // Margen superior para separar el contenido del borde superior
+    marginTop: '3.5em', // Márgenes ajustados para que coincidan con el diseño de Login y Signup
+    marginBottom: '1.5em', // Márgenes ajustados para que coincidan con el diseño de Login y Signup
     display: 'flex', // Usa flex para facilitar el diseño responsivo
     flexDirection: 'column', // Alinea los elementos verticalmente
-    width: '100vw', // Asegura que el Container ocupe todo el ancho disponible
-    maxWidth: '100% !important', // Asegura que el Container no se desborde
+    width: '100%', // Asegura que el Container ocupe todo el ancho disponible
+    maxWidth: '100% !important', // Limita el ancho máximo para que coincida con el Paper
     boxSizing: 'border-box', // Asegura que el padding no afecte el ancho definido
-    height: '100%', // Asegura que el contenedor ocupe toda la altura disponible
+    height: 'auto', // Ajusta la altura automática
+    marginLeft: 'auto', // Centra el container horizontalmente
+    marginRight: 'auto', // Centra el container horizontalmente
     '@media (max-width: 600px)': {
         padding: '0.5em', // Reduce el padding en dispositivos móviles
-        marginTop: '1.5em', // Añade un margen superior en dispositivos móviles
+        marginTop: '4.5em', // Ajusta el margen superior en dispositivos móviles
+        marginBottom: '1.5em', // Ajusta el margen inferior en dispositivos móviles
     },
 }));
 //#endregion
@@ -23,9 +27,7 @@ const ResponsiveContainer = styled(MuiContainer)<ContainerProps>(({ theme }) => 
 export default function Container({ children }: ContainerProps) {
     return (
         <ResponsiveContainer>
-            <div style={{ marginBottom: '2em' }}>
-                {children}
-            </div>
+            {children}
         </ResponsiveContainer>
     );
 }
