@@ -110,7 +110,27 @@ export default function RechargeBalance() {
 
                                     const transaction = orderData.purchase_units[0].payments.captures[0];
                                     setMessage(`Transaction ${transaction.status}: ${transaction.id}. See console for all available details`);
-                                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+
+                                    // Enviar solicitud al servidor para actualizar el saldo del usuario
+                                    const response = await fetch(`http://localhost:5001/paypal/updateorder`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({
+                                            username: username, // Asegúrate de usar el nombre de usuario correcto aquí
+                                            balance: balance// La cantidad que deseas agregar al balance del usuario
+                                        }),
+                                    });
+
+                                    const result = await response.json();
+                                    console.log('Server response:', result);
+
+                                    if (response.ok) {
+                                        setMessage(`Pago completado con éxito y saldo actualizado. ${result.message}`);
+                                    } else {
+                                        setMessage(`Error al actualizar el saldo: ${result.error}`);
+                                    }
                                 } catch (error) {
                                     console.error('Error in onApprove:', error);
                                     setMessage(`Lo siento, su transacción no pudo ser procesada...${error.message}`);
