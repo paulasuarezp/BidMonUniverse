@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../redux/store';
 import Container from '../components/container/Container';
+import BaseForm from '../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
 import Paper from '../components/paper/Paper';
 
 export default function RechargeBalance() {
@@ -16,8 +17,9 @@ export default function RechargeBalance() {
     const [errorMessage, setErrorMessage] = useState('');
     const [total, setTotal] = useState(1);
     const [message, setMessage] = useState("");
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogContent, setDialogContent] = useState({ loading: false, error: '', successMessage: '' });
     const username = sessionUser.username.toLowerCase();
-
 
     const handleBalanceChange = (value: string) => {
         if (value === '' || parseInt(value) < 10 || parseInt(value) % 10 !== 0) {
@@ -54,6 +56,11 @@ export default function RechargeBalance() {
                 handleBalanceChange(newValue.toString());
             }
         }
+    };
+
+    const handleDialogClose = () => {
+        setDialogOpen(false);
+        setDialogContent({ loading: false, error: '', successMessage: '' });
     };
 
     const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
@@ -162,7 +169,8 @@ export default function RechargeBalance() {
                                     }
                                 } catch (error) {
                                     console.error(error);
-                                    setMessage(`No se pudo iniciar PayPal Checkout...${error}`);
+                                    setDialogContent({ loading: false, error: `No se pudo iniciar PayPal Checkout...${error}`, successMessage: '' });
+                                    setDialogOpen(true);
                                 }
                             }}
                             onApprove={async (data, actions) => {
@@ -176,7 +184,8 @@ export default function RechargeBalance() {
                                     }
 
                                     const transaction = orderData.purchase_units[0].payments.captures[0];
-                                    setMessage(`Transaction ${transaction.status}: ${transaction.id}. See console for all available details`);
+                                    setDialogContent({ loading: false, error: '', successMessage: `Transaction ${transaction.status}: ${transaction.id}. See console for all available details` });
+                                    setDialogOpen(true);
 
                                     // Enviar solicitud al servidor para actualizar el saldo del usuario
                                     const response = await fetch(`http://localhost:5001/paypal/updateorder`, {
@@ -186,7 +195,7 @@ export default function RechargeBalance() {
                                         },
                                         body: JSON.stringify({
                                             username: username, // Asegúrate de usar el nombre de usuario correcto aquí
-                                            balance: balance// La cantidad que deseas agregar al balance del usuario
+                                            balance: balance // La cantidad que deseas agregar al balance del usuario
                                         }),
                                     });
 
@@ -194,24 +203,39 @@ export default function RechargeBalance() {
                                     console.log('Server response:', result);
 
                                     if (response.ok) {
-                                        setMessage(`Pago completado con éxito y saldo actualizado. ${result.message}`);
+                                        setDialogContent({ loading: false, error: '', successMessage: `Pago completado con éxito y saldo actualizado.` });
                                     } else {
-                                        setMessage(`Error al actualizar el saldo: ${result.error}`);
+                                        setDialogContent({ loading: false, error: `Error al actualizar el saldo: ${result.error}`, successMessage: '' });
                                     }
+                                    setDialogOpen(true);
                                 } catch (error) {
                                     console.error('Error in onApprove:', error);
-                                    setMessage(`Lo siento, su transacción no pudo ser procesada...${error.message}`);
+                                    setDialogContent({ loading: false, error: `Lo siento, su transacción no pudo ser procesada...${error.message}`, successMessage: '' });
+                                    setDialogOpen(true);
                                 }
                             }}
                             onError={(err) => {
                                 console.error('Error al crear la orden:', err);
-                                setMessage(`Error al crear la orden: ${err}`);
+                                setDialogContent({ loading: false, error: `Error al crear la orden: ${err}`, successMessage: '' });
+                                setDialogOpen(true);
                             }}
                         />
                     </PayPalScriptProvider>
-                    {message && <p>{message}</p>}
                 </Box>
             </Paper>
+            <BaseForm
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                title="Recarga de Saldo"
+                content={<></>}
+                loading={dialogContent.loading}
+                error={dialogContent.error}
+                successMessage={dialogContent.successMessage}
+                actions={[
+                    { label: 'Aceptar', onClick: handleDialogClose, buttonType: 'primary' }
+                ]}
+                showIcon={dialogContent.error ? 'error' : 'success'}
+            />
         </Container>
     );
 }
