@@ -15,6 +15,7 @@ import { CardPack as CardPackType } from '../../../shared/sharedTypes';
 import Button from '../buttons/Button';
 import CoinsButton from '../buttons/coins/CoinsButton';
 import { getCategoryIcon } from '../card/CardUtils';
+import './cardPack.css';
 
 interface PackProps {
     cardpack: CardPackType;
@@ -42,7 +43,12 @@ export default function CardPack({ cardpack, onOpen }: PackProps) {
     const theme = useTheme();
 
     return (
-        <Card sx={{ width: '100%', height: 480, borderRadius: '15px', boxShadow: 3, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <Card sx={{
+            width: '100%', height: 480, borderRadius: '15px', boxShadow: 3, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            '&:hover': {
+                animation: 'shake 0.5s'
+            }
+        }}>
             <CardMedia
                 component="img"
                 sx={{ height: 200, objectFit: 'cover' }}
