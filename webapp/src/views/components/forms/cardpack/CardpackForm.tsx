@@ -66,7 +66,7 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
 
             console.log("Sobre comprado con éxito");
             console.log("cartas generadas: ", cards);
-            setShowCards(true);
+
             dispatch(updateBalance(sessionUser.balance - cardpack.price));
             setSuccessMessage("¡Sobre comprado con éxito!");
 
@@ -109,7 +109,7 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
                     { label: "Confirmar", onClick: handleConfirm, buttonType: 'confirm' }
                 ]}
             />
-            <PurchasedCardsModal cards={cards} open={showCards} handleClose={handleClose} />
+            <PurchasedCardsModal cards={cards} open={showCards} handleClose={handleCloseShowCards} />
         </>
     );
 }

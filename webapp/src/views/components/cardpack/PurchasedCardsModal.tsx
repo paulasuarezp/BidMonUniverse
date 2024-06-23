@@ -9,9 +9,12 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     const navigateToAlbum = () => {
-        handleClose();
-        navigate('/album');
+        setTimeout(() => {
+            handleClose();
+            navigate('/album');
+        }, 2000);
     }
+
 
     return (
         <Modal
@@ -19,6 +22,10 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
             onClose={handleClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
+            closeAfterTransition
+            BackdropProps={{
+                timeout: 500,
+            }}
         >
             <Box sx={{
                 position: 'absolute',
@@ -32,10 +39,10 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
                 p: 4,
                 overflowY: 'auto',
                 maxHeight: '90vh',
-                borderRadius: 5
-
+                borderRadius: 5,
+                transition: 'all 0.3s ease-out'  // Agregando transiciones suaves
             }}>
-                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2 }}>
+                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }}>
                     ¡Enhorabuena! 🥳
                     <br />
                     Has adquirido las siguientes cartas:
