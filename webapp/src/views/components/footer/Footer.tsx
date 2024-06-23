@@ -25,7 +25,8 @@ const FooterContainer = styled(Box)(({ theme }) => ({
     width: '100%',
     [theme.breakpoints.down('sm')]: {
         flexDirection: 'column',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+        textAlign: 'center',
     },
 }));
 
@@ -33,6 +34,7 @@ const FooterSection = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: theme.spacing(1),
+    alignItems: 'center',
 }));
 
 const FooterLink = styled(Link)(({ theme }) => ({
@@ -46,6 +48,7 @@ const FooterLink = styled(Link)(({ theme }) => ({
 const SocialMediaIcons = styled(Box)(({ theme }) => ({
     display: 'flex',
     gap: theme.spacing(1),
+    justifyContent: 'center',
     '& a': {
         color: theme.palette.mode === 'light' ? theme.palette.text.primary : theme.palette.text.secondary,
     },
@@ -102,11 +105,13 @@ export default function Footer() {
                         </SocialMediaIcons>
                     </FooterSection>
                 </FooterContainer>
-                <Box mt={isMobile ? 2 : 0} textAlign="center" width="100%">
+
+                <Box mt={2} textAlign="center" width="100%">
                     <Typography variant="body2" color="textSecondary">
                         &copy; 2024 BidMon Universe. Todos los derechos reservados.
                     </Typography>
                 </Box>
+
             </Toolbar>
         </StyledFooter>
     );
