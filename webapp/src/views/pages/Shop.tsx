@@ -10,7 +10,6 @@ function getCardPackImage(packName: string): string {
     let name = packName.toLowerCase().replace(' ', '-');
     console.log('name:', name);
     return `/cardpacks/${name}.webp`;
-
 }
 
 function getDeckName(name: string): string {
@@ -31,17 +30,15 @@ function getDeckName(name: string): string {
 }
 
 function getCardPackDescription(pack: CardPackType): string {
-    let description = `Este sobre contiene ${pack.numberOfCards} cartas. Puedes conseguir cartas de los siguientes mazos: `;
+    let description = `Puedes conseguir cartas de los siguientes mazos: `;
     description += pack.deckId1 ? `${pack.quantity1} cartas de ${getDeckName(pack.deck1.name)}` : '';
     description += pack.deckId2 ? `, ${pack.quantity2} cartas de ${getDeckName(pack.deck2.name)}` : '';
     description += pack.deckId3 ? `, ${pack.quantity3} cartas de ${getDeckName(pack.deck3.name)}` : '';
-
 
     return description;
 }
 
 export default function Shop() {
-
     const [packs, setPacks] = useState<CardPackType[]>([]);
 
     const fetchPacks = async () => {
@@ -57,7 +54,7 @@ export default function Shop() {
         } catch (error) {
             console.log('Error fetching packs:', error);
         }
-    }
+    };
 
     useEffect(() => {
         fetchPacks();
@@ -77,6 +74,9 @@ export default function Shop() {
                             <CardPack
                                 name={pack.name}
                                 image={pack.image}
+                                price={pack.price}
+                                id={pack._id}
+                                subtitle={`Contiene ${pack.numberOfCards} cartas`}
                                 description={pack.description}
                                 onOpen={() => handleOpenPack(pack.name)}
                             />
@@ -86,5 +86,4 @@ export default function Shop() {
             </Container>
         </BasePageWithNav>
     );
-};
-
+}
