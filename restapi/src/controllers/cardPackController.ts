@@ -1,5 +1,5 @@
-import CardPack from "../models/cardpack";
 import { Request, Response } from "express";
+import CardPack from "../models/cardpack";
 
 
 /**
@@ -11,7 +11,7 @@ import { Request, Response } from "express";
  */
 const getCardPacks = async (req: Request, res: Response) => {
     try {
-        const cardPacks = await CardPack.find({ available: true });
+        const cardPacks = await CardPack.find({ available: true }).sort({ price: 1 });
         res.status(200).json(cardPacks);
     }
     catch (error: any) {
@@ -46,6 +46,6 @@ const getCardPack = async (req: Request, res: Response) => {
 
 // Exportar funciones de controlador
 export {
-    getCardPacks,
-    getCardPack
+    getCardPack, getCardPacks
 };
+

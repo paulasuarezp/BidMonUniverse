@@ -237,6 +237,7 @@ export interface CardPack {
     quantity3?: number;
     image?: string;
     description?: string;
+    descriptions?: string[];
 }
 
 // Deck
