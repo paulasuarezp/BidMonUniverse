@@ -18,14 +18,41 @@ export default function RechargeBalance() {
     const [message, setMessage] = useState("");
     const username = sessionUser.username.toLowerCase();
 
-    const handleTotalChange = (value: string) => {
-        if (value === '' || parseInt(value) < 1) {
-            setErrorMessage('Por favor, introduce una cantidad válida para recargar. Mínimo: 1 zen');
+
+    const handleBalanceChange = (value: string) => {
+        if (value === '' || parseInt(value) < 10 || parseInt(value) % 10 !== 0) {
+            setErrorMessage('Por favor, introduce una cantidad válida en múltiplos de 10.');
         } else {
             setErrorMessage('');
-            const totalValue = parseInt(value);
-            setBalance(totalValue * 10);
-            setTotal(totalValue);
+            const balanceValue = parseInt(value);
+            setTotal(balanceValue / 10);
+            setBalance(balanceValue);
+        }
+    };
+
+    const handleInputBlur = (event) => {
+        const newValue = parseInt(event.target.value);
+        if (!isNaN(newValue)) {
+            const roundedValue = Math.round(newValue / 10) * 10;
+            handleBalanceChange(roundedValue.toString());
+        }
+    };
+
+    const handleInputChange = (event) => {
+        const newValue = parseInt(event.target.value);
+        if (newValue % 10 === 0) {
+            handleBalanceChange(event.target.value);
+        }
+    };
+
+    const handleKeyDown = (event) => {
+        if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+            event.preventDefault();
+            const increment = event.key === "ArrowUp" ? 10 : -10;
+            const newValue = balance + increment;
+            if (newValue >= 10) {
+                handleBalanceChange(newValue.toString());
+            }
         }
     };
 
@@ -55,18 +82,7 @@ export default function RechargeBalance() {
                         </Typography>
                         <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
                     </Box>
-                    <TextField
-                        margin="dense"
-                        id="precio"
-                        label="Total a pagar en €"
-                        type="number"
-                        fullWidth
-                        variant="outlined"
-                        value={total}
-                        onChange={e => handleTotalChange(e.target.value)}
-                        error={errorMessage !== ''}
-                        helperText={errorMessage ? 'Por favor, introduce una cantidad válida para recargar. Mínimo: 1€' : 'Valor predeterminado: 1€, 10 Zens.'}
-                    />
+
                     <TextField
                         margin="dense"
                         id="basePrice"
@@ -74,17 +90,42 @@ export default function RechargeBalance() {
                         type="number"
                         fullWidth
                         variant="outlined"
+                        onBlur={handleInputBlur}
                         value={balance}
+                        onChange={handleInputChange}
+                        onKeyDown={handleKeyDown}
+                        error={errorMessage !== ''}
+                        helperText={errorMessage ? 'Por favor, introduce una cantidad válida en múltiplos de 10.' : 'Valor predeterminado: 10 Zens.'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                                </InputAdornment>
+                            ),
+                            inputProps: { step: 10 },
+                        }}
+                        sx={{ mb: 2 }}
+                    />
+
+                    <TextField
+                        margin="dense"
+                        id="precio"
+                        label="Total a pagar"
+                        type="number"
+                        fullWidth
+                        variant="outlined"
+                        value={total}
                         disabled
                         sx={{ mb: 2 }}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
-                                    <img src={`${process.env.PUBLIC_URL}/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                                    €
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
+
                     <PayPalScriptProvider options={{ "clientId": "AXE7-9Er_F_oY9-RdBsCvSZQ1OBfeTbgUVzzTj1tZk9RivJRYoI5U-xNYqUgqwY0z3_M4NvC6hJ5Cg8_", currency: "EUR" }}>
                         <PayPalButtons
                             style={{
