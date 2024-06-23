@@ -13,7 +13,7 @@ const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayP
  * @returns {Promise<void>} Una promesa que resuelve cuando la URL de aprobación de PayPal ha sido obtenida y el usuario es redirigido.
  * 
  */
-export const handlePay = async (orderID: string, total: number, username: string, balance: number): Promise<void> => {
+export const handlePay2 = async (orderID: string, total: number, username: string, balance: number): Promise<void> => {
     const token = localStorage.getItem('userToken');
     if (!token) {
         throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
@@ -46,4 +46,39 @@ export const handlePay = async (orderID: string, total: number, username: string
     } catch (error) {
         throw new Error(error.message || 'No se ha podido obtener la URL de aprobación de PayPal, inténtelo de nuevo más tarde');
     }
+};
+
+
+export const handlePay = async (orderID: string, total: number, username: string, balance: number) => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/order/${orderID}/capture`;
+
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ username, balance }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then((data) => {
+                    throw new Error(data.error);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Pago completado con éxito:', data);
+            return data;
+        })
+        .catch(error => {
+            console.error('Error al completar el pago:', error);
+            throw error;
+        });
 };

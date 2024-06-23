@@ -1,142 +1,115 @@
-// controllers/paypalController.ts
-import { Request, Response } from 'express';
-import paypal from '../../paypal';
-import User from '../models/user';
+import * as dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
-export const createOrder = (req: Request, res: Response): void => {
-    const { username, total, balance } = req.body;
+dotenv.config();
 
-    const create_payment_json = {
-        "intent": "sale",
-        "payer": {
-            "payment_method": "paypal"
-        },
-        "redirect_urls": {
-            "return_url": `http://localhost:5001/paypal/success?username=${username}&total=${total}&balance=${balance}`,
-            "cancel_url": "http://localhost:5001/paypal/cancel"
-        },
-        "transactions": [{
-            "item_list": {
-                "items": [{
-                    "name": `Recarga de saldo para el usuario ${username}, zens comprados: ${balance}. Total: ${total}€`,
-                    "sku": "001",
-                    "price": total,
-                    "currency": "EUR",
-                    "quantity": 1
-                }]
-            },
-            "amount": {
-                "currency": "EUR",
-                "total": total
-            },
-            "description": `Recarga de saldo para el usuario ${username}, zens comprados: ${balance}. Total: ${total}€`,
-        }]
-    };
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
+const base = "https://api-m.sandbox.paypal.com";
 
-    paypal.payment.create(create_payment_json, (error, payment) => {
-        if (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
-        } else {
-            for (let i = 0; i < payment.links.length; i++) {
-                if (payment.links[i].rel === 'approval_url') {
-                    res.json({ approval_url: payment.links[i].href });
-                }
-            }
-        }
-    });
-};
-
-export const handleSuccess = async (req: Request, res: Response): Promise<any> => {
-    const payerId = req.query.PayerID as string;
-    const paymentId = req.query.paymentId as string;
-    const total = req.query.total as string;
-    const username = req.query.username as string;
-    const balance = parseInt(req.query.balance as string);
-
-    const execute_payment_json = {
-        "payer_id": payerId,
-        "transactions": [{
-            "amount": {
-                "currency": "EUR",
-                "total": total
-            }
-        }]
-    };
-
+// Middleware para verificar las credenciales de PayPal
+export const generateAccessToken = async () => {
     try {
-        const payment = await new Promise<any>((resolve, reject) => {
-            paypal.payment.execute(paymentId, execute_payment_json, (error, payment) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(payment);
-            });
+        if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
+            throw new Error("MISSING_API_CREDENTIALS");
+        }
+
+        const auth = Buffer.from(`${PAYPAL_CLIENT_ID}:${PAYPAL_CLIENT_SECRET}`).toString("base64");
+        const response = await fetch(`${base}/v1/oauth2/token`, {
+            method: "POST",
+            body: "grant_type=client_credentials",
+            headers: {
+                Authorization: `Basic ${auth}`,
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
         });
 
-        const user = await User.findOne({ username_lower: username.toLowerCase() });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Failed to generate Access Token: ${response.statusText} - ${errorBody}`);
         }
 
-        user.balance += balance;
-        await user.save();
-
-        res.send('Pago completado con éxito y saldo actualizado.');
+        const data = await response.json();
+        if (data.access_token) {
+            return data.access_token;
+        } else {
+            throw new Error("Failed to generate Access Token: No access token in response");
+        }
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error al procesar el pago.');
+        console.error("Failed to generate Access Token:", error);
+        throw error;
     }
 };
 
-
-
-
-export const completeOrder = async (req: Request, res: Response): Promise<any> => {
-    const { orderID, username, balance, total } = req.body;
-
+// Función para manejar la respuesta de PayPal
+const handleResponse = async (response: any) => {
     try {
-        const paymentDetails = await new Promise<any>((resolve, reject) => {
-            paypal.payment.get(orderID, (error, payment) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(payment);
-            });
-        });
+        const jsonResponse = await response.json();
+        if (!response.ok) {
+            console.error("PayPal API error details:", jsonResponse);
+            throw new Error(`PayPal API error: ${jsonResponse.message || 'Unknown error'}`);
+        }
+        return {
+            jsonResponse,
+            httpStatusCode: response.status,
+        };
+    } catch (err) {
+        console.error("Failed to parse response:", err);
+        throw new Error(`Failed to parse response: ${err.message}`);
+    }
+};
 
-        const payerId = paymentDetails.payer.payer_info.payer_id;
+export const createOrder = async (username: string, balance: number, total: number) => {
+    try {
+        const accessToken = await generateAccessToken();
+        const url = `${base}/v2/checkout/orders`;
 
-        const execute_payment_json = {
-            "payer_id": payerId, // Usar el payer_id obtenido de paymentDetails
-            "transactions": [{
-                "amount": {
-                    "currency": "EUR",
-                    "total": total
-                }
-            }]
+        const payload = {
+            intent: "CAPTURE",
+            purchase_units: [
+                {
+                    amount: {
+                        currency_code: "EUR",
+                        value: total.toString(),
+                    },
+                    description: `Recarga de saldo para el usuario ${username}, zens comprados: ${balance}. Total: ${total}€`
+                },
+            ],
         };
 
-        const payment = await new Promise<any>((resolve, reject) => {
-            paypal.payment.execute(orderID, execute_payment_json, (error, payment) => {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(payment);
-            });
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+            method: "POST",
+            body: JSON.stringify(payload),
         });
 
-        const user = await User.findOne({ username_lower: username.toLowerCase() });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        user.balance += balance;
-        await user.save();
-
-        res.json({ message: 'Pago completado con éxito y saldo actualizado.' });
+        return handleResponse(response);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error al procesar el pago.');
+        console.error("Failed to create order:", error);
+        throw new Error(`Failed to create order: ${error.message}`);
+    }
+};
+
+// Capturar una orden de PayPal
+export const captureOrder = async (orderID: string) => {
+    try {
+        const accessToken = await generateAccessToken();
+        const url = `${base}/v2/checkout/orders/${orderID}/capture`;
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`,
+            },
+        });
+
+        return handleResponse(response);
+    } catch (error) {
+        console.error("Failed to capture order:", error);
+        throw new Error(`Failed to capture order: ${error.message}`);
     }
 };
