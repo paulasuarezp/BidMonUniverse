@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import CardPack, { ICardPack } from "../models/cardpack";
-import { getDeckByDeckId } from "./deckController";
-import Card, { ICard } from "../models/card";
-import User from "../models/user";
-import Transaction from "../models/transaction";
-import UserCard from "../models/userCard";
 import mongoose from "mongoose";
-import { CardStatus, TransactionConcept } from "../models/utils/enums";
+import Card, { ICard } from "../models/card";
+import CardPack, { ICardPack } from "../models/cardpack";
 import { IDeck } from "../models/deck";
+import Transaction from "../models/transaction";
+import User from "../models/user";
+import UserCard from "../models/userCard";
+import { CardStatus, TransactionConcept } from "../models/utils/enums";
+import { getDeckByDeckId } from "./deckController";
 
 /**
  * Función que permite comprar un paquete de cartas.
@@ -127,6 +127,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
             // Añadir referencia a la carta del usuario en la carta genérica
             card.cards.push(newUserCard._id);
+
             await card.save({ session });
 
             await newTransaction.save({ session });
@@ -142,7 +143,7 @@ const purchaseCardPack = async (req: Request, res: Response) => {
 
     } catch (error: any) {
 
-        // console.error("Se ha producido un error al comprar el paquete de cartas:", error);
+        console.error("Se ha producido un error al comprar el paquete de cartas:", error);
         await session.abortTransaction();
         res.status(500).json({ message: error.message || "Se ha producido un error al comprar el paquete de cartas." });
 
