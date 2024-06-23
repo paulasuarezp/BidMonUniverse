@@ -1,8 +1,9 @@
-import { Auction, Bid, BidStatus, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
+import { Auction, Bid, BidStatus, CardPack, CardStatus, Transaction, TransactionConcept, UserCard } from "../shared/sharedTypes";
 import { calculateRemainingTime } from "../utils/utils";
 import { getAuction } from "./auctionsAPI";
 import { getBidById, getUserActiveBids } from "./bidsAPI";
 import { getCard } from "./cardAPI";
+import { getDeckById } from "./decksAPI";
 import { getTransactionsForUserCard } from "./transactionsAPI";
 import { getUserCard, getUserCards } from "./userCardsAPI";
 
@@ -291,3 +292,38 @@ export const filterAuctionsByUserActiveBid = async (auctions: Auction[], usernam
 
     return filteredAuctions;
 };
+
+
+/**
+ * Vincular mazos de cartas a los distintos sobres de cartas.
+ * 
+ * @param {CardPack[]} packs - sobres de cartas
+ * 
+ * @returns {Promise<CardPack[]>} sobres de cartas con mazos vinculados
+ * 
+ * @throws {Error} si se produce un error al vincular los mazos de cartas
+ */
+export const linkDecksToCardPacks = async (packs: CardPack[]): Promise<CardPack[]> => {
+    try {
+        // Vincular mazos a los sobres de cartas
+        for (let pack of packs) {
+            if (pack.deckId1) {
+                const deck = await getDeckById(pack.deckId1);
+                pack.deck1 = deck;
+            }
+            if (pack.deckId2) {
+                const deck = await getDeckById(pack.deckId2);
+                pack.deck2 = deck;
+            }
+            if (pack.deckId3) {
+                const deck = await getDeckById(pack.deckId3);
+                pack.deck3 = deck;
+            }
+
+        }
+
+        return packs;
+    } catch (error) {
+        throw new Error('Se ha producido un error al vincular los mazos de cartas a los sobres. Por favor, inténtelo de nuevo más tarde.');
+    }
+}
