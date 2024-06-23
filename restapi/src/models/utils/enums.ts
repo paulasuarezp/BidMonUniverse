@@ -25,16 +25,16 @@ export enum PokemonType {
 
 // Gym of a pokemon (it can be none if the pokemon is not the the gym leader)
 export enum PokemonGym {
-    Pewter = "pewter",
-    Cerulean = "cerulean",
-    Vermilion = "vermilion",
-    Celadon = "celadon",
-    Fuchsia = "fuchsia",
-    Saffron = "saffron",
-    Cinnabar = "cinnabar",
-    Viridian = "viridian",
-    Indigo = "indigo",
-    Elite = "elite",
+    Pewter = "Pewter",
+    Cerulean = "Cerulean",
+    Vermilion = "Vermilion",
+    Celadon = "Celadon",
+    Fuchsia = "Fuchsia",
+    Saffron = "Saffron",
+    Cinnabar = "Cinnabar",
+    Viridian = "Viridian",
+    Indigo = "Indigo",
+    Elite = "Elite",
     None = "none"
 }
 

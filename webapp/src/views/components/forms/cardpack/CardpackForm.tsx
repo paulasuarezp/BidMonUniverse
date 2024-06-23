@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { purchaseCardPack } from '../../../../api/purchaseAPI';
 import { updateBalance } from '../../../../redux/slices/userSlice';
 import { RootState } from '../../../../redux/store';
-import { CardPack } from '../../../../shared/sharedTypes';
+import { Card, CardPack } from '../../../../shared/sharedTypes';
+import PurchasedCardsModal from '../../cardpack/PurchasedCardsModal';
 import BaseForm from '../BaseForm';
 
 const Transition = React.forwardRef(function Transition(
@@ -32,7 +33,8 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+    const [showCards, setShowCards] = useState(false);
+    const [cards, setCards] = useState<Card[]>([]);
     const theme = useTheme();
 
     let id = cardpack._id;
@@ -46,8 +48,11 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
 
     );
 
+    const handleCloseShowCards = () => setShowCards(false);
+
     const handleConfirm = async () => {
         setLoading(true);
+        setShowCards(false);
         try {
             let { cards } = await purchaseCardPack(sessionUser.username, cardpack.cardPackId);
 
@@ -57,14 +62,16 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
                 return;
             }
 
+            setCards(cards);
+
             console.log("Sobre comprado con éxito");
             console.log("cartas generadas: ", cards);
-            setConfirmDialogOpen(true);
+            setShowCards(true);
             dispatch(updateBalance(sessionUser.balance - cardpack.price));
             setSuccessMessage("¡Sobre comprado con éxito!");
-            setLoading(false);
+
             setTimeout(() => {
-                setConfirmDialogOpen(false);
+                setShowCards(true);
                 handleClose(); // Cierra el formulario después de mostrar el éxito
             }, 2000);
         } catch (err) {
@@ -102,6 +109,7 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
                     { label: "Confirmar", onClick: handleConfirm, buttonType: 'confirm' }
                 ]}
             />
+            <PurchasedCardsModal cards={cards} open={showCards} handleClose={handleClose} />
         </>
     );
 }
