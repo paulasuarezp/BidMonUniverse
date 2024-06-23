@@ -23,6 +23,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Pokemon Solid';
+  src: url('../public/fonts/Pokemon\ Solid.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
