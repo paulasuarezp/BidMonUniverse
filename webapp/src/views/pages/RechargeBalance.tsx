@@ -1,8 +1,9 @@
 import { Box, InputAdornment, TextField, Typography } from '@mui/material';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { updateBalance } from '../../redux/slices/userSlice';
 import { RootState } from '../../redux/store';
 import Container from '../components/container/Container';
 import BaseForm from '../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
@@ -20,6 +21,14 @@ export default function RechargeBalance() {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogContent, setDialogContent] = useState({ loading: false, error: '', successMessage: '' });
     const username = sessionUser.username.toLowerCase();
+
+    const totalRef = useRef(total);
+    totalRef.current = total;
+    const balanceRef = useRef(balance);
+    balanceRef.current = balance;
+
+    useEffect(() => {
+    }, [total]);
 
     const handleBalanceChange = (value: string) => {
         if (value === '' || parseInt(value) < 10 || parseInt(value) % 10 !== 0) {
@@ -62,6 +71,8 @@ export default function RechargeBalance() {
         setDialogOpen(false);
         setDialogContent({ loading: false, error: '', successMessage: '' });
     };
+
+
 
     const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
 
@@ -141,7 +152,7 @@ export default function RechargeBalance() {
                                 color: "gold",
                                 label: "pay",
                             }}
-                            createOrder={async () => {
+                            createOrder={async (data, actions) => {
                                 try {
                                     const response = await fetch(`${apiEndPointBase}/orders`, {
                                         method: "POST",
@@ -150,8 +161,8 @@ export default function RechargeBalance() {
                                         },
                                         body: JSON.stringify({
                                             username: username,
-                                            balance: balance,
-                                            total: total,
+                                            balance: balanceRef.current,
+                                            total: totalRef.current,
                                         }),
                                     });
 
@@ -195,7 +206,7 @@ export default function RechargeBalance() {
                                         },
                                         body: JSON.stringify({
                                             username: username, // Asegúrate de usar el nombre de usuario correcto aquí
-                                            balance: balance // La cantidad que deseas agregar al balance del usuario
+                                            balance: balanceRef.current, // La cantidad que deseas agregar al balance del usuario
                                         }),
                                     });
 
@@ -204,6 +215,9 @@ export default function RechargeBalance() {
 
                                     if (response.ok) {
                                         setDialogContent({ loading: false, error: '', successMessage: `Pago completado con éxito y saldo actualizado.` });
+                                        setBalance(10);
+                                        setTotal(1);
+                                        dispatch(updateBalance(result.user.balance));
                                     } else {
                                         setDialogContent({ loading: false, error: `Error al actualizar el saldo: ${result.error}`, successMessage: '' });
                                     }
@@ -221,6 +235,7 @@ export default function RechargeBalance() {
                             }}
                         />
                     </PayPalScriptProvider>
+                    {message && <p>{message}</p>}
                 </Box>
             </Paper>
             <BaseForm
