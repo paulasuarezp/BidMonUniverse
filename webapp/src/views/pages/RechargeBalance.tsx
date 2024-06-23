@@ -1,4 +1,4 @@
-import { Box, TextField } from '@mui/material';
+import { Box, InputAdornment, TextField, Typography } from '@mui/material';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ export default function RechargeBalance() {
     const navigate = useNavigate();
 
     const sessionUser = useSelector((state: RootState) => state.user);
-    const [balance, setBalance] = useState(1); // 1 EUR = 10 zens
+    const [balance, setBalance] = useState(10); // 1 EUR = 10 zens
     const [errorMessage, setErrorMessage] = useState('');
     const [total, setTotal] = useState(1);
     const [message, setMessage] = useState("");
@@ -31,33 +31,59 @@ export default function RechargeBalance() {
 
     const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
 
-
     return (
         <Container>
             <Paper
-                title="Recargar Saldo"
-                imageSrc="logo-sf.png"
+                title="Recargar saldo"
+                imageSrc="recharge-meowth.png"
                 elevation={3}
                 sx={{
                     maxWidth: 400,
                     margin: 'auto',
-                    mt: { xs: 0, sm: 10 },
+                    mt: { xs: 0, sm: 5 },
                     mb: { xs: 0, sm: 0 },
                     pt: 2,
                 }}
             >
                 <Box sx={{ pl: 2, pr: 2, pb: 2 }}>
+                    <Typography variant="subtitle1" gutterBottom align="center">
+                        ¡Elige la cantidad de saldo que deseas recargar!
+                    </Typography>
+                    <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={2}>
+                        <Typography variant="body2" align="center">
+                            La conversión es de 1€ = 10 Zens
+                        </Typography>
+                        <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+                    </Box>
                     <TextField
                         margin="dense"
-                        id="basePrice"
-                        label="Precio Base"
+                        id="precio"
+                        label="Total a pagar en €"
                         type="number"
                         fullWidth
                         variant="outlined"
                         value={total}
                         onChange={e => handleTotalChange(e.target.value)}
                         error={errorMessage !== ''}
-                        helperText={errorMessage ? 'Por favor, introduce una cantidad válida para recargar. Mínimo: 1 zen' : 'Valor predeterminado: 1 zen.'}
+                        helperText={errorMessage ? 'Por favor, introduce una cantidad válida para recargar. Mínimo: 1€' : 'Valor predeterminado: 1€, 10 Zens.'}
+                    />
+                    <TextField
+                        margin="dense"
+                        id="basePrice"
+                        label="Total en Zens"
+                        type="number"
+                        fullWidth
+                        variant="outlined"
+                        value={balance}
+                        disabled
+                        sx={{ mb: 2 }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <img src={`${process.env.PUBLIC_URL}/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                                </InputAdornment>
+                            ),
+                        }}
                     />
                     <PayPalScriptProvider options={{ "clientId": "AXE7-9Er_F_oY9-RdBsCvSZQ1OBfeTbgUVzzTj1tZk9RivJRYoI5U-xNYqUgqwY0z3_M4NvC6hJ5Cg8_", currency: "EUR" }}>
                         <PayPalButtons
