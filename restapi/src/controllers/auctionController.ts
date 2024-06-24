@@ -328,13 +328,16 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
             throw new Error("Carta no encontrada.");
         }
 
+        let isAdmin = user.role === 'admin';
         // Verificar que el usuario sea el dueño de la carta o un administrador
-        if (user.role !== 'admin') {
+        if (!isAdmin) {
             if (card.user.toString() != user._id.toString()) {
                 console.log(card.user, user._id);
                 throw new Error("El usuario no es el dueño de la carta que intenta retirar de la subasta.");
             }
         }
+
+
 
 
         // Verificar que la carta esté en subasta
@@ -368,12 +371,12 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
         // Registrar la transacción de retirada de la subasta
         const withdrawTransaction = new Transaction({
-            user: user._id,
-            username: username,
+            user: auction.seller,
+            username: auction.sellerUsername,
             userCard: userCardId,
             cardId: updatedCard.card,
             legibleCardId: updatedCard.legibleCardId,
-            concept: TransactionConcept.WithdrawnFromAuction,
+            concept: isAdmin ? TransactionConcept.WithdrwanFromAuctionByAdmin : TransactionConcept.WithdrawnFromAuction,
             price: 0,
             date: new Date(),
             auctionId: auctionId,
@@ -381,8 +384,8 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         await withdrawTransaction.save({ session });
 
         let notification = new Notification({
-            usuarioId: user._id,
-            username: username,
+            usuarioId: auction.seller,
+            username: auction.sellerUsername,
             type: NotificationType.AuctionCancelled,
             message: `La subasta de la carta ${updatedCard._id} ha sido cancelada.`,
             read: false,
@@ -392,7 +395,7 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
 
         });
 
-        if (user.role === 'admin') {
+        if (isAdmin) {
             sendNotification(notification);
         }
 
