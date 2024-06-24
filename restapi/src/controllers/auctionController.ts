@@ -206,7 +206,7 @@ const putUserCardUpForAuction = async (req: Request, res: Response) => {
             throw new Error("La carta ya está en subasta.");
         }
 
-        // Actualizar la UserCard para transferirla al nuevo usuario
+        // Actualizar la UserCard para ponerla en subasta
         const updatedCard = await UserCard.findOneAndUpdate(
             { _id: userCardId },
             { status: CardStatus.OnAuction },  // Actualizar el estado
@@ -338,8 +338,6 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         }
 
 
-
-
         // Verificar que la carta esté en subasta
         if (card.status !== CardStatus.OnAuction) {
             throw new Error("La carta no está en subasta.");
@@ -466,6 +464,8 @@ const checkAllActiveAuctions = async (req: Request, res: Response) => {
         const updateAuctions = [];
         for (let i = 0; i < auctions.length; i++) {
             if (auctions[i].endDate <= now) {
+                console.log('Subasta finalizada:', auctions[i]._id)
+                auctions[i].status = AuctionStatus.Closed;
                 await chekWinnerBid(auctions[i], session);
                 updateAuctions.push(auctions[i]);
             }
@@ -474,7 +474,7 @@ const checkAllActiveAuctions = async (req: Request, res: Response) => {
         // Realizar la transacción si todo fue exitoso
         await session.commitTransaction();
         session.endSession();
-        res.status(200).json({ message: 'Se han cerrado las subastas que han finalizado.', auctions: updateAuctions });
+        res.status(200).json(updateAuctions);
 
     } catch (error: any) {
         console.error(error);
@@ -537,6 +537,21 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
 
         }
 
+        if (!winnerBid) {
+            allChecked = true;
+            let notification = new Notification({
+                usuarioId: auction.seller,
+                username: auction.sellerUsername,
+                type: NotificationType.CardNotSold,
+                message: `La subasta de la carta ${auction.legibleCardId} no ha tenido ganador, se ha devuelto la carta a su colección.`,
+                read: false,
+                creationDate: new Date(),
+                importance: NotificationImportance.High,
+                realTime: false
+            });
+            sendNotification(notification);
+        }
+
         if (winnerBid) {
 
             // Marcar las demás pujas como perdidas
@@ -545,6 +560,18 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
                     allBids[i].status = BidStatus.Rejected;
                     allBids[i].endDate = new Date();
                     await allBids[i].save({ session });
+                    let notification = new Notification({
+                        usuarioId: allBids[i].user,
+                        username: allBids[i].username,
+                        type: NotificationType.BidRejected,
+                        message: `Tu puja en la subasta de la carta ${auction.legibleCardId} ha sido rechazada.`,
+                        read: false,
+                        creationDate: new Date(),
+                        importance: NotificationImportance.Low,
+                        realTime: false
+
+                    });
+                    sendNotification(notification);
                 }
             }
 
@@ -557,6 +584,7 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
             auction.finalPrice = winnerBid.price;
             await auction.save({ session });
 
+
             // Actualizar la puja
             winnerBid.status = BidStatus.Winner;
             winnerBid.endDate = new Date();
@@ -564,7 +592,6 @@ const chekWinnerBid = async (auction: IAuction, session: any) => {
 
             // Transferir la carta al ganador
             return await transferCard(auction, winnerBid, session);
-
         }
 
     }
@@ -609,9 +636,9 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
     try {
 
         const sellerId = auction.seller;
-        const sellerUsername = auction.sellerUsername;
+        const sellerUsername = auction.sellerUsername.toLowerCase();
         const buyerId = bid.user;
-        const buyerUsername = bid.username;
+        const buyerUsername = bid.username.toLowerCase();
         const userCardId = auction.card;
         const legibleCardId = auction.legibleCardId;
         const salePrice = bid.price;
@@ -646,7 +673,7 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
         // Actualizar la UserCard para transferirla al nuevo usuario
         const updatedCard = await UserCard.findOneAndUpdate(
             { _id: userCardId },
-            { user: buyerId, status: CardStatus.NotForSale },  // Actualizar el usuario y el estado
+            { user: buyerId, username: buyerUsername, status: CardStatus.NotForSale },  // Actualizar el usuario y el estado
             { new: true, session: session }  // Retorna el documento actualizado
         );
 
@@ -687,6 +714,31 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
         // Añadir la referencia de la transacción a la carta
         updatedCard.transactionHistory.push(purchaseTransaction._id);
         await updatedCard.save({ session });
+
+
+        let notificationWinner = new Notification({
+            usuarioId: bid.user,
+            username: bid.username,
+            type: NotificationType.BidWinner,
+            message: `¡Felicidades! Has ganado la subasta de la carta ${auction.legibleCardId} con una oferta de ${bid.price} zens.`,
+            read: false,
+            creationDate: new Date(),
+            importance: NotificationImportance.High,
+            realTime: true
+        });
+        sendNotification(notificationWinner);
+
+        let notificationSeller = new Notification({
+            usuarioId: auction.seller,
+            username: auction.sellerUsername,
+            type: NotificationType.CardSold,
+            message: `Enhorabuena, la carta ${auction.legibleCardId} ha sido vendida en subasta por ${bid.price} zens.`,
+            read: false,
+            creationDate: new Date(),
+            importance: NotificationImportance.High,
+            realTime: true
+        });
+        sendNotification(notificationSeller);
 
         return { message: 'La carta se ha transferido al comprador.', updatedCard: updatedCard, saleTransaction: saleTransaction, purchaseTransaction: purchaseTransaction, bid: bid };
 
