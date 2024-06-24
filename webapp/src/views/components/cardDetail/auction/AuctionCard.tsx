@@ -1,6 +1,8 @@
 import { styled } from '@mui/material/styles';
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Card as CardType } from "../../../../shared/sharedTypes";
+import { RootState } from "../../../../redux/store";
+import { AccessLevel, Card as CardType } from "../../../../shared/sharedTypes";
 import DurationButton from "../../buttons/duration/DurationButton";
 import PokemonCard from "../../card/PokemonCard";
 
@@ -31,9 +33,14 @@ const HoverEffectContainer = styled('div')(({ theme }) => ({
 
 export default function AuctionCard({ card, userCardId, duration, auctionId }: AuctionCardProps) {
     const navigate = useNavigate();
+    const sessionUser = useSelector((state: RootState) => state.user);
 
     const handleCardClick = () => {
-        navigate(`/auctions/${auctionId}`);
+        if (sessionUser.role === AccessLevel.Admin) {
+            navigate(`/admin/auction/${auctionId}`);
+        } else {
+            navigate(`/auctions/${auctionId}`);
+        }
     }
     return (
         <HoverEffectContainer>

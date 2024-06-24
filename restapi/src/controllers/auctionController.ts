@@ -3,10 +3,12 @@ import mongoose from 'mongoose';
 import Auction, { IAuction } from '../models/auction';
 import Bid, { IBid } from '../models/bid';
 import Card from '../models/card';
+import Notification from '../models/notification';
 import Transaction from '../models/transaction';
 import User from '../models/user';
 import UserCard from '../models/userCard';
-import { AuctionStatus, BidStatus, CardStatus, TransactionConcept } from '../models/utils/enums';
+import { AuctionStatus, BidStatus, CardStatus, NotificationImportance, NotificationType, TransactionConcept } from '../models/utils/enums';
+import { sendNotification } from './notificationController';
 
 
 
@@ -378,30 +380,54 @@ const withdrawnUserCardFromAuction = async (req: Request, res: Response) => {
         });
         await withdrawTransaction.save({ session });
 
+        let notification = new Notification({
+            usuarioId: user._id,
+            username: username,
+            type: NotificationType.AuctionCancelled,
+            message: `La subasta de la carta ${updatedCard._id} ha sido cancelada.`,
+            read: false,
+            creationDate: new Date(),
+            importance: NotificationImportance.High,
+            realTime: true
+
+        });
+
+        if (user.role === 'admin') {
+            sendNotification(notification);
+        }
 
         // Actualizar las pujas de la subasta a 'Subasta cancelada'
         const bids = await Bid.find({ auction: auctionId });
         for (let i = 0; i < bids.length; i++) {
-            bids[i].status = BidStatus.AuctionCancelled;
-            bids[i].endDate = new Date();
-            let cancelledBidTransaction = new Transaction({
-                user: bids[i].user,
-                username: bids[i].username,
-                userCard: userCardId,
-                legibleCardPackId: updatedCard.legibleCardId,
-                concept: TransactionConcept.BidCancelledFromAuction,
-                price: bids[i].price,
-                date: new Date(),
-                auctionId: auctionId,
-                bidId: bids[i]._id
-            });
-            await bids[i].save({ session });
-            await cancelledBidTransaction.save({ session });
+            if (bids[i].status === BidStatus.Pending) {
+                bids[i].status = BidStatus.AuctionCancelled;
+                bids[i].endDate = new Date();
+                let cancelledBidTransaction = new Transaction({
+                    user: bids[i].user,
+                    username: bids[i].username,
+                    userCard: userCardId,
+                    legibleCardId: updatedCard.legibleCardId,
+                    concept: TransactionConcept.BidCancelledFromAuction,
+                    price: bids[i].price,
+                    date: new Date(),
+                    auctionId: auctionId,
+                    bidId: bids[i]._id
+                });
+                notification.usuarioId = bids[i].user;
+                notification.username = bids[i].username;
+                notification.importance = NotificationImportance.Low;
+                notification.message = `Tu puja en la subasta de la carta ${updatedCard._id} ha sido cancelada debido a la retirada de la carta de la subasta.`;
+                notification.realTime = false;
+                sendNotification(notification);
+                await cancelledBidTransaction.save({ session });
+                await bids[i].save({ session });
+            }
         }
 
         // Realizar la transacción si todo fue exitoso
         await session.commitTransaction();
         session.endSession();
+
         res.status(200).json({ message: 'La carta se ha retirado de la subasta.' });
 
     } catch (error: any) {
