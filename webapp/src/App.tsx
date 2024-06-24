@@ -23,6 +23,7 @@ import RechargeBalance from './views/pages/RechargeBalance';
 import Shop from './views/pages/Shop';
 import Signup from './views/pages/Signup';
 import UserTransactions from './views/pages/UserTransactions';
+import AdminAuctionDetail from './views/pages/admin/AdminAuctionDetail';
 import AdminPage from './views/pages/admin/AdminPage';
 import AuctionsAdmin from './views/pages/admin/AuctionsAdmin';
 
@@ -63,6 +64,7 @@ function App() {
                   {/* Rutas administrador */}
                   <Route path="/admin" element={<RouteRedirector initRoute={<AdminPage />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   <Route path="/admin/auctions" element={<RouteRedirector initRoute={<AuctionsAdmin />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
+                  <Route path="/admin/auction/:id" element={<RouteRedirector initRoute={<AdminAuctionDetail />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
