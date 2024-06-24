@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
 import { RootState } from '../../../../redux/store';
+import { AccessLevel } from '../../../../shared/sharedTypes';
 import { disconnectSocket } from '../../../../socket/socketService';
 import CoinsButton from '../../buttons/coins/CoinsButton';
 import ButtonLogin from '../../buttons/login/ButtonLogin';
@@ -28,6 +29,7 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   const sessionUser = useSelector((state: RootState) => state.user);
   const balance = useSelector((state: RootState) => state.user.balance);
   const isAuthenticated = sessionUser?.username ? true : false;
+  const isAdmin = sessionUser?.role === AccessLevel.Admin;
 
   const handleLoginClick = () => {
     navigate('/login');
@@ -54,10 +56,10 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     <>
       {isAuthenticated ? (
         <>
-          <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />
+          {!isAdmin && <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />}
           <UserProfileButton
             name={sessionUser.username}
-            imageUrl={sessionUser.profileImg}
+            imageUrl={isAdmin ? '' : sessionUser.profileImg}
             onClick={handleUserMenu} />
         </>
       ) : (
@@ -74,7 +76,7 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       >
         {isAuthenticated && (
           <div>
-            <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>
+            {!isAdmin && <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>}
             <MenuItem onClick={handleLogout}>
               <Logout />
               Cerrar sesión
