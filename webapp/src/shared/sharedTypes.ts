@@ -249,3 +249,30 @@ export interface Deck {
     publicationDate: Date;
     cards: string[];
 }
+
+
+// NOTIFICATION TYPES
+// Notification
+export interface Notification {
+    id?: string;
+    type: NotificationType;
+    message: string;
+    importance: NotificationImportance;
+}
+
+// NotificationType
+export enum NotificationType {
+    BidWinner = "bidwinner",
+    AuctionCancelled = "auctioncancelled",
+    CardSold = "auctioncardsold",
+    CardNotSold = "auctioncardnotsold",
+    CardGifted = "cardgifted",
+    System = "system"
+}
+
+// Notification importance
+export enum NotificationImportance {
+    Low = "low",
+    Medium = "medium",
+    High = "high"
+}
