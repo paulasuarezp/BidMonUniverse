@@ -4,18 +4,20 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // usa el almacenamiento local
 
 
+import notificationReducer from "./slices/notificationSlice";
 import updateReducer from "./slices/updateSlice";
 import userReducer from "./slices/userSlice";
 
 const persistConfig = {
   key: 'root', // La clave principal bajo la cual se almacenará el estado persistido
   storage, // Tipo de almacenamiento
-  whitelist: ['user', 'update'] // Slices del estado se almacenarán
+  whitelist: ['user', 'update', 'notificationState'] // Slices del estado se almacenarán
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
-  update: updateReducer
+  update: updateReducer,
+  notificationState: notificationReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
