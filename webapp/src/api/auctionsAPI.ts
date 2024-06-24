@@ -37,6 +37,40 @@ export const getAuctions = async (): Promise<any[]> => {
         });
 }
 
+/**
+ * Obtiene todas las subastas que han finalizado con su respectiva información.
+ * 
+ * @returns {Promise<Auction[]>} - Promesa con las subastas finalizadas
+ * 
+ * @throws {Error} - Error al obtener las subastas
+ */
+export const checkAllActiveAuctions = async (): Promise<any[]> => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/check`;
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener las subastas finalizadas');
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            throw new Error(error);
+        });
+}
+
 
 /**
  * Crear una nueva subasta para una carta.

@@ -103,6 +103,7 @@ export enum BidStatus {
 // Notification type
 export enum NotificationType {
     BidWinner = "bidwinner",
+    BidRejected = "bidrejected",
     AuctionCancelled = "auctioncancelled",
     CardSold = "auctioncardsold",
     CardNotSold = "auctioncardnotsold",

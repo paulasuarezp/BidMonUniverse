@@ -22,6 +22,8 @@ export const BasePage = (props: { toggleTheme: any, children: any }) => {
     switch (type) {
       case NotificationType.BidWinner:
         return 'success';
+      case NotificationType.CardSold:
+        return 'success';
       case NotificationType.AuctionCancelled:
         return 'error';
       default:

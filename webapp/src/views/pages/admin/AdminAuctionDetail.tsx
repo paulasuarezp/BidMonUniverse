@@ -41,7 +41,6 @@ export default function AdminAuctionDetail() {
 
     const [openWithdrawnModal, setOpenWithdrawnModal] = useState(false);
     const [openWithWarning, setOpenWithWarning] = useState(false);
-    const [openBidModal, setOpenBidModal] = useState(false);
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
