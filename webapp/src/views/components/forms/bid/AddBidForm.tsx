@@ -40,10 +40,12 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
 
     const content = (
         <>
+            <Typography variant="body1"> La cantidad se descontará de tu saldo solo si ganas la subasta.</Typography>
+            <Typography variant="body2">Introduce la cantidad que deseas pujar. La cantidad mínima para pujar es 1 zen.</Typography>
             <TextField
                 margin="dense"
                 id="basePrice"
-                label="Precio Base"
+                label="Cantidad a pujar"
                 type="number"
                 fullWidth
                 variant="outlined"
@@ -58,8 +60,9 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
 
     const confirmationContent = (
         <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
+            <Typography variant="body2">¿Estás seguro de que deseas pujar?</Typography>
             <Typography variant="body2">Cantidad a pujar: {amount}</Typography>
-            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+            <img src="/zen.png" alt="icono zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
         </Box>
 
     );
@@ -108,7 +111,7 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
             <BaseForm
                 open={open}
                 onClose={handleClose}
-                title="Crear puja"
+                title="Realizar una puja"
                 content={content}
                 loading={loading}
                 error={error}

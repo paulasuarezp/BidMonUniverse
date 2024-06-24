@@ -64,7 +64,12 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                                 onClick={() => { }}
                                 canFlip={true}
                             />
-                            <CoinsButton balance={card.initialPrice} />
+                            {card.initialPrice > 0 &&
+                                <CoinsButton balance={card.initialPrice} sx={{ mt: 2, color: theme.palette.primary.contrastText }} />}
+                            {card.initialPrice <= 0 || !card.initialPrice &&
+                                <Typography variant='body2' align='center' sx={{ mt: 1 }}>
+                                    La carta no se ha vendido.
+                                </Typography>}
                         </Grid>
                     ))}
                 </Grid>

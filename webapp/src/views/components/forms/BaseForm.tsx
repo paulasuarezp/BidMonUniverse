@@ -87,7 +87,7 @@ const BaseForm = ({ open, onClose, title, content, loading, error, warning = '',
                 ) : (
                     <>
                         {showIcon && chooseIcon()}
-                        {title && <Typography variant="h6">{title}</Typography>}
+                        {title && <Typography variant="h5">{title}</Typography>}
                         {content}
                     </>
                 )}
