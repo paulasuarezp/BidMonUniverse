@@ -74,6 +74,7 @@ export enum TransactionConcept {
     SoldOnAuction = "SoldOnAuction", // Card sold on auction
     ForSaleOnAuction = "ForSaleOnAuction", // Card for sale on auction
     WithdrawnFromAuction = "WithdrawnFromAuction", // Card withdrawn from auction
+    WithdrwanFromAuctionByAdmin = "WithdrawnFromAuctionByAdmin", // Card withdrawn from auction by admin
     BidCancelledFromAuction = "BidCancelledFromAuction", // Bid cancelled because the auction was cancelled
     BidWithdrawn = "BidWithdrawn", // Bid withdrawn
     NewBid = "NewBid", // New bid

@@ -50,7 +50,7 @@ export default function AdminAuctionDetail() {
 
     const processCard = (id: string) => {
         const timer = setTimeout(() => {
-            setError('Error: The request is taking too long to load.');
+            setError('El servidor está tardando demasiado en responder. Por favor, inténtalo de nuevo más tarde.');
         }, 5000); // 5 segundos
 
         setOnAuction(false);
@@ -82,7 +82,7 @@ export default function AdminAuctionDetail() {
 
 
     useEffect(() => {
-        if (update && updateId === userCardId) {
+        if (update) {
             processCard(id);
             dispatch(resetUpdate());
         }
@@ -117,12 +117,6 @@ export default function AdminAuctionDetail() {
         setOpenWithdrawnModal(false);
     }
 
-    const handleOpenWithdrawnBidModal = async () => {
-        if (!canWithdraw) {
-            setOpenWithWarning(true);
-        }
-        handleWithdrawnOpen();
-    }
 
     if (error) {
         return (
@@ -179,7 +173,7 @@ export default function AdminAuctionDetail() {
                 )
             }
 
-            form={<WithdrawnAuctionForm auctionId={id} open={openWithdrawnModal} handleClose={handleWithdrawnClose} />}
+            form={<WithdrawnAuctionForm auctionId={id} open={openWithdrawnModal} openWithWarning={openWithWarning} handleClose={handleWithdrawnClose} />}
         />
     );
 };
