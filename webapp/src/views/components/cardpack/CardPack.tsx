@@ -21,7 +21,6 @@ import './cardPack.css';
 
 interface PackProps {
     cardpack: CardPackType;
-    onOpen: () => void;
 }
 
 function getDeckName(name: string): string {

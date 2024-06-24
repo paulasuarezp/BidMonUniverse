@@ -11,7 +11,7 @@ import { AuctionStatus, BidStatus, CardStatus, TransactionConcept } from '../mod
 
 
 /**
- * Recupera todas las subastas disponibles en la base de datos.
+ * Recupera todas las subastas activas disponibles en la base de datos.
  * Esta función busca y devuelve todas las subastas registradas, independientemente de su estado.
  * Es ideal para obtener una vista general de todas las subastas en el sistema.
  * 
@@ -25,7 +25,7 @@ import { AuctionStatus, BidStatus, CardStatus, TransactionConcept } from '../mod
  */
 const getAuctions = async (req: Request, res: Response) => {
     try {
-        const auctions = await Auction.find();
+        const auctions = await Auction.find({ status: AuctionStatus.Open });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);

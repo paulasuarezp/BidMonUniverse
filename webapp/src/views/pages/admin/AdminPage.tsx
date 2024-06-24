@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
-import Container from "../components/container/Container";
-import AdminNavigationMenu from "../components/menus/principalNav/AdminNav";
+import Container from "../../components/container/Container";
+import AdminNavigationMenu from "../../components/menus/principalNav/AdminNav";
 
 export default function AdminPage() {
     return (
