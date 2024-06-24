@@ -1,7 +1,7 @@
 import { CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/api';
-import { getActiveAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
+import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../MessagesBox/InfoMessageBox';
@@ -11,9 +11,10 @@ interface ResponsiveActiveAuctionsGridProps {
     username: string;
     limit?: boolean;
     showUserAuctions?: boolean;
+    isAdmin?: boolean;
 }
 
-const ResponsiveActiveAuctionsGrid = ({ username, limit = true, showUserAuctions = false }: ResponsiveActiveAuctionsGridProps) => {
+const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true, showUserAuctions = false }: ResponsiveActiveAuctionsGridProps) => {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
     const isSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -38,8 +39,14 @@ const ResponsiveActiveAuctionsGrid = ({ username, limit = true, showUserAuctions
         setLoading(true);
         setError(null);
         try {
-            const auctionData = isUserAuctions ? await getUserActiveAuctions(username) : await getActiveAuctions(username);
-            const filteredAuctions = await filterAuctionsByUserActiveBid(auctionData, username);
+            let auctionData;
+            let filteredAuctions;
+            if (isAdmin) {
+                filteredAuctions = await getAuctions();
+            } else {
+                auctionData = isUserAuctions ? await getUserActiveAuctions(username) : await getActiveAuctions(username);
+                filteredAuctions = await filterAuctionsByUserActiveBid(auctionData, username);
+            }
             setAuctions(filteredAuctions);
             const cardsData = await getAuctionCards(filteredAuctions);
             setCards(cardsData);

@@ -23,10 +23,10 @@ export default function AdminNavigationMenu() {
                 navigate('/admin');
                 break;
             case 'auctions':
-                navigate('/a/auctions');
+                navigate('/admin/auctions');
                 break;
             case 'transactions':
-                navigate('/a/transactions');
+                navigate('/admin/transactions');
                 break;
         }
     };

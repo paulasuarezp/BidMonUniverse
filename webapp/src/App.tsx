@@ -13,7 +13,6 @@ import AuctionCardDetail from './views/components/cardDetail/auction/AuctionCard
 import BidCardDetail from './views/components/cardDetail/bid/BidCardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
 import ActiveBids from './views/pages/ActiveBids';
-import AdminPage from './views/pages/AdminPage';
 import BasePage from './views/pages/BasePage';
 import Home from './views/pages/Home';
 import Login from './views/pages/Login';
@@ -24,6 +23,8 @@ import RechargeBalance from './views/pages/RechargeBalance';
 import Shop from './views/pages/Shop';
 import Signup from './views/pages/Signup';
 import UserTransactions from './views/pages/UserTransactions';
+import AdminPage from './views/pages/admin/AdminPage';
+import AuctionsAdmin from './views/pages/admin/AuctionsAdmin';
 
 
 
@@ -61,6 +62,7 @@ function App() {
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Rutas administrador */}
                   <Route path="/admin" element={<RouteRedirector initRoute={<AdminPage />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
+                  <Route path="/admin/auctions" element={<RouteRedirector initRoute={<AuctionsAdmin />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   {/* Página de Error */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>

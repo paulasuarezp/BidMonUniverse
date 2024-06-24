@@ -34,10 +34,6 @@ export default function Shop() {
         fetchPacks();
     }, []);
 
-    const handleOpenPack = (packName: string) => {
-        console.log(`Opening pack: ${packName}`);
-        // Lógica para abrir el sobre y mostrar las cartas
-    };
 
     return (
         <BasePageWithNav title="Tienda" showBackButton={false} description="¡Compra sobres de cartas y consigue la mejor colección!">
@@ -47,7 +43,6 @@ export default function Shop() {
                         <Grid item key={pack.name} xs={12} sm={6} md={4}>
                             <CardPack
                                 cardpack={pack}
-                                onOpen={() => handleOpenPack(pack.name)}
                             />
                         </Grid>
                     ))}
