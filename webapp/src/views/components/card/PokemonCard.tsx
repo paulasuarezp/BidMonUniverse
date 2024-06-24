@@ -77,18 +77,28 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
           position: 'relative',
         }}
       >
-        {pokemonGymImg !== 'none' && (
+        {pokemonGymImg !== '' && (
           <Box
             sx={{
               position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: `url(${pokemonGymImg}) center / contain no-repeat`,
-              opacity: 0.5,
+              bottom: 6,
+              right: 6,
+              zIndex: 2,
             }}
-          />
+          >
+            <Avatar
+              src={pokemonGymImg}
+              alt={card?.gym[0]}
+              sx={{
+                width: 30,
+                padding: 0.2,
+                height: 'auto',
+                color: 'white',
+                textShadow: '1px 1px 2px black',
+                visibility: flipped ? 'hidden' : 'visible',
+              }}
+            />
+          </Box>
         )}
         <Box sx={{ position: 'absolute', top: 6, left: 6, zIndex: 2 }}>
           {maxSize ? (

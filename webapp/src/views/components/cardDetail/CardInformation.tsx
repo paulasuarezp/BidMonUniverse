@@ -10,7 +10,9 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import {
     Box,
     CardContent,
-    Typography
+    Chip,
+    Typography,
+    useTheme
 } from "@mui/material";
 import { useEffect, useState } from 'react';
 import { Card as CardType } from "../../../shared/sharedTypes";
@@ -22,8 +24,11 @@ interface CardDetailProps {
     id: string;
 }
 export default function CardInformation({ card, id }: CardDetailProps) {
+    const theme = useTheme();
     const [descriptions, setDescriptions] = useState([]);
     const [hasGym, setHasGym] = useState(false);
+
+
 
     useEffect(() => {
         let descrs = card.description[0].split('@NEWDESCRIPTION@');
@@ -32,6 +37,13 @@ export default function CardInformation({ card, id }: CardDetailProps) {
             setHasGym(true);
         }
     }, [card]);
+
+    const chipStyle = {
+        backgroundImage: `linear-gradient(-135deg, ${theme.palette.primary.main}, ${theme.palette.background.paper})`,
+        color: theme.palette.primary.contrastText,
+        margin: 5,
+        fontWeight: 'bold'
+    };
 
     return (
         <CardContent sx={{ flexGrow: 1 }}>
@@ -47,7 +59,18 @@ export default function CardInformation({ card, id }: CardDetailProps) {
             <Box display="flex" alignItems="center"><CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} /><Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography></Box>
             {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
             {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
-            {hasGym && <Typography><strong>Gimnasio:</strong> {card.gym.map((gym) => <img key={gym} src={getPokemonGymImg(gym)} alt={gym} style={{ width: 50, height: 50, margin: 5 }} />)}</Typography>}
+
+            {hasGym && (
+                <Box display="flex" justifyContent='center' sx={{ mt: 2 }}>
+                    <Chip
+                        icon={<img src={getPokemonGymImg(card.gym[0])} alt={card.gym[0]} style={{ width: 24, height: 24 }} />}
+                        label={`Gimnasio ${card.gym[0]}`}
+                        style={chipStyle}
+                        variant="outlined"
+                        size="medium"
+                    />
+                </Box>
+            )}
 
             <Typography align="center" gutterBottom sx={{ mt: 4 }}>
                 <AutoAwesomeIcon sx={{ mr: 1 }} style={{ color: '#FFD700' }} />
