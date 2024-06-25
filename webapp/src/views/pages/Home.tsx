@@ -90,27 +90,33 @@ export default function Home() {
     <Container>
       <StyledBox>
         <PokeballsBox titulo='¡Bienvenido a BidMon Universe!' />
-        <Typography variant="h5" align="center" component="div">
+        <Typography variant="h5" align="center" component="div" sx={{ mb: 4 }}>
           Descubre, colecciona y subasta las cartas más valiosas.
         </Typography>
         <ButtonPrincipal label="¡Únete ahora!" />
       </StyledBox>
 
-      <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white' }}>
-        <Typography variant="h4">¿Qué es BidMon Universe?</Typography>
-        <Typography>En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
-          La plataforma se basa en un sistema de subastas ciegas para asegurar la transparencia y la igualdad de oportunidades para todos los usuarios.
-          Las cartas más raras y valiosas están a tu alcance, y te están esperando. ¡Empieza tu colección hoy!</Typography>
+      <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white', mt: 2 }}>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={6}>
+            <Typography variant="h4">BidMon Universe</Typography>
+            <Typography>En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
+              La plataforma se basa en un sistema de subastas ciegas para asegurar la transparencia y la igualdad de oportunidades para todos los usuarios.
+              Las cartas más raras y valiosas están a tu alcance, y te están esperando. ¡Empieza tu colección hoy!</Typography>
 
-        <SliderContainer>
-          <Slider {...settings}>
-            {popularCards.map((card) => (
-              <div key={card._id}>
-                <PokemonCard card={card} userCardId='1' onClick={() => { }} />
-              </div>
-            ))}
-          </Slider>
-        </SliderContainer>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <SliderContainer>
+              <Slider {...settings}>
+                {popularCards.map((card) => (
+                  <div key={card._id}>
+                    <PokemonCard card={card} userCardId='1' onClick={() => { }} />
+                  </div>
+                ))}
+              </Slider>
+            </SliderContainer>
+          </Grid>
+        </Grid>
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
