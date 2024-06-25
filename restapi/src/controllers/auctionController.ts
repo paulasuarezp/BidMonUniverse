@@ -27,7 +27,7 @@ import { sendNotification } from './notificationController';
  */
 const getAuctions = async (req: Request, res: Response) => {
     try {
-        const auctions = await Auction.find({ status: AuctionStatus.Open });
+        const auctions = await Auction.find({ status: AuctionStatus.Open }).sort({ estimatedEndDate: 1 });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);
@@ -82,7 +82,7 @@ const getActiveAuctions = async (req: Request, res: Response) => {
     try {
         let username = req.params.username.toLowerCase();
         let today = new Date();
-        const auctions = await Auction.find({ status: AuctionStatus.Open, estimatedEndDate: { $gte: today }, sellerUsername: { $ne: username } });
+        const auctions = await Auction.find({ status: AuctionStatus.Open, estimatedEndDate: { $gte: today }, sellerUsername: { $ne: username } }).sort({ estimatedEndDate: 1 });
         res.status(200).json(auctions);
     } catch (error: any) {
         console.error(error);

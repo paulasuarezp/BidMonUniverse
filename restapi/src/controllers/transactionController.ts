@@ -70,7 +70,7 @@ const getTransactionsByUsername = async (req: Request, res: Response) => {
  */
 const getTransactionsByUserCardId = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find({ userCard: req.params.userCardId });
+        const transactions = await Transaction.find({ userCard: req.params.userCardId }).sort({ date: -1 });
         res.status(200).json(transactions);
     }
     catch (error: any) {

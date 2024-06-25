@@ -1,0 +1,128 @@
+
+/* color/ui color variables - Reemplazadas con sus valores hexadecimales */
+/* $white: #ececec; - parece no usarse en este fragmento */
+/* $black: #111111; */
+/* $red1: #e74c3c; */
+/* $red2: #c92918; */
+/* $colorPrimary: $red1; */
+/* $colorSecondary: $red2; */
+/* $cubic-bezier: cubic-bezier(0.68, -0.55, 0.265, 1.55); */
+
+/* split button mixin - Reemplazado con su expansión */
+button.btn {
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 700;
+    border: none;
+    position: relative;
+    letter-spacing: 0.15em;
+    margin: 0 auto;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    outline: none;
+    font-size: 28px;
+    color: #111111; /* $black */
+}
+
+button.btn::after,
+button.btn::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+    border:none;
+}
+
+
+button.btn::before {
+    background-color: #e74c3c; /* $colorPrimary */
+    top: -0.75rem;
+    left: 0.5rem;
+    height: 40%; 
+    width: 10%; 
+}
+
+button.btn::after {
+    background-color: #c92918; /* $colorSecondary */
+    top: 3rem;
+    left: 13rem;
+    height: 40%; 
+    width: 10%; 
+}
+
+button.btn:hover {
+    color: white;
+}
+
+button.btn:hover::before,
+button.btn:hover::after {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 0;
+    animation: none;
+    border: none; /* Elimina cualquier borde en el estado de hover */
+}
+
+button.btn:hover::after {
+    left: 0rem;
+}
+
+button.btn:hover::before {
+    top: 0.5rem;
+    left: 0.35rem;
+}
+
+/* Estilos generales */
+* {
+    box-sizing: border-box;
+}
+body, html {
+    height: 100%;
+}
+
+body {
+    font-family: "Lato", sans-serif;
+    color: #111111; /* $black */
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+
+.container {
+    width: auto;
+    margin: auto;
+}
+
+
+.container:hover .bolita1{
+    opacity: 0;
+  }
+  .container:hover .bolita2{
+    opacity: 0;
+  }
+  .bolita1 {
+    position: absolute;
+    top: 55%; /* Centrar verticalmente */
+    left: 50%; /* Centrar horizontalmente */
+    width: 2em;
+    height: 2em;
+    background-color: #c92918;
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Ajustar para centrar la bolita */
+  }
+  
+  .bolita2 {
+    position: absolute;
+    top: 50%; /* Centrar verticalmente */
+    left: 45%; /* Centrar horizontalmente */
+    width: 1.2em;
+    height: 1.2em;
+    background-color: #e74c3c;
+    border-radius: 50%;
+    transform: translate(-50%, -50%); /* Ajustar para centrar la bolita */
+  }
+  
