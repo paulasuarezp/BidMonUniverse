@@ -78,8 +78,8 @@ export default function BidSummaryTable() {
                     </TableRow>
                     <TableRow>
                         <TableCell width="40%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Nombre de la carta</TableCell>
-                        <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Precio inicial:</TableCell>
-                        <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Duración restante:</TableCell>
+                        <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Precio inicial</TableCell>
+                        <TableCell width="30%" style={{ fontWeight: 'bold', borderBottom: `1px solid ${theme.palette.primary.light}` }}>Duración restante</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
