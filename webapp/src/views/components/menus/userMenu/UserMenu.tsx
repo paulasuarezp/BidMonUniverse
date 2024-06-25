@@ -8,6 +8,7 @@ import { RootState } from '../../../../redux/store';
 import { AccessLevel } from '../../../../shared/sharedTypes';
 import { disconnectSocket } from '../../../../socket/socketService';
 import CoinsButton from '../../buttons/coins/CoinsButton';
+import InboxButton from '../../buttons/inbox/InboxButton';
 import ButtonLogin from '../../buttons/login/ButtonLogin';
 import UserProfileButton from '../../buttons/userProfile/UserProfileButton';
 
@@ -57,6 +58,7 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       {isAuthenticated ? (
         <>
           {!isAdmin && <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />}
+          {!isAdmin && <InboxButton />}
           <UserProfileButton
             name={sessionUser.username}
             imageUrl={isAdmin ? '' : sessionUser.profileImg}

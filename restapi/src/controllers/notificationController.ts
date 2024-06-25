@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import Notification, {INotification} from '../models/notification';
-import User from '../models/user';
 import { io } from '../../server';
+import Notification, { INotification } from '../models/notification';
+import User from '../models/user';
 
 /**
  * Recupera el histórico de notificaciones de un usuario específico.
@@ -136,7 +135,7 @@ const deleteAllNotifications = async (req: Request, res: Response) => {
 const createNotification = async (req: Request, res: Response) => {
     let { username, type, message, importance, realTime } = req.body;
     try {
-        const user = await User.findOne({username_lower: username.toLowerCase()});
+        const user = await User.findOne({ username_lower: username.toLowerCase() });
         if (!user) {
             return res.status(404).json({ message: "Usuario no encontrado." });
         }
@@ -170,7 +169,7 @@ const createNotification = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario.
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  * 
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un objeto JSON que contiene un campo "hasUnreadNotifications" con un valor booleano.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un objeto JSON con un valor booleano.
  * 
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede realizar la verificación debido a problemas de conexión, falta de autorización, o cualquier otro problema técnico.
  */
@@ -178,7 +177,7 @@ const hasUnreadNotifications = async (req: Request, res: Response) => {
     let username = req.params.username.toLowerCase();
     try {
         const unreadNotifications = await Notification.exists({ username: username, read: false });
-        res.status(200).json({ hasUnreadNotifications: unreadNotifications });
+        res.status(200).json(!!unreadNotifications);
     } catch (error) {
         res.status(500).json({ message: "Error al verificar las notificaciones." });
     }
@@ -199,7 +198,7 @@ const hasUnreadNotifications = async (req: Request, res: Response) => {
  */
 const sendNotification = async (notification: INotification) => {
     try {
-        const user = await User.findOne({username_lower: notification.username.toLowerCase()});
+        const user = await User.findOne({ username_lower: notification.username.toLowerCase() });
         if (!user) {
             throw new Error("Usuario no encontrado.");
         }
@@ -249,13 +248,6 @@ const sendRealTimeNotification = (notification: INotification) => {
 }
 
 
-export { 
-    getNotifications, 
-    markAsRead, 
-    markAllAsRead,
-    deleteNotification, 
-    deleteAllNotifications, 
-    createNotification, 
-    hasUnreadNotifications,
-    sendNotification
+export {
+    createNotification, deleteAllNotifications, deleteNotification, getNotifications, hasUnreadNotifications, markAllAsRead, markAsRead, sendNotification
 };
