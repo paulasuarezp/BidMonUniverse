@@ -1,5 +1,6 @@
-import { useTheme } from '@mui/material';
+import { Box, CircularProgress, useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
 import { Transaction } from '../../../shared/sharedTypes';
 import ErrorMessageBox from '../MessagesBox/ErrorMessageBox';
 
@@ -8,22 +9,27 @@ interface UserTransactionsTableProps {
 }
 
 const columns: GridColDef[] = [
-    { field: 'username', headerName: 'Usuario', width: 100 },
+    { field: 'username', headerName: 'Usuario', flex: 2 },
     {
         field: 'date',
         headerName: 'Fecha',
-        width: 100,
+        flex: 2,
         renderCell: ({ value }) => <span>{new Date(value).toLocaleDateString()}</span>,
     },
     {
         field: 'mensajeConcepto',
         headerName: 'Concepto',
-        width: 700,
+        flex: 5,
+        renderCell: ({ value }) => (
+            <div style={{ whiteSpace: 'normal' }}>
+                {value}
+            </div>
+        ),
     },
     {
         field: 'price',
         headerName: 'Precio',
-        width: 100,
+        flex: 1,
         renderCell: ({ value }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span>{value}</span>
@@ -35,14 +41,31 @@ const columns: GridColDef[] = [
 
 export default function AllUserTransactionsTable({ data }: UserTransactionsTableProps) {
     const theme = useTheme();
-    console.log(data[0]);
+
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <CircularProgress />
+            </Box>
+        );
+    }
 
     if (!data || data.length === 0) {
         return <ErrorMessageBox message="No se han encontrado transacciones" />;
     }
 
     return (
-        <div style={{ width: '100%', marginTop: 2, height: '100%' }}>
+        <div style={{ height: 'auto', width: '100%', borderRadius: 8 }}>
             <DataGrid
                 rows={data}
                 columns={columns}
@@ -54,19 +77,30 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
                 pageSizeOptions={[5, 10, 20]}
                 checkboxSelection
                 getRowId={(row) => row._id}
+                autoHeight
                 sx={{
+                    boxShadow: 2,
+                    border: 2,
+                    borderColor: theme.palette.primary.main,
+                    color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : '#000000',
                     '& .MuiDataGrid-columnHeaders': {
                         backgroundColor: theme.palette.primary.main,
-                        color: theme.palette.primary.contrastText,
+                        fontWeight: 'bold',
+                        borderBottom: `3px solid ${theme.palette.primary.main}`,
                     },
                     '& .MuiDataGrid-cell': {
                         '&:hover': {
                             backgroundColor: theme.palette.action.selected,
                         },
+                        padding: '10px',
+                        borderBottom: `1px solid ${theme.palette.divider}`,
                     },
                     '& .MuiDataGrid-row': {
                         '&:nth-of-type(even)': {
                             backgroundColor: theme.palette.action.hover,
+                        },
+                        '& .MuiDataGrid-cell': {
+                            borderBottom: 'none',
                         },
                     },
                 }}
