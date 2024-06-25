@@ -1,37 +1,33 @@
 import { useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Transaction, TransactionConcept } from '../../../shared/sharedTypes';
-import { getTransactionMessage } from '../../../utils/utils';
+import { Transaction } from '../../../shared/sharedTypes';
 import ErrorMessageBox from '../MessagesBox/ErrorMessageBox';
 
 interface UserTransactionsTableProps {
     data: Transaction[];
 }
 
-
-
 const columns: GridColDef[] = [
-    { field: 'username', headerName: 'Usuario', width: 150 },
+    { field: 'username', headerName: 'Usuario', width: 100 },
     {
         field: 'date',
         headerName: 'Fecha',
-        width: 150,
+        width: 100,
         renderCell: ({ value }) => <span>{new Date(value).toLocaleDateString()}</span>,
     },
     {
-        field: 'concept',
+        field: 'mensajeConcepto',
         headerName: 'Concepto',
-        width: 250,
-        renderCell: ({ value }) => <span>{getTransactionMessage(value[0] as TransactionConcept)}</span>,
+        width: 700,
     },
     {
         field: 'price',
         headerName: 'Precio',
-        width: 150,
+        width: 100,
         renderCell: ({ value }) => (
-            <div>
-                <span style={{ verticalAlign: 'middle' }}>{value}</span>
-                <img src="/zen.png" alt="Zen" style={{ width: 20, height: 20, marginLeft: 5, verticalAlign: 'middle' }} />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span>{value}</span>
+                <img src="/zen.png" alt="Zen" style={{ width: 20, height: 20, marginLeft: 5 }} />
             </div>
         ),
     },
@@ -39,14 +35,14 @@ const columns: GridColDef[] = [
 
 export default function AllUserTransactionsTable({ data }: UserTransactionsTableProps) {
     const theme = useTheme();
+    console.log(data[0]);
 
-    console.log(data);
     if (!data || data.length === 0) {
         return <ErrorMessageBox message="No se han encontrado transacciones" />;
     }
 
     return (
-        <div style={{ height: 400, width: '100%', marginTop: 2 }}>
+        <div style={{ width: '100%', marginTop: 2, height: '100%' }}>
             <DataGrid
                 rows={data}
                 columns={columns}
@@ -55,7 +51,7 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
                         paginationModel: { page: 0, pageSize: 5 },
                     },
                 }}
-                pageSizeOptions={[5, 10]}
+                pageSizeOptions={[5, 10, 20]}
                 checkboxSelection
                 getRowId={(row) => row._id}
                 sx={{
