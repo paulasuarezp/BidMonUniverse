@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getTransactionsForUser } from "../../api/transactionsAPI";
 import { RootState } from "../../redux/store";
 import { Transaction } from "../../shared/sharedTypes";
+import { getTransactionMessage } from "../../utils/utils";
 import ErrorMessageBox from "../components/MessagesBox/ErrorMessageBox";
 import Container from "../components/container/Container";
 import UserTransationsTable from "../components/table/UserTransactionsTable";
@@ -24,6 +25,9 @@ export default function UserTransactions() {
     useEffect(() => {
         const fetchData = async () => {
             getTransactionsForUser(username).then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    data[i].mensajeConcepto = getTransactionMessage(data[i].concept[0]);
+                }
                 setData(data);
             }).catch(err => {
                 setError('Error al obtener los datos de las transacciones');
@@ -46,9 +50,8 @@ export default function UserTransactions() {
             title="Historial de transacciones"
             description="En esta sección podrás consultar el historial de transacciones de tu cuenta."
         >
-            <Container>
-                <UserTransationsTable data={data} />
-            </Container>
+            <UserTransationsTable data={data} />
+
         </BasePageWithNav>
 
     );
