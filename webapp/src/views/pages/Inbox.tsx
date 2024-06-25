@@ -1,5 +1,6 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MailIcon from '@mui/icons-material/Mail';
-import { Button, Container, Divider, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper } from '@mui/material';
+import { Button, Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUserNotifications, markAllAsRead, markAsRead } from '../../api/notificationsAPI';
@@ -55,6 +56,9 @@ export default function Inbox() {
     return (
         <BasePageWithNav title="Bandeja de entrada" showBackButton={false} handleBack={() => { }}>
             <Container>
+                <Typography variant="h4" gutterBottom>
+                    Bandeja de entrada
+                </Typography>
                 <Button variant="contained" color="primary" onClick={handleMarkAllAsRead} style={{ marginBottom: '20px' }}>
                     Marcar todas como leídas
                 </Button>
@@ -62,7 +66,7 @@ export default function Inbox() {
                     <List>
                         {selectedNotifications.map((notification) => (
                             <React.Fragment key={notification._id}>
-                                <ListItem button onClick={() => handleMarkAsRead(notification._id!)}>
+                                <ListItem button>
                                     <ListItemIcon>
                                         <MailIcon color={notification.read ? "disabled" : "primary"} />
                                     </ListItemIcon>
@@ -71,6 +75,13 @@ export default function Inbox() {
                                         secondary={`Importancia: ${notification.importance}`}
                                         style={{ textDecoration: notification.read ? 'line-through' : 'none' }}
                                     />
+                                    {!notification.read && (
+                                        <Tooltip title="Marcar como leída" arrow>
+                                            <IconButton edge="end" aria-label="Marcar como leída" onClick={() => handleMarkAsRead(notification._id!)}>
+                                                <CheckCircleIcon color="action" />
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
                                 </ListItem>
                                 <Divider />
                             </React.Fragment>
