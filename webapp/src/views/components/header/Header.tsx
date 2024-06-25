@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { AppBar, Toolbar, Box, Grid, useTheme, useMediaQuery } from '@mui/material';
+import { AppBar, Box, Grid, Toolbar, useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import ThemeSwitch from '../switch/ThemeSwitch';
-import LanguageMenu from '../menus/languageMenu/LanguageMenu';
-import UserMenu from '../menus/userMenu/UserMenu';
+import React, { useEffect, useState } from 'react';
 import LogoBox from '../logoBox/LogoBox';
 import GeneralMenu from '../menus/generalMenu/GeneralMenu';
+import LanguageMenu from '../menus/languageMenu/LanguageMenu';
+import UserMenu from '../menus/userMenu/UserMenu';
+import ThemeSwitch from '../switch/ThemeSwitch';
 
 //#region PROPS
 interface HeaderProps {
@@ -128,12 +128,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
             ) : (
               <>
                 <Grid item xs={3}>
-                  <GeneralMenu
-                    anchorGeneralMenu={anchorGeneralMenu}
-                    handleGeneralMenu={handleGeneralMenu}
-                    handleGeneralMenuClose={() => setAnchorGeneralMenu(null)}
-                    toggleTheme={toggleTheme}
-                  />
+
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="center">
                   <LogoBox title="BidMon Universe" />
