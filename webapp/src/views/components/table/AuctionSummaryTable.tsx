@@ -1,4 +1,5 @@
 import {
+    Alert,
     CircularProgress,
     Paper,
     Table, TableBody, TableCell,
@@ -53,8 +54,18 @@ export default function BidSummaryTable() {
     }
 
     if (error) {
-        return <Container style={{ textAlign: 'center' }}> Ha ocurriso un erorr al buscar las subastas activas. Por favor, vuelva a intentarlo más tarde.</Container>;
+        return (
+            <Alert severity="error">No se han podido cargar los datos, por favor, inténtalo de nuevo más tarde</Alert>
+
+        );
     }
+
+    if (cards && !cards.length) {
+        return (
+            <Alert severity="info">No tienes subastas activas</Alert>
+        );
+    }
+
 
     return (
         <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
