@@ -1,8 +1,7 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import LowImportanceIcon from '@mui/icons-material/LowPriority'; // Para baja importancia
-import MailIcon from '@mui/icons-material/Mail';
-import HighImportanceIcon from '@mui/icons-material/PriorityHigh'; // Para alta importancia
-import MediumImportanceIcon from '@mui/icons-material/ReportProblem'; // Para importancia media
+import DraftsIcon from '@mui/icons-material/Drafts';
+import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
+import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
 import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -61,20 +60,8 @@ export default function Inbox() {
         switch (importance) {
             case NotificationImportance.High:
                 return (
-                    <Tooltip title="Alta importancia" arrow>
-                        <HighImportanceIcon color="error" />
-                    </Tooltip>
-                );
-            case NotificationImportance.Medium:
-                return (
-                    <Tooltip title="Importancia media" arrow>
-                        <MediumImportanceIcon color="warning" />
-                    </Tooltip>
-                );
-            case NotificationImportance.Low:
-                return (
-                    <Tooltip title="Baja importancia" arrow>
-                        <LowImportanceIcon color="primary" />
+                    <Tooltip title="Notificación importante" arrow>
+                        <NotificationImportantIcon color="error" />
                     </Tooltip>
                 );
             default:
@@ -96,7 +83,17 @@ export default function Inbox() {
                             <React.Fragment key={notification._id}>
                                 <ListItem button>
                                     <ListItemIcon>
-                                        <MailIcon color={notification.read ? "disabled" : "primary"} />
+                                        {!notification.read &&
+                                            <Tooltip title="Notificación no leída" arrow>
+                                                <MarkEmailUnreadIcon color="primary" />
+                                            </Tooltip>
+                                        }
+
+                                        {notification.read &&
+                                            <Tooltip title="Notificación leída" arrow>
+                                                <DraftsIcon color="disabled" />
+                                            </Tooltip>
+                                        }
                                         {getImportanceIcon(notification.importance)}
                                     </ListItemIcon>
                                     <ListItemText
