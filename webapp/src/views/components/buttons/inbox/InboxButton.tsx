@@ -11,9 +11,9 @@ export default function InboxButton() {
     const navigate = useNavigate();
     const theme = useTheme();
     const sessionUser = useSelector((state: RootState) => state.user);
-    const notifications = useSelector((state: RootState) => state.notificationState.notifications);
+    const hasUnreadNotifications = useSelector((state: RootState) => state.notificationState.hasUnreadNotifications);
 
-    const [hasUnread, setHasUnread] = useState<boolean>(false);
+    const [hasUnread, setHasUnread] = useState<boolean>(hasUnreadNotifications);
 
     const checkUnread = async (username: string) => {
         try {
@@ -34,7 +34,7 @@ export default function InboxButton() {
         };
 
         fetchUnreadStatus();
-    }, [notifications, sessionUser.username]);
+    }, [hasUnreadNotifications, sessionUser.username]);
 
     return (
         <Badge

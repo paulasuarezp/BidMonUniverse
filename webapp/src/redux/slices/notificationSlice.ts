@@ -7,7 +7,8 @@ type NotificationPayload = {
 
 const initialState = {
     notifications: [] as Notification[],
-    hasNotification: false
+    hasNotification: false,
+    hasUnreadNotifications: false,
 }
 
 const notificationSlice = createSlice({
@@ -17,17 +18,22 @@ const notificationSlice = createSlice({
         addNotification(state, action: PayloadAction<NotificationPayload>) {
             state.notifications.push(action.payload.notification);
             state.hasNotification = true;
+            state.hasUnreadNotifications = true;
         },
         removeNotification(state, action: PayloadAction<string>) {
             state.notifications = state.notifications.filter(notif => notif.socketId !== action.payload);
             state.hasNotification = state.notifications.length > 0;
         },
+        setHasUnreadNotifications(state, action: PayloadAction<boolean>) {
+            state.hasUnreadNotifications = action.payload;
+        },
         resetNotifications(state) {
             state.notifications = [];
             state.hasNotification = false;
+            state.hasUnreadNotifications = false;
         }
     }
 });
 
-export const { addNotification, removeNotification, resetNotifications } = notificationSlice.actions;
+export const { addNotification, removeNotification, resetNotifications, setHasUnreadNotifications } = notificationSlice.actions;
 export default notificationSlice.reducer;

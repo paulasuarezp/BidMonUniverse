@@ -4,14 +4,16 @@ import MarkEmailUnreadIcon from '@mui/icons-material/MarkEmailUnread';
 import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
 import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUserNotifications, markAllAsRead, markAsRead } from '../../api/notificationsAPI';
+import { setHasUnreadNotifications } from '../../redux/slices/notificationSlice';
 import { RootState } from '../../redux/store';
 import { Notification, NotificationImportance } from '../../shared/sharedTypes';
 import Button from '../components/buttons/Button';
 import BasePageWithNav from './BasePageWithNav';
 
 export default function Inbox() {
+    const dispatch = useDispatch();
     const sessionUser = useSelector((state: RootState) => state.user);
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [page, setPage] = useState<number>(1);
@@ -21,6 +23,12 @@ export default function Inbox() {
         try {
             const response = await getUserNotifications(sessionUser.username);
             setNotifications(response);
+            response.forEach(notification => {
+                if (!notification.read) {
+                    dispatch(setHasUnreadNotifications(true));
+                    return;
+                }
+            });
         } catch (error) {
             console.error("Error fetching notifications", error);
         }
@@ -46,6 +54,7 @@ export default function Inbox() {
     const handleMarkAllAsRead = async () => {
         try {
             await markAllAsRead(sessionUser.username);
+            dispatch(setHasUnreadNotifications(false));
             fetchNotifications();
         } catch (error) {
             console.error("Error marking all notifications as read", error);
@@ -81,7 +90,14 @@ export default function Inbox() {
                     <List>
                         {selectedNotifications.map((notification) => (
                             <React.Fragment key={notification._id}>
-                                <ListItem button>
+                                <ListItem
+                                    sx={{
+                                        '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                            cursor: 'pointer'
+                                        }
+                                    }}
+                                >
                                     <ListItemIcon>
                                         {!notification.read &&
                                             <Tooltip title="Notificación no leída" arrow>
@@ -99,7 +115,6 @@ export default function Inbox() {
                                     <ListItemText
                                         primary={notification.message}
                                         secondary={formatDate(notification.creationDate)}
-                                        style={{ textDecoration: notification.read ? 'line-through' : 'none' }}
                                     />
                                     {!notification.read && (
                                         <Tooltip title="Marcar como leída" arrow>
