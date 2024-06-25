@@ -45,10 +45,10 @@ export default function NavigationMenu() {
 
         if (path === '') setValue('logued');
         else {
-            if (path.includes('bid')) setValue('auctions');
-            else if (path.includes('auction')) setValue('auctions');
+            if (path.includes('bid') && !isMobile) setValue('auctions');
+            else if (path.includes('auction') && !isMobile) setValue('auctions');
             else if (path.includes('card')) setValue('album');
-            else if (path.includes('transaction')) setValue('transactions');
+            else if (path.includes('transaction') && !isMobile) setValue('transactions');
             else if (path.includes('shop')) setValue('shop');
             else if (path.includes('album')) setValue('album');
             else
