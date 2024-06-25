@@ -1,11 +1,12 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import MailIcon from '@mui/icons-material/Mail';
-import { Button, Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip, Typography } from '@mui/material';
+import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUserNotifications, markAllAsRead, markAsRead } from '../../api/notificationsAPI';
 import { RootState } from '../../redux/store';
 import { Notification } from '../../shared/sharedTypes';
+import Button from '../components/buttons/Button';
 import BasePageWithNav from './BasePageWithNav';
 
 export default function Inbox() {
@@ -56,12 +57,7 @@ export default function Inbox() {
     return (
         <BasePageWithNav title="Bandeja de entrada" showBackButton={false} handleBack={() => { }}>
             <Container>
-                <Typography variant="h4" gutterBottom>
-                    Bandeja de entrada
-                </Typography>
-                <Button variant="contained" color="primary" onClick={handleMarkAllAsRead} style={{ marginBottom: '20px' }}>
-                    Marcar todas como leídas
-                </Button>
+                <Button buttonType='primary' onClick={handleMarkAllAsRead} style={{ marginBottom: '20px' }} label='Marcar todas como leídas' />
                 <Paper>
                     <List>
                         {selectedNotifications.map((notification) => (
