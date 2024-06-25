@@ -1,5 +1,5 @@
 import { Logout } from '@mui/icons-material';
-import { Menu, MenuItem } from '@mui/material';
+import { Box, Menu, MenuItem } from '@mui/material';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -56,14 +56,16 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   return (
     <>
       {isAuthenticated ? (
-        <>
+        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
           {!isAdmin && <CoinsButton balance={balance} onClick={() => navigate('/recharge')} />}
           {!isAdmin && <InboxButton />}
           <UserProfileButton
             name={sessionUser.username}
             imageUrl={isAdmin ? '' : sessionUser.profileImg}
-            onClick={handleUserMenu} />
-        </>
+            onClick={handleUserMenu}
+          />
+        </Box>
+
       ) : (
         <ButtonLogin onClick={handleLoginClick} />
       )}
