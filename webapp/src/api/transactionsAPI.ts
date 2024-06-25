@@ -70,3 +70,38 @@ export const getTransactionsForUser = async (username: string) => {
             throw new Error('No se han podido obtener las transacciones del usuario, inténtelo de nuevo más tarde');
         });
 }
+
+/**
+ * Obtiene las transacciones realizadas por todos los usuarios desde el servidor utilizando una API.
+ * 
+ * @returns {Promise<Object>} Un objeto que contiene las transacciones del usuario o un mensaje de error.
+ * 
+ * @throws {Error} Si no se encuentra un token de usuario válido.
+ */
+export const getAllTransactions = async () => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/`
+
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No se han podido obtener las transacciones de la aplicación, inténtelo de nuevo más tarde');
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            throw new Error('No se han podido obtener las transacciones transacciones de la aplicación, inténtelo de nuevo más tarde');
+        });
+}
+

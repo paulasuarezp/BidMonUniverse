@@ -1,5 +1,5 @@
-import Transaction from '../models/transaction';
 import { Request, Response } from 'express';
+import Transaction from '../models/transaction';
 
 /**
  * Función para obtener todas las transacciones registradas en la base de datos
@@ -10,7 +10,7 @@ import { Request, Response } from 'express';
  */
 const getTransactions = async (req: Request, res: Response) => {
     try {
-        const transactions = await Transaction.find();
+        const transactions = await Transaction.find().sort({ date: -1 });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -53,7 +53,7 @@ const getTransactionsByUsername = async (req: Request, res: Response) => {
         let { username } = req.params;
         username = username.toLowerCase();
 
-        const transactions = await Transaction.find({ username: username });
+        const transactions = await Transaction.find({ username: username }).sort({ date: -1 });
         res.status(200).json(transactions);
     }
     catch (error: any) {
@@ -81,8 +81,6 @@ const getTransactionsByUserCardId = async (req: Request, res: Response) => {
 
 // Exportar funciones de controlador
 export {
-    getTransactions,
-    getTransaction,
-    getTransactionsByUsername,
-    getTransactionsByUserCardId
+    getTransaction, getTransactions, getTransactionsByUserCardId, getTransactionsByUsername
 };
+
