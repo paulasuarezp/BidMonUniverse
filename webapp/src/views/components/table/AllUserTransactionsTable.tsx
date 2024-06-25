@@ -114,60 +114,6 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
                 checkboxSelection
                 getRowId={(row) => row._id}
                 autoHeight
-                localeText={{
-                    toolbarDensity: 'Densidad',
-                    toolbarDensityLabel: 'Densidad',
-                    toolbarDensityCompact: 'Compacto',
-                    toolbarDensityStandard: 'Estándar',
-                    toolbarDensityComfortable: 'Cómodo',
-                    toolbarColumns: 'Columnas',
-                    toolbarColumnsLabel: 'Seleccionar columnas',
-                    toolbarFilters: 'Filtros',
-                    toolbarFiltersLabel: 'Mostrar filtros',
-                    toolbarExport: 'Exportar',
-                    toolbarExportLabel: 'Exportar',
-                    toolbarExportCSV: 'Descargar como CSV',
-                    toolbarExportPrint: 'Imprimir',
-                    columnMenuSortAsc: 'Ordenar Ascendente',
-                    columnMenuSortDesc: 'Ordenar Descendente',
-                    columnMenuFilter: 'Filtrar',
-                    columnMenuHideColumn: 'Ocultar columna',
-                    columnMenuShowColumns: 'Mostrar columnas',
-                    columnMenuUnsort: 'Desordenar',
-                    columnMenuManageColumns: 'Administrar columnas',
-                    columnsManagementShowHideAllText: 'Mostrar / Ocultar todas',
-                    columnsManagementSearchTitle: 'Buscar columna',
-                    columnsManagementReset: 'Restablecer',
-                    noRowsLabel: 'No hay filas',
-                    noResultsOverlayLabel: 'No se han encontrado resultados',
-                    footerRowSelected: (count) => `${count.toLocaleString()} fila(s) seleccionada(s)`,
-                    footerTotalRows: 'Total de filas:',
-                    footerTotalVisibleRows: (visibleCount, totalCount) => `${visibleCount.toLocaleString()} de ${totalCount.toLocaleString()}`,
-                    checkboxSelectionHeaderName: 'Selección',
-                    booleanCellTrueLabel: 'sí',
-                    booleanCellFalseLabel: 'no',
-                    filterPanelAddFilter: 'Añadir filtro',
-                    filterPanelDeleteIconLabel: 'Eliminar',
-                    filterPanelOperator: 'Operador',
-                    filterPanelOperatorAnd: 'Y',
-                    filterPanelOperatorOr: 'O',
-                    filterPanelColumns: 'Columnas',
-                    filterPanelInputLabel: 'Valor',
-                    filterPanelInputPlaceholder: 'Filtrar valor',
-                    filterOperatorContains: 'contiene',
-                    filterOperatorEquals: 'igual a',
-                    filterOperatorStartsWith: 'empieza por',
-                    filterOperatorEndsWith: 'termina en',
-                    filterOperatorIs: 'es',
-                    filterOperatorNot: 'no es',
-                    filterOperatorAfter: 'después de',
-                    filterOperatorOnOrAfter: 'en o después de',
-                    filterOperatorBefore: 'antes de',
-                    filterOperatorOnOrBefore: 'en o antes de',
-                    filterOperatorIsEmpty: 'está vacío',
-                    filterOperatorIsNotEmpty: 'no está vacío',
-                    filterOperatorIsAnyOf: 'es cualquiera de',
-                }}
                 sx={{
                     boxShadow: 2,
                     border: 2,
@@ -192,11 +138,7 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
                         '& .MuiDataGrid-cell': {
                             borderBottom: 'none',
                         },
-                    },
-                    '& .MuiDataGrid-footerContainer': {
-                        backgroundColor: theme.palette.primary.main,
-                        color: theme.palette.primary.contrastText,
-                    },
+                    }
                 }}
             />
             <Dialog open={open} onClose={handleClose} fullWidth>
