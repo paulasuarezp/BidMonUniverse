@@ -1,11 +1,14 @@
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import LowImportanceIcon from '@mui/icons-material/LowPriority'; // Para baja importancia
 import MailIcon from '@mui/icons-material/Mail';
+import HighImportanceIcon from '@mui/icons-material/PriorityHigh'; // Para alta importancia
+import MediumImportanceIcon from '@mui/icons-material/ReportProblem'; // Para importancia media
 import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUserNotifications, markAllAsRead, markAsRead } from '../../api/notificationsAPI';
 import { RootState } from '../../redux/store';
-import { Notification } from '../../shared/sharedTypes';
+import { Notification, NotificationImportance } from '../../shared/sharedTypes';
 import Button from '../components/buttons/Button';
 import BasePageWithNav from './BasePageWithNav';
 
@@ -50,6 +53,35 @@ export default function Inbox() {
         }
     }
 
+    const formatDate = (date: Date) => {
+        return new Date(date).toLocaleString();
+    }
+
+    const getImportanceIcon = (importance: string) => {
+        switch (importance) {
+            case NotificationImportance.High:
+                return (
+                    <Tooltip title="Alta importancia" arrow>
+                        <HighImportanceIcon color="error" />
+                    </Tooltip>
+                );
+            case NotificationImportance.Medium:
+                return (
+                    <Tooltip title="Importancia media" arrow>
+                        <MediumImportanceIcon color="warning" />
+                    </Tooltip>
+                );
+            case NotificationImportance.Low:
+                return (
+                    <Tooltip title="Baja importancia" arrow>
+                        <LowImportanceIcon color="primary" />
+                    </Tooltip>
+                );
+            default:
+                return null;
+        }
+    }
+
     // Calcular el índice de las notificaciones a mostrar
     const startIndex = (page - 1) * pageSize;
     const selectedNotifications = notifications.slice(startIndex, startIndex + pageSize);
@@ -65,10 +97,11 @@ export default function Inbox() {
                                 <ListItem button>
                                     <ListItemIcon>
                                         <MailIcon color={notification.read ? "disabled" : "primary"} />
+                                        {getImportanceIcon(notification.importance)}
                                     </ListItemIcon>
                                     <ListItemText
                                         primary={notification.message}
-                                        secondary={`Importancia: ${notification.importance}`}
+                                        secondary={formatDate(notification.creationDate)}
                                         style={{ textDecoration: notification.read ? 'line-through' : 'none' }}
                                     />
                                     {!notification.read && (
