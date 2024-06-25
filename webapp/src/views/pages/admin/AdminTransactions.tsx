@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getAllTransactions } from "../../../api/transactionsAPI";
 import { RootState } from "../../../redux/store";
 import { Transaction } from "../../../shared/sharedTypes";
+import { getTransactionMessage } from "../../../utils/utils";
 import ErrorMessageBox from "../../components/MessagesBox/ErrorMessageBox";
 import Container from "../../components/container/Container";
 import AllUserTransationsTable from "../../components/table/AllUserTransactionsTable";
@@ -24,6 +25,9 @@ export default function AdminTransactions() {
     useEffect(() => {
         const fetchData = async () => {
             getAllTransactions().then(data => {
+                for (let i = 0; i < data.length; i++) {
+                    data[i].mensajeConcepto = getTransactionMessage(data[i].concept[0]);
+                }
                 setData(data);
             }).catch(err => {
                 setError('Error al obtener los datos de las transacciones');
