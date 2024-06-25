@@ -30,8 +30,8 @@ const LargeImage = styled('img')(({ theme }) => ({
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
 }));
 
-const Image = styled('img')(({ theme }) => ({
-  width: '50%',
+const SmallImage = styled('img')(({ theme }) => ({
+  width: '100%',
   borderRadius: 15,
   marginTop: theme.spacing(2),
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -111,7 +111,9 @@ export default function Home() {
       <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>
-            <Image src="/album.png" alt="Captura de colección de usuario" />
+            <Box display="flex" justifyContent="center">
+              <SmallImage src="/album.png" alt="Captura de colección de usuario" />
+            </Box>
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="h6">Cómo empezar</Typography>
@@ -132,20 +134,24 @@ export default function Home() {
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Image src="/subastas.png" alt="Captura de subastas" />
+            <Box display="flex" justifyContent="center">
+              <SmallImage src="/subastas.png" alt="Captura de subastas" />
+            </Box>
           </Grid>
         </Grid>
       </InfoPaper>
 
-      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'white', bgcolor: theme.palette.background.default }}>
+      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md={6}>
             <Typography variant="h6">Transparencia y seguridad</Typography>
             <Typography>Las cartas cuentan con un registro de transacciones que garantiza la trazabilidad de cada carta y ayuda a los usuarios a conocer el mercado de cartas.</Typography>
             <Typography>Además, las subastas se realizan de forma segura y transparente, con un sistema de subastas ciegas que garantiza la igualdad de oportunidades para todos los usuarios.</Typography>
           </Grid>
-          <Grid item xs={12} md={4}>
-            <Image src="/detalle_subasta.png" alt="Captura de tienda" />
+          <Grid item xs={12} md={6}>
+            <Box display="flex" justifyContent="center">
+              <SmallImage src="/detalle_subasta.png" alt="Captura de tienda" />
+            </Box>
           </Grid>
         </Grid>
       </InfoPaper>
