@@ -1,31 +1,24 @@
 // MiBoton.js
-import { motion } from 'framer-motion';
-import './buttonPrincipal.css';
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import './buttonPrincipal.css';
 
 
 
-export interface ButtonProps  {
+export interface ButtonProps {
     label?: string;
-  }
+}
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
-    fontFamily:  'Pokemon', 
+    fontFamily: 'Pokemon',
     color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF',
     '&:hover': {
         color: '#FFFFFF',
-      },
-  }));
+    },
+}));
 
-export default function ButtonPrincipal({ label }:ButtonProps) {
-    const navigate = useNavigate();
-
-    const handleLoginClick = () => {
-        navigate('/login'); 
-    };
-
+export default function ButtonPrincipal({ label }: ButtonProps) {
     const whileHover = {
         scale: 1.1,
         transition: {
@@ -57,7 +50,7 @@ export default function ButtonPrincipal({ label }:ButtonProps) {
     };
     return (
         <div className="container">
-             <motion.div
+            <motion.div
                 className="bolita1"
                 variants={bolita1Variants}
                 animate="animate"
@@ -70,12 +63,10 @@ export default function ButtonPrincipal({ label }:ButtonProps) {
             <motion.button
                 className="btn"
                 whileHover={whileHover}
-                onClick={handleLoginClick}
             >
-            <StyledTypography variant="h4" sx={{ flexGrow: 1, marginLeft: 1, marginBottom: 2 }}>  {label} </StyledTypography>
-           
+                <StyledTypography variant="h4" sx={{ flexGrow: 1, marginLeft: 1, marginBottom: 2 }}>  {label} </StyledTypography>
+
             </motion.button>
         </div>
     );
 }
-
