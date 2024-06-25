@@ -23,12 +23,29 @@ const StyledBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
 }));
 
+const LargeImage = styled('img')(({ theme }) => ({
+  width: '100%',
+  borderRadius: 15,
+  marginTop: theme.spacing(2),
+  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+}));
+
 const Image = styled('img')(({ theme }) => ({
   width: '50%',
   borderRadius: 15,
   marginTop: theme.spacing(2),
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+}));
 
+const SliderContainer = styled(Box)(({ theme }) => ({
+  maxWidth: '80%',
+  margin: '0 auto',
+  '& .slick-slide': {
+    padding: theme.spacing(0, 1),
+  },
+  '& .slick-list': {
+    padding: theme.spacing(0, 2),
+  },
 }));
 
 export default function Home() {
@@ -41,6 +58,8 @@ export default function Home() {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
+    autoplay: true,
+    autoplaySpeed: 3000,
     responsive: [
       {
         breakpoint: 1024,
@@ -78,13 +97,15 @@ export default function Home() {
           La plataforma se basa en un sistema de subastas ciegas para asegurar la transparencia y la igualdad de oportunidades para todos los usuarios.
           Las cartas más raras y valiosas están a tu alcance, y te están esperando. ¡Empieza tu colección hoy!</Typography>
 
-        <Slider {...settings}>
-          {popularCards.map((card) => (
-            <div key={card._id}>
-              <PokemonCard card={card} userCardId='1' onClick={() => { }} />
-            </div>
-          ))}
-        </Slider>
+        <SliderContainer>
+          <Slider {...settings}>
+            {popularCards.map((card) => (
+              <div key={card._id}>
+                <PokemonCard card={card} userCardId='1' onClick={() => { }} />
+              </div>
+            ))}
+          </Slider>
+        </SliderContainer>
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
@@ -116,7 +137,7 @@ export default function Home() {
         </Grid>
       </InfoPaper>
 
-      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
+      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'white', bgcolor: theme.palette.background.default }}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <Typography variant="h6">Transparencia y seguridad</Typography>
