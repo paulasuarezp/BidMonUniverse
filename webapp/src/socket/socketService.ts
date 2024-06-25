@@ -32,7 +32,7 @@ function connectSocket(token: string, username: string) {
     socket.on('notification', (data: any) => {
         console.log('Received notification:', data);
         let notification: Notification = {
-            id: uuidv4(),
+            socketId: uuidv4(),
             type: data.type,
             message: data.message,
             importance: data.importance

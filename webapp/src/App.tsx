@@ -15,6 +15,7 @@ import ActiveAuctions from './views/pages/ActiveAuctions';
 import ActiveBids from './views/pages/ActiveBids';
 import BasePage from './views/pages/BasePage';
 import Home from './views/pages/Home';
+import Inbox from './views/pages/Inbox';
 import Login from './views/pages/Login';
 import Logueado from './views/pages/Logueado';
 import MyCollection from './views/pages/MyCollection';
@@ -61,6 +62,7 @@ function App() {
                   <Route path="/bids" element={<RouteRedirector initRoute={<ActiveBids />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/bids/:id" element={<RouteRedirector initRoute={<BidCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/inbox" element={<RouteRedirector initRoute={<Inbox />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Rutas administrador */}
                   <Route path="/admin" element={<RouteRedirector initRoute={<AdminPage />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   <Route path="/admin/auctions" element={<RouteRedirector initRoute={<AuctionsAdmin />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />

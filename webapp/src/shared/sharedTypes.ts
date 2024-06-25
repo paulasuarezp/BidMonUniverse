@@ -254,10 +254,17 @@ export interface Deck {
 // NOTIFICATION TYPES
 // Notification
 export interface Notification {
-    id?: string;
+    _id?: string;
+    socketId?: string;
     type: NotificationType;
     message: string;
     importance: NotificationImportance;
+    usuarioId?: string; // ObjectId de un usuario
+    username?: string; // Nombre de usuario
+    read?: boolean; // true si la notificación fue leída
+    creationDate?: Date; // Fecha de creación de la notificación
+    readDate?: Date; // Fecha de lectura de la notificación
+    realTime?: boolean; // true si la notificación se envía en tiempo real
 }
 
 // NotificationType

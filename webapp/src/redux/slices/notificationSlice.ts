@@ -19,7 +19,7 @@ const notificationSlice = createSlice({
             state.hasNotification = true;
         },
         removeNotification(state, action: PayloadAction<string>) {
-            state.notifications = state.notifications.filter(notif => notif.id !== action.payload);
+            state.notifications = state.notifications.filter(notif => notif.socketId !== action.payload);
             state.hasNotification = state.notifications.length > 0;
         },
         resetNotifications(state) {

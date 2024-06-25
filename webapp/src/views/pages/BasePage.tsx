@@ -41,7 +41,7 @@ export const BasePage = (props: { toggleTheme: any, children: any }) => {
           detail: notification.message,
           life: 5000
         });
-        handleClose(notification.id);
+        handleClose(notification.socketId);
       }
     });
   }, [notifications]);
