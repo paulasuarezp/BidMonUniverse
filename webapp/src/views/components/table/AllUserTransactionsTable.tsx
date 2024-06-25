@@ -10,12 +10,17 @@ interface UserTransactionsTableProps {
 }
 
 const columns: GridColDef[] = [
-    { field: 'username', headerName: 'Usuario', flex: 2 },
+    { field: 'username', headerName: 'Usuario', flex: 1.5 },
     {
         field: 'date',
         headerName: 'Fecha',
-        flex: 2,
+        flex: 1.5,
         renderCell: ({ value }) => <span>{new Date(value).toLocaleString()}</span>,
+    },
+    {
+        field: 'userCard',
+        headerName: 'ID de la carta',
+        flex: 2,
     },
     {
         field: 'mensajeConcepto',
