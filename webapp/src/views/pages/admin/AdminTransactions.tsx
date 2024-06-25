@@ -50,9 +50,8 @@ export default function AdminTransactions() {
             title="Historial de transacciones"
             description="En esta sección podrás consultar el historial de transacciones de todos los usuarios."
         >
-            <Container>
-                <AllUserTransationsTable data={data} />
-            </Container>
+            <AllUserTransationsTable data={data} />
+
         </BasePageWithNav>
 
     );
