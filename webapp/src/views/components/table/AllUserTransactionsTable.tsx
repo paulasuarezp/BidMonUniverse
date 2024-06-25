@@ -1,4 +1,5 @@
-import { Box, CircularProgress, useTheme } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Transaction } from '../../../shared/sharedTypes';
@@ -14,14 +15,14 @@ const columns: GridColDef[] = [
         field: 'date',
         headerName: 'Fecha',
         flex: 2,
-        renderCell: ({ value }) => <span>{new Date(value).toLocaleDateString()}</span>,
+        renderCell: ({ value }) => <span>{new Date(value).toLocaleString()}</span>,
     },
     {
         field: 'mensajeConcepto',
         headerName: 'Concepto',
         flex: 5,
         renderCell: ({ value }) => (
-            <div style={{ whiteSpace: 'normal' }}>
+            <div style={{ whiteSpace: 'normal', wordWrap: 'break-word' }}>
                 {value}
             </div>
         ),
@@ -41,8 +42,12 @@ const columns: GridColDef[] = [
 
 export default function AllUserTransactionsTable({ data }: UserTransactionsTableProps) {
     const theme = useTheme();
-
+    const isXs = useMediaQuery(theme.breakpoints.down('xs'));
+    const isSm = useMediaQuery(theme.breakpoints.down('sm'));
     const [loading, setLoading] = useState(true);
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState<string | null>(null);
+    const [cellContent, setCellContent] = useState<string | null>(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -51,6 +56,36 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
 
         return () => clearTimeout(timer);
     }, []);
+
+    const handleCellClick = (params: any) => {
+        if (!isXs && !isSm) return;
+
+        if (params.field === 'mensajeConcepto' && params.value) {
+            setTitle('Concepto');
+            setCellContent(params.value);
+            setOpen(true);
+        }
+        if (params.field === 'date' && params.value) {
+            setTitle('Fecha');
+            setCellContent(new Date(params.value).toLocaleString());
+            setOpen(true);
+        }
+        if (params.field === 'price' && params.value) {
+            setTitle('Precio');
+            setCellContent(`${params.value} Zen`);
+            setOpen(true);
+        }
+        if (params.field === 'username' && params.value) {
+            setTitle('Usuario');
+            setCellContent(params.value);
+            setOpen(true);
+        }
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+        setCellContent(null);
+    };
 
     if (loading) {
         return (
@@ -69,6 +104,7 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
             <DataGrid
                 rows={data}
                 columns={columns}
+                onCellClick={handleCellClick}
                 initialState={{
                     pagination: {
                         paginationModel: { page: 0, pageSize: 5 },
@@ -103,8 +139,34 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
                             borderBottom: 'none',
                         },
                     },
+                    '& .MuiDataGrid-footerContainer': {
+                        backgroundColor: theme.palette.primary.main,
+                        color: theme.palette.primary.contrastText,
+                    },
                 }}
             />
+            <Dialog open={open} onClose={handleClose} fullWidth>
+                <DialogTitle>
+                    {title}
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: (theme) => theme.palette.grey[500],
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent>
+                    <Box sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                        {cellContent}
+                    </Box>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
