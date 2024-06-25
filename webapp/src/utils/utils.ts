@@ -8,6 +8,7 @@ export function capitalizeFirstLetter(word) {
  * Devuelve el mensaje de la transacción
  * @param {TransactionConcept} concept - Concepto de la transacción
  * @returns  {string} - Mensaje de la transacción
+ * 
  */
 export function getTransactionMessage(concept: TransactionConcept) {
     switch (concept) {
@@ -20,6 +21,7 @@ export function getTransactionMessage(concept: TransactionConcept) {
         case TransactionConcept.NewBid: return 'Nueva puja';
         case TransactionConcept.SoldOnAuction: return 'Carta vendida en subasta';
         case TransactionConcept.WithdrawnFromAuction: return 'Carta retirada de la subasta';
+        case TransactionConcept.WithdrwanFromAuctionByAdmin: return 'Carta retirada de la subasta por el administrador';
         default: return 'Transacción';
     }
 }
