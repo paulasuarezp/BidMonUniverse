@@ -1,6 +1,7 @@
-import { Box, Grid, Paper, Typography } from '@mui/material';
+import { Box, Dialog, DialogContent, Grid, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
+import { useState } from "react";
 import Slider from "react-slick";
 import { getPopularCards } from '../../utils/cardData';
 import ButtonPrincipal from '../components/buttons/principal/ButtonPrincipal';
@@ -23,18 +24,13 @@ const StyledBox = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
 }));
 
-const LargeImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  borderRadius: 15,
-  marginTop: theme.spacing(2),
-  boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-}));
-
 const SmallImage = styled('img')(({ theme }) => ({
   width: '100%',
+  maxWidth: '450px', // Smaller width
   borderRadius: 15,
   marginTop: theme.spacing(2),
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  cursor: 'pointer',
 }));
 
 const SliderContainer = styled(Box)(({ theme }) => ({
@@ -51,6 +47,15 @@ const SliderContainer = styled(Box)(({ theme }) => ({
 export default function Home() {
   const popularCards = getPopularCards();
   const theme = useTheme();
+  const [openImage, setOpenImage] = useState(null);
+
+  const handleClickOpen = (imgSrc) => {
+    setOpenImage(imgSrc);
+  };
+
+  const handleClose = () => {
+    setOpenImage(null);
+  };
 
   const settings = {
     dots: true,
@@ -92,7 +97,7 @@ export default function Home() {
       </StyledBox>
 
       <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white' }}>
-        <Typography variant="h6">¿Qué es BidMon Universe?</Typography>
+        <Typography variant="h4">¿Qué es BidMon Universe?</Typography>
         <Typography>En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
           La plataforma se basa en un sistema de subastas ciegas para asegurar la transparencia y la igualdad de oportunidades para todos los usuarios.
           Las cartas más raras y valiosas están a tu alcance, y te están esperando. ¡Empieza tu colección hoy!</Typography>
@@ -109,14 +114,14 @@ export default function Home() {
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-              <SmallImage src="/album.png" alt="Captura de colección de usuario" />
+              <SmallImage src="/album.png" alt="Captura de colección de usuario" onClick={() => handleClickOpen("/album.png")} />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h6">Cómo empezar</Typography>
+            <Typography variant="h4">Cómo empezar</Typography>
             <Typography>Únete a nuestra plataforma y empieza tu colección hoy.</Typography>
             <Typography>Tendrás la posibilidad de adquirir cartas a través de nuestra tienda o participando en subastas en vivo.</Typography>
             <Typography>¡No te pierdas la oportunidad de obtener cartas raras y valiosas!</Typography>
@@ -125,9 +130,9 @@ export default function Home() {
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white' }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
-            <Typography variant="h6">Explora subastas</Typography>
+            <Typography variant="h4">Explora subastas</Typography>
             <Typography>Explora y participa en subastas en vivo para obtener cartas raras.</Typography>
             <Typography>
               Podrás consultar en tiempo real las subastas activas y pujar por las cartas que más te interesen.
@@ -135,26 +140,33 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-              <SmallImage src="/subastas.png" alt="Captura de subastas" />
+              <SmallImage src="/subastas.png" alt="Captura de subastas" onClick={() => handleClickOpen("/subastas.png")} />
             </Box>
           </Grid>
         </Grid>
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
-            <Typography variant="h6">Transparencia y seguridad</Typography>
+            <Box display="flex" justifyContent="center">
+              <SmallImage src="/detalle_subasta.png" alt="Captura de detalle de subasta" onClick={() => handleClickOpen("/detalle_subasta.png")} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h4">Transparencia y seguridad</Typography>
             <Typography>Las cartas cuentan con un registro de transacciones que garantiza la trazabilidad de cada carta y ayuda a los usuarios a conocer el mercado de cartas.</Typography>
             <Typography>Además, las subastas se realizan de forma segura y transparente, con un sistema de subastas ciegas que garantiza la igualdad de oportunidades para todos los usuarios.</Typography>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Box display="flex" justifyContent="center">
-              <SmallImage src="/detalle_subasta.png" alt="Captura de tienda" />
-            </Box>
-          </Grid>
         </Grid>
       </InfoPaper>
+
+
+      <Dialog open={Boolean(openImage)} onClose={handleClose}>
+        <DialogContent>
+          <img src={openImage} alt="Ampliada" style={{ width: '100%' }} />
+        </DialogContent>
+      </Dialog>
     </Container>
   );
 }
