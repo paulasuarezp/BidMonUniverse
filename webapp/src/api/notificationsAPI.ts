@@ -75,3 +75,68 @@ export const getUserNotifications = async (username: string) => {
             throw new Error('No se han podido obtener las notificaciones, inténtelo de nuevo más tarde');
         });
 };
+
+
+/**
+ * Marcar una notificación como leída.
+ * 
+ * @param {string} notificationId - El ID de la notificación a marcar como leída.
+ * @returns {Promise<boolean>} - Un booleano que indica si la notificación se ha marcado como leída.
+ * 
+ * @throws {Error} - Si no se puede marcar la notificación como leída, ya sea por 
+ * falta de un token válido o por un problema de red/servidor.
+ */
+export const markAsRead = async (notificationId: string): Promise<boolean> => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/notification/${notificationId}/read`;
+
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('No se ha podido marcar la notificación como leída, inténtelo de nuevo más tarde');
+    }
+
+    return response.json();
+};
+
+/**
+ * Marcar todas las notificaciones de un usuario como leídas.
+ * 
+ * @param {string} username - El nombre de usuario para marcar todas las notificaciones como leídas.
+ * @returns {Promise<boolean>} - Un booleano que indica si la notificación se ha marcado como leída.
+ * 
+ * @throws {Error} - Si no se puede marcar la notificación como leída, ya sea por 
+ * falta de un token válido o por un problema de red/servidor.
+ */
+export const markAllAsRead = async (username: string): Promise<boolean> => {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        throw new Error('No se ha encontrado un token de usuario válido, por favor, vuelva a iniciar sesión');
+    }
+
+    const url = `${apiEndPointBase}/read/${username}`;
+
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error('No se han podido marcar las notificaciones como leídas, inténtelo de nuevo más tarde');
+    }
+
+    return response.json();
+};

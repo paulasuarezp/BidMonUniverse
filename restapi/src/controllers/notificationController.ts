@@ -36,8 +36,7 @@ const getNotifications = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el ID de la notificación a marcar como leída.
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un valor booleano que indica si la operación fue exitosa.
  *
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede marcar la notificación como leída debido a problemas de conexión, falta de autorización,
  * o cualquier otro problema técnico.
@@ -46,7 +45,7 @@ const markAsRead = async (req: Request, res: Response) => {
     let notificationId = req.params.notificationId;
     try {
         const notification = await Notification.findByIdAndUpdate(notificationId, { read: true, readDate: new Date() });
-        res.status(200).json({ message: "Notificación marcada como leída." });
+        res.status(200).json(!!notification);
     } catch (error) {
         res.status(500).json({ message: "Error al marcar la notificación como leída." });
     }
@@ -59,20 +58,24 @@ const markAsRead = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  * 
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un valor booleano que indica si la operación fue exitosa.
  * 
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se pueden marcar las notificaciones como leídas debido a problemas de conexión, falta de autorización,
  */
 const markAllAsRead = async (req: Request, res: Response) => {
-    let username = req.params.username.toLowerCase();
+    const username = req.params.username.toLowerCase();
     try {
-        await Notification.updateMany({ username: username }, { read: true, readDate: new Date() });
-        res.status(200).json({ message: "Notificaciones marcadas como leídas." });
+        const result = await Notification.updateMany(
+            { username: username, read: false },
+            { read: true, readDate: new Date() }
+        );
+        const notificationsUpdated = result.modifiedCount;
+
+        res.status(200).json(notificationsUpdated > 0);
     } catch (error) {
-        res.status(500).json({ message: "Error al marcar las notificaciones como leídas." });
+        res.status(500).json({ message: "Error al marcar las notificaciones como leídas.", error });
     }
-}
+};
 
 /**
  * Elimina una notificación específica.
