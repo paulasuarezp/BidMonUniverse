@@ -140,11 +140,10 @@ export default function AddBidForm({ open, handleClose, warning, auction }: AddB
                 title="Confirmar puja"
                 content={confirmationContent}
                 loading={loading}
-                error={error}
                 successMessage={successMessage}
                 showIcon='warning'
                 actions={[
-                    { label: "Editar", onClick: () => setConfirmDialogOpen(false), buttonType: 'back' },
+                    { label: "Volver", onClick: () => setConfirmDialogOpen(false), buttonType: 'back' },
                     { label: "Confirmar", onClick: handleConfirmAuction, buttonType: 'confirm' }
                 ]}
             />

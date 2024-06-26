@@ -20,7 +20,7 @@ interface BaseFormProps {
     title?: string;
     content: JSX.Element;
     loading: boolean;
-    error: string;
+    error?: string;
     warning?: string;
     successMessage?: string;
     actions: Action[];
