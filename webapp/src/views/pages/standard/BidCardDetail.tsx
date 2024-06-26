@@ -10,16 +10,16 @@ import {
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCardFromBid, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
-import { resetUpdate } from '../../../../redux/slices/updateSlice';
-import { RootState } from '../../../../redux/store';
-import { BidStatus, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
-import Button from '../../buttons/Button';
-import DurationButton from '../../buttons/duration/DurationButton';
-import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
-import Container from '../../container/Container';
-import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
+import { getCardFromBid, getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
+import { resetUpdate } from '../../../redux/slices/updateSlice';
+import { RootState } from '../../../redux/store';
+import { BidStatus, CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
+import Button from '../../components/buttons/Button';
+import DurationButton from '../../components/buttons/duration/DurationButton';
+import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
+import Container from '../../components/container/Container';
+import WithdrawnBidForm from '../../components/forms/bid/WithdrawnBidForm';
+import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 
 // Botón de retirar puja con memo para evitar renders innecesarios
 const WithdrawButton = memo(({ id, active, openWithdrawnModal, openWithWarning, handleWithdrawnOpen, handleWithdrawnClose }: any) => (

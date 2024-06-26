@@ -12,11 +12,11 @@ import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
-import Button from '../buttons/Button';
-import Container from '../container/Container';
-import AddAuctionForm from '../forms/auction/AddAuctionForm';
-import ErrorMessageBox from '../messagesBox/ErrorMessageBox';
-import GeneralCardDetail from './GeneralCardDetail';
+import Button from '../../components/buttons/Button';
+import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
+import Container from '../../components/container/Container';
+import AddAuctionForm from '../../components/forms/auction/AddAuctionForm';
+import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 
 // #region COMPONENT CardDetail
 // Detalle de una carta de la colección del usuario
