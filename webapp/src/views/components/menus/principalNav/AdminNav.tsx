@@ -4,17 +4,15 @@ import HomeIcon from '@mui/icons-material/Home';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import useTheme from '@mui/material/styles/useTheme';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+// #region COMPONENT AdminNavigationMenu
+// Menú de navegación para el administrador
 export default function AdminNavigationMenu() {
     const [value, setValue] = React.useState('admin');
     const navigate = useNavigate();
     const location = useLocation();
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -61,3 +59,4 @@ export default function AdminNavigationMenu() {
         </Box>
     );
 }
+// #endregion

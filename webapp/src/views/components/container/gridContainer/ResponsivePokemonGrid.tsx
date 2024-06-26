@@ -2,9 +2,9 @@ import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/mater
 import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
-import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
-import SurpriseMessageBox from '../../MessagesBox/SurpriseMessageBox';
 import PokemonCard from '../../card/PokemonCard';
+import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
+import SurpriseMessageBox from '../../messagesBox/SurpriseMessageBox';
 
 interface ResponsivePokemonGridProps {
     username: string;

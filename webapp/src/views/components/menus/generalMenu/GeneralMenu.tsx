@@ -29,11 +29,13 @@ interface GeneralMenuProps {
 //#endregion
 
 //#region COMPONENTE GENERAL MENU
+// Menú general, solo se muestra en dispositivos móviles
 export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, handleGeneralMenuClose, toggleTheme }: GeneralMenuProps) {
   const navigate = useNavigate();
   const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
   const sessionUser = useSelector((state: RootState) => state.user);
+  const isAdmin = sessionUser.role === 'admin';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleLanguageMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -106,18 +108,22 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
           </ListItemIcon>
           <Typography variant="inherit">Inicio</Typography>
         </MenuItem>
-        <MenuItem onClick={handleNavigate('album')}>
-          <ListItemIcon>
-            <CollectionsIcon fontSize="small" sx={{ color: color }} />
-          </ListItemIcon>
-          <Typography variant="inherit">Mi colección</Typography>
-        </MenuItem>
-        <MenuItem onClick={handleNavigate('shop')}>
-          <ListItemIcon>
-            <StoreIcon fontSize="small" sx={{ color: color }} />
-          </ListItemIcon>
-          <Typography variant="inherit">Tienda</Typography>
-        </MenuItem>
+        {!isAdmin &&
+          <MenuItem onClick={handleNavigate('album')}>
+            <ListItemIcon>
+              <CollectionsIcon fontSize="small" sx={{ color: color }} />
+            </ListItemIcon>
+            <Typography variant="inherit">Mi colección</Typography>
+          </MenuItem>
+        }
+        {!isAdmin &&
+          <MenuItem onClick={handleNavigate('shop')}>
+            <ListItemIcon>
+              <StoreIcon fontSize="small" sx={{ color: color }} />
+            </ListItemIcon>
+            <Typography variant="inherit">Tienda</Typography>
+          </MenuItem>
+        }
         <MenuItem onClick={handleNavigate('auctions')}>
           <ListItemIcon>
             <GavelIcon fontSize="small" sx={{ color: color }} />

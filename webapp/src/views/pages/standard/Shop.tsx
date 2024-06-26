@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { linkDecksToCardPacks } from '../../../api/api';
 import { getCardPacks } from '../../../api/cardpacksAPI';
 import { CardPack as CardPackType } from '../../../shared/sharedTypes';
-import ErrorMessageBox from '../../components/MessagesBox/ErrorMessageBox';
 import CardPack from '../../components/cardpack/CardPack';
+import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 import BasePageWithNav from '../BasePageWithNav';
 
 
