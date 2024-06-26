@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Button from '../buttons/Button';
@@ -23,9 +23,9 @@ interface ErrorMessageBoxProps {
 }
 
 //#region COMPONENTE ERRORMESSAGEBOX
+// Componente que muestra un mensaje de error con una imagen de Mimikyu
 export default function ErrorMessageBox({ message }: ErrorMessageBoxProps) {
     const navigate = useNavigate();
-    const theme = useTheme();
 
     const imageSource = '/mimikyu.png';
 

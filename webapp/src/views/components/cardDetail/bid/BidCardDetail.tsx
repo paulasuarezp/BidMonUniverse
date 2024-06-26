@@ -13,11 +13,11 @@ import { getCardFromBid, getCardFromUserCollection, getShopTransactionsCard } fr
 import { resetUpdate } from '../../../../redux/slices/updateSlice';
 import { RootState } from '../../../../redux/store';
 import { BidStatus, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
-import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
 import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
+import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 
 
 

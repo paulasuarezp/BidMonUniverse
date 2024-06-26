@@ -5,8 +5,8 @@ import { getTransactionsForUser } from "../../../api/transactionsAPI";
 import { RootState } from "../../../redux/store";
 import { Transaction } from "../../../shared/sharedTypes";
 import { getTransactionMessage } from "../../../utils/utils";
-import ErrorMessageBox from "../../components/MessagesBox/ErrorMessageBox";
 import Container from "../../components/container/Container";
+import ErrorMessageBox from "../../components/messagesBox/ErrorMessageBox";
 import UserTransationsTable from "../../components/table/UserTransactionsTable";
 import BasePageWithNav from "../BasePageWithNav";
 

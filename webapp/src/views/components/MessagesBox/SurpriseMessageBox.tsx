@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Button from '../buttons/Button';
@@ -18,15 +18,15 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 //#endregion
 
+// #region PROPS
 interface SurpriseMessageBoxProps {
     message?: string;
 }
+// #endregion
 
 //#region COMPONENTE SURPRISEMESSAGEBOX
 export default function SurpriseMessageBox({ message }: SurpriseMessageBoxProps) {
     const navigate = useNavigate();
-    const theme = useTheme();
-
     const imageSource = '/jigglypuff.png'; // Asegúrate de tener una imagen apropiada de Jigglypuff
 
     return (

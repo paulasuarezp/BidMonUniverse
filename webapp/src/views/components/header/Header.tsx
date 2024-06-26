@@ -37,6 +37,7 @@ const ControlsContainer = styled(Box)(({ theme }) => ({
 //#endregion
 
 //#region COMPONENTE HEADER
+// Componente que muestra el encabezado de la aplicación
 export default function Header({ toggleTheme }: HeaderProps) {
   const [anchorElLang, setAnchorElLang] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -65,18 +66,33 @@ export default function Header({ toggleTheme }: HeaderProps) {
     setScrollbarWidth(calculateScrollbarWidth());
   }, []);
 
+  /**
+   * Función que maneja el menú de usuario
+   * @param event 
+   */
   const handleUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
+  /**
+   * Función que cierra el menú de usuario
+   */
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
+  /**
+   * Función que maneja el menú de idioma
+   * @param event 
+   */
   const handleLanguageMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElLang(event.currentTarget);
   };
 
+  /**
+   * Función que cierra el menú de idioma
+   * @param languageKey 
+   */
   const handleCloseLanguageMenu = (languageKey: string) => {
     setAnchorElLang(null);
   };
@@ -95,6 +111,10 @@ export default function Header({ toggleTheme }: HeaderProps) {
     };
   }, [anchorElLang]);
 
+  /**
+   * Función que maneja el menú general
+   * @param event 
+   */
   const handleGeneralMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorGeneralMenu(event.currentTarget);
   };
@@ -108,6 +128,7 @@ export default function Header({ toggleTheme }: HeaderProps) {
               <>
                 <Grid item xs={6} display="flex" alignItems="center">
                   <Box display="flex" alignItems="center" gap={1}>
+                    { }
                     <GeneralMenu
                       anchorGeneralMenu={anchorGeneralMenu}
                       handleGeneralMenu={handleGeneralMenu}

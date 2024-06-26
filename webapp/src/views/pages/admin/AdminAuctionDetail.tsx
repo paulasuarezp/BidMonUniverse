@@ -16,11 +16,11 @@ import { getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard 
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
 import { AccessLevel, CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
-import ErrorMessageBox from '../../components/MessagesBox/ErrorMessageBox';
 import Button from '../../components/buttons/Button';
 import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
 import Container from '../../components/container/Container';
 import WithdrawnAuctionForm from '../../components/forms/auction/WithdrawnAuctionForm';
+import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 
 // #region COMPONENTE ADMINAUCTIONDETAIL
 export default function AdminAuctionDetail() {

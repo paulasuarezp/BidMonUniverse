@@ -1,4 +1,4 @@
-import { Box, TextField, Typography, useTheme } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkActiveBid } from "../../../../api/api";
@@ -8,16 +8,19 @@ import { RootState } from "../../../../redux/store";
 import { Auction, Bid } from "../../../../shared/sharedTypes";
 import BaseForm from "../BaseForm";
 
-interface WithdrawnBidFormProps {
+// #region PROPS
+interface AddBidFormProps {
     open: boolean;
     handleClose: () => void;
     warning?: boolean;
     auction: Auction;
 }
+// #endregion
 
-function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormProps) {
+// #region COMPONENT AddBidForm
+// Formulario para añadir una puja
+export default function AddBidForm({ open, handleClose, warning, auction }: AddBidFormProps) {
     const dispatch = useDispatch();
-    const theme = useTheme();
 
     const sessionUser = useSelector((state: RootState) => state.user.username);
 
@@ -30,6 +33,10 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
     const [successMessage, setSuccessMessage] = useState('');
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
 
+    /**
+     * Función para manejar el click en el botón de pujar
+     * @returns 
+     */
     const handleClick = () => {
         if (Number(amount) < 1) {
             setAmountError(true);
@@ -38,6 +45,7 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
         setConfirmDialogOpen(true);
     };
 
+    // Contenido del formulario
     const content = (
         <>
             <Typography variant="body1"> La cantidad se descontará de tu saldo solo si ganas la subasta.</Typography>
@@ -57,7 +65,7 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
         </>
     );
 
-
+    // Contenido de la confirmación
     const confirmationContent = (
         <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
             <Typography variant="body2">¿Estás seguro de que deseas pujar?</Typography>
@@ -67,6 +75,10 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
 
     );
 
+    /**
+     * Función para confirmar la puja
+     * @returns 
+     */
     const handleConfirmAuction = async () => {
         setLoading(true);
         try {
@@ -114,6 +126,7 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
                 title="Realizar una puja"
                 content={content}
                 loading={loading}
+                warning={warning && 'Ya has realizado una puja en esta subasta.'}
                 error={error}
                 successMessage={successMessage}
                 actions={[
@@ -138,5 +151,4 @@ function AddBidForm({ open, handleClose, warning, auction }: WithdrawnBidFormPro
         </>
     );
 }
-
-export default AddBidForm;
+// #endregion

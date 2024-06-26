@@ -1,8 +1,6 @@
-import { Box, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography, useMediaQuery } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
-import { useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 //#region PROPS
 interface LogoBoxProps {
@@ -22,6 +20,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
 //#endregion
 
 //#region COMPONENTE LOGOBOX
+// Componente que muestra el logo de la aplicación y el título
 export default function LogoBox({ size = 60, title = "BidMon Universe" }: LogoBoxProps) {
   const navigate = useNavigate();
 

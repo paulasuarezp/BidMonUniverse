@@ -23,6 +23,7 @@ interface UserMenuProps {
 
 
 //#region COMPONENTE USER MENU
+// Menú de usuario
 export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUserMenu }: UserMenuProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,11 +33,16 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   const isAuthenticated = sessionUser?.username ? true : false;
   const isAdmin = sessionUser?.role === AccessLevel.Admin;
 
+  /**
+   * Función para redirigir al usuario a la página de inicio de sesión
+   */
   const handleLoginClick = () => {
     navigate('/login');
   };
 
-
+  /**
+   * Función para cerrar sesión
+   */
   const handleLogout = () => {
     // Cerrar menú de usuario
     handleCloseUserMenu();
@@ -53,6 +59,8 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     navigate('/');
 
   }
+
+
   return (
     <>
       {isAuthenticated ? (
@@ -91,3 +99,4 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
     </>
   );
 };
+//#endregion

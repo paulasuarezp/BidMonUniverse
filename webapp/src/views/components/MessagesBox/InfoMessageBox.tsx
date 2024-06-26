@@ -1,4 +1,4 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Button from '../buttons/Button';
@@ -18,16 +18,17 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
 }));
 //#endregion
 
+// #region PROPS
 interface InfoMessageBoxProps {
     seccion?: string;
     message?: string;
 }
+// #endregion
 
 //#region COMPONENTE INFOMESSAGEBOX
+// Componente que muestra un mensaje informativo con una imagen de Snorlax
 export default function InfoMessageBox({ message, seccion = 'subastas' }: InfoMessageBoxProps) {
     const navigate = useNavigate();
-    const theme = useTheme();
-
     const imageSource = '/snorlax.png';
 
     return (

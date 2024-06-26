@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
-import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
-import InfoMessageBox from '../../MessagesBox/InfoMessageBox';
 import AuctionCard from '../../cardDetail/auction/AuctionCard';
+import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
+import InfoMessageBox from '../../messagesBox/InfoMessageBox';
 
 interface ResponsiveActiveAuctionsGridProps {
     username: string;

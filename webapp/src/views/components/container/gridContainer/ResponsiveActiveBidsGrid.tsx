@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react';
 import { getBidsCards } from '../../../../api/api';
 import { getUserActiveBids } from '../../../../api/bidsAPI';
 import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
-import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
-import InfoMessageBox from '../../MessagesBox/InfoMessageBox';
 import BidCard from '../../cardDetail/bid/BidCard';
+import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
+import InfoMessageBox from '../../messagesBox/InfoMessageBox';
 
 interface ResponsiveActiveAuctionsGridProps {
     username: string;
