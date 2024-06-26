@@ -1,8 +1,7 @@
 import GavelIcon from '@mui/icons-material/Gavel';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import StarIcon from '@mui/icons-material/Star';
 import {
-    Box,
+    Alert,
     CardActions,
     CircularProgress
 } from "@mui/material";
@@ -14,11 +13,13 @@ import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
 import { CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import Button from '../buttons/Button';
+import Container from '../container/Container';
 import AddAuctionForm from '../forms/auction/AddAuctionForm';
 import ErrorMessageBox from '../messagesBox/ErrorMessageBox';
 import GeneralCardDetail from './GeneralCardDetail';
 
-
+// #region COMPONENT CardDetail
+// Detalle de una carta de la colección del usuario
 const CardDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -27,16 +28,20 @@ const CardDetail = () => {
     const [card, setCard] = useState<CardType | null>(null);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
     const [openModal, setOpenModal] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [inAuction, setInAuction] = useState<boolean>(false);
-
-
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
     const username = sessionUser.username.toLowerCase();
     const { update, updateId } = useSelector((state: RootState) => state.update);
 
+    /**
+     * Función para comprobar si la carta está en subasta
+     * @param id 
+     * @returns 
+     */
     const checkAvailableCard = async (id: string) => {
         try {
             const data = await getCardFromUserCollection(id);
@@ -49,6 +54,10 @@ const CardDetail = () => {
         }
     };
 
+    /**
+     * Función para abrir el modal de subasta
+     * @returns 
+     */
     const handleOpen = async () => {
         const canProceed = await checkAvailableCard(id);
         if (!canProceed) {
@@ -56,16 +65,24 @@ const CardDetail = () => {
             return;
         }
         setOpenModal(true);
-
-
     }
+
+    /**
+     * Función para cerrar el modal de subasta
+     * @returns 
+     */
     const handleClose = () => setOpenModal(false);
 
+    /**
+     * Función para procesar la carta
+     * @param id 
+     * @returns 
+     */
     const processCard = (id: string) => {
         const timer = setTimeout(() => {
-            setError('Error: The request is taking too long to load.');
+            setError('Actualmente no se puede cargar la carta.');
         }, 5000); // 5 segundos
-
+        setLoading(true);
         getCardFromUserCollection(id)
             .then((data) => {
                 clearTimeout(timer);
@@ -81,39 +98,53 @@ const CardDetail = () => {
                 }
                 return getShopTransactionsCard(data._id);
             })
-            .then(setTransactions)
+            .then(
+                (data) => {
+                    setTransactions(data);
+                    setLoading(false);
+                }
+            )
             .catch((error) => {
+                setLoading(false);
                 clearTimeout(timer);
-                setError(error.message || 'Error: An unexpected error occurred.');
+                setError('Actualmente no se puede cargar la carta.');
             });
 
 
-        return () => clearTimeout(timer);
+        return () => {
+            setLoading(false);
+            clearTimeout(timer);
+        }
     }
 
     useEffect(() => {
         if (update && updateId === id) {
-            processCard(id);
-            dispatch(resetUpdate());
+            const timer = setTimeout(() => {
+
+                processCard(id);
+                dispatch(resetUpdate());
+            }, 3000);
+            return () => {
+                clearTimeout(timer);
+            }
         }
-    }, [id, username, update, updateId]);
+    }, [id, username, update]);
 
     useEffect(() => {
         processCard(id);
     }, []);
 
+
+    //ERROR
     if (error) {
         return (
-            <ErrorMessageBox />
+            <ErrorMessageBox message={error} />
         );
     }
 
-    if (!card) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
+    // LOADING
+    if (loading) {
+        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
     return (
@@ -132,14 +163,9 @@ const CardDetail = () => {
 
             cardInformationChildren={inAuction ? (<CardActions>
 
-                <Button
-                    startIcon={<RemoveCircleOutlineIcon />}
-                    variant="contained"
-                    sx={{ marginTop: 2, marginBottom: 2 }}
-                    fullWidth
-                    buttonType="ghost"
-                    label='Retirar subasta'
-                />
+                <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} >
+                    ¡La carta está en subasta!
+                </Alert>
             </CardActions>)
                 : (<CardActions>
                     <Button

@@ -2,6 +2,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import TimerIcon from '@mui/icons-material/Timer';
 import {
+    Alert,
     Box,
     CardActions,
     CardContent,
@@ -20,6 +21,7 @@ import { Auction, CardStatus, Card as CardType, Transaction } from "../../../../
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
+import Container from '../../container/Container';
 import WithdrawnAuctionForm from '../../forms/auction/WithdrawnAuctionForm';
 import AddBidForm from '../../forms/bid/AddBidForm';
 import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
@@ -27,7 +29,7 @@ import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 
 
 
-const AuctionCardDetail = () => {
+export default function AuctionCardDetail() {
     const navigate = useNavigate();
     const theme = useTheme();
     const dispatch = useDispatch();
@@ -41,6 +43,7 @@ const AuctionCardDetail = () => {
     const [auction, setAuction] = useState<Auction | null>(null)
 
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
     const [canBid, setCanBid] = useState<boolean>(false);
     const [onAuction, setOnAuction] = useState<boolean>(false);
     const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -56,16 +59,20 @@ const AuctionCardDetail = () => {
     const { update, updateId } = useSelector((state: RootState) => state.update);
     const username = sessionUser.username.toLowerCase();
 
+    /**
+     * Función para procesar la carta
+     * @param id 
+     * @returns 
+     */
     const processCard = (id: string) => {
         const timer = setTimeout(() => {
-            setError('Error: The request is taking too long to load.');
+            setError('Actualmente no se puede obtener los datos de la subasta.');
         }, 5000); // 5 segundos
 
         setOnAuction(false);
         setBidId(null);
         setHaveBid(false);
-
-
+        setLoading(true);
 
         getCardFromAuction(id)
             .then((data) => {
@@ -75,9 +82,15 @@ const AuctionCardDetail = () => {
                 setDuration(data.duration);
                 setInitialPrice(data.initialPrice);
                 setCanBid(false);
-                setOnAuction(true);
                 setAuction(data.auction);
                 setIsOwner(data.username === username);
+                if (data.status === CardStatus.OnAuction)
+                    setOnAuction(true);
+                else {
+                    setOnAuction(false);
+                    setLoading(false);
+                    return;
+                }
                 if (data.status === CardStatus.OnAuction && data.username == username) {
                     setCanBid(false);
                 }
@@ -93,16 +106,21 @@ const AuctionCardDetail = () => {
                             setBidId(null);
                         }
                     }).catch((error) => {
-                        setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
+                        setError('Se ha producido un error al obtener los datos de la subasta.');
                     });
                 }
                 return getShopTransactionsCard(data._id);
             })
-            .then(setTransactions)
+            .then(
+                (data) => {
+                    setTransactions(data);
+                    setLoading(false);
+                })
             .catch((error) => {
                 setOnAuction(false);
                 clearTimeout(timer);
-                setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
+                setLoading(false);
+                setError('Se ha producido un error al obtener los datos de la subasta.');
             });
 
         return () => clearTimeout(timer);
@@ -110,17 +128,25 @@ const AuctionCardDetail = () => {
 
 
     useEffect(() => {
-        if (update && updateId === userCardId) {
-            processCard(id);
-            dispatch(resetUpdate());
+        if (update) {
+            const timer = setTimeout(() => {
+                processCard(id);
+                dispatch(resetUpdate());
+            }, 3000);
+            return () => clearTimeout(timer);
         }
 
-    }, [update, updateId]);
+    }, [update]);
 
     useEffect(() => {
         processCard(id);
     }, [id, username]);
 
+    /**
+     * Función para comprobar si la carta está en subasta
+     * @param id 
+     * @returns 
+     */
     const checkAvailableCard = async (id: string) => {
         try {
             const data = await getCardFromUserCollection(id);
@@ -133,6 +159,9 @@ const AuctionCardDetail = () => {
         }
     };
 
+    /**
+     * Función para abrir el modal de retirar subasta
+     */
     const handleWithdrawnOpen = async () => {
         const canProceed = await checkAvailableCard(userCardId);
         if (!canProceed) {
@@ -141,10 +170,16 @@ const AuctionCardDetail = () => {
         setOpenWithdrawnModal(true);
     }
 
+    /**
+     * Función para cerrar el modal de retirar subasta
+     */
     const handleWithdrawnClose = async () => {
         setOpenWithdrawnModal(false);
     }
 
+    /**
+     * Función para abrir el modal de retirar subasta
+     */
     const handleOpenWithdrawnBidModal = async () => {
         if (!haveBid) {
             setOpenWithWarning(true);
@@ -152,6 +187,9 @@ const AuctionCardDetail = () => {
         handleWithdrawnOpen();
     }
 
+    /**
+     * Función para abrir el modal de puja
+     */
     const handleOpenBid = async () => {
         if (haveBid) {
             setOpenWithWarning(true);
@@ -166,23 +204,18 @@ const AuctionCardDetail = () => {
         setOpenBidModal(true);
     }
 
+    // ERROR
     if (error) {
         return (
-            <ErrorMessageBox message={error || 'Se ha producido un error al obtener los datos de la subasta.'} />
+            <ErrorMessageBox message='Se ha producido un error al obtener los datos de la subasta.' />
         );
     }
 
-    if (!onAuction && isOwner) {
-        navigate(`/card/${userCardId}`);
+    // LOADING
+    if (loading) {
+        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
-    if (!card) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
 
     return (
         <GeneralCardDetail title="Detalles de la subasta" backLabel="Volver a subastas" handleBack={() => navigate('/auctions')}
@@ -253,9 +286,14 @@ const AuctionCardDetail = () => {
                                 </CardActions>
                             </>
                         )}
+
+                        {isOwner && !onAuction && (
+                            <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} >
+                                La subasta se ha retirado con éxito.
+                            </Alert>
+                        )}
                     </>)
             } />
     );
 };
-
-export default AuctionCardDetail;
+// #endregion
