@@ -1,3 +1,4 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, InputAdornment, TextField, Typography } from '@mui/material';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useEffect, useRef, useState } from 'react';
@@ -5,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateBalance } from '../../redux/slices/userSlice';
 import { RootState } from '../../redux/store';
+import Button from '../components/buttons/Button';
 import Container from '../components/container/Container';
 import BaseForm from '../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
 import Paper from '../components/paper/Paper';
@@ -72,6 +74,10 @@ export default function RechargeBalance() {
         setDialogContent({ loading: false, error: '', successMessage: '' });
     };
 
+    const handleBack = () => {
+        navigate('/');
+    };
+
 
 
     const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
@@ -90,6 +96,13 @@ export default function RechargeBalance() {
                     pt: 2,
                 }}
             >
+                <Button startIcon={<ArrowBackIcon />}
+                    variant="contained"
+                    sx={{ alignSelf: 'flex-start', margin: '10px' }}
+                    buttonType="ghost"
+                    onClick={handleBack}
+                    label="Volver a la página principal"
+                />
                 <Box sx={{ pl: 2, pr: 2, pb: 2 }}>
                     <Typography variant="subtitle1" gutterBottom align="center">
                         ¡Elige la cantidad de saldo que deseas recargar!
