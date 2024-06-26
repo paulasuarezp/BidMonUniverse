@@ -20,9 +20,14 @@ const InfoPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
+  display: 'flex', // Establece el contenedor para usar Flexbox
+  justifyContent: 'center', // Centra los elementos horizontalmente en Flexbox
+  alignItems: 'center', // Centra los elementos verticalmente en Flexbox
   textAlign: 'center',
   marginBottom: theme.spacing(4),
+  flexDirection: 'column', // Opcional, dependiendo de cómo quieras que se organicen los elementos
 }));
+
 
 const SmallImage = styled('img')(({ theme }) => ({
   width: '100%',
