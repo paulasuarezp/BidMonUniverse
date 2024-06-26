@@ -5,14 +5,14 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as yup from "yup";
-import { signup as signupAPI } from '../../api/userAPI';
-import { AccessLevel, User } from '../../shared/sharedTypes';
-import * as fieldsValidation from '../../utils/fieldsValidation';
-import { showError } from "../../utils/fieldsValidation";
-import Button from '../components/buttons/Button';
-import BirthdayDatePicker from '../components/calendar/BirthdayPicker';
-import Container from '../components/container/Container';
-import Paper from '../components/paper/Paper';
+import { signup as signupAPI } from '../../../api/userAPI';
+import { AccessLevel, User } from '../../../shared/sharedTypes';
+import * as fieldsValidation from '../../../utils/fieldsValidation';
+import { showError } from "../../../utils/fieldsValidation";
+import Button from '../../components/buttons/Button';
+import BirthdayDatePicker from '../../components/calendar/BirthdayPicker';
+import Container from '../../components/container/Container';
+import Paper from '../../components/paper/Paper';
 
 //#region COMPONENT Signup
 export default function Signup() {

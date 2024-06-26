@@ -4,11 +4,11 @@ import { useTheme } from '@mui/system';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
-import { getPopularCards } from '../../utils/cardData';
-import ButtonPrincipal from '../components/buttons/principal/ButtonPrincipal';
-import PokemonCard from '../components/card/PokemonCard';
-import Container from '../components/container/Container';
-import PokeballsBox from '../components/ornament/PokeballsBox';
+import { getPopularCards } from '../../../utils/cardData';
+import ButtonPrincipal from '../../components/buttons/principal/ButtonPrincipal';
+import PokemonCard from '../../components/card/PokemonCard';
+import Container from '../../components/container/Container';
+import PokeballsBox from '../../components/ornament/PokeballsBox';
 
 const InfoPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(4),

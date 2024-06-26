@@ -14,20 +14,21 @@ import BidCardDetail from './views/components/cardDetail/bid/BidCardDetail';
 import ActiveAuctions from './views/pages/ActiveAuctions';
 import ActiveBids from './views/pages/ActiveBids';
 import BasePage from './views/pages/BasePage';
-import Home from './views/pages/Home';
 import Inbox from './views/pages/Inbox';
-import Login from './views/pages/Login';
 import Logueado from './views/pages/Logueado';
 import MyCollection from './views/pages/MyCollection';
 import NotFoundPage from './views/pages/NotFoundPage';
 import RechargeBalance from './views/pages/RechargeBalance';
 import Shop from './views/pages/Shop';
-import Signup from './views/pages/Signup';
 import UserTransactions from './views/pages/UserTransactions';
 import AdminAuctionDetail from './views/pages/admin/AdminAuctionDetail';
 import AdminPage from './views/pages/admin/AdminPage';
 import AdminTransactions from './views/pages/admin/AdminTransactions';
 import AuctionsAdmin from './views/pages/admin/AuctionsAdmin';
+import About from './views/pages/guest/About';
+import Home from './views/pages/guest/Home';
+import Login from './views/pages/guest/Login';
+import Signup from './views/pages/guest/Signup';
 
 
 
@@ -52,6 +53,7 @@ function App() {
                   <Route path="/" element={<RouteRedirector initRoute={<Home />} redirectPath="/logued" accessLevel={AccessLevel.Guest} />} />
                   <Route path="/login" element={<RouteRedirector initRoute={<Login />} redirectPath="/logued" accessLevel={AccessLevel.Guest} />} />
                   <Route path="/signup" element={<RouteRedirector initRoute={<Signup />} redirectPath="/login" accessLevel={AccessLevel.Guest} />} />
+                  <Route path="/about" element={<About />} />
                   {/* Rutas protegidas */}
                   <Route path="/logued" element={<RouteRedirector initRoute={<Logueado />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/album" element={<RouteRedirector initRoute={<MyCollection />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
