@@ -21,18 +21,17 @@ const InfoPaper = styled(Paper)(({ theme }) => ({
 }));
 
 const StyledBox = styled(Box)(({ theme }) => ({
-  display: 'flex', // Establece el contenedor para usar Flexbox
-  justifyContent: 'center', // Centra los elementos horizontalmente en Flexbox
-  alignItems: 'center', // Centra los elementos verticalmente en Flexbox
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   textAlign: 'center',
   marginBottom: theme.spacing(4),
-  flexDirection: 'column', // Opcional, dependiendo de cómo quieras que se organicen los elementos
+  flexDirection: 'column',
 }));
-
 
 const SmallImage = styled('img')(({ theme }) => ({
   width: '100%',
-  maxWidth: '450px', // Smaller width
+  maxWidth: '450px',
   borderRadius: 15,
   marginTop: theme.spacing(2),
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -114,10 +113,13 @@ export default function Home() {
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4">BidMon Universe</Typography>
-            <Typography>En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
-              La plataforma se basa en un sistema de subastas ciegas para asegurar la transparencia y la igualdad de oportunidades para todos los usuarios.
-              Las cartas más raras y valiosas están a tu alcance, y te están esperando. ¡Empieza tu colección hoy!</Typography>
-
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
+              Nuestra plataforma se basa en subastas ciegas para garantizar la transparencia y la igualdad de oportunidades.
+            </Typography>
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              Las cartas más raras y valiosas están a tu alcance. ¡Empieza tu colección hoy!
+            </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
             <SliderContainer>
@@ -142,9 +144,13 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} md={6}>
             <Typography variant="h4">Cómo empezar</Typography>
-            <Typography>Únete a nuestra plataforma y empieza tu colección hoy.</Typography>
-            <Typography>Tendrás la posibilidad de adquirir cartas a través de nuestra tienda o participando en subastas en vivo.</Typography>
-            <Typography>¡No te pierdas la oportunidad de obtener cartas raras y valiosas!</Typography>
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              Únete a nuestra plataforma y comienza tu colección hoy mismo.
+              Adquiere cartas en nuestra tienda o participa en subastas en vivo.
+            </Typography>
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              ¡No te pierdas la oportunidad de conseguir cartas raras y valiosas!
+            </Typography>
           </Grid>
         </Grid>
       </InfoPaper>
@@ -153,9 +159,9 @@ export default function Home() {
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4">Explora subastas</Typography>
-            <Typography>Explora y participa en subastas en vivo para obtener cartas raras.</Typography>
-            <Typography>
-              Podrás consultar en tiempo real las subastas activas y pujar por las cartas que más te interesen.
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              Descubre y participa en subastas en vivo para obtener cartas raras.
+              Consulta las subastas activas en tiempo real y puja por tus cartas favoritas.
             </Typography>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -174,13 +180,13 @@ export default function Home() {
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h4">Transparencia y seguridad</Typography>
-            <Typography>Las cartas cuentan con un registro de transacciones que garantiza la trazabilidad de cada carta y ayuda a los usuarios a conocer el mercado de cartas.</Typography>
-            <Typography>Además, las subastas se realizan de forma segura y transparente, con un sistema de subastas ciegas que garantiza la igualdad de oportunidades para todos los usuarios.</Typography>
+            <Typography variant="h4">Transparencia</Typography>
+            <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
+              Nuestras cartas cuentan con un registro de transacciones que garantiza la trazabilidad y ayuda a los usuarios a conocer el mercado.
+            </Typography>
           </Grid>
         </Grid>
       </InfoPaper>
-
 
       <Dialog open={Boolean(openImage)} onClose={handleClose}>
         <DialogContent>
