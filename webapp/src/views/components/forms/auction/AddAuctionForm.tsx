@@ -1,5 +1,5 @@
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import { Box, Divider, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Divider, InputAdornment, TextField, Typography, useTheme } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCardFromUserCollection } from "../../../../api/api";
@@ -55,7 +55,6 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
             return;
         }
 
-        setWarning('Confirma que deseas crear la subasta.');
         setConfirmDialogOpen(true);
     };
 
@@ -114,7 +113,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
             <TextField
                 margin="dense"
                 id="basePrice"
-                label="Precio Base"
+                label="Precio inicial"
                 type="number"
                 fullWidth
                 variant="outlined"
@@ -122,6 +121,14 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 onChange={e => setBasePrice(e.target.value)}
                 error={basePriceError}
                 helperText={basePriceError ? 'Por favor, introduce un precio base válido. Mínimo: 1 zen' : 'Valor predeterminado: 1 zen.'}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
             />
             <TextField
                 margin="dense"
@@ -134,21 +141,58 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 onChange={e => setDuration(e.target.value)}
                 error={durationError}
                 helperText={durationError ? 'Por favor, introduce una duración válida. Mínimo: 24 horas, Máximo: 96 horas' : 'Valor predeterminado: 72 horas.'}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <AccessTimeIcon sx={{ color: theme.palette.info.main }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
             />
         </Box>
     );
 
     const confirmationContent = (
-        <Box display="flex" flexDirection="column" alignItems="center">
-            <Typography>ID de la Carta: {userCardId}</Typography>
-            <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                <Typography>Precio Base: {basePrice}</Typography>
-                <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
-            </Box>
-            <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-                <Typography>Duración: {duration} horas</Typography>
-                <AccessTimeIcon sx={{ marginLeft: 1, color: theme.palette.info.main }} />
-            </Box>
+        <Box >
+            <Typography>ID de la Carta: <strong>{userCardId}</strong></Typography>
+            <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Datos de la subasta</Typography></Divider>
+            <TextField
+                margin="dense"
+                id="basePrice"
+                label="Precio inicial"
+                type="number"
+                disabled
+                fullWidth
+                variant="outlined"
+                value={basePrice}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
+            />
+            <TextField
+                margin="dense"
+                id="duration"
+                label="Duración (horas)"
+                type="number"
+                disabled
+                fullWidth
+                variant="outlined"
+                value={duration}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <AccessTimeIcon sx={{ color: theme.palette.info.main }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
+            />
         </Box>
     );
 
@@ -162,7 +206,6 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 loading={loading}
                 error={error}
                 successMessage={successMessage}
-                warning={warning}
                 actions={[
                     { label: "Cancelar", onClick: handleClose, buttonType: 'cancel' },
                     { label: "Crear subasta", onClick: handleCreateAuction, buttonType: 'confirm' }

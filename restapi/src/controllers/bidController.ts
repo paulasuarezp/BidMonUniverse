@@ -57,7 +57,7 @@ const createBid = async (req: Request, res: Response) => {
 
         // Verificar que no haya una puja previa del mismo usuario
         const previousBid = await Bid.findOne({ auction: auctionId, username: username }).session(session);
-        if (previousBid) {
+        if (previousBid && previousBid.status as BidStatus === BidStatus.Pending) {
             throw new Error("Ya has realizado una puja en esta subasta.");
         }
 
