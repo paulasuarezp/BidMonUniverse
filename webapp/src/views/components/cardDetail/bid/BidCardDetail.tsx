@@ -1,5 +1,6 @@
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import {
+    Alert,
     Box,
     CardActions,
     CardContent,
@@ -16,12 +17,14 @@ import { BidStatus, CardStatus, Card as CardType, Transaction } from "../../../.
 import Button from '../../buttons/Button';
 import DurationButton from '../../buttons/duration/DurationButton';
 import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
+import Container from '../../container/Container';
 import WithdrawnBidForm from '../../forms/bid/WithdrawnBidForm';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 
 
-
-const BidCardDetail = () => {
+// #region COMPONENT BidCardDetail
+// Detalle de una puja de una carta
+export default function BidCardDetail() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -33,7 +36,7 @@ const BidCardDetail = () => {
     const [transactions, setTransactions] = useState<Transaction[]>([]);
 
     const [error, setError] = useState<string | null>(null);
-    const [onAuction, setOnAuction] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true);
     const [isOwner, setIsOwner] = useState<boolean>(false);
     const [active, setActive] = useState<boolean>(false);
 
@@ -45,14 +48,18 @@ const BidCardDetail = () => {
     const { update, updateId } = useSelector((state: RootState) => state.update);
     const username = sessionUser.username.toLowerCase();
 
+    /**
+     * Función para obtener los datos de la puja
+     * @param id 
+     * @returns 
+     */
     const processCard = (id: string) => {
         const timer = setTimeout(() => {
-            setError('Error: The request is taking too long to load.');
+            setError('Actualmente no se puede obtener los datos de la puja.');
         }, 5000); // 5 segundos
 
-        setOnAuction(false);
         setIsOwner(false);
-
+        setLoading(true);
         getCardFromBid(id)
             .then((data) => {
                 clearTimeout(timer);
@@ -60,7 +67,6 @@ const BidCardDetail = () => {
                 setUserCardId(data._id);
                 setDuration(data.duration);
                 setAmount(data.initialPrice);
-                setOnAuction(true);
                 setIsOwner(data.username === username);
                 if (data.bid && data.bid.username === username) {
                     setIsOwner(true);
@@ -73,11 +79,16 @@ const BidCardDetail = () => {
 
                 return getShopTransactionsCard(data._id);
             })
-            .then(setTransactions)
+            .then(
+                (data) => {
+                    setTransactions(data);
+                    setLoading(false);
+                }
+            )
             .catch((error) => {
-                setOnAuction(false);
+                setLoading(false);
                 clearTimeout(timer);
-                setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
+                setError('Se ha producido un error al obtener los datos de la puja.');
             });
 
         return () => clearTimeout(timer);
@@ -90,12 +101,17 @@ const BidCardDetail = () => {
             dispatch(resetUpdate());
         }
 
-    }, [update, updateId]);
+    }, [update]);
 
     useEffect(() => {
         processCard(id);
     }, [id, username]);
 
+    /**
+     * Función para comprobar si la carta está disponible para retirar la puja
+     * @param id 
+     * @returns 
+     */
     const checkAvailableCard = async (id: string) => {
         try {
             const data = await getCardFromUserCollection(id);
@@ -108,6 +124,10 @@ const BidCardDetail = () => {
         }
     };
 
+    /**
+     * Función para abrir el modal de retirar la puja
+     * @returns 
+     */
     const handleWithdrawnOpen = async () => {
         const canProceed = await checkAvailableCard(userCardId);
         if (!canProceed) {
@@ -116,10 +136,18 @@ const BidCardDetail = () => {
         setOpenWithdrawnModal(true);
     }
 
+    /**
+     * Función para cerrar el modal de retirar la puja
+     * @returns 
+     */
     const handleWithdrawnClose = async () => {
         setOpenWithdrawnModal(false);
     }
 
+    /**
+     * Función para abrir el modal de retirar la puja
+     * @returns 
+     */
     const openWithdrawnBidModal = async () => {
         if (!active) {
             setOpenWithWarning(true);
@@ -127,18 +155,17 @@ const BidCardDetail = () => {
         handleWithdrawnOpen();
     }
 
+
+    // ERROR
     if (error) {
         return (
-            <ErrorMessageBox message={error || 'Se ha producido un error al obtener los datos de la subasta.'} />
+            <ErrorMessageBox message='Se ha producido un error al obtener los datos de la puja.' />
         );
     }
 
-    if (!card) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
+    // LOADING
+    if (loading) {
+        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
     return (
@@ -171,9 +198,15 @@ const BidCardDetail = () => {
                             <WithdrawnBidForm bidId={id} open={openWithdrawnModal} handleClose={handleWithdrawnClose} warning={openWithWarning} />
                         </CardActions>
                     )}
+                    {isOwner && !active && (
+                        <CardActions>
+                            <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} >
+                                La puja se ha retirado con éxito.
+                            </Alert>
+                        </CardActions>
+                    )}
                 </>
             } />
     );
 };
-
-export default BidCardDetail;
+//#endregion
