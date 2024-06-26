@@ -152,20 +152,6 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
         </Box>
     );
 
-
-    const confirmationActions = [
-        {
-            onClick: () => setConfirmDialogOpen(false),
-            label: 'Editar',
-            buttonType: 'back'
-        },
-        {
-            onClick: handleConfirmAuction,
-            label: 'Confirmar',
-            buttonType: 'confirm'
-        }
-    ];
-
     return (
         <>
             <BaseForm
