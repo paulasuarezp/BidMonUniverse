@@ -2,12 +2,12 @@ import { Box, Link, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login as loginAPI } from '../../api/userAPI';
-import { setSocketConnected, setUser } from '../../redux/slices/userSlice';
-import { connectSocket } from '../../socket/socketService';
-import Button from '../components/buttons/Button';
-import Container from '../components/container/Container';
-import Paper from '../components/paper/Paper';
+import { login as loginAPI } from '../../../api/userAPI';
+import { setSocketConnected, setUser } from '../../../redux/slices/userSlice';
+import { connectSocket } from '../../../socket/socketService';
+import Button from '../../components/buttons/Button';
+import Container from '../../components/container/Container';
+import Paper from '../../components/paper/Paper';
 
 //#region COMPONENT Login
 export default function Login() {
