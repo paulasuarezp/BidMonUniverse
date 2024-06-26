@@ -15,13 +15,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
-import { AccessLevel, Auction, CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
+import { AccessLevel, CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import ErrorMessageBox from '../../components/MessagesBox/ErrorMessageBox';
 import Button from '../../components/buttons/Button';
 import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
+import Container from '../../components/container/Container';
 import WithdrawnAuctionForm from '../../components/forms/auction/WithdrawnAuctionForm';
 
-
+// #region COMPONENTE ADMINAUCTIONDETAIL
 export default function AdminAuctionDetail() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -33,9 +34,9 @@ export default function AdminAuctionDetail() {
     const [duration, setDuration] = useState<number>(0);
     const [initialPrice, setInitialPrice] = useState<number>(0);
     const [transactions, setTransactions] = useState<Transaction[]>([]);
-    const [auction, setAuction] = useState<Auction | null>(null)
 
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
     const [canWithdraw, setCanWithdraw] = useState<boolean>(false);
     const [onAuction, setOnAuction] = useState<boolean>(false);
 
@@ -47,7 +48,13 @@ export default function AdminAuctionDetail() {
     const { update, updateId } = useSelector((state: RootState) => state.update);
     const username = sessionUser.username.toLowerCase();
 
+    /**
+     * Función para obtener los datos de la carta en subasta y las transacciones asociadas
+     * @param id 
+     * @returns 
+     */
     const processCard = (id: string) => {
+        setLoading(true);
         const timer = setTimeout(() => {
             setError('El servidor está tardando demasiado en responder. Por favor, inténtalo de nuevo más tarde.');
         }, 5000); // 5 segundos
@@ -63,7 +70,6 @@ export default function AdminAuctionDetail() {
                 setDuration(data.duration);
                 setInitialPrice(data.initialPrice);
                 setOnAuction(true);
-                setAuction(data.auction);
                 if (data.status === CardStatus.OnAuction && sessionUser.role == AccessLevel.Admin) {
                     setCanWithdraw(true);
                 }
@@ -71,12 +77,16 @@ export default function AdminAuctionDetail() {
             })
             .then(setTransactions)
             .catch((error) => {
+                setLoading(false);
                 setOnAuction(false);
                 clearTimeout(timer);
-                setError(error.message || 'Se ha producido un error al obtener los datos de la subasta.');
+                setError('Se ha producido un error al obtener los datos de la subasta.');
             });
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            setLoading(false);
+        }
     }
 
 
@@ -92,6 +102,11 @@ export default function AdminAuctionDetail() {
         processCard(id);
     }, [id, username]);
 
+    /**
+     * Comprueba si la carta está en subasta y se puede proceder a retirarla
+     * @param id - id de la carta
+     * @returns 
+     */
     const checkAvailableCard = async (id: string) => {
         try {
             const data = await getCardFromUserCollection(id);
@@ -104,6 +119,9 @@ export default function AdminAuctionDetail() {
         }
     };
 
+    /**
+     * Abre el diálogo para retirar la subasta
+     */
     const handleWithdrawnOpen = async () => {
         const canProceed = await checkAvailableCard(userCardId);
         if (!canProceed) {
@@ -112,22 +130,27 @@ export default function AdminAuctionDetail() {
         setOpenWithdrawnModal(true);
     }
 
+    /**
+     * Cierra el diálogo para retirar la subasta
+     */
     const handleWithdrawnClose = async () => {
         setOpenWithdrawnModal(false);
     }
 
 
+    // ERROR    
     if (error) {
         return (
-            <ErrorMessageBox />
+            <ErrorMessageBox message={error} />
         );
     }
 
-    if (!card) {
+    // LOADING
+    if (loading) {
         return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <Container style={{ textAlign: 'center' }}>
                 <CircularProgress />
-            </Box>
+            </Container>
         );
     }
 

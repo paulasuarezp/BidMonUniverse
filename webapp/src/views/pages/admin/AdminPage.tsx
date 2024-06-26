@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import Container from "../../components/container/Container";
 import AdminNavigationMenu from "../../components/menus/principalNav/AdminNav";
 
+// #region COMPONENTE ADMINPAGE
 export default function AdminPage() {
     return (
         <Container>
@@ -15,3 +16,4 @@ export default function AdminPage() {
         </Container>
     );
 }
+// #endregion
