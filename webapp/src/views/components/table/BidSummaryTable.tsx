@@ -17,6 +17,7 @@ import { UserCard } from "../../../shared/sharedTypes";
 import Container from "../container/Container";
 
 // #region COMPONENTE BidSummaryTable
+// Componente para mostrar un resumen de las pujas activas del usuario
 export default function BidSummaryTable() {
     const theme = useTheme();
 

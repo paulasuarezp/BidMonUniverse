@@ -8,10 +8,14 @@ import {
 import { TransactionConcept } from "../../../shared/sharedTypes";
 import { getTransactionMessage } from '../../../utils/utils';
 
+// #region PROPS TableCardDetailProps
 interface TableCardDetailProps {
     data: any[];
 }
+// #endregion
 
+// #region COMPONENTE TableCardDetail
+// Componente que muestra un historial de transacciones de una carta
 export default function TableCardDetail({ data }: TableCardDetailProps) {
     const theme = useTheme();
 
@@ -60,3 +64,4 @@ export default function TableCardDetail({ data }: TableCardDetailProps) {
         </TableContainer>
     );
 }
+// #endregion

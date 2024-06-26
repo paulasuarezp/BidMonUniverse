@@ -50,6 +50,7 @@ const columns: GridColDef[] = [
 ];
 
 // #region COMPONENTE UserTransactionsTable
+// Componente que muestra una tabla con las transacciones de todos los usuarios de la plataforma
 export default function AllUserTransactionsTable({ data }: UserTransactionsTableProps) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
