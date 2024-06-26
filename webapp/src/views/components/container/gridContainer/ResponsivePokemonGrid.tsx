@@ -1,11 +1,10 @@
-import { CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
 import PokemonCard from '../../card/PokemonCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import SurpriseMessageBox from '../../messagesBox/SurpriseMessageBox';
-import Container from '../Container';
 
 // #region PROPS
 interface ResponsivePokemonGridProps {
@@ -77,8 +76,11 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
 
     // LOADING
     if (loading) {
-        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100vw', }}><CircularProgress /> </Box>
+        );
     }
+
 
     // ERROR
     if (error) {
