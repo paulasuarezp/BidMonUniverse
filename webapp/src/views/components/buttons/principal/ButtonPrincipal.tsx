@@ -6,6 +6,7 @@ import './buttonPrincipal.css';
 
 export interface ButtonProps {
     label?: string;
+    onClick?: () => void;
 }
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
@@ -15,7 +16,7 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     },
 }));
 
-export default function ButtonPrincipal({ label }: ButtonProps) {
+export default function ButtonPrincipal({ label, onClick }: ButtonProps) {
     const whileHover = {
         scale: 1.1,
         transition: {
@@ -28,9 +29,9 @@ export default function ButtonPrincipal({ label }: ButtonProps) {
         <div className="container">
             <motion.div className="bolita bolita1" animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 2 }} />
             <motion.div className="bolita bolita2" animate={{ opacity: [1, 0.7, 1] }} transition={{ repeat: Infinity, duration: 2.5 }} />
-            <motion.button className="btn" whileHover={whileHover}>
-                <StyledTypography variant="h4">{label}</StyledTypography>
+            <motion.button className="btn" whileHover={whileHover} onClick={onClick} >
+                <StyledTypography variant="h4" sx={{ color: 'inherit' }}>{label}</StyledTypography>
             </motion.button>
-        </div>
+        </div >
     );
 }

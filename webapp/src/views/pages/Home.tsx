@@ -2,6 +2,7 @@ import { Box, Dialog, DialogContent, Grid, Paper, Typography } from '@mui/materi
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/system';
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import { getPopularCards } from '../../utils/cardData';
 import ButtonPrincipal from '../components/buttons/principal/ButtonPrincipal';
@@ -52,6 +53,7 @@ const SliderContainer = styled(Box)(({ theme }) => ({
 export default function Home() {
   const popularCards = getPopularCards();
   const theme = useTheme();
+  const navigate = useNavigate();
   const [openImage, setOpenImage] = useState(null);
 
   const handleClickOpen = (imgSrc) => {
@@ -91,6 +93,13 @@ export default function Home() {
     ]
   };
 
+  let bgColorSolid = '#900506';
+  let bgBorder = '2px solid #900506';
+
+  const handleNavigate = () => {
+    navigate('/signup');
+  };
+
   return (
     <Container>
       <StyledBox>
@@ -98,10 +107,10 @@ export default function Home() {
         <Typography variant="h5" align="center" component="div" sx={{ mb: 4 }}>
           Descubre, colecciona y subasta las cartas más valiosas.
         </Typography>
-        <ButtonPrincipal label="¡Únete ahora!" />
+        <ButtonPrincipal label="¡Únete ahora!" onClick={handleNavigate} />
       </StyledBox>
 
-      <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white', mt: 2 }}>
+      <InfoPaper elevation={4} sx={{ bgcolor: bgColorSolid, color: 'common.white', mt: 2 }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4">BidMon Universe</Typography>
@@ -124,7 +133,7 @@ export default function Home() {
         </Grid>
       </InfoPaper>
 
-      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
+      <InfoPaper elevation={4} sx={{ border: bgBorder, bgcolor: theme.palette.background.default }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
@@ -140,7 +149,7 @@ export default function Home() {
         </Grid>
       </InfoPaper>
 
-      <InfoPaper elevation={4} sx={{ bgcolor: 'error.main', color: 'common.white' }}>
+      <InfoPaper elevation={4} sx={{ bgcolor: bgColorSolid, color: 'common.white' }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Typography variant="h4">Explora subastas</Typography>
@@ -157,7 +166,7 @@ export default function Home() {
         </Grid>
       </InfoPaper>
 
-      <InfoPaper elevation={4} sx={{ border: '2px solid', borderColor: 'error.main', bgcolor: theme.palette.background.default }}>
+      <InfoPaper elevation={4} sx={{ border: bgBorder, bgcolor: theme.palette.background.default }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">

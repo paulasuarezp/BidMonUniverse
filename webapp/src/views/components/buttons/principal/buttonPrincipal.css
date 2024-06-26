@@ -9,6 +9,7 @@
   overflow: hidden; 
 }
 
+
 .btn {
   text-decoration: none;
   font-weight: 700;
@@ -27,7 +28,7 @@
 
 .btn:hover {
   border-color: #c92918; /* Color de borde más oscuro al hacer hover */
-  color: #e74c3c;
+   color: #FFFFFF;
   box-shadow: 0 0 12px #c92918; /* Sombra más pronunciada y oscuro en hover */
 }
 
