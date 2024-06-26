@@ -155,7 +155,7 @@ const About = () => {
                                                 <GitHubIcon />
                                             </CircularIconButton>
                                         </Link>
-                                        <Link href="https://linkedin.com/in/paulasuarezp" target="_blank" sx={{ display: 'inline-block' }}>
+                                        <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" sx={{ display: 'inline-block' }}>
                                             <CircularIconButton>
                                                 <LinkedInIcon />
                                             </CircularIconButton>
