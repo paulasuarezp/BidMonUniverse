@@ -123,7 +123,7 @@ const CardDetail = () => {
 
                 processCard(id);
                 dispatch(resetUpdate());
-            }, 3000);
+            }, 2000);
             return () => {
                 clearTimeout(timer);
             }

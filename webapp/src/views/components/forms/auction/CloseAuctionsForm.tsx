@@ -1,15 +1,11 @@
 import { Typography } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getAuctionCards } from "../../../../api/api";
 import { checkAllActiveAuctions } from "../../../../api/auctionsAPI";
-import { RootState } from "../../../../redux/store";
 import BaseForm from "../BaseForm";
 import CloseAuctionsModal from "./CloseAuctionsModal";
 
 export default function CloseAuctionsForm({ open, handleClose, openWithWarning = false }) {
-    const dispatch = useDispatch();
-    const sessionUser = useSelector((state: RootState) => state.user.username);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(false);
