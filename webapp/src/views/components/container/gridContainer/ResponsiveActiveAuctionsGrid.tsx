@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
-import AuctionCard from '../../cardDetail/auction/AuctionCard';
+import AuctionCard from '../../card/auction/AuctionCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
 import Container from '../Container';
