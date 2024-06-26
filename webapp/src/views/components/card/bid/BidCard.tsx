@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { Card as CardType } from "../../../../shared/sharedTypes";
 import CoinsButton from '../../buttons/coins/CoinsButton';
 import DurationButton from "../../buttons/duration/DurationButton";
-import PokemonCard from "../../card/PokemonCard";
+import PokemonCard from "../PokemonCard";
 
+// #region PROPS
 interface BidCardProps {
     card: CardType;
     duration: number;
@@ -13,7 +14,9 @@ interface BidCardProps {
     bidId: string;
     price: number;
 }
+// #endregion
 
+// #region STYLES
 const HoverEffectContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -42,8 +45,10 @@ const HoverEffectContainer = styled('div')(({ theme }) => ({
 
     },
 }));
+// #endregion
 
-
+// #region COMPONENT BidCard
+// Carta de puja
 export default function BidCard({ card, userCardId, duration, price, bidId }: BidCardProps) {
     const navigate = useNavigate();
     const theme = useTheme();
@@ -59,3 +64,4 @@ export default function BidCard({ card, userCardId, duration, price, bidId }: Bi
         </HoverEffectContainer>
     );
 }
+// #endregion

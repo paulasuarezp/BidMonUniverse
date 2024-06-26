@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { getBidsCards } from '../../../../api/api';
 import { getUserActiveBids } from '../../../../api/bidsAPI';
 import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
-import BidCard from '../../cardDetail/bid/BidCard';
+import BidCard from '../../card/bid/BidCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
 import Container from '../Container';

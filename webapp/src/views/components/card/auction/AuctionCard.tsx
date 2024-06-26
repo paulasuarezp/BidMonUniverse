@@ -6,13 +6,16 @@ import { AccessLevel, Card as CardType } from "../../../../shared/sharedTypes";
 import DurationButton from "../../buttons/duration/DurationButton";
 import PokemonCard from "../../card/PokemonCard";
 
+// #region PROPS
 interface AuctionCardProps {
     card: CardType;
     duration: number;
     userCardId: string;
     auctionId: string;
 }
+// #endregion
 
+// #region STYLES
 const HoverEffectContainer = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -29,8 +32,11 @@ const HoverEffectContainer = styled('div')(({ theme }) => ({
         backgroundColor: 'rgba(72, 187, 120, 0.4)',
     },
 }));
+// #endregion
 
 
+// #region COMPONENT AuctionCard
+// Carta de subasta
 export default function AuctionCard({ card, userCardId, duration, auctionId }: AuctionCardProps) {
     const navigate = useNavigate();
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -49,3 +55,4 @@ export default function AuctionCard({ card, userCardId, duration, auctionId }: A
         </HoverEffectContainer>
     );
 }
+// #endregion
