@@ -4,13 +4,14 @@ import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateBalance } from '../../redux/slices/userSlice';
-import { RootState } from '../../redux/store';
-import Button from '../components/buttons/Button';
-import Container from '../components/container/Container';
-import BaseForm from '../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
-import Paper from '../components/paper/Paper';
+import { updateBalance } from '../../../redux/slices/userSlice';
+import { RootState } from '../../../redux/store';
+import Button from '../../components/buttons/Button';
+import Container from '../../components/container/Container';
+import BaseForm from '../../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
+import Paper from '../../components/paper/Paper';
 
+//#region COMPONENTE RECHARGBALANCE
 export default function RechargeBalance() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -32,6 +33,11 @@ export default function RechargeBalance() {
     useEffect(() => {
     }, [total]);
 
+    /**
+     * Función para manejar el cambio en el saldo.
+     * Actualiza el saldo y el total a pagar si el valor es válido.
+     * @param value 
+     */
     const handleBalanceChange = (value: string) => {
         if (value === '' || parseInt(value) < 10 || parseInt(value) % 10 !== 0) {
             setErrorMessage('Por favor, introduce una cantidad válida en múltiplos de 10.');
@@ -43,6 +49,10 @@ export default function RechargeBalance() {
         }
     };
 
+    /**
+     * Función para manejar el evento de perder el foco del campo de texto
+     * @param event 
+     */
     const handleInputBlur = (event) => {
         const newValue = parseInt(event.target.value);
         if (!isNaN(newValue)) {
@@ -51,6 +61,11 @@ export default function RechargeBalance() {
         }
     };
 
+    /**
+     * Función para manejar el cambio en el campo de texto.
+     * Si el nuevo valor es múltiplo de 10, llama a la función handleBalanceChange.
+     * @param {Event} event - El evento de cambio del campo de texto.
+    */
     const handleInputChange = (event) => {
         const newValue = parseInt(event.target.value);
         if (newValue % 10 === 0) {
@@ -58,6 +73,13 @@ export default function RechargeBalance() {
         }
     };
 
+
+    /**
+     * Función para manejar el evento de pulsar una tecla, 
+     * permitiendo incrementar o decrementar el saldo con las flechas arriba y abajo respectivamente.
+     * Incrementa o decrementa el saldo en 10 unidades.
+     * @param event 
+     */
     const handleKeyDown = (event) => {
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
@@ -69,11 +91,17 @@ export default function RechargeBalance() {
         }
     };
 
+    /**
+     * Función para manejar el cierre del diálogo
+     */
     const handleDialogClose = () => {
         setDialogOpen(false);
         setDialogContent({ loading: false, error: '', successMessage: '' });
     };
 
+    /**
+     * Redirige al usuario a la página de inicio
+     */
     const handleBack = () => {
         navigate('/');
     };

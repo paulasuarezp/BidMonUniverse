@@ -5,13 +5,14 @@ import NotificationImportantIcon from '@mui/icons-material/NotificationImportant
 import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUserNotifications, markAllAsRead, markAsRead } from '../../api/notificationsAPI';
-import { setHasUnreadNotifications } from '../../redux/slices/notificationSlice';
-import { RootState } from '../../redux/store';
-import { Notification, NotificationImportance } from '../../shared/sharedTypes';
-import Button from '../components/buttons/Button';
-import BasePageWithNav from './BasePageWithNav';
+import { getUserNotifications, markAllAsRead, markAsRead } from '../../../api/notificationsAPI';
+import { setHasUnreadNotifications } from '../../../redux/slices/notificationSlice';
+import { RootState } from '../../../redux/store';
+import { Notification, NotificationImportance } from '../../../shared/sharedTypes';
+import Button from '../../components/buttons/Button';
+import BasePageWithNav from '../BasePageWithNav';
 
+// #region COMPONENTE INBOX
 export default function Inbox() {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -19,6 +20,9 @@ export default function Inbox() {
     const [page, setPage] = useState<number>(1);
     const [pageSize] = useState<number>(10);
 
+    /**
+     * Obtiene las notificaciones del usuario y las almacena en el estado
+     */
     const fetchNotifications = async () => {
         try {
             const response = await getUserNotifications(sessionUser.username);
@@ -38,10 +42,19 @@ export default function Inbox() {
         fetchNotifications();
     }, [sessionUser.username]);
 
+    /**
+     * Función para manejar el cambio de página
+     * @param event - evento
+     * @param value - valor de la página
+     */
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 
+    /**
+     * Función para marcar una notificación como leída
+     * @param id - id de la notificación
+     */
     const handleMarkAsRead = async (id: string) => {
         try {
             await markAsRead(id);
@@ -51,6 +64,9 @@ export default function Inbox() {
         }
     }
 
+    /**
+     * Función para marcar todas las notificaciones como leídas
+     */
     const handleMarkAllAsRead = async () => {
         try {
             await markAllAsRead(sessionUser.username);
@@ -61,10 +77,20 @@ export default function Inbox() {
         }
     }
 
+    /**
+     * Formatea la fecha de la notificación
+     * @param date - fecha de la notificación
+     * @returns  fecha formateada
+     */
     const formatDate = (date: Date) => {
         return new Date(date).toLocaleString();
     }
 
+    /**
+     * Devuelve un icono si la notificación es importante
+     * @param importance - importancia de la notificación
+     * @returns  icono de importancia
+     */
     const getImportanceIcon = (importance: string) => {
         switch (importance) {
             case NotificationImportance.High:
@@ -140,3 +166,4 @@ export default function Inbox() {
         </BasePageWithNav>
     );
 }
+// #endregion
