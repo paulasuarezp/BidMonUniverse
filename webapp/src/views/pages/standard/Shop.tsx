@@ -1,4 +1,4 @@
-import { CircularProgress, Container, Grid } from '@mui/material';
+import { Alert, CircularProgress, Container, Grid } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { linkDecksToCardPacks } from '../../../api/api';
 import { getCardPacks } from '../../../api/cardpacksAPI';
@@ -52,24 +52,21 @@ export default function Shop() {
         fetchPacks();
     }, []);
 
-    // LOADING
-    if (loading) {
-        return (
-            <Container style={{ textAlign: 'center' }}>
-                <CircularProgress />
-            </Container>
-        );
-    }
 
-    // ERROR
-    if (error) {
-        return <ErrorMessageBox message="Actualmente la tienda no está disponible." />;
-    }
 
 
     return (
         <BasePageWithNav title="Tienda" showBackButton={false} description="¡Compra sobres de cartas y consigue la mejor colección!">
             <Container>
+                {loading && <Container style={{ textAlign: 'center' }}>
+                    <CircularProgress />
+                </Container>
+                }
+                {error && <ErrorMessageBox message='Se ha producido un error al obtener los datos de la tienda.' />}
+
+                {!loading && !error && packs.length === 0 && <Alert severity="info">No hay sobres de cartas disponibles en la tienda.</Alert>}
+
+                {/* Si no hay errores y hay sobres de cartas, se muestran en la tienda */}
                 <Grid container spacing={2}>
                     {packs.map(pack => (
                         <Grid item key={pack.name} xs={12} sm={6} md={4}>
