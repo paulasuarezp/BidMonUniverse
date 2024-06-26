@@ -16,6 +16,7 @@ import { RootState } from "../../../redux/store";
 import { UserCard } from "../../../shared/sharedTypes";
 import Container from "../container/Container";
 
+// #region COMPONENTE BidSummaryTable
 export default function BidSummaryTable() {
     const theme = useTheme();
 
@@ -29,6 +30,9 @@ export default function BidSummaryTable() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
+    /**
+     * Función para obtener los datos de las pujas activas del usuario
+     */
     const fetchData = async () => {
         setLoading(true);
         setError(null);
@@ -48,15 +52,25 @@ export default function BidSummaryTable() {
         fetchData();
     }, []);
 
+    /**
+     * Función para cambiar de página
+     * @param event - Evento
+     * @param newPage - Nueva página
+     */
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
 
+    /**
+     * Función para cambiar el número de filas por página
+     * @param event - Evento
+     */
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
 
+    // LOADING
     if (loading) {
         return (
             <Container style={{ textAlign: 'center' }}>
@@ -65,6 +79,7 @@ export default function BidSummaryTable() {
         );
     }
 
+    // ERROR
     if (error) {
         return (
             <Alert severity="error">No se han podido cargar los datos, por favor, inténtalo de nuevo más tarde</Alert>
@@ -72,6 +87,7 @@ export default function BidSummaryTable() {
         );
     }
 
+    // ALERTA SI NO DATA
     if (cards && !cards.length) {
         return (
             <Alert severity="info">No tienes pujas activas</Alert>
@@ -129,3 +145,4 @@ export default function BidSummaryTable() {
         </Paper>
     );
 }
+// #endregion

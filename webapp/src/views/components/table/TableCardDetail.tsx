@@ -1,4 +1,5 @@
 import {
+    Alert,
     Paper,
     Table, TableBody, TableCell,
     TableContainer, TableHead, TableRow,
@@ -13,6 +14,11 @@ interface TableCardDetailProps {
 
 export default function TableCardDetail({ data }: TableCardDetailProps) {
     const theme = useTheme();
+
+    // ALERTA SI NO DATA
+    if (!data || data.length === 0) {
+        return <Alert severity="info">No hay datos acerca de esta carta</Alert>;
+    }
 
     return (
         <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
