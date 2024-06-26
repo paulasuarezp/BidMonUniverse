@@ -84,6 +84,13 @@ export default function RechargeBalance() {
 
     return (
         <Container>
+            <Button startIcon={<ArrowBackIcon />}
+                variant="contained"
+                sx={{ alignSelf: 'flex-start', margin: '10px' }}
+                buttonType="ghost"
+                onClick={handleBack}
+                label="Volver a la página de inicio"
+            />
             <Paper
                 title="Recargar saldo"
                 imageSrc="recharge-meowth.png"
@@ -96,13 +103,7 @@ export default function RechargeBalance() {
                     pt: 2,
                 }}
             >
-                <Button startIcon={<ArrowBackIcon />}
-                    variant="contained"
-                    sx={{ alignSelf: 'flex-start', margin: '10px' }}
-                    buttonType="ghost"
-                    onClick={handleBack}
-                    label="Volver a la página principal"
-                />
+
                 <Box sx={{ pl: 2, pr: 2, pb: 2 }}>
                     <Typography variant="subtitle1" gutterBottom align="center">
                         ¡Elige la cantidad de saldo que deseas recargar!
