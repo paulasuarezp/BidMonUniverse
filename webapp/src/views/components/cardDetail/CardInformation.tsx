@@ -19,16 +19,23 @@ import { Card as CardType } from "../../../shared/sharedTypes";
 import { getCategoryIcon, getCategoryName, getPokemonGymImg } from '../card/CardUtils';
 
 
+// #region PROPS
 interface CardDetailProps {
     card: CardType;
     id: string;
 }
+// #endregion
+
+// #region COMPONENT CardInformation
+/**
+ * Información de la carta
+ * @param card - Carta
+ * @param id - ID de la carta
+ */
 export default function CardInformation({ card, id }: CardDetailProps) {
     const theme = useTheme();
     const [descriptions, setDescriptions] = useState([]);
     const [hasGym, setHasGym] = useState(false);
-
-
 
     useEffect(() => {
         let descrs = card.description[0].split('@NEWDESCRIPTION@');
@@ -38,6 +45,7 @@ export default function CardInformation({ card, id }: CardDetailProps) {
         }
     }, [card]);
 
+    // Estilo del chip
     const chipStyle = {
         backgroundImage: `linear-gradient(-135deg, ${theme.palette.primary.main}, ${theme.palette.background.paper})`,
         color: theme.palette.primary.contrastText,
@@ -81,3 +89,4 @@ export default function CardInformation({ card, id }: CardDetailProps) {
         </CardContent>
     );
 }
+// #endregion

@@ -6,7 +6,6 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import { useNavigate } from 'react-router-dom';
 import { Card as CardType, Transaction } from "../../../shared/sharedTypes";
 import BasePageWithNav from '../../pages/BasePageWithNav';
 import Button from "../buttons/Button";
@@ -15,22 +14,25 @@ import CardInformation from '../cardDetail/CardInformation';
 import TableCardDetail from '../table/TableCardDetail';
 import PokemonCardBox from './PokemonCardBox';
 
-
+// #region PROPS
 interface GeneralCardDetailProps {
-    title: string;
-    description?: React.ReactNode;
-    backLabel?: string;
-    handleBack?: () => void;
-    id: string;
-    card: CardType;
-    transactions: Transaction[];
-    pokemonBoxChildren: React.ReactNode;
-    cardInformationChildren: React.ReactNode;
-    form?: React.ReactNode;
+    title: string; // Título de la página
+    description?: React.ReactNode; // Descripción de la página
+    backLabel?: string; // Etiqueta del botón de retroceso
+    handleBack?: () => void; // Función para manejar el botón de retroceso
+    id: string; // ID de la carta, subasta o puja
+    card: CardType; // Carta
+    transactions: Transaction[]; // Transacciones de la carta
+    pokemonBoxChildren: React.ReactNode; // Contenido del box de la carta
+    cardInformationChildren: React.ReactNode; // Contenido de la información de la carta
+    form?: React.ReactNode; // Formulario
 }
+// #endregion
 
-const GeneralCardDetail = ({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack }: GeneralCardDetailProps) => {
-    const navigate = useNavigate();
+// #region COMPONENT GeneralCardDetail
+// Detalle general de una carta
+export default function GeneralCardDetail({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack }: GeneralCardDetailProps) {
+
     const theme = useTheme();
 
     return (
@@ -91,5 +93,4 @@ const GeneralCardDetail = ({ card, transactions, pokemonBoxChildren, cardInforma
         </BasePageWithNav>
     );
 };
-
-export default GeneralCardDetail;
+//#endregion
