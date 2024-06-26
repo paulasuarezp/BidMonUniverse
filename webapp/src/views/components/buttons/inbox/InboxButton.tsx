@@ -1,5 +1,4 @@
 import MailIcon from '@mui/icons-material/Mail';
-import { useTheme } from '@mui/material';
 import Badge from '@mui/material/Badge';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,14 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { checkUnreadNotifications } from '../../../../api/notificationsAPI';
 import { RootState } from '../../../../redux/store';
 
+// #region COMPONENT InboxButton
 export default function InboxButton() {
     const navigate = useNavigate();
-    const theme = useTheme();
     const sessionUser = useSelector((state: RootState) => state.user);
     const hasUnreadNotifications = useSelector((state: RootState) => state.notificationState.hasUnreadNotifications);
 
     const [hasUnread, setHasUnread] = useState<boolean>(hasUnreadNotifications);
 
+    /**
+     * Función para comprobar si el usuario tiene notificaciones sin leer
+     * @param username 
+     */
     const checkUnread = async (username: string) => {
         try {
             const check = await checkUnreadNotifications(username);
@@ -51,3 +54,4 @@ export default function InboxButton() {
         </Badge>
     );
 };
+// #endregion

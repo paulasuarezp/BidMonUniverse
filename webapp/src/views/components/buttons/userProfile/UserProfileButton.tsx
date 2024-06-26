@@ -2,12 +2,15 @@ import { Avatar, Button, ButtonProps, Stack, Typography, useMediaQuery } from '@
 import { styled, useTheme } from '@mui/material/styles';
 import * as React from 'react';
 
+// #region PROPS
 interface UserButtonProps extends ButtonProps {
     name: string;
     imageUrl: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
+// #endregion
 
+// #region STYLES
 const StyledButton = styled(Button)(({ theme }) => ({
     fontWeight: 'bold',
     letterSpacing: '0.1em',
@@ -32,8 +35,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
         border: 'none',
     },
 }));
+// #endregion
 
 
+// #region COMPONENT UserProfileButton
 export default function UserProfileButton({ name, imageUrl, ...rest }: UserButtonProps) {
     const theme = useTheme();
 
@@ -59,4 +64,4 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
         </StyledButton>
     );
 };
-
+// #endregion
