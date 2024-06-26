@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/api';
 import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
@@ -6,7 +6,6 @@ import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../card/auction/AuctionCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
-import Container from '../Container';
 
 // #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
@@ -86,12 +85,15 @@ export default function ResponsiveActiveAuctionsGrid({ username, isAdmin = false
 
     // LOADING
     if (loading) {
-        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100vw', }}><CircularProgress /> </Box>
+        );
     }
+
 
     // ERROR
     if (error) {
-        return <ErrorMessageBox />;
+        return (<ErrorMessageBox message='Se ha prududico un error al obtener los datos de las subastas.' />);
     }
 
     return (

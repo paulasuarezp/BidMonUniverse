@@ -1,4 +1,4 @@
-import { CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { getBidsCards } from '../../../../api/api';
 import { getUserActiveBids } from '../../../../api/bidsAPI';
@@ -6,7 +6,6 @@ import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
 import BidCard from '../../card/bid/BidCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
-import Container from '../Container';
 
 // #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
@@ -74,7 +73,9 @@ export default function ResponsiveActiveBidsGrid({ username, limit = false }: Re
 
     // LOADING
     if (loading) {
-        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100vw', }}><CircularProgress /> </Box>
+        );
     }
 
     // ERROR
