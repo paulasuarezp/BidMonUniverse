@@ -34,8 +34,8 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
     // Contenido de la confirmación
     const confirmationContent = (
         <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-            <Typography variant="body2">Precio: {cardpack.price}</Typography>
-            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+            <Typography variant='h6'>Precio: {cardpack.price}</Typography>
+            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.6em', marginLeft: 10, height: 'auto' }} />
         </Box>
 
     );
@@ -61,15 +61,9 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
                 setLoading(false);
                 return;
             }
-
             setCards(cards);
-
-            console.log("Sobre comprado con éxito");
-            console.log("cartas generadas: ", cards);
-
             dispatch(updateBalance(sessionUser.balance - cardpack.price));
             setSuccessMessage("¡Sobre comprado con éxito!");
-
             setTimeout(() => {
                 setShowCards(true);
                 handleClose(); // Cierra el formulario después de mostrar el éxito
