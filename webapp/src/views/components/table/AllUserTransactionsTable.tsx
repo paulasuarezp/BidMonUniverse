@@ -1,14 +1,18 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Transaction } from '../../../shared/sharedTypes';
-import ErrorMessageBox from '../MessagesBox/ErrorMessageBox';
 
+// #region PROPS UserTransactionsTableProps
 interface UserTransactionsTableProps {
     data: Transaction[];
 }
+// #endregion
 
+/**
+ * Definición de las columnas de la tabla
+ */
 const columns: GridColDef[] = [
     { field: 'username', headerName: 'Usuario', flex: 1.5 },
     {
@@ -45,6 +49,7 @@ const columns: GridColDef[] = [
     },
 ];
 
+// #region COMPONENTE UserTransactionsTable
 export default function AllUserTransactionsTable({ data }: UserTransactionsTableProps) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -62,6 +67,12 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
         return () => clearTimeout(timer);
     }, []);
 
+    /**
+     * Función para manejar el click en una celda,
+     * mostrando el contenido de la celda en un diálogo
+     * @param params 
+     * @returns 
+     */
     const handleCellClick = (params: any) => {
         if (!isXs && !isSm) return;
 
@@ -87,11 +98,15 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
         }
     };
 
+    /**
+     * Función para cerrar el diálogo
+     */
     const handleClose = () => {
         setOpen(false);
         setCellContent(null);
     };
 
+    // LOADING
     if (loading) {
         return (
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -100,8 +115,9 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
         );
     }
 
+    // ALERT NO DATA
     if (!data || data.length === 0) {
-        return <ErrorMessageBox message="No se han encontrado transacciones" />;
+        return <Alert severity="info">No hay transacciones</Alert>;
     }
 
     return (
@@ -171,3 +187,4 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
         </div>
     );
 }
+// #endregion

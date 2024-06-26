@@ -11,10 +11,10 @@ import { useSelector } from "react-redux";
 import { getAuctionCards } from "../../../api/api";
 import { getUserActiveAuctions } from "../../../api/auctionsAPI";
 import { RootState } from "../../../redux/store";
-import { Auction, UserCard } from "../../../shared/sharedTypes";
+import { UserCard } from "../../../shared/sharedTypes";
 import Container from "../container/Container";
 
-
+// #region COMPONENTE BidSummaryTable
 export default function BidSummaryTable() {
     const theme = useTheme();
 
@@ -23,22 +23,22 @@ export default function BidSummaryTable() {
 
     const [cards, setCards] = useState<UserCard[]>([]);
     const [numberOfCards, setNumberOfCards] = useState<number>(0);
-    const [auctions, setAuctions] = useState<Auction[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Función para obtener los datos de las subastas activas del usuario
+     */
     const fetchData = async () => {
         setLoading(true);
         setError(null);
         try {
             const data = await getUserActiveAuctions(username);
-            setAuctions(data);
             const cardsData = await getAuctionCards(data);
             setCards(cardsData);
             setNumberOfCards(numberOfCards);
         } catch (err) {
-            setError('Error al obtener los datos de las subastas');
-            console.error(err);
+            setError('Actualmente no se han podido obtener los datos de las subastas');
         } finally {
             setLoading(false);
         }
@@ -48,18 +48,20 @@ export default function BidSummaryTable() {
         fetchData();
     }, []);
 
-
+    // LOADING
     if (loading) {
         return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
+    // ERROR
     if (error) {
         return (
-            <Alert severity="error">No se han podido cargar los datos, por favor, inténtalo de nuevo más tarde</Alert>
+            <Alert severity="error">{error}</Alert>
 
         );
     }
 
+    // NO DATA
     if (cards && !cards.length) {
         return (
             <Alert severity="info">No tienes subastas activas</Alert>
@@ -107,3 +109,4 @@ export default function BidSummaryTable() {
         </TableContainer>
     );
 }
+// #endregion
