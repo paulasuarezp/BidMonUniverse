@@ -14,17 +14,17 @@ import {
 import { memo, useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { checkActiveBid, getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../../api/api';
-import { resetUpdate } from '../../../../redux/slices/updateSlice';
-import { RootState } from '../../../../redux/store';
-import { Auction, CardStatus, Card as CardType, Transaction } from "../../../../shared/sharedTypes";
-import Button from '../../buttons/Button';
-import DurationButton from '../../buttons/duration/DurationButton';
-import GeneralCardDetail from '../../cardDetail/GeneralCardDetail';
-import Container from '../../container/Container';
-import WithdrawnAuctionForm from '../../forms/auction/WithdrawnAuctionForm';
-import AddBidForm from '../../forms/bid/AddBidForm';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
+import { checkActiveBid, getCardFromAuction, getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
+import { resetUpdate } from '../../../redux/slices/updateSlice';
+import { RootState } from '../../../redux/store';
+import { Auction, CardStatus, Card as CardType, Transaction } from "../../../shared/sharedTypes";
+import Button from '../../components/buttons/Button';
+import DurationButton from '../../components/buttons/duration/DurationButton';
+import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
+import Container from '../../components/container/Container';
+import WithdrawnAuctionForm from '../../components/forms/auction/WithdrawnAuctionForm';
+import AddBidForm from '../../components/forms/bid/AddBidForm';
+import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 
 // Botones memoizados para evitar renders innecesarios
 const WithdrawAuctionButton = memo(({ id, handleWithdrawnOpen, openWithdrawnModal, handleWithdrawnClose, onAuction }: any) => (
