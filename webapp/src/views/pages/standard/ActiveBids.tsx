@@ -2,14 +2,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../redux/store";
-import Button from "../components/buttons/Button";
-import Container from "../components/container/Container";
-import ResponsiveActiveBidsGrid from '../components/container/gridContainer/ResponsiveActiveBidsGrid';
-import NavigationMenu from "../components/menus/principalNav/Navigation";
-import PokeballsBox from "../components/ornament/PokeballsBox";
+import { RootState } from "../../../redux/store";
+import Button from "../../components/buttons/Button";
+import Container from "../../components/container/Container";
+import ResponsiveActiveBidsGrid from '../../components/container/gridContainer/ResponsiveActiveBidsGrid';
+import NavigationMenu from "../../components/menus/principalNav/Navigation";
+import PokeballsBox from "../../components/ornament/PokeballsBox";
 
-//#region COMPONENTE LOGIN
+//#region COMPONENTE ACTIVEBIDS
 export default function ActiveBids() {
     const navigate = useNavigate();
 
@@ -17,6 +17,9 @@ export default function ActiveBids() {
 
     let username: string = sessionUser.username;
 
+    /**
+     * Redirige a la página de subastas
+     */
     const handleBack = () => {
         navigate('/auctions');
     };
@@ -31,7 +34,6 @@ export default function ActiveBids() {
                 🍀 <strong> ¡Suerte! </strong> 🍀
             </Typography>
 
-
             <Button startIcon={<ArrowBackIcon />}
                 variant="contained"
                 sx={{ alignSelf: 'flex-start', margin: '10px' }}
@@ -40,12 +42,9 @@ export default function ActiveBids() {
                 label='Volver a subastas'
             />
 
-
-
             <div style={{ marginBottom: '2em' }}>
                 <ResponsiveActiveBidsGrid limit={false} username={username} />
             </div>
-
 
         </Container>
     );

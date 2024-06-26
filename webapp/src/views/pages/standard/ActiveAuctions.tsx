@@ -3,14 +3,14 @@ import { Box, FormControlLabel, FormGroup, Switch, Typography } from "@mui/mater
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { RootState } from "../../redux/store";
-import Button from "../components/buttons/Button";
-import Container from "../components/container/Container";
-import ResponsiveActiveAuctionsGrid from "../components/container/gridContainer/ResponsiveActiveAuctionsGrid";
-import NavigationMenu from "../components/menus/principalNav/Navigation";
-import PokeballsBox from "../components/ornament/PokeballsBox";
+import { RootState } from "../../../redux/store";
+import Button from "../../components/buttons/Button";
+import Container from "../../components/container/Container";
+import ResponsiveActiveAuctionsGrid from "../../components/container/gridContainer/ResponsiveActiveAuctionsGrid";
+import NavigationMenu from "../../components/menus/principalNav/Navigation";
+import PokeballsBox from "../../components/ornament/PokeballsBox";
 
-//#region COMPONENTE LOGIN
+//#region COMPONENTE ACTIVEAUCTIONS
 export default function ActiveAuctions() {
     const navigate = useNavigate();
 
@@ -21,7 +21,9 @@ export default function ActiveAuctions() {
     // Estado para manejar el interruptor de subastas activas de la app vs. subastas activas del usuario
     const [showUserAuctions, setShowUserAuctions] = useState(false);
 
-
+    /**
+     * Redirige a la página de pujas
+     */
     const handleNavigate = () => {
         navigate('/bids');
     };
@@ -36,7 +38,6 @@ export default function ActiveAuctions() {
                 <strong>¡Participa en ellas!</strong>
             </Typography>
 
-
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <FormGroup>
                     <FormControlLabel
@@ -47,12 +48,9 @@ export default function ActiveAuctions() {
                 <Button startIcon={<SearchIcon />} onClick={handleNavigate} variant="contained" color="primary" label="Mis pujas" />
             </Box>
 
-
-
             <div style={{ marginBottom: '2em' }}>
                 <ResponsiveActiveAuctionsGrid limit={false} username={username} showUserAuctions={showUserAuctions} />
             </div>
-
 
         </Container>
     );

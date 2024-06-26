@@ -1,23 +1,19 @@
 import ArrowCircleRightTwoToneIcon from '@mui/icons-material/ArrowCircleRightTwoTone';
-import { Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
-import { RootState } from "../../redux/store";
-import Button from '../components/buttons/Button';
-import Container from "../components/container/Container";
-import ResponsivePokemonGrid from "../components/container/gridContainer/ResponsivePokemonGrid";
-import NavigationMenu from "../components/menus/principalNav/Navigation";
-import AuctionSummaryTable from '../components/table/AuctionSummaryTable';
-import BidSummaryTable from "../components/table/BidSummaryTable";
+import { RootState } from "../../../redux/store";
+import Button from '../../components/buttons/Button';
+import Container from "../../components/container/Container";
+import ResponsivePokemonGrid from "../../components/container/gridContainer/ResponsivePokemonGrid";
+import NavigationMenu from "../../components/menus/principalNav/Navigation";
+import AuctionSummaryTable from '../../components/table/AuctionSummaryTable';
+import BidSummaryTable from "../../components/table/BidSummaryTable";
 
-//#region COMPONENTE LOGIN
-export default function Login() {
+//#region COMPONENTE HOMELOGUED
+export default function HomeLogued() {
   const sessionUser = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
-
-  const theme = useTheme();
-
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   let username: string = sessionUser.username;
 
