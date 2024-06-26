@@ -1,11 +1,14 @@
-import { Stack, IconButton, Typography, IconButtonProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import TimerIcon from '@mui/icons-material/Timer';
+import { IconButton, IconButtonProps, Stack, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
+// #region PROPS
 interface DurationButtonProps extends IconButtonProps {
     duration: number;
 }
+// #endregion
 
+// #region STYLES
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     fontWeight: 'bold',
     letterSpacing: '0.1em',
@@ -33,7 +36,9 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
         border: 'none',
     },
 }));
+// #endregion
 
+// #region COMPONENT DurationButton
 export default function DurationButton({ duration, ...rest }: DurationButtonProps) {
     return (
         <StyledIconButton {...rest}>
@@ -44,3 +49,4 @@ export default function DurationButton({ duration, ...rest }: DurationButtonProp
         </StyledIconButton>
     );
 };
+// #endregion

@@ -4,18 +4,23 @@ import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import './buttonPrincipal.css';
 
+// #region PROPS
 export interface ButtonProps {
     label?: string;
     onClick?: () => void;
 }
+// #endregion
 
+// #region STYLES
 const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.mode === 'light' ? '#111111' : '#ececec', // Cambiado para adaptarse al esquema de color
     '&:hover': {
         color: '#FFFFFF',
     },
 }));
+// #endregion
 
+// #region COMPONENT ButtonPrincipal
 export default function ButtonPrincipal({ label, onClick }: ButtonProps) {
     const whileHover = {
         scale: 1.1,
@@ -35,3 +40,4 @@ export default function ButtonPrincipal({ label, onClick }: ButtonProps) {
         </div >
     );
 }
+// #endregion

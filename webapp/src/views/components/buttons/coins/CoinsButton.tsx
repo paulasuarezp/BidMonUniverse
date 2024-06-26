@@ -1,10 +1,13 @@
-import { Stack, IconButton, Typography, IconButtonProps } from '@mui/material';
+import { IconButton, IconButtonProps, Stack, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
+// #region PROPS
 interface CoinsButtonProps extends IconButtonProps {
     balance: number;
 }
+// #endregion
 
+// #region STYLES
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
     fontWeight: 'bold',
     letterSpacing: '0.1em',
@@ -32,7 +35,9 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
         border: 'none',
     },
 }));
+// #endregion
 
+// #region COMPONENT CoinsButton
 export default function CoinsButton({ balance, ...rest }: CoinsButtonProps) {
     return (
         <StyledIconButton {...rest}>
@@ -43,3 +48,4 @@ export default function CoinsButton({ balance, ...rest }: CoinsButtonProps) {
         </StyledIconButton>
     );
 };
+// #endregion
