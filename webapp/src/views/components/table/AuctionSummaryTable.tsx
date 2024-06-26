@@ -15,7 +15,8 @@ import { UserCard } from "../../../shared/sharedTypes";
 import Container from "../container/Container";
 
 // #region COMPONENTE BidSummaryTable
-export default function BidSummaryTable() {
+// Componente para mostrar un resumen de las subastas activas del usuario
+export default function AuctionSummaryTable() {
     const theme = useTheme();
 
     const sessionUser = useSelector((state: RootState) => state.user);
