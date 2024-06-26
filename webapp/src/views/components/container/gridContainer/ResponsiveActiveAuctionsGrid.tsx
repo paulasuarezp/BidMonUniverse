@@ -6,15 +6,26 @@ import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../cardDetail/auction/AuctionCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
+import Container from '../Container';
 
+// #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
     username: string;
     limit?: boolean;
     showUserAuctions?: boolean;
     isAdmin?: boolean;
 }
+// #endregion
 
-const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true, showUserAuctions = false }: ResponsiveActiveAuctionsGridProps) => {
+// #region COMPONENT ResponsiveActiveAuctionsGrid
+/**
+ * Grid de subastas activas responsive
+ * @param username - Nombre de usuario
+ * @param limit - Límite de cartas a mostrar
+ * @param showUserAuctions - Indica si se deben mostrar las subastas activas del usuario
+ * @param isAdmin - Indica si el usuario es administrador
+ */
+export default function ResponsiveActiveAuctionsGrid({ username, isAdmin = false, limit = true, showUserAuctions = false }: ResponsiveActiveAuctionsGridProps) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
     const isSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -27,6 +38,10 @@ const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true,
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Función para obtener el número de columnas en función del tamaño de la pantalla
+     * @returns Número de columnas
+     */
     const getGridListCols = () => {
         if (isXs) return 1;
         if (isSm) return 2;
@@ -35,6 +50,11 @@ const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true,
         return 6;
     };
 
+    /**
+     * Función para obtener los datos de las subastas, filtrarlas y obtener las cartas.
+     * Si el usuario es administrador, se obtienen todas las subastas activas.
+     * @param isUserAuctions - Indica si se deben obtener las subastas activas del usuario
+     */
     const fetchData = async (isUserAuctions: boolean) => {
         setLoading(true);
         setError(null);
@@ -64,10 +84,12 @@ const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true,
         fetchData(showUserAuctions);
     }, [showUserAuctions]);
 
+    // LOADING
     if (loading) {
-        return <CircularProgress />;
+        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
+    // ERROR
     if (error) {
         return <ErrorMessageBox />;
     }
@@ -94,5 +116,4 @@ const ResponsiveActiveAuctionsGrid = ({ username, isAdmin = false, limit = true,
         </Grid>
     );
 };
-
-export default ResponsiveActiveAuctionsGrid;
+// #endregion

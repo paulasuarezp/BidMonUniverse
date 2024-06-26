@@ -6,13 +6,22 @@ import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
 import BidCard from '../../cardDetail/bid/BidCard';
 import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
 import InfoMessageBox from '../../messagesBox/InfoMessageBox';
+import Container from '../Container';
 
+// #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
     username: string;
     limit?: boolean;
 }
+// #endregion
 
-const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveAuctionsGridProps) => {
+// #region COMPONENT ResponsiveActiveAuctionsGrid
+/**
+ * Grid de subastas activas responsive
+ * @param username - Nombre de usuario
+ * @param limit - Límite de cartas a mostrar
+ */
+export default function ResponsiveActiveBidsGrid({ username, limit = false }: ResponsiveActiveAuctionsGridProps) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
     const isSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -25,6 +34,10 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Función para obtener el número de columnas en función del tamaño de la pantalla
+     * @returns Número de columnas
+     */
     const getGridListCols = () => {
         if (isXs) return 1;
         if (isSm) return 2;
@@ -33,6 +46,9 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
         return 6;
     };
 
+    /**
+     * Función para obtener los datos de las subastas y las cartas
+     */
     const fetchData = async () => {
         setLoading(true);
         setError(null);
@@ -44,7 +60,7 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
             const numberOfCards = limit ? Math.min(cardsData.length, getGridListCols()) : cardsData.length;
             setNumberOfCards(numberOfCards);
         } catch (err) {
-            setError('Error al obtener los datos de las subastas');
+            setError('Se ha producido un error al obtener las subastas activas.');
             console.error(err);
         } finally {
             setLoading(false);
@@ -55,12 +71,15 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
         fetchData();
     }, []);
 
+
+    // LOADING
     if (loading) {
-        return <CircularProgress />;
+        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
     }
 
+    // ERROR
     if (error) {
-        return <ErrorMessageBox />;
+        return <ErrorMessageBox message={error} />;
     }
 
     return (
@@ -86,5 +105,4 @@ const ResponsiveActiveBidsGrid = ({ username, limit = false }: ResponsiveActiveA
         </Grid>
     );
 };
-
-export default ResponsiveActiveBidsGrid;
+// #endregion
