@@ -19,22 +19,16 @@ const StyledPaper = styled(MuiPaper)<CustomPaperProps & MuiPaperProps>(({ theme 
     position: 'relative',
     borderRadius: 16,
     padding: theme.spacing(1),
-    boxShadow: theme.palette.mode === 'light' ? 
-    'default': // Sombra para modo claro
-    '0px 2px 10px rgba(255, 255, 255, 0.24)', 
+    boxShadow: theme.palette.mode === 'light' ?
+        'default' : // Sombra para modo claro
+        '0px 2px 10px rgba(255, 255, 255, 0.24)',
 
 }));
 //#endregion
 
 //#region COMPONENT Paper
-export default function Paper({
-    background,
-    title,
-    imageSrc,
-    imageAlt,
-    children,
-    ...other
-}: CustomPaperProps & MuiPaperProps) {
+// Componente que muestra un Paper con imagen, título y contenido
+export default function Paper({ background, title, imageSrc, imageAlt, children, ...other }: CustomPaperProps & MuiPaperProps) {
     return (
         <StyledPaper
             square={false}
@@ -42,7 +36,7 @@ export default function Paper({
             background={background}
             {...other}
         >
-            <Box sx={{ textAlign: 'center'}}>
+            <Box sx={{ textAlign: 'center' }}>
                 {imageSrc && <img src={imageSrc} alt={imageAlt} style={{ maxWidth: '65%', height: 'auto' }} />}
                 {title && <Typography variant="h5" component="h2" sx={{ mb: 2 }}>{title}</Typography>}
             </Box>

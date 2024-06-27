@@ -13,6 +13,14 @@ const userCardSchema = new Schema(
             required: true,
             ref: 'User'
         },
+        username:{
+            type: String,
+            required: true
+        },
+        legibleCardId:{
+            type: String,
+            required: true
+        },
         status: {
             type: String,
             enum: CardStatus,

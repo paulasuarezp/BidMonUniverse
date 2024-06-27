@@ -1,12 +1,13 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import { UserState, AccessLevel } from '../../shared/sharedTypes';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AccessLevel, UserState } from '../../shared/sharedTypes';
 
 const initialState: UserState = {
     username: '',
     role: AccessLevel.Guest,
     birthday: '',
     balance: 0,
-    profileImg: ''
+    profileImg: '',
+    socketConnected: false
 }
 
 const userSlice = createSlice({
@@ -20,16 +21,22 @@ const userSlice = createSlice({
             state.balance = action.payload.balance;
             state.profileImg = action.payload.profileImg;
         },
+        updateBalance(state, action: PayloadAction<number>) {
+            state.balance = action.payload;
+        },
         resetUser(state) {
             state.username = '';
             state.role = AccessLevel.Guest;
             state.birthday = '';
             state.balance = 0;
             state.profileImg = '';
+        },
+        setSocketConnected(state, action: PayloadAction<boolean>) {
+            state.socketConnected = action.payload;
         }
     }
 });
 
-export const { setUser, resetUser } = userSlice.actions;
+export const { setUser, resetUser, updateBalance, setSocketConnected } = userSlice.actions;
 
 export default userSlice.reducer;

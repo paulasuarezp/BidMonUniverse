@@ -1,7 +1,34 @@
 import { model, Schema } from 'mongoose'
+import { Document, Types } from 'mongoose';
 import { CardRarity, PokemonGym, PokemonType } from './utils/enums';
 
-const cardSchema = new Schema(
+
+export interface ICard extends Document {
+    cardId: string;
+    pokemonId: number;
+    name: string;
+    rarity: CardRarity;
+    releaseDate: Date;
+    availableQuantity: number;
+    cards: Types.ObjectId[]; 
+    pokemonType: PokemonType;
+    description: string[];
+    image: string;
+    hp: number;
+    attack: number;
+    defense: number;
+    speed: number;
+    weight: number;
+    height: number;
+    is_legendary: boolean;
+    is_mythical: boolean;
+    n_location_area: number;
+    n_encounters: number;
+    averageMaxChance: number;
+    gym?: [PokemonGym];
+}
+
+const cardSchema = new Schema<ICard>(
     {
         cardId: {
             type: String, // Format: "c-<pokemonId>-n"
@@ -98,11 +125,11 @@ const cardSchema = new Schema(
             type: Number,
             required: true
         },
-        gym : { // Gym of the pokemon (it can be none if the pokemon is not the the gym leader)
-            type: Object.values(PokemonGym),
-            required: false,
-            default: PokemonGym.None
-        },
+        gym: { // Gym where the pokemon can be found
+            type: [String],
+            enum: Object.values(PokemonGym),
+            required: false
+        }
 
     }
 )

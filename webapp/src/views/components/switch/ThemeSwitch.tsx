@@ -1,5 +1,5 @@
 // ThemeSwitch.tsx
-import { Switch, FormGroup, FormControlLabel, useTheme, useMediaQuery } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch, useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 
@@ -28,12 +28,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#FFFFFF',
+        backgroundColor: '#8796A5',
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : theme.palette.secondary.main,
+    backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#FFD700',
     width: 32,
     height: 32,
     '&::before': {
@@ -59,14 +59,15 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 //#endregion
 
 //#region COMPONENTE THEME SWITCH
+// Componente que permite cambiar el tema de la aplicación
 export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const texto = theme.palette.mode === 'dark' ? 'Modo oscuro' : 'Modo claro';
   return (
     <FormGroup>
-       <FormControlLabel
-        control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme}/>}
+      <FormControlLabel
+        control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme} />}
         label={isMobile ? texto : ''}
       />
     </FormGroup>
