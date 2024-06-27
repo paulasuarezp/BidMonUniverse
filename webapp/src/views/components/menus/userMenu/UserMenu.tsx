@@ -1,6 +1,7 @@
 import { Logout } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Box, Menu, MenuItem } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { resetUser, setSocketConnected } from '../../../../redux/slices/userSlice';
@@ -33,6 +34,8 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
   const isAuthenticated = sessionUser?.username ? true : false;
   const isAdmin = sessionUser?.role === AccessLevel.Admin;
 
+  const [profileImg, setProfileImg] = useState<string>(sessionUser.profileImg);
+
   /**
    * Función para redirigir al usuario a la página de inicio de sesión
    */
@@ -60,6 +63,20 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
 
   }
 
+  /**
+   * Función para mostrar el perfil del usuario
+   */
+  const handleShowPerfil = () => {
+    handleCloseUserMenu();
+    navigate('/profile');
+  }
+
+  useEffect(() => {
+    if (sessionUser.profileImg !== profileImg) {
+      setProfileImg(sessionUser.profileImg);
+    }
+  }, [sessionUser]);
+
 
   return (
     <>
@@ -69,7 +86,7 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
           {!isAdmin && <InboxButton />}
           <UserProfileButton
             name={sessionUser.username}
-            imageUrl={isAdmin ? '' : sessionUser.profileImg}
+            imageUrl={profileImg}
             onClick={handleUserMenu}
           />
         </Box>
@@ -88,7 +105,10 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       >
         {isAuthenticated && (
           <div>
-            {!isAdmin && <MenuItem onClick={handleCloseUserMenu}>Mi perfil</MenuItem>}
+            <MenuItem onClick={handleShowPerfil}>
+              <AccountCircleIcon sx={{ mr: 1 }} />
+              Mi perfil
+            </MenuItem>
             <MenuItem onClick={handleLogout}>
               <Logout />
               Cerrar sesión

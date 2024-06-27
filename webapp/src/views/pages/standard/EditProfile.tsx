@@ -1,6 +1,8 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Avatar, Badge, Box, Divider, Grid, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
@@ -48,7 +50,7 @@ export default function EditProfile() {
     const onSubmitAvatar = () => {
         updateUserAvatar(sessionUser.username, selectedAvatar).then((response) => {
             if (response.error) {
-                showError(response.error, "Ha ocurrido un error al actualizar el avatar", Swal.close);
+                showError(response.error, "Ha ocurrido un error al actualizar el avatar. Por favor, vuelve a intentarlo más tarde.", Swal.close);
             } else {
                 successUpdateProfile();
                 dispatch(setUser({ ...sessionUser, profileImg: selectedAvatar }));
@@ -60,7 +62,7 @@ export default function EditProfile() {
         if (data.password) {
             updateUserPassword(sessionUser.username, data.password).then((response) => {
                 if (response.error) {
-                    showError(response.error, "Ha ocurrido un error al actualizar la contraseña", Swal.close);
+                    showError(response.error, "Ha ocurrido un error al actualizar la contraseña. Por favor, vuelve a intentarlo más tarde.", Swal.close);
                 } else {
                     successUpdateProfile();
                 }
@@ -71,7 +73,7 @@ export default function EditProfile() {
     const successUpdateProfile = () => {
         Swal.fire({
             title: 'Perfil actualizado',
-            text: "¡Perfil de " + sessionUser.username + " actualizado con éxito!",
+            text: "¡Perfil actualizado con éxito!",
             icon: 'success',
             showCancelButton: false,
             confirmButtonColor: '#81c784',
@@ -82,7 +84,7 @@ export default function EditProfile() {
                 setEditPassword(false);
             }
         }).catch((e) => {
-            showError("Error inesperado", e.message, Swal.close);
+            showError("Perfil no actualizado", "Ha ocurrido un error al actualizar el perfil. Por favor, vuelve a intentarlo más tarde.", Swal.close)
         })
     }
 
@@ -121,49 +123,32 @@ export default function EditProfile() {
 
                     <Divider sx={{ my: 2 }}><Typography variant="subtitle1" align="center">Editar perfil</Typography></Divider>
 
-                    {editAvatar == false ?
-                        (<Button
+                    {!editPassword &&
+                        <Button
                             variant="contained"
-                            sx={{ margin: '10px' }}
+                            sx={{ margin: '10px', backgroundColor: editAvatar ? 'secondary.main' : 'primary.main' }}
                             onClick={() => {
-                                setEditAvatar(true);
+                                setEditAvatar(!editAvatar);
                                 setEditPassword(false);
                             }}
-                            label="Editar avatar"
-                        >
-                        </Button>) :
-                        (<Button
-                            variant="contained"
-                            sx={{ margin: '10px' }}
-                            onClick={() => {
-                                setEditAvatar(false);
-                                setEditPassword(false);
-                            }}
-                            label=" Ocultar editar avatar"
-                        >
-                        </Button>)}
-
-                    {editPassword == false ?
-                        (<Button
-                            variant="contained"
-                            sx={{ margin: '10px' }}
-                            onClick={() => {
-                                setEditAvatar(false);
-                                setEditPassword(true);
-                            }}
-                            label="Editar contraseña"
+                            hidden={editPassword}
+                            endIcon={editAvatar ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            label={editAvatar ? 'Ocultar editar avatar' : 'Editar avatar'}
                         />
-                        ) : (
-                            <Button
-                                variant="contained"
-                                sx={{ margin: '10px' }}
-                                onClick={() => {
-                                    setEditAvatar(false);
-                                    setEditPassword(false);
-                                }}
-                                label="Ocultar editar contraseña"
-                            />
-                        )}
+                    }
+
+                    {!editAvatar &&
+                        <Button
+                            variant="contained"
+                            sx={{ margin: '10px', backgroundColor: editPassword ? 'secondary.main' : 'primary.main' }}
+                            onClick={() => {
+                                setEditAvatar(false);
+                                setEditPassword(!editPassword);
+                            }}
+                            endIcon={editPassword ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                            label={editPassword ? 'Ocultar editar contraseña' : 'Editar contraseña'}
+                        />
+                    }
                 </Box>
 
                 <Box component='form' onSubmit={editAvatar ? handleSubmit(onSubmitAvatar) : onSubmitPassword} noValidate sx={{ pl: 2, pr: 2, pb: 2 }}>
@@ -233,8 +218,8 @@ export default function EditProfile() {
                     {(editAvatar || editPassword) && (
                         <Button
                             type='submit'
-                            buttonType="primary"
-                            label='Actualizar Perfil'
+                            buttonType="confirm"
+                            label='Actualizar perfil'
                             fullWidth
                             sx={{ mt: 2 }}
                         />
