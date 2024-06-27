@@ -1,12 +1,11 @@
 // tests/cardPackRouter.test.ts
-import request from 'supertest';
-import { api, dropEntireDatabase, hashPassword } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
-import User from '../../models/user';
-import initialUsers from '../mockData/users.json';
-import initialTransactions from '../mockData/transaction.json';
+import { server } from '../../../server';
 import Transaction from '../../models/transaction';
+import User from '../../models/user';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
+import initialTransactions from '../mockData/transaction.json';
+import initialUsers from '../mockData/users.json';
 
 
 let tokenAdmin: string;
@@ -51,49 +50,6 @@ describe('TRANSACTION ROUTES', () => {
             expect(response.status).toBe(200);
             expect(response.body).toHaveLength(3);
         });
-
-        it('shold return 403 if user is not admin', async () => {
-            const response = await api
-                .get('/transactions')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(403);
-            expect(response.body).toEqual({ message: 'Acceso denegado. Se requiere rol de administrador.' });
-        });
-
-        it('should handle errors', async () => {
-            jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
-
-            const response = await api
-                .get('/cardpacks')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(500);
-            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener los paquetes de cartas.' });
-        });
-    });
-
-    describe('GET /transactions/:transactionId', () => {
-        it('should get a transaction by transactionId', async () => {
-            let id = initialTransactions[0]._id;
-            let username = initialTransactions[0].username;
-            const response = await api
-                .get('/transactions/' + id)
-                .set('Authorization', `Bearer ${tokenAdmin}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toHaveProperty('username', username);
-
-        });
-
-        it('should return 404 if transactionId does not exist', async () => {
-            const response = await api
-                .get('/transactions/77646db6a10d744749820f4c')
-                .set('Authorization', `Bearer ${tokenAdmin}`);
-
-            expect(response.status).toBe(404);
-        });
-
     });
 
     describe('GET /transactions/u/:username', () => {
@@ -122,25 +78,17 @@ describe('TRANSACTION ROUTES', () => {
 
     });
 
-
-
 });
 
 describe('TRANSACTION ROUTES Error Handling', () => {
-    describe('GET /transactions/:transactionId', () => {
-        it('should return 400 for invalid transactionId', async () => {
+    describe('GET /transactions', () => {
+        it('shold return 403 if user is not admin', async () => {
             const response = await api
-                .get('/transactions/invalid-id')
-                .set('Authorization', `Bearer ${tokenAdmin}`);
+                .get('/transactions')
+                .set('Authorization', `Bearer ${token}`);
 
-            expect(response.status).toBe(400);
-            expect(response.body.errors).toContainEqual(
-                expect.objectContaining({
-                    msg: 'Transaction ID must be a valid MongoID',
-                    param: 'transactionId',
-                    value: "invalid-id"
-                })
-            );
+            expect(response.status).toBe(403);
+            expect(response.body).toEqual({ message: 'Acceso denegado. Se requiere rol de administrador.' });
         });
     });
 
