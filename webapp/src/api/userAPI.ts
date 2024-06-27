@@ -79,19 +79,19 @@ export function verifyToken(): Promise<any> {
             'Authorization': `Bearer ${token}`,
         },
     })
-    .then(response => {
-        if (!response.ok) {
-            localStorage.removeItem('userToken');
-            throw new Error('Token inválido');
-        }
+        .then(response => {
+            if (!response.ok) {
+                localStorage.removeItem('userToken');
+                throw new Error('Token inválido');
+            }
 
-        console.log('Token válido en userApi.ts:', response);
-        return response.json();
-    })
-    .catch(error => {
-        console.error('Ha ocurrido un error:', error.message);
-        return { error: error.message };
-    });
+            console.log('Token válido en userApi.ts:', response);
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Ha ocurrido un error:', error.message);
+            return { error: error.message };
+        });
 }
 
 // Cerrar sesión
@@ -100,7 +100,7 @@ export function logout(): void {
 }
 
 // Obtener los datos de un usuario
-export function getUser(username:string): any {
+export function getUser(username: string): any {
     const token = localStorage.getItem('userToken');
     if (!token) {
         return null;
@@ -115,15 +115,77 @@ export function getUser(username:string): any {
             'Authorization': `Bearer ${token}`,
         },
     })
-    .then(response => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener el usuario');
+            }
+
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Ha ocurrido un error:', error.message);
+            return { error: error.message };
+        });
+}
+
+
+// Actualizar el perfil de un usuario
+export async function updateUserPassword(username: string, password?: string): Promise<any> {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return { error: 'No token found' };
+    }
+
+    const url = `${apiEndPointBase}/update/pass`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ username, password }),
+        });
+
         if (!response.ok) {
-            throw new Error('Error al obtener el usuario');
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message || 'Error al actualizar el perfil');
         }
 
-        return response.json();
-    })
-    .catch(error => {
+        return await response.json();
+    } catch (error: any) {
+        return { error: error.message };
+    }
+}
+
+
+export async function updateUserAvatar(username: string, profileImg?: string): Promise<any> {
+    const token = localStorage.getItem('userToken');
+    if (!token) {
+        return { error: 'No token found' };
+    }
+
+    const url = `${apiEndPointBase}/update/avatar`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({ username, profileImg }),
+        });
+
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.message || 'Error al actualizar el perfil');
+        }
+
+        return await response.json();
+    } catch (error: any) {
         console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
-    });
+    }
 }

@@ -1,3 +1,0 @@
-cardPackId;name;price;releaseDate;numberOfCards;deckId1;quantity1;deckId2;quantity2;deckId3;quantity3;availableQuantity;available
-CP-1;Starter Pack;20;2024-06-01;5;d-1;4;d-2;1;;;100000;true
-CP-2;Advanced Pack;35;2024-06-15;8;d-1;4;d-2;3;d-3;1;200;true

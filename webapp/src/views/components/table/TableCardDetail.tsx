@@ -1,4 +1,5 @@
 import {
+    Alert,
     Paper,
     Table, TableBody, TableCell,
     TableContainer, TableHead, TableRow,
@@ -7,12 +8,21 @@ import {
 import { TransactionConcept } from "../../../shared/sharedTypes";
 import { getTransactionMessage } from '../../../utils/utils';
 
+// #region PROPS TableCardDetailProps
 interface TableCardDetailProps {
     data: any[];
 }
+// #endregion
 
+// #region COMPONENTE TableCardDetail
+// Componente que muestra un historial de transacciones de una carta
 export default function TableCardDetail({ data }: TableCardDetailProps) {
     const theme = useTheme();
+
+    // ALERTA SI NO DATA
+    if (!data || data.length === 0) {
+        return <Alert severity="info">No hay datos acerca de esta carta</Alert>;
+    }
 
     return (
         <TableContainer component={Paper} sx={{ width: '100%', marginTop: 2 }}>
@@ -54,3 +64,4 @@ export default function TableCardDetail({ data }: TableCardDetailProps) {
         </TableContainer>
     );
 }
+// #endregion

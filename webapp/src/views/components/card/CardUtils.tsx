@@ -1,8 +1,8 @@
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
-import GradeIcon from '@mui/icons-material/Grade';
-import StarsIcon from '@mui/icons-material/Stars';
 import DiamondIcon from '@mui/icons-material/Diamond';
+import GradeIcon from '@mui/icons-material/Grade';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarsIcon from '@mui/icons-material/Stars';
 import { CardRarity, PokemonGym } from '../../../shared/sharedTypes';
 
 export const rarityColors = {
@@ -52,6 +52,7 @@ export function getCardGradient(rarity: CardRarity) {
 }
 
 export function getPokemonGymImg(pokemonGym: PokemonGym) {
+    pokemonGym = pokemonGym.toLowerCase() as PokemonGym;
     switch (pokemonGym) {
         case PokemonGym.Saffron:
             return '/gymBadges/saffron_marsh.png';
@@ -349,4 +350,4 @@ export const typeStyles = {
 
 
 
-export { }
+export { };

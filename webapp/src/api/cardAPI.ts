@@ -38,4 +38,3 @@ export const getCard = async (cardId: string) => {
             throw new Error('No se ha podido obtener la carta, inténtelo de nuevo más tarde');
         });
 };
-

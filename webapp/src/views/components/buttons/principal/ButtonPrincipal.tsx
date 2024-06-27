@@ -1,81 +1,45 @@
 // MiBoton.js
+import { Typography, useTheme } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 import './buttonPrincipal.css';
-import { Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
 
-
-
-export interface ButtonProps  {
+// #region PROPS
+export interface ButtonProps {
     label?: string;
-  }
+    onClick?: () => void;
+}
+// #endregion
 
+// #region STYLES
 const StyledTypography = styled(Typography)(({ theme }) => ({
-    fontFamily:  'Pokemon', 
-    color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF',
+    color: theme.palette.mode === 'light' ? '#111111' : '#ececec', // Cambiado para adaptarse al esquema de color
     '&:hover': {
         color: '#FFFFFF',
-      },
-  }));
+    },
+}));
+// #endregion
 
-export default function ButtonPrincipal({ label }:ButtonProps) {
-    const navigate = useNavigate();
-
-    const handleLoginClick = () => {
-        navigate('/login'); 
-    };
+// #region COMPONENT ButtonPrincipal
+export default function ButtonPrincipal({ label, onClick }: ButtonProps) {
+    const theme = useTheme();
 
     const whileHover = {
         scale: 1.1,
         transition: {
-            duration: 0.5, // Duración en segundos
-            ease: "easeInOut" // Tipo de "ease". Puede ser "linear", "easeIn", "easeOut", "easeInOut", etc.
+            duration: 0.3,
+            ease: "easeInOut"
         }
     };
-    const bolita1Variants = {
-        animate: {
-            x: [0, 20, 0, -20, 0], // Movimiento circular en el eje X
-            y: [0, -20, -40, -20, 0], // Movimiento circular en el eje Y
-            transition: {
-                duration: 4,
-                ease: "linear",
-                repeat: Infinity,
-            }
-        }
-    };
-    const bolita2Variants = {
-        animate: {
-            x: [0, 30, 0, -40, 0], // Movimiento circular en el eje X
-            y: [0, -30, -60, -40, 0], // Movimiento circular en el eje Y
-            transition: {
-                duration: 4,
-                ease: "linear",
-                repeat: Infinity,
-            }
-        }
-    };
+
     return (
         <div className="container">
-             <motion.div
-                className="bolita1"
-                variants={bolita1Variants}
-                animate="animate"
-            />
-            <motion.div
-                className="bolita2"
-                variants={bolita2Variants}
-                animate="animate"
-            />
-            <motion.button
-                className="btn"
-                whileHover={whileHover}
-                onClick={handleLoginClick}
-            >
-            <StyledTypography variant="h4" sx={{ flexGrow: 1, marginLeft: 1, marginBottom: 2 }}>  {label} </StyledTypography>
-           
+            <motion.div className="bolita bolita1" animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 2 }} />
+            <motion.div className="bolita bolita2" animate={{ opacity: [1, 0.7, 1] }} transition={{ repeat: Infinity, duration: 2.5 }} />
+            <motion.button className="btn" whileHover={whileHover} onClick={onClick} style={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF' }}>
+                <StyledTypography variant="h4" sx={{ color: 'inherit' }}>{label}</StyledTypography>
             </motion.button>
-        </div>
+        </div >
     );
 }
-
+// #endregion

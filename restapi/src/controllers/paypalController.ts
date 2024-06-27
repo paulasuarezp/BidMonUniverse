@@ -7,7 +7,11 @@ const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
 const base = "https://api-m.sandbox.paypal.com";
 
-// Middleware para verificar las credenciales de PayPal
+/**
+ * Función para generar un token de acceso a la API de PayPal
+ * @returns {string} - Access token
+ * @throws {Error} - Si no se pueden generar las credenciales de la API
+ */
 export const generateAccessToken = async () => {
     try {
         if (!PAYPAL_CLIENT_ID || !PAYPAL_CLIENT_SECRET) {
@@ -36,12 +40,15 @@ export const generateAccessToken = async () => {
             throw new Error("Failed to generate Access Token: No access token in response");
         }
     } catch (error) {
-        console.error("Failed to generate Access Token:", error);
         throw error;
     }
 };
 
-// Función para manejar la respuesta de PayPal
+/**
+ * Función para manejar la respuesta de la API de PayPal
+ * @param response - Respuesta de la API de PayPal
+ * @returns {jsonResponse, httpStatusCode} - JSON de respuesta y código de estado HTTP
+ */
 const handleResponse = async (response: any) => {
     try {
         const jsonResponse = await response.json();
@@ -59,6 +66,14 @@ const handleResponse = async (response: any) => {
     }
 };
 
+/**
+ * Función para crear una orden de PayPal
+ * @param username - Nombre de usuario
+ * @param balance - Saldo a añadir
+ * @param total - Total a pagar
+ * @returns {jsonResponse, httpStatusCode} - JSON de respuesta y código de estado HTTP
+ * @throws {Error} - Si no se puede crear la orden
+ */
 export const createOrder = async (username: string, balance: number, total: number) => {
     try {
         const accessToken = await generateAccessToken();
@@ -90,26 +105,5 @@ export const createOrder = async (username: string, balance: number, total: numb
     } catch (error) {
         console.error("Failed to create order:", error);
         throw new Error(`Failed to create order: ${error.message}`);
-    }
-};
-
-// Capturar una orden de PayPal
-export const captureOrder = async (orderID: string) => {
-    try {
-        const accessToken = await generateAccessToken();
-        const url = `${base}/v2/checkout/orders/${orderID}/capture`;
-
-        const response = await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`,
-            },
-        });
-
-        return handleResponse(response);
-    } catch (error) {
-        console.error("Failed to capture order:", error);
-        throw new Error(`Failed to capture order: ${error.message}`);
     }
 };

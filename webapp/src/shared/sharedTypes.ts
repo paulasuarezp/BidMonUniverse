@@ -140,6 +140,7 @@ export enum TransactionConcept {
     SoldOnAuction = "SoldOnAuction", // Card sold on auction
     ForSaleOnAuction = "ForSaleOnAuction", // Card for sale on auction
     WithdrawnFromAuction = "WithdrawnFromAuction", // Card withdrawn from auction
+    WithdrwanFromAuctionByAdmin = "WithdrawnFromAuctionByAdmin", // Card withdrawn from auction by admin
     BidCancelledFromAuction = "BidCancelledFromAuction", // Bid cancelled because the auction was cancelled
     BidWithdrawn = "BidWithdrawn", // Bid withdrawn
     NewBid = "NewBid", // New bid
@@ -248,4 +249,38 @@ export interface Deck {
     type: CardRarity;
     publicationDate: Date;
     cards: string[];
+}
+
+
+// NOTIFICATION TYPES
+// Notification
+export interface Notification {
+    _id?: string;
+    socketId?: string;
+    type: NotificationType;
+    message: string;
+    importance: NotificationImportance;
+    usuarioId?: string; // ObjectId de un usuario
+    username?: string; // Nombre de usuario
+    read?: boolean; // true si la notificación fue leída
+    creationDate?: Date; // Fecha de creación de la notificación
+    readDate?: Date; // Fecha de lectura de la notificación
+    realTime?: boolean; // true si la notificación se envía en tiempo real
+}
+
+// NotificationType
+export enum NotificationType {
+    BidWinner = "bidwinner",
+    AuctionCancelled = "auctioncancelled",
+    CardSold = "auctioncardsold",
+    CardNotSold = "auctioncardnotsold",
+    CardGifted = "cardgifted",
+    System = "system"
+}
+
+// Notification importance
+export enum NotificationImportance {
+    Low = "low",
+    Medium = "medium",
+    High = "high"
 }

@@ -1,15 +1,16 @@
+import { Avatar, Button, ButtonProps, Stack, Typography, useMediaQuery } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import * as React from 'react';
-import { Avatar, Stack, Button, Typography, ButtonProps } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-import { useMediaQuery } from '@mui/material';
 
+// #region PROPS
 interface UserButtonProps extends ButtonProps {
     name: string;
     imageUrl: string;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
+// #endregion
 
+// #region STYLES
 const StyledButton = styled(Button)(({ theme }) => ({
     fontWeight: 'bold',
     letterSpacing: '0.1em',
@@ -34,8 +35,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
         border: 'none',
     },
 }));
+// #endregion
 
 
+// #region COMPONENT UserProfileButton
 export default function UserProfileButton({ name, imageUrl, ...rest }: UserButtonProps) {
     const theme = useTheme();
 
@@ -50,11 +53,8 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
                     sx={{
                         width: 32,
                         height: 32,
-                        color: 'black',
-                        bgcolor: 'transparent',
-                        backgroundImage: 'url("/selva.avif")', // Imagen de fondo
-                        backgroundSize: 'cover', // Cubrir el área completa del avatar
-                        backgroundPosition: 'center' // Centrar la imagen de fondo
+                        color: theme.palette.getContrastText(theme.palette.background.paper),
+                        bgcolor: theme.palette.background.paper,
                     }}
                 >
                     {name.charAt(0).toUpperCase()}
@@ -64,4 +64,4 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
         </StyledButton>
     );
 };
-
+// #endregion

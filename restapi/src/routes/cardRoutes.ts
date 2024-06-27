@@ -7,15 +7,8 @@ const cardRouter: Router = express.Router();
 cardRouter.use(auth);
 
 import {
-    getCards,
     getCard
 } from '../controllers/cardController';
-
-/**
- * Ruta para obtener todas las cartas
- * @route GET /cards
- */
-cardRouter.get('/', getCards);
 
 /**
  * Ruta para obtener una carta por su ID
@@ -32,8 +25,5 @@ cardRouter.get('/:cardId', [
         next();
     }
 ], getCard);
-
-
-
 
 export default cardRouter;

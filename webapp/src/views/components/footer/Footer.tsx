@@ -1,10 +1,9 @@
 import EmailIcon from '@mui/icons-material/Email';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import PhoneIcon from '@mui/icons-material/Phone';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import { AppBar, Box, IconButton, Link, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { AppBar, Box, IconButton, Link, Toolbar, Typography, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
 
 //#region STYLES
 const StyledFooter = styled(AppBar)(({ theme }) => ({
@@ -58,7 +57,16 @@ const SocialMediaIcons = styled(Box)(({ theme }) => ({
 //#region COMPONENTE FOOTER
 export default function Footer() {
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const navigate = useNavigate();
+
+    const handleAboutClick = () => {
+        navigate('/about');
+    };
+
+    const handleHomeClick = () => {
+        navigate('/');
+    };
+
 
     return (
         <StyledFooter position="relative">
@@ -68,18 +76,15 @@ export default function Footer() {
                         <Typography variant="h6" gutterBottom>
                             Secciones
                         </Typography>
-                        <FooterLink href="#inicio">Inicio</FooterLink>
-                        <FooterLink href="#acerca-de">Acerca de</FooterLink>
+                        <FooterLink onClick={handleHomeClick}>Inicio</FooterLink>
+                        <FooterLink onClick={handleAboutClick}>Acerca de</FooterLink>
                     </FooterSection>
                     <FooterSection>
                         <Typography variant="h6" gutterBottom>
                             Contacto
                         </Typography>
-                        <FooterLink href="mailto:contacto@bidmon.com">
-                            <EmailIcon fontSize="small" /> contacto@bidmon.com
-                        </FooterLink>
-                        <FooterLink href="tel:+1234567890">
-                            <PhoneIcon fontSize="small" /> +1 234 567 890
+                        <FooterLink href="mailto:uo269745@uniovi.es">
+                            <EmailIcon fontSize="small" /> uo269745@uniovi.es
                         </FooterLink>
                     </FooterSection>
                     <FooterSection>
@@ -87,19 +92,14 @@ export default function Footer() {
                             Síguenos
                         </Typography>
                         <SocialMediaIcons>
-                            <Link href="https://www.facebook.com" target="_blank">
+                            <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank">
                                 <IconButton>
-                                    <FacebookIcon />
+                                    <LinkedInIcon />
                                 </IconButton>
                             </Link>
-                            <Link href="https://www.twitter.com" target="_blank">
+                            <Link href="https://github.com/paulasuarezp" target="_blank">
                                 <IconButton>
-                                    <TwitterIcon />
-                                </IconButton>
-                            </Link>
-                            <Link href="https://www.instagram.com" target="_blank">
-                                <IconButton>
-                                    <InstagramIcon />
+                                    <GitHubIcon />
                                 </IconButton>
                             </Link>
                         </SocialMediaIcons>
@@ -107,7 +107,7 @@ export default function Footer() {
                 </FooterContainer>
 
                 <Box mt={2} textAlign="center" width="100%">
-                    <Typography variant="body2" color="textSecondary">
+                    <Typography variant="body2" color="textSecondary" sx={{ color: '#FFFFFF' }}>
                         &copy; 2024 BidMon Universe. Todos los derechos reservados.
                     </Typography>
                 </Box>

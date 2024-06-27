@@ -6,8 +6,6 @@ import Transaction from '../models/transaction';
 import User from '../models/user';
 import { AuctionStatus, BidStatus, TransactionConcept } from '../models/utils/enums';
 
-
-
 /**
  * Realiza una puja por una carta en una subasta.
  * 
@@ -57,7 +55,7 @@ const createBid = async (req: Request, res: Response) => {
 
         // Verificar que no haya una puja previa del mismo usuario
         const previousBid = await Bid.findOne({ auction: auctionId, username: username }).session(session);
-        if (previousBid) {
+        if (previousBid && previousBid.status as BidStatus === BidStatus.Pending) {
             throw new Error("Ya has realizado una puja en esta subasta.");
         }
 
@@ -114,80 +112,6 @@ const createBid = async (req: Request, res: Response) => {
         await session.abortTransaction();
         session.endSession();
         res.status(500).json({ message: error.message });
-    }
-}
-
-/**
- * Obtiene todas las pujas realizadas por un usuario específico.
- * 
- * Proceso:
- * 1. Se recuperan todas las pujas realizadas por el usuario.
- * 2. Se devuelven las pujas.
- * 
- * @param {Request} req - La solicitud HTTP, debe contener el nombre del usuario en el cuerpo o en los parámetros de la consulta.
- * @param {Response} res - La respuesta HTTP, retorna las pujas realizadas por el usuario o un mensaje de error en caso de fallo.
- * 
- * @returns {Promise<Bid[]>} Una promesa que resuelve con un arreglo de pujas si la operación es exitosa.
- * 
- * @throws {Error} 404 - Si el usuario no existe.
- * @throws {Error} 500 - Si se produce un error al obtener las pujas.
- */
-const getBidHistoryByUser = async (req: Request, res: Response) => {
-    try {
-        let { username } = req.params;
-
-        username = username.toLowerCase();
-
-        const user = await User.findOne({ username_lower: username });
-        if (!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado.'
-            });
-        }
-        const bids = await Bid.find({ username: username });
-        res.status(200).json(bids);
-    } catch (error) {
-        return res.status(500).json({
-            message: 'Se ha producido un error al buscar las pujas realizadas por el usuario. Por favor, inténtelo de nuevo.'
-        });
-    }
-}
-
-/**
- * Obtiene todas las pujas realizadas en una subasta específica.
- * 
- * Proceso:
- * 1. Se recupera la subasta específica usando el identificador proporcionado.
- * 2. Se recuperan todas las pujas realizadas en la subasta.
- * 3. Se devuelven las pujas.
- * 
- * @param {Request} req - La solicitud HTTP, debe contener el identificador de la subasta en los parámetros de la consulta.
- * @param {Response} res - La respuesta HTTP, retorna las pujas realizadas en la subasta o un mensaje de error en caso de fallo.
- * 
- * @returns {Promise<Bid[]>} Una promesa que resuelve con un arreglo de pujas si la operación es exitosa.
- * 
- * @throws {Error} 404 - Si la subasta no existe.
- * @throws {Error} 500 - Si se produce un error al obtener las pujas.
- */
-const getBidHistoryByAuction = async (req: Request, res: Response) => {
-    try {
-        const { auctionId } = req.params;
-
-        const auction = await Auction.findOne({ auction: auctionId });
-        if (!auction) {
-            return res.status(404).json({
-                message: 'Subasta no encontrada.'
-            });
-        }
-
-        const bids = await Bid.find({ auctionId: auctionId });
-
-        res.status(200).json(bids);
-
-    } catch (error) {
-        return res.status(500).json({
-            message: 'Se ha producido un error al buscar las pujas realizadas en la subasta. Por favor, inténtelo de nuevo.'
-        });
     }
 }
 
@@ -338,7 +262,4 @@ const getBidById = async (req: Request, res: Response) => {
     }
 }
 
-
-
-export { createBid, getActiveBidsByUser, getBidById, getBidHistoryByAuction, getBidHistoryByUser, withdrawBid };
-
+export { createBid, getActiveBidsByUser, getBidById, withdrawBid };

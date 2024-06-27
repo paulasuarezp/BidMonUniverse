@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts",
+    "build": "tsc",
     "test": "NODE_ENV=test jest --verbose --silent=false --runInBand --coverage",
     "test:watch": "npm run test -- --watch",
     "fetch-data": "ts-node src/scripts/fetchPokemonData.ts",
@@ -25,6 +26,7 @@
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
     "csv-writer": "^1.6.0",
+    "dayjs": "^1.11.11",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
     "express-prom-bundle": "^6.6.0",
@@ -37,7 +39,8 @@
     "paypal-rest-sdk": "^1.8.1",
     "prom-client": "^14.1.1",
     "socket.io": "^4.7.5",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

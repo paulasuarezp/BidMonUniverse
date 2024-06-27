@@ -1,6 +1,6 @@
-import Deck, { IDeck } from '../models/deck';
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';
+import Deck, { IDeck } from '../models/deck';
 
 /**
  * Obtiene todos los mazos de cartas registrados en la base de datos.
@@ -49,17 +49,11 @@ const getDeck = async (req: Request, res: Response) => {
  * @throws Error si ocurre un error al buscar el mazo.
  */
 async function getDeckByDeckId(deckId: string, session: ClientSession): Promise<IDeck | null> {
-    // return Deck.findById(deckId).session(session).populate('cards').exec() as Promise<IDeck | null>;
     return Deck.findOne({ deckId: deckId }).session(session).populate('cards').exec() as Promise<IDeck | null>;
 }
 
-
-
-
-
 // Exportar funciones de controlador
 export {
-    getDecks,
     getDeck,
-    getDeckByDeckId
+    getDeckByDeckId, getDecks
 };

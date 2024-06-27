@@ -1,8 +1,8 @@
-import { model, Schema, Document } from 'mongoose';
+import { Document, Schema, Types, model } from 'mongoose';
 import { NotificationImportance, NotificationType } from './utils/enums';
 
 export interface INotification extends Document {
-  usuarioId: Schema.Types.ObjectId; // ObjectId de un usuario
+  usuarioId: Types.ObjectId; // ObjectId de un usuario
   username: string; // Nombre de usuario
   type: NotificationType; // Tipo de notificación
   message: string; // Mensaje de la notificación
@@ -13,7 +13,7 @@ export interface INotification extends Document {
   realTime: boolean; // true si la notificación se envía en tiempo real
 }
 
-const notificationSchema = new Schema<INotification>({
+const notificationSchema = new Schema({
   usuarioId: {
     type: Schema.Types.ObjectId,
     required: true,

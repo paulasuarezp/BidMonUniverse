@@ -7,7 +7,7 @@ import { RootState } from "../../../../redux/store";
 import { Auction } from "../../../../shared/sharedTypes";
 import BaseForm from "../BaseForm";
 
-function WithdrawnAuctionForm({ open, handleClose, auctionId }) {
+function WithdrawnAuctionForm({ open, handleClose, openWithWarning = false, auctionId }) {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state: RootState) => state.user.username);
     const [loading, setLoading] = useState(false);
@@ -39,6 +39,7 @@ function WithdrawnAuctionForm({ open, handleClose, auctionId }) {
             content={<Typography>¿Estás seguro que deseas retirar esta subasta?</Typography>}
             loading={loading}
             error={error}
+            warning={openWithWarning && 'No se puede retirar la subasta en estos momentos. Por favor, inténtalo de nuevo más tarde.'}
             successMessage={success && successMessage}
             actions={[
                 { onClick: handleClose, label: 'Cancelar', buttonType: 'cancel' },

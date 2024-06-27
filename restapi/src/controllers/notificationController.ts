@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
-import mongoose from 'mongoose';
-import Notification, {INotification} from '../models/notification';
-import User from '../models/user';
 import { io } from '../../server';
+import Notification, { INotification } from '../models/notification';
+import User from '../models/user';
 
 /**
  * Recupera el histórico de notificaciones de un usuario específico.
@@ -37,8 +36,7 @@ const getNotifications = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el ID de la notificación a marcar como leída.
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un valor booleano que indica si la operación fue exitosa.
  *
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede marcar la notificación como leída debido a problemas de conexión, falta de autorización,
  * o cualquier otro problema técnico.
@@ -47,7 +45,7 @@ const markAsRead = async (req: Request, res: Response) => {
     let notificationId = req.params.notificationId;
     try {
         const notification = await Notification.findByIdAndUpdate(notificationId, { read: true, readDate: new Date() });
-        res.status(200).json({ message: "Notificación marcada como leída." });
+        res.status(200).json(!!notification);
     } catch (error) {
         res.status(500).json({ message: "Error al marcar la notificación como leída." });
     }
@@ -60,107 +58,25 @@ const markAsRead = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  * 
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un valor booleano que indica si la operación fue exitosa.
  * 
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se pueden marcar las notificaciones como leídas debido a problemas de conexión, falta de autorización,
  */
 const markAllAsRead = async (req: Request, res: Response) => {
-    let username = req.params.username.toLowerCase();
+    const username = req.params.username.toLowerCase();
     try {
-        await Notification.updateMany({ username: username }, { read: true, readDate: new Date() });
-        res.status(200).json({ message: "Notificaciones marcadas como leídas." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al marcar las notificaciones como leídas." });
-    }
-}
+        const result = await Notification.updateMany(
+            { username: username, read: false },
+            { read: true, readDate: new Date() }
+        );
+        const notificationsUpdated = result.modifiedCount;
 
-/**
- * Elimina una notificación específica.
- * Esta función elimina una notificación de la base de datos, utilizando su ID único.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir el ID de la notificación a eliminar.
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede eliminar la notificación debido a problemas de conexión, falta de autorización,
- * o cualquier otro problema técnico.
- */
-const deleteNotification = async (req: Request, res: Response) => {
-    let notificationId = req.params.notificationId;
-    try {
-        await Notification.findByIdAndDelete(notificationId);
-        res.status(200).json({ message: "Notificación eliminada." });
+        res.status(200).json(notificationsUpdated > 0);
     } catch (error) {
-        res.status(500).json({ message: "Error al eliminar la notificación." });
+        res.status(500).json({ message: "Error al marcar las notificaciones como leídas.", error });
     }
-}
+};
 
-/**
- * Elimina todas las notificaciones de un usuario.
- * Esta función elimina todas las notificaciones asociadas a un nombre de usuario específico.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario en algún campo del request (ej. req.body o req.params).
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se pueden eliminar las notificaciones debido a problemas de conexión, falta de autorización,
- * o cualquier otro problema técnico.
- */
-const deleteAllNotifications = async (req: Request, res: Response) => {
-    let username = req.params.username.toLowerCase();
-    try {
-        await Notification.deleteMany({ username: username });
-        res.status(200).json({ message: "Notificaciones eliminadas." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al eliminar las notificaciones." });
-    }
-}
-
-/**
- * Crea una nueva notificación.
- * Esta función crea una nueva notificación en la base de datos, utilizando los datos proporcionados en el cuerpo de la solicitud.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir los datos de la notificación en el cuerpo de la solicitud.
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede crear la notificación debido a problemas de conexión, falta de autorización, o cualquier otro problema técnico.
- */
-const createNotification = async (req: Request, res: Response) => {
-    let { username, type, message, importance, realTime } = req.body;
-    try {
-        const user = await User.findOne({username_lower: username.toLowerCase()});
-        if (!user) {
-            return res.status(404).json({ message: "Usuario no encontrado." });
-        }
-        const newNotification = new Notification({
-            usuarioId: user._id,
-            username: username,
-            type: type,
-            message: message,
-            read: false,
-            creationDate: new Date(),
-            importance: importance,
-            realTime: realTime
-        });
-        await newNotification.save();
-
-        // Si la notificación es en tiempo real, enviarla a través de un servicio de mensajería en tiempo real
-        if (realTime) {
-            sendRealTimeNotification(newNotification);
-        }
-        res.status(201).json({ message: "Notificación creada." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al crear la notificación." });
-    }
-}
 
 /**
  * Comprueba si el usuario tiene notificaciones sin leer.
@@ -170,7 +86,7 @@ const createNotification = async (req: Request, res: Response) => {
  * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario.
  * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
  * 
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un objeto JSON que contiene un campo "hasUnreadNotifications" con un valor booleano.
+ * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un objeto JSON con un valor booleano.
  * 
  * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede realizar la verificación debido a problemas de conexión, falta de autorización, o cualquier otro problema técnico.
  */
@@ -178,12 +94,11 @@ const hasUnreadNotifications = async (req: Request, res: Response) => {
     let username = req.params.username.toLowerCase();
     try {
         const unreadNotifications = await Notification.exists({ username: username, read: false });
-        res.status(200).json({ hasUnreadNotifications: unreadNotifications });
+        res.status(200).json(!!unreadNotifications);
     } catch (error) {
         res.status(500).json({ message: "Error al verificar las notificaciones." });
     }
 }
-
 
 /**
  * Envía una notificación a un usuario específico.
@@ -199,7 +114,7 @@ const hasUnreadNotifications = async (req: Request, res: Response) => {
  */
 const sendNotification = async (notification: INotification) => {
     try {
-        const user = await User.findOne({username_lower: notification.username.toLowerCase()});
+        const user = await User.findOne({ username_lower: notification.username.toLowerCase() });
         if (!user) {
             throw new Error("Usuario no encontrado.");
         }
@@ -249,13 +164,6 @@ const sendRealTimeNotification = (notification: INotification) => {
 }
 
 
-export { 
-    getNotifications, 
-    markAsRead, 
-    markAllAsRead,
-    deleteNotification, 
-    deleteAllNotifications, 
-    createNotification, 
-    hasUnreadNotifications,
-    sendNotification
+export {
+    getNotifications, hasUnreadNotifications, markAllAsRead, markAsRead, sendNotification
 };

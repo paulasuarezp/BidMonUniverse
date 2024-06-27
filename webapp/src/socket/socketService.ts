@@ -1,11 +1,15 @@
 // src/socket.ts
 import io, { Socket } from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
+import { addNotification, resetNotifications } from '../redux/slices/notificationSlice';
+import { store } from '../redux/store';
+import { Notification } from '../shared/sharedTypes';
 
 const SERVER_URL = 'http://localhost:5001';  // URL del servidor Socket.IO
 
 let socket: Socket;
 
-function connectSocket(token: string, username:string) {
+function connectSocket(token: string, username: string) {
     // Desconectar cualquier socket existente
     if (socket) {
         socket.disconnect();
@@ -27,6 +31,14 @@ function connectSocket(token: string, username:string) {
 
     socket.on('notification', (data: any) => {
         console.log('Received notification:', data);
+        let notification: Notification = {
+            socketId: uuidv4(),
+            type: data.type,
+            message: data.message,
+            importance: data.importance
+        };
+        console.log('Notification en socketservice:', notification);
+        store.dispatch(addNotification({ notification: notification }));
     });
 
     socket.on('connect_error', (err: Error) => {
@@ -37,7 +49,8 @@ function connectSocket(token: string, username:string) {
 function disconnectSocket() {
     if (socket) {
         socket.disconnect();
+        store.dispatch(resetNotifications());
     }
 }
 
-export { connectSocket, disconnectSocket };
+export { connectSocket, disconnectSocket, socket };

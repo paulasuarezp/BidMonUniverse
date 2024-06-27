@@ -1,9 +1,13 @@
-import { Grid, Typography, useTheme, useMediaQuery, GridProps } from '@mui/material';
+import { Grid, GridProps, Typography, useMediaQuery, useTheme } from '@mui/material';
+
+// #region PROPS
 interface PokeballsBoxProps extends GridProps {
     titulo: string;
 }
+// #endregion
 
-
+// #region COMPONENT PokeballsBox
+// Componente que muestra una caja con pokeballs a los lados y un título en el centro
 export default function PokeballsBox({ titulo, ...props }: PokeballsBoxProps) {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -48,3 +52,4 @@ export default function PokeballsBox({ titulo, ...props }: PokeballsBoxProps) {
         </Grid>
     );
 }
+// #endregion

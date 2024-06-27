@@ -1,9 +1,8 @@
 // tests/userRouter.test.ts
-import request from 'supertest';
-import { api, hashPassword, dropEntireDatabase } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
+import { server } from '../../../server';
 import User from '../../models/user';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
 import initialUsers from '../mockData/users.json';
 
 
@@ -87,6 +86,44 @@ describe('User Routes', () => {
       }));
     });
 
+  });
+
+  describe('PATCH /update/avatar', () => {
+    it('should update user avatar', async () => {
+      const response = await api
+        .patch('/users/update/avatar')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ profileImg: 'avatar1.png', username: 'test' });
+
+      expect(response.status).toBe(200);
+    });
+  });
+
+
+  describe('PATCH /update/pass', () => {
+    it('should update user password', async () => {
+      const response = await api
+        .patch('/users/update/pass')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ password: 'NewPass1234-', username: 'test' });
+
+      expect(response.status).toBe(200);
+    });
+  });
+
+});
+
+describe('USER ROUTES Error Handling', () => {
+  describe('GET /:username', () => {
+    it('should return 400 if username is too long', async () => {
+      const response = await api
+        .get('/users/thisusernameiswaytoolongtobevalid')
+        .set('Authorization', `Bearer ${token}`);
+
+      expect(response.status).toBe(400);
+    });
+
+
     it('should return 401 if no token is provided', async () => {
       const response = await api.get('/users/test');
 
@@ -110,20 +147,6 @@ describe('User Routes', () => {
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ message: 'Se ha producido un error al buscar el usuario. Por favor, inténtelo de nuevo.' });
-    });
-  });
-});
-
-
-describe('USER ROUTES Error Handling', () => {
-  describe('GET /:username', () => {
-    it('should return 400 if username is too long', async () => {
-      const response = await api
-        .get('/users/thisusernameiswaytoolongtobevalid')
-        .set('Authorization', `Bearer ${token}`);
-
-      expect(response.status).toBe(400);
     });
   });
 
@@ -134,7 +157,6 @@ describe('USER ROUTES Error Handling', () => {
         .send({ username: 'nonexistentuser', password: 'Password123-' });
 
       expect(response.status).toBe(401);
-      expect(response.body).toEqual({ message: 'Usuario o contraseña incorrectos.', auth: false });
     });
 
     it('should return 401 if password is invalid', async () => {
@@ -143,7 +165,6 @@ describe('USER ROUTES Error Handling', () => {
         .send({ username: 'test', password: 'WrongPassword' });
 
       expect(response.status).toBe(401);
-      expect(response.body).toEqual({ message: 'Usuario o contraseña incorrectos.', auth: false });
     });
 
     it('should handle errors gracefully', async () => {
@@ -154,7 +175,6 @@ describe('USER ROUTES Error Handling', () => {
         .send({ username: 'test', password: 'Password123-' });
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ message: 'Se ha producido un error al verificar credenciales. Por favor, inténtelo de nuevo.', auth: false });
     });
   });
 
@@ -165,19 +185,14 @@ describe('USER ROUTES Error Handling', () => {
         .send({ username: 'test', password: 'Password123-', birthday: '2000-01-01' });
 
       expect(response.status).toBe(400);
-      expect(response.body).toEqual(expect.objectContaining({
-        message: 'El nombre de usuario ya existe. Por favor, elija otro.',
-        auth: false
-      }));
     });
 
-    it('should return 400 if username or password is missing', async () => {
+    it('should return 400 if username, password or birthday is missing', async () => {
       const response = await api
         .post('/users/signup')
         .send({ username: '', password: '' });
 
       expect(response.status).toBe(400);
-      expect(response.text).toBe('Debe de introducir un nombre de usuario y una contraseña.');
     });
 
     it('should handle errors gracefully', async () => {

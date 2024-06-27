@@ -2,38 +2,48 @@ import { ErrorTwoTone } from '@mui/icons-material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Box, CircularProgress, Dialog, DialogActions, DialogContent, Grow, GrowProps, Typography } from '@mui/material';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Button from '../buttons/Button';
 
+// #region INTERFACE Action
 interface Action {
     onClick: () => void;
     label: string;
     buttonType?: 'primary' | 'secondary' | 'ghost' | 'back' | 'confirm' | 'cancel';
 }
+// #endregion
 
+// #region INTERFACE BaseFormProps
 interface BaseFormProps {
     open: boolean;
     onClose: () => void;
     title?: string;
     content: JSX.Element;
     loading: boolean;
-    error: string;
+    error?: string;
     warning?: string;
     successMessage?: string;
     actions: Action[];
     showIcon?: 'warning' | 'error' | 'success' | 'none';
 }
+// #endregion
 
-const Transition = React.forwardRef(function Transition(
+
+const Transition = forwardRef(function Transition(
     props: GrowProps & { children: React.ReactElement<any, any> },
     ref: React.Ref<unknown>,
 ) {
     return <Grow {...props} ref={ref} />;
 });
 
-const BaseForm = ({ open, onClose, title, content, loading, error, warning = '', successMessage, actions, showIcon = 'none' }: BaseFormProps) => {
+// #region COMPONENT BaseForm
+// Formulario base para mostrar mensajes de error, warning, éxito o carga
+export default function BaseForm({ open, onClose, title, content, loading, error, warning = '', successMessage, actions, showIcon = 'none' }: BaseFormProps) {
 
-
+    /**
+     * Elige el icono a mostrar en función del tipo de mensaje
+     * @returns 
+     */
     const chooseIcon = () => {
         switch (showIcon) {
             case 'warning':
@@ -87,7 +97,7 @@ const BaseForm = ({ open, onClose, title, content, loading, error, warning = '',
                 ) : (
                     <>
                         {showIcon && chooseIcon()}
-                        {title && <Typography variant="h6">{title}</Typography>}
+                        {title && <Typography variant="h5">{title}</Typography>}
                         {content}
                     </>
                 )}
@@ -102,5 +112,4 @@ const BaseForm = ({ open, onClose, title, content, loading, error, warning = '',
         </Dialog>
     );
 };
-
-export default BaseForm;
+// #endregion

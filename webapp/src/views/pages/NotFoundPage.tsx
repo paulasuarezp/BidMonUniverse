@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/buttons/Button';
 import Container from '../components/container/Container';
-import NavigationMenu from '../components/menus/principalNav/Navigation';
 
 
 //#region STYLES
@@ -46,7 +45,6 @@ export default function NotFoundPage() {
 
   return (
     <Container>
-      <NavigationMenu />
       <StyledPaper
         elevation={3}
         sx={{
@@ -64,7 +62,7 @@ export default function NotFoundPage() {
           <img src={imageSource} alt="Pokémon Confundido" style={{ alignSelf: 'center', maxWidth: '80%', height: 'auto' }} />
 
 
-          <Button buttonType="primary" label='Volver al inicio' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
+          <Button buttonType="primary" label='Volver a la página de inicio' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
 
         </Box>
       </StyledPaper>

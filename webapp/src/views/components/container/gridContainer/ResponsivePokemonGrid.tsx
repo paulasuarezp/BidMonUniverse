@@ -2,15 +2,23 @@ import { Box, CircularProgress, Grid, useMediaQuery, useTheme } from '@mui/mater
 import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
-import ErrorMessageBox from '../../MessagesBox/ErrorMessageBox';
-import SurpriseMessageBox from '../../MessagesBox/SurpriseMessageBox';
 import PokemonCard from '../../card/PokemonCard';
+import ErrorMessageBox from '../../messages/ErrorMessageBox';
+import SurpriseMessageBox from '../../messages/SurpriseMessageBox';
 
+// #region PROPS
 interface ResponsivePokemonGridProps {
     username: string;
     limit?: boolean;
 }
+// #endregion
 
+// #region COMPONENT ResponsivePokemonGrid
+/**
+ * Grid de cartas responsive
+ * @param username - Nombre de usuario
+ * @param limit - Límite de cartas a mostrar
+ */
 const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGridProps) => {
     const theme = useTheme();
     const isXs = useMediaQuery(theme.breakpoints.down('xs'));
@@ -23,6 +31,10 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    /**
+     * Función para obtener el número de columnas en función del tamaño de la pantalla
+     * @returns Número de columnas
+     */
     const getGridListCols = () => {
         if (isXs) return 1; // En teléfonos móviles, mostrar una sola columna
         if (isSm) return 2; // En tablets pequeñas, mostrar dos columnas
@@ -32,7 +44,10 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
     };
 
 
-    useEffect(() => {
+    /**
+     * Función para obtener los datos de las cartas del usuario
+     */
+    const fetchData = async () => {
         setLoading(true);
 
         getUserCardCollection(username)
@@ -50,16 +65,24 @@ const ResponsivePokemonGrid = ({ username, limit = true }: ResponsivePokemonGrid
             })
             .catch((error) => {
                 setLoading(false);
-                setError('Error al obtener la colección de cartas');
+                setError('Se ha producido un error al obtener las cartas de su colección.');
                 setNumberOfCards(0);
             });
-
-    }, []);
-
-    if (loading) {
-        return <Box style={{ textAlign: 'center' }}><CircularProgress /></Box>;
     }
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    // LOADING
+    if (loading) {
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100vw', }}><CircularProgress /> </Box>
+        );
+    }
+
+
+    // ERROR
     if (error) {
         return <ErrorMessageBox message={error} />;
     }

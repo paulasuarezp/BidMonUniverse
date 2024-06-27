@@ -1,201 +1,126 @@
 import { Button as MuiButton, ButtonProps as MuiButtonProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-//#region PROPS
-// Only include variant, size, and color
-//type ButtonBaseProps = Pick<MuiButtonProps, 'variant' | 'size' | 'color'>;
-
-// Use all except disableRipple
 type ButtonBaseProps = Omit<MuiButtonProps, "disableRipple">;
 
+// #region PROPS
 export interface ButtonProps extends ButtonBaseProps {
   label?: string;
   buttonType?: 'primary' | 'secondary' | 'ghost' | 'back' | 'confirm' | 'cancel' | 'section';
 }
-//#endregion
+// #endregion
 
-//#region STYLES
+// #region STYLES
+const defaultStyles = ({ theme }: any) => ({
+  fontWeight: 'bold',
+  textTransform: 'none',
+  border: 'none',
+  '&:hover': {
+    border: 'none',
+  },
+  '&:active': {
+    border: 'none',
+  },
+  '&:focus': {
+    border: 'none',
+  },
+  '&.Mui-focusVisible': {
+    outline: 'none',
+    boxShadow: 'none',
+  },
+});
+
 const StyledButton = styled(MuiButton, {
-  shouldForwardProp: (prop) => prop !== 'buttonType', // Filtrar propiedad personalizada para evitar errores en el DOM
+  shouldForwardProp: (prop) => prop !== 'buttonType',
 })<ButtonProps>(({ theme, buttonType }) => {
-  return {
-    ...(buttonType === 'primary' && {
-      color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000', // Color del texto dependiendo del tema
+  const commonStyles = defaultStyles({ theme });
+
+  const typeStyles: any = {
+    primary: {
+      color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000',
       backgroundColor: theme.palette.primary.main,
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'contained',
-      boxShadow: theme.palette.mode === 'light' ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : '0px 4px 8px rgba(255, 255, 255, 0.2)', // Sombra según el tema
-      border: 'none', // Sin borde
+      boxShadow: theme.palette.mode === 'light' ? '0px 4px 8px rgba(0, 0, 0, 0.2)' : '0px 4px 8px rgba(255, 255, 255, 0.2)',
       '&:hover': {
         backgroundColor: theme.palette.primary.dark,
-        color: theme.palette.mode === 'light' ? '#FFFFFF' : '#FFFFFF', // Color del texto dependiendo del tema
-        boxShadow: theme.palette.mode === 'light' ? '0px 6px 12px rgba(0, 0, 0, 0.3)' : '0px 6px 12px rgba(255, 255, 255, 0.3)', // Sombra más intensa al hacer hover
+        boxShadow: theme.palette.mode === 'light' ? '0px 6px 12px rgba(0, 0, 0, 0.3)' : '0px 6px 12px rgba(255, 255, 255, 0.3)',
       },
-      '&:active': {
-        border: 'none', // Sin borde
-      },
-      '&:focus': {
-        border: 'none', // Sin borde
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-    ...(buttonType === 'ghost' && {
+    },
+    ghost: {
       color: theme.palette.primary.main,
       border: `0.1em solid ${theme.palette.primary.main}`,
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'outlined',
       backgroundColor: 'transparent',
       '&:hover': {
         backgroundColor: theme.palette.primary.light,
-        color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000', // Color del texto dependiendo del tema
+        color: theme.palette.primary.contrastText,
         border: `0.1em solid ${theme.palette.primary.light}`,
       },
-      '&:active': {
-        border: `0.1em solid ${theme.palette.primary.light}`, // Borde del mismo color que el backgroundColor
-      },
-      '&:focus': {
-        border: `0.1em solid ${theme.palette.primary.light}`, // Borde del mismo color que el backgroundColor
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-    ...(buttonType === 'secondary' && {
-      color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000', // Color del texto dependiendo del tema
+    },
+    secondary: {
+      color: theme.palette.mode === 'light' ? '#FFFFFF' : '#000000',
       backgroundColor: theme.palette.secondary.main,
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'contained',
-      border: 'none', // Sin borde
       '&:hover': {
         backgroundColor: theme.palette.secondary.dark,
-        color: theme.palette.mode === 'light' ? '#FFFFFF' : '#FFFFFF', // Color del texto dependiendo del tema
       },
-      '&:active': {
-        border: 'none', // Sin borde
-      },
-      '&:focus': {
-        border: 'none', // Sin borde
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-    ...(buttonType === 'back' && {
+    },
+    back: {
       color: theme.palette.error.main,
       backgroundColor: 'transparent',
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'text',
-      border: 'none', // Sin borde
       '&:hover': {
         backgroundColor: theme.palette.error.light,
-        color: theme.palette.mode === 'light' ? theme.palette.error.main : theme.palette.error.contrastText, // Color del texto dependiendo del tema
+        color: theme.palette.mode === 'light' ? theme.palette.error.main : theme.palette.error.contrastText,
       },
-      '&:active': {
-        border: 'none', // Sin borde
-      },
-      '&:focus': {
-        border: 'none', // Sin borde
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-    ...(buttonType === 'confirm' && {
+    },
+    confirm: {
       color: theme.palette.success.contrastText,
       backgroundColor: theme.palette.success.dark,
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'contained',
-      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08)', // Sombras
-      transition: 'background-color 0.3s ease, box-shadow 0.3s ease', // Transiciones suaves
-      border: 'none', // Sin borde
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08)',
+      transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
       '&:hover': {
         backgroundColor: theme.palette.success.main,
-        color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF', // Color del texto dependiendo del tema
-        boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.10)', // Sombras más fuertes al hacer hover
+        boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.10)',
       },
-      '&:active': {
-        border: 'none', // Sin borde
-      },
-      '&:focus': {
-        border: 'none', // Sin borde
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-    ...(buttonType === 'cancel' && {
-      color: theme.palette.mode === 'light' ? theme.palette.error.main : '#000000', // Color del texto dependiendo del tema
+    },
+    cancel: {
+      color: theme.palette.mode === 'light' ? theme.palette.error.main : '#000000',
       backgroundColor: theme.palette.error.light,
-      fontWeight: 'bold', // Texto en negrita
-      variant: 'contained',
-      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08)', // Sombras
-      transition: 'background-color 0.3s ease, box-shadow 0.3s ease', // Transiciones suaves
-      border: 'none', // Sin borde
+      boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1), 0px 1px 3px rgba(0, 0, 0, 0.08)',
+      transition: 'background-color 0.3s ease, box-shadow 0.3s ease',
       '&:hover': {
         backgroundColor: theme.palette.error.dark,
-        color: '#FFFFFF', // Color del texto blanco
-        boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.10)', // Sombras más fuertes al hacer hover
+        color: '#FFFFFF',
+        boxShadow: '0px 5px 8px rgba(0, 0, 0, 0.15), 0px 2px 4px rgba(0, 0, 0, 0.10)',
       },
-      '&:active': {
-        border: 'none', // Sin borde
-      },
-      '&:focus': {
-        border: 'none', // Sin borde
-      },
-      '&.Mui-focusVisible': {
-        outline: 'none', // Sin outline
-        boxShadow: 'none', // Sin sombra
-      },
-    }),
-
-    ...(buttonType === 'section' && {
-      color: theme.palette.mode === 'light' ? theme.palette.primary.main : '#FFFFFF', // Color del texto dependiendo del tema
+    },
+    section: {
+      color: theme.palette.mode === 'light' ? theme.palette.primary.main : '#FFFFFF',
       backgroundColor: 'transparent',
-      border: 'none',
       boxShadow: 'none',
-      fontSize: '1.4em', // Tamaño de fuente
-      fontWeight: 'bold', // Texto normal sin negrita
-      padding: 0, // Sin padding extra
-
+      fontSize: '1.4em',
+      padding: 0,
       '& .MuiSvgIcon-root': {
         color: theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.secondary.main,
       },
       '&:hover': {
-        // Al hacer hover, se muestra como un botón más tradicional
         color: theme.palette.mode === 'light' ? '#FFFFFF' : '#FFFFFF',
         backgroundColor: theme.palette.primary.main,
-        fontWeight: 'bold',
         boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-        padding: theme.spacing(1), // Agregar un poco de padding
+        padding: theme.spacing(1),
         '& .MuiSvgIcon-root': {
           color: theme.palette.primary.contrastText,
         },
       },
-
-      // Eliminar estilos de foco y activo para mantener un diseño limpio
-      '&:active, &:focus, &.Mui-focusVisible': {
-        outline: 'none',
-        boxShadow: 'none',
-      },
-
-      // Transiciones suaves para cambios en el hover
       transition: 'background-color 0.3s ease, color 0.3s ease, padding 0.3s ease',
+    },
+  };
 
-    }),
-
-    textTransform: 'none',
+  return {
+    ...commonStyles,
+    ...typeStyles[buttonType || 'primary'],
   };
 });
-//#endregion
+// #endregion
 
-//#region COMPONENTE BUTTON
+// #region COMPONENT Button
 export default function Button(props: ButtonProps) {
   const { label = "Default Label", buttonType = "primary", ...rest } = props;
 
@@ -205,4 +130,4 @@ export default function Button(props: ButtonProps) {
     </StyledButton>
   );
 }
-//#endregion
+// #endregion

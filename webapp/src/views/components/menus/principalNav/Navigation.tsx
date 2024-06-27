@@ -9,8 +9,11 @@ import Tabs from '@mui/material/Tabs';
 import useTheme from '@mui/material/styles/useTheme';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import * as React from 'react';
+import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+// #region COMPONENT NavigationMenu
+// Menú de navegación principal, en el móvil se muestran menos opciones
 export default function NavigationMenu() {
     const [value, setValue] = React.useState('logued');
     const navigate = useNavigate();
@@ -18,6 +21,11 @@ export default function NavigationMenu() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+    /**
+     * 
+     * @param event 
+     * @param newValue 
+     */
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
         switch (newValue) {
@@ -40,15 +48,15 @@ export default function NavigationMenu() {
     };
 
 
-    React.useEffect(() => {
+    useEffect(() => {
         const path = location.pathname.replace('/', '');
 
         if (path === '') setValue('logued');
         else {
-            if (path.includes('bid')) setValue('auctions');
-            else if (path.includes('auction')) setValue('auctions');
+            if (path.includes('bid') && !isMobile) setValue('auctions');
+            else if (path.includes('auction') && !isMobile) setValue('auctions');
             else if (path.includes('card')) setValue('album');
-            else if (path.includes('transaction')) setValue('transactions');
+            else if (path.includes('transaction') && !isMobile) setValue('transactions');
             else if (path.includes('shop')) setValue('shop');
             else if (path.includes('album')) setValue('album');
             else
@@ -75,3 +83,4 @@ export default function NavigationMenu() {
         </Box>
     );
 }
+// #endregion

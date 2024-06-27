@@ -1,5 +1,5 @@
 // ThemeSwitch.tsx
-import { Switch, FormGroup, FormControlLabel, useTheme, useMediaQuery } from '@mui/material';
+import { FormControlLabel, FormGroup, Switch, useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 
@@ -59,6 +59,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 //#endregion
 
 //#region COMPONENTE THEME SWITCH
+// Componente que permite cambiar el tema de la aplicación
 export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

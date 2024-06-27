@@ -1,10 +1,8 @@
 import {
     Box,
-    Grow, GrowProps,
-    Typography,
-    useTheme
+    Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { purchaseCardPack } from '../../../../api/purchaseAPI';
 import { updateBalance } from '../../../../redux/slices/userSlice';
@@ -13,19 +11,16 @@ import { Card, CardPack } from '../../../../shared/sharedTypes';
 import PurchasedCardsModal from '../../cardpack/PurchasedCardsModal';
 import BaseForm from '../BaseForm';
 
-const Transition = React.forwardRef(function Transition(
-    props: GrowProps & { children: React.ReactElement<any, any> },
-    ref: React.Ref<unknown>,
-) {
-    return <Grow {...props} ref={ref} />;
-});
-
+// #region PROPS
 interface PurchaseCardpackConfirmProps {
     open: boolean;
     handleClose: () => void;
     cardpack: CardPack;
 }
+// #endregion
 
+// #region COMPONENT PurchaseCardpackConfirm
+// Formulario de confirmación de compra de un sobre
 export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }: PurchaseCardpackConfirmProps) {
     const dispatch = useDispatch();
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -35,21 +30,26 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
     const [successMessage, setSuccessMessage] = useState('');
     const [showCards, setShowCards] = useState(false);
     const [cards, setCards] = useState<Card[]>([]);
-    const theme = useTheme();
 
-    let id = cardpack._id;
-
-
+    // Contenido de la confirmación
     const confirmationContent = (
         <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
-            <Typography variant="body2">Precio: {cardpack.price}</Typography>
-            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+            <Typography variant='h6'>Precio: {cardpack.price}</Typography>
+            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.6em', marginLeft: 10, height: 'auto' }} />
         </Box>
 
     );
 
+    /**
+     * Función para cerrar el modal de las cartas compradas
+     * @returns 
+     */
     const handleCloseShowCards = () => setShowCards(false);
 
+    /**
+     * Función para confirmar la compra del sobre
+     * @returns 
+     */
     const handleConfirm = async () => {
         setLoading(true);
         setShowCards(false);
@@ -61,15 +61,9 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
                 setLoading(false);
                 return;
             }
-
             setCards(cards);
-
-            console.log("Sobre comprado con éxito");
-            console.log("cartas generadas: ", cards);
-
             dispatch(updateBalance(sessionUser.balance - cardpack.price));
             setSuccessMessage("¡Sobre comprado con éxito!");
-
             setTimeout(() => {
                 setShowCards(true);
                 handleClose(); // Cierra el formulario después de mostrar el éxito
@@ -113,4 +107,4 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
         </>
     );
 }
-
+// #endregion
