@@ -1,5 +1,5 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, InputAdornment, TextField, Typography } from '@mui/material';
+import { Alert, Box, InputAdornment, TextField, Typography } from '@mui/material';
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import { RootState } from '../../../redux/store';
 import Button from '../../components/buttons/Button';
 import Container from '../../components/container/Container';
 import BaseForm from '../../components/forms/BaseForm'; // Asegúrate de ajustar la ruta según sea necesario
+import PokeballsBox from '../../components/ornament/PokeballsBox';
 import Paper from '../../components/paper/Paper';
 
 //#region COMPONENTE RECHARGBALANCE
@@ -119,6 +120,7 @@ export default function RechargeBalance() {
                 onClick={handleBack}
                 label="Volver a la página de inicio"
             />
+            <PokeballsBox titulo='Recarga de Saldo' />
             <Paper
                 title="Recargar saldo"
                 imageSrc="recharge-meowth.png"
@@ -137,10 +139,11 @@ export default function RechargeBalance() {
                         ¡Elige la cantidad de saldo que deseas recargar!
                     </Typography>
                     <Box display="flex" alignItems="center" justifyContent="center" mt={1} mb={2}>
-                        <Typography variant="body2" align="center">
+                        <Alert severity="info" >
                             La conversión es de 1€ = 10 Zens
-                        </Typography>
-                        <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+                            <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
+
+                        </Alert>
                     </Box>
 
                     <TextField
@@ -229,7 +232,6 @@ export default function RechargeBalance() {
                             onApprove={async (data, actions) => {
                                 try {
                                     const orderData = await actions.order.capture();
-                                    console.log('Capture result', orderData);
 
                                     if (!orderData.purchase_units || !orderData.purchase_units[0].payments || !orderData.purchase_units[0].payments.captures) {
                                         console.error('Response structure unexpected:', orderData);
@@ -253,7 +255,6 @@ export default function RechargeBalance() {
                                     });
 
                                     const result = await response.json();
-                                    console.log('Server response:', result);
 
                                     if (response.ok) {
                                         setDialogContent({ loading: false, error: '', successMessage: `Pago completado con éxito y saldo actualizado.` });
@@ -265,13 +266,11 @@ export default function RechargeBalance() {
                                     }
                                     setDialogOpen(true);
                                 } catch (error) {
-                                    console.error('Error in onApprove:', error);
                                     setDialogContent({ loading: false, error: `Lo siento, su transacción no pudo ser procesada...${error.message}`, successMessage: '' });
                                     setDialogOpen(true);
                                 }
                             }}
                             onError={(err) => {
-                                console.error('Error al crear la orden:', err);
                                 setDialogContent({ loading: false, error: `Error al crear la orden: ${err}`, successMessage: '' });
                                 setDialogOpen(true);
                             }}
