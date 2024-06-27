@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
 import * as yup from "yup";
 import { updateUserAvatar, updateUserPassword } from '../../../api/userAPI';
 import { setUser } from '../../../redux/slices/userSlice';
-import { User } from '../../../shared/sharedTypes';
 import { passwordConstraints, showError } from '../../../utils/fieldsValidation';
 import Button from '../../components/buttons/Button';
 import Container from '../../components/container/Container';
@@ -38,7 +37,6 @@ export default function EditProfile() {
     const [selectedAvatar, setSelectedAvatar] = useState(sessionUser.profileImg);
     const [editAvatar, setEditAvatar] = useState(false);
     const [editPassword, setEditPassword] = useState(false);
-    const [updatedUser, setUpdatedUser] = useState<User>(sessionUser);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -52,9 +50,11 @@ export default function EditProfile() {
             if (response.error) {
                 showError(response.error, "Ha ocurrido un error al actualizar el avatar. Por favor, vuelve a intentarlo más tarde.", Swal.close);
             } else {
-                successUpdateProfile();
                 dispatch(setUser({ ...sessionUser, profileImg: selectedAvatar }));
+                successUpdateProfile();
             }
+        }).catch((error) => {
+            showError("Error inesperado", error.message, Swal.close);
         });
     };
 
@@ -66,6 +66,8 @@ export default function EditProfile() {
                 } else {
                     successUpdateProfile();
                 }
+            }).catch((error) => {
+                showError("Error inesperado", error.message, Swal.close);
             });
         }
     });
@@ -82,6 +84,7 @@ export default function EditProfile() {
             if (result.isConfirmed) {
                 setEditAvatar(false);
                 setEditPassword(false);
+                navigate("/");
             }
         }).catch((e) => {
             showError("Perfil no actualizado", "Ha ocurrido un error al actualizar el perfil. Por favor, vuelve a intentarlo más tarde.", Swal.close)
@@ -93,7 +96,7 @@ export default function EditProfile() {
     }
 
     return (
-        <Container >
+        <Container>
             <Button startIcon={<ArrowBackIcon />}
                 variant="contained"
                 sx={{ alignSelf: 'flex-start', margin: '10px' }}
@@ -131,10 +134,10 @@ export default function EditProfile() {
                                 setEditAvatar(!editAvatar);
                                 setEditPassword(false);
                             }}
-                            hidden={editPassword}
                             endIcon={editAvatar ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             label={editAvatar ? 'Ocultar editar avatar' : 'Editar avatar'}
-                        />
+                        >
+                        </Button>
                     }
 
                     {!editAvatar &&
@@ -147,7 +150,8 @@ export default function EditProfile() {
                             }}
                             endIcon={editPassword ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                             label={editPassword ? 'Ocultar editar contraseña' : 'Editar contraseña'}
-                        />
+                        >
+                        </Button>
                     }
                 </Box>
 
