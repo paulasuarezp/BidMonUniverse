@@ -1,60 +1,89 @@
 name: CI for TFG
 
 on:
-    push:
-        branches:
-            - develop
-    pull_request:
-        branches:
-            - develop
-    release:
-        types: [published]
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+  release:
+    types: [published]
 
 jobs:
-    # unit-tests:
-    #     runs-on: ubuntu-latest
-    #     steps:
-    #         - uses: actions/checkout@v3
-    #           with:
-    #             fetch-depth: 0
-    #         - uses: actions/setup-node@v3
-    #           with:
-    #             node-version: 20
-    #         - run: npm --prefix webapp ci
-    #         - run: npm --prefix restapi ci
-    #         - run: npm --prefix webapp test --coverage --watchAll
-    #         - run: npm --prefix restapi test --coverage --watchAll
-    #         - name: Analyze with SonarCloud
-    #           uses: sonarsource/sonarcloud-github-action@master
-    #           env:
-    #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-  
-    docker-push-webapp:
-        name: Push webapp Docker Image to GitHub Packages
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Publish to Registry
-              uses: elgohr/Publish-Docker-Github-Action@v5
-              with:
-                name: TFG/webapp
-                username: ${{ github.actor }}
-                password: ${{ secrets.DOCKER_PUSH_TOKEN }}
-                registry: ghcr.io
-                workdir: webapp
-                buildargs: API_URI
-    docker-push-restapi:
-        name: Push restapi Docker Image to GitHub Packages
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Publish to Registry
-              uses: elgohr/Publish-Docker-Github-Action@v5
-              with:
-                name: TFG/restapi
-                username: ${{ github.actor }}
-                password: ${{ secrets.DOCKER_PUSH_TOKEN }}
-                registry: ghcr.io
-                workdir: restapi
-                buildargs: SSL_CERT,SSL_PRIVKEY
+  # Uncomment and configure unit-tests job as needed
+  # unit-tests:
+  #     runs-on: ubuntu-latest
+  #     steps:
+  #         - uses: actions/checkout@v3
+  #           with:
+  #             fetch-depth: 0
+  #         - uses: actions/setup-node@v3
+  #           with:
+  #             node-version: 20
+  #         - run: npm --prefix webapp ci
+  #         - run: npm --prefix restapi ci
+  #         - run: npm --prefix webapp test --coverage --watchAll
+  #         - run: npm --prefix restapi test --coverage --watchAll
+  #         - name: Analyze with SonarCloud
+  #           uses: sonarsource/sonarcloud-github-action@master
+  #           env:
+  #             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  docker-push-webapp:
+    name: Push webapp Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Log in to GitHub Docker registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./webapp
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/webapp:latest
+          build-args: |
+            API_URI=${{ secrets.API_URI }}
+
+  docker-push-restapi:
+    name: Push restapi Docker Image to GitHub Packages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Log in to GitHub Docker registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./restapi
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/restapi:latest
+          build-args: |
+            SSL_CERT=${{ secrets.SSL_CERT }}
+            SSL_PRIVKEY=${{ secrets.SSL_PRIVKEY }}
