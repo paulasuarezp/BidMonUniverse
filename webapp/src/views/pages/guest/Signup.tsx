@@ -46,7 +46,7 @@ export default function Signup() {
   const successSignup = (user: User) => {
     Swal.fire({
       title: 'Cuenta creada',
-      text: "¡Cuenta " + user.username + " creada con éxito!",
+      text: "¡Cuenta " + user.username + " creada con éxito! Has recibido 100 Zens de bienvenida, ¡disfrútalos!",
       icon: 'success',
       showCancelButton: false,
       confirmButtonColor: '#81c784',
