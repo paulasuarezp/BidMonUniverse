@@ -67,7 +67,7 @@ function App() {
                   <Route path="/bids/:id" element={<RouteRedirector initRoute={<BidCardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/card/:id" element={<RouteRedirector initRoute={<CardDetail />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   <Route path="/inbox" element={<RouteRedirector initRoute={<Inbox />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
-                  <Route path="/edit" element={<RouteRedirector initRoute={<EditProfile />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
+                  <Route path="/profile" element={<RouteRedirector initRoute={<EditProfile />} redirectPath="/login" accessLevel={AccessLevel.Standard} />} />
                   {/* Rutas administrador */}
                   <Route path="/admin" element={<RouteRedirector initRoute={<AdminPage />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />
                   <Route path="/admin/auctions" element={<RouteRedirector initRoute={<AuctionsAdmin />} redirectPath="/login" accessLevel={AccessLevel.Admin} />} />

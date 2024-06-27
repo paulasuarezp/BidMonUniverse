@@ -31,7 +31,6 @@ export default function Signup() {
   const trySignup = (user: UserSchema) => {
     if (user.username && user.password && birthday) {
       let newUser: User = { username: user.username, birthday: birthday.toISOString(), password: user.password, role: AccessLevel.Standard, profileImg: "" };
-      console.log('Usuario a registrar -> ', newUser);
       signupAPI(user.username, user.password, birthday.toISOString()).then((response) => {
         if (response.error) {
           fieldsValidation.showError(response.error, "Error al registrar el usuario", Swal.close);
