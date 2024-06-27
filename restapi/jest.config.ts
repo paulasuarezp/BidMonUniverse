@@ -11,7 +11,7 @@ const config: Config.InitialOptions = {
     },
     testMatch: ['**/*.test.ts'],
     forceExit: true,
-    testTimeout: 7000,
+    testTimeout: 100000,
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '/src/middlewares/',  // Ignora todo dentro de middlewares

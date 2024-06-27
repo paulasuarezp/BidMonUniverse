@@ -1,0 +1,41 @@
+[
+    {
+        "_id": "667468a8920f1692e1068d40",
+        "card": "66646db6a10d744749820f4f",
+        "legibleCardId": "c-64-63",
+        "seller": "66646d6ba10d744749820f36",
+        "sellerUsername": "test2",
+        "initialPrice": 1,
+        "publicationDate": "2024-06-20T17:36:40.903+00:00",
+        "duration": 259200000,
+        "estimatedEndDate": "2024-06-23T17:36:40.903+00:00",
+        "endDate": "2024-06-24T16:58:49.759+00:00",
+        "status": "closed",
+        "winner": "66646d6ba10d744749820f34",
+        "winnerUsername": "test",
+        "bids": [
+            "66646d6ba10d744749820f34"
+        ],
+        "__v": 2,
+        "currentPrice": 100,
+        "finalPrice": 100
+    },
+    {
+        "_id": "667468a8920f1692e1062d40",
+        "card": "66646db6a10d744749820f4f",
+        "legibleCardId": "c-64-63",
+        "seller": "66646d6ba10d744749820f36",
+        "sellerUsername": "test2",
+        "initialPrice": 1,
+        "publicationDate": "2024-06-20T17:36:40.903+00:00",
+        "duration": 259200000,
+        "estimatedEndDate": "2024-06-23T17:36:40.903+00:00",
+        "endDate": "2024-06-24T16:58:49.759+00:00",
+        "status": "open",
+        "bids": [
+        ],
+        "__v": 2,
+        "currentPrice": 100,
+        "finalPrice": 0
+    }
+]
