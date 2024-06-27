@@ -5,6 +5,7 @@
   "scripts": {
     "start": "ts-node-dev ./server.ts",
     "prod": "ts-node ./server.ts",
+    "build": "tsc",
     "test": "NODE_ENV=test jest --verbose --silent=false --runInBand --coverage",
     "test:watch": "npm run test -- --watch",
     "fetch-data": "ts-node src/scripts/fetchPokemonData.ts",

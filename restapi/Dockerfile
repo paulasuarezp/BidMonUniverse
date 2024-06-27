@@ -10,7 +10,7 @@ COPY package*.json ./
 # Instala las dependencias de Node.js
 RUN npm install
 
-# Copia el código de la aplicación
+# Copia el resto de la aplicación
 COPY . .
 
 # Compila el código TypeScript
@@ -20,4 +20,4 @@ RUN npm run build
 EXPOSE 5001
 
 # Comando para iniciar la aplicación
-CMD ["npm", "start" ]
+CMD ["npm", "run", "prod"]
