@@ -42,7 +42,8 @@ jobs:
           docker tag ghcr.io/${{ github.repository_owner }}/restapi:latest ${{ secrets.REGISTRY_NAME }}.azurecr.io/restapi:latest
           echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.REGISTRY_NAME }}.azurecr.io --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
           docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/restapi:latest
-deploy-to-app-service:
+
+  deploy-to-app-service:
     name: Deploy to Azure App Service
     runs-on: ubuntu-latest
     needs: build-and-push-to-acr
