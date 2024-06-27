@@ -51,6 +51,7 @@ const StyledButton = styled(MuiButton, {
       backgroundColor: 'transparent',
       '&:hover': {
         backgroundColor: theme.palette.primary.light,
+        color: theme.palette.primary.contrastText,
         border: `0.1em solid ${theme.palette.primary.light}`,
       },
     },
