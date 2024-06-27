@@ -4,7 +4,7 @@ import { linkDecksToCardPacks } from '../../../api/api';
 import { getCardPacks } from '../../../api/cardpacksAPI';
 import { CardPack as CardPackType } from '../../../shared/sharedTypes';
 import CardPack from '../../components/cardpack/CardPack';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 import BasePageWithNav from '../BasePageWithNav';
 
 

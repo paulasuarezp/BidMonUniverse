@@ -4,8 +4,8 @@ import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/
 import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../card/auction/AuctionCard';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
-import InfoMessageBox from '../../messagesBox/InfoMessageBox';
+import ErrorMessageBox from '../../messages/ErrorMessageBox';
+import InfoMessageBox from '../../messages/InfoMessageBox';
 
 // #region PROPS
 interface ResponsiveActiveAuctionsGridProps {

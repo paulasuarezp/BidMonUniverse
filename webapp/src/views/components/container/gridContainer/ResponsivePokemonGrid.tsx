@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { getUserCardCollection } from '../../../../api/api';
 import { Card, UserCard } from '../../../../shared/sharedTypes';
 import PokemonCard from '../../card/PokemonCard';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
-import SurpriseMessageBox from '../../messagesBox/SurpriseMessageBox';
+import ErrorMessageBox from '../../messages/ErrorMessageBox';
+import SurpriseMessageBox from '../../messages/SurpriseMessageBox';
 
 // #region PROPS
 interface ResponsivePokemonGridProps {

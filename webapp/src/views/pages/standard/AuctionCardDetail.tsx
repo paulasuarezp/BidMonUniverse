@@ -24,7 +24,7 @@ import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
 import Container from '../../components/container/Container';
 import WithdrawnAuctionForm from '../../components/forms/auction/WithdrawnAuctionForm';
 import AddBidForm from '../../components/forms/bid/AddBidForm';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 
 // Botones memoizados para evitar renders innecesarios
 const WithdrawAuctionButton = memo(({ id, handleWithdrawnOpen, openWithdrawnModal, handleWithdrawnClose, onAuction }: any) => (

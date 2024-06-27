@@ -16,7 +16,7 @@ import Button from '../../components/buttons/Button';
 import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
 import Container from '../../components/container/Container';
 import AddAuctionForm from '../../components/forms/auction/AddAuctionForm';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 
 // #region COMPONENT CardDetail
 // Detalle de una carta de la colección del usuario
