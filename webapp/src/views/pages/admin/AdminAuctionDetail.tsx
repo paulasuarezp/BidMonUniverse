@@ -1,6 +1,7 @@
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import TimerIcon from '@mui/icons-material/Timer';
 import {
+    Alert,
     Box,
     CardActions,
     CardContent,
@@ -20,7 +21,6 @@ import Button from '../../components/buttons/Button';
 import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
 import Container from '../../components/container/Container';
 import WithdrawnAuctionForm from '../../components/forms/auction/WithdrawnAuctionForm';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
 
 // #region COMPONENTE ADMINAUCTIONDETAIL
 export default function AdminAuctionDetail() {
@@ -138,11 +138,11 @@ export default function AdminAuctionDetail() {
     }
 
 
-    // ERROR    
+    // ERROR  
     if (error) {
-        return (
-            <ErrorMessageBox message={error} />
-        );
+        return <Container style={{ textAlign: 'center' }}>
+            <Alert severity="error">{error}</Alert>
+        </Container>;
     }
 
     // LOADING
