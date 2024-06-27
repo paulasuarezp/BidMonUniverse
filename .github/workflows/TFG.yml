@@ -42,8 +42,7 @@ jobs:
           docker tag ghcr.io/${{ github.repository_owner }}/restapi:latest ${{ secrets.REGISTRY_NAME }}.azurecr.io/restapi:latest
           echo ${{ secrets.REGISTRY_PASSWORD }} | docker login ${{ secrets.REGISTRY_NAME }}.azurecr.io --username ${{ secrets.REGISTRY_USERNAME }} --password-stdin
           docker push ${{ secrets.REGISTRY_NAME }}.azurecr.io/restapi:latest
-
-  deploy-to-app-service:
+deploy-to-app-service:
     name: Deploy to Azure App Service
     runs-on: ubuntu-latest
     needs: build-and-push-to-acr
@@ -56,14 +55,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy webapp to Azure Web App
+      - name: Deploy Docker Compose to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: <your-webapp-service-name>
-          images: ${{ secrets.REGISTRY_NAME }}.azurecr.io/webapp:latest
-
-      - name: Deploy restapi to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: <your-restapi-service-name>
-          images: ${{ secrets.REGISTRY_NAME }}.azurecr.io/restapi:latest
+          app-name: BidMonUniverse
+          slot-name: production
+          images: |
+            tfgbidmonuniverseregistry.azurecr.io/webapp:latest
+            tfgbidmonuniverseregistry.azurecr.io/restapi:latest
+          configuration-file: docker-compose.yml
