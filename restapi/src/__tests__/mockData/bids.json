@@ -1,0 +1,28 @@
+[
+    {
+        "_id": "6676ede4ca24fe8c4e90b4e7",
+        "auction": "667468a8920f1692e1068d40",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "usercard": "66646db6a10d744749820f4f",
+        "legibleCardId": "c-64-63",
+        "initDate": "2024-06-22T15:29:40.772+00:00",
+        "estimatedDate": "2024-06-23T17:36:40.903+00:00",
+        "endDate": "2024-06-22T17:12:03.737+00:00",
+        "price": 10,
+        "status": "withdrawn"
+    },
+    {
+        "_id": "6676ede4ca24fe8c4e9034e7",
+        "auction": "667468a8920f1692e1068d40",
+        "user": "66646d6ba10d744749820f34",
+        "username": "test",
+        "usercard": "66646db6a10d744749820f4f",
+        "legibleCardId": "c-64-63",
+        "initDate": "2024-06-22T15:29:40.772+00:00",
+        "estimatedDate": "2024-06-23T17:36:40.903+00:00",
+        "endDate": "2024-06-22T17:12:03.737+00:00",
+        "price": 10,
+        "status": "winner"
+    }
+]

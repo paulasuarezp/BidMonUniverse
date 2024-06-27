@@ -1,0 +1,32 @@
+[
+    { "_id": "5f8f4b3b9b3f3b001f3f3b3b", 
+    "usuarioId": "66646d6ba10d744749820f34",
+    "username": "test",
+    "type": "auctioncancelled",
+    "message":"La subasta de la carta 66785eeb29373e7341a715a7 ha sido cancelada.",
+    "read": false,
+    "creationDate": "2020-10-20T15:00:00.000Z",
+    "importance": "low",
+    "realTime": false
+    },
+    { "_id": "5f8f4b3b9b3f3b001f3f3b3c",
+    "usuarioId": "66646d6ba10d744749820f34",
+    "username": "test",
+    "type": "auctioncancelled",
+    "message":"La subasta de la carta 66785eeb29373e7341a715a7 ha sido cancelada.",
+    "read": true,
+    "creationDate": "2020-10-20T15:00:00.000Z",
+    "importance": "low",
+    "realTime": false
+    },
+    { "_id": "5f8f4b3b9b3f3b001f3f1b3c",
+    "usuarioId": "66646d6ba10d744749820f34",
+    "username": "test",
+    "type": "auctioncardsold",
+    "message":"Enhorabuena, la carta c-64-63 ha sido vendida en subasta por 100 zens.",
+    "read": false,
+    "creationDate": "2020-10-20T15:00:00.000Z",
+    "importance": "high",
+    "realTime": true
+    }
+]
