@@ -49,7 +49,7 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                 borderRadius: 5,
                 transition: 'all 0.3s ease-out'
             }}>
-                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }}>
+                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }} >
                     Subastas cerradas
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mb: 2 }}>
@@ -58,18 +58,20 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                 <Grid container spacing={2} justifyContent="center">
                     {cards.map((card, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
-                            <PokemonCard
-                                card={card.item}
-                                userCardId={card._id}
-                                onClick={() => { }}
-                                canFlip={true}
-                            />
-                            {card.initialPrice > 0 &&
-                                <CoinsButton balance={card.initialPrice} sx={{ mt: 2, color: theme.palette.primary.contrastText }} />}
-                            {card.initialPrice <= 0 || !card.initialPrice &&
-                                <Typography variant='body2' align='center' sx={{ mt: 1 }}>
-                                    La carta no se ha vendido.
-                                </Typography>}
+                            <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ mb: 1 }}>
+                                <PokemonCard
+                                    card={card.item}
+                                    userCardId={card._id}
+                                    onClick={() => { }}
+                                    canFlip={true}
+                                />
+                                {card.initialPrice > 0 &&
+                                    <CoinsButton balance={card.initialPrice} sx={{ mt: 2, color: theme.palette.mode === 'dark' ? '#FFFFFFF' : '#000000' }} />}
+                                {(card.initialPrice <= 0 || !card.initialPrice) &&
+                                    <Typography variant='body2' align='center' sx={{ mt: 1 }}>
+                                        La carta no se ha vendido.
+                                    </Typography>}
+                            </Box>
                         </Grid>
                     ))}
                 </Grid>
