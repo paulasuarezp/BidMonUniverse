@@ -77,92 +77,6 @@ const markAllAsRead = async (req: Request, res: Response) => {
     }
 };
 
-/**
- * Elimina una notificación específica.
- * Esta función elimina una notificación de la base de datos, utilizando su ID único.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir el ID de la notificación a eliminar.
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede eliminar la notificación debido a problemas de conexión, falta de autorización,
- * o cualquier otro problema técnico.
- */
-const deleteNotification = async (req: Request, res: Response) => {
-    let notificationId = req.params.notificationId;
-    try {
-        await Notification.findByIdAndDelete(notificationId);
-        res.status(200).json({ message: "Notificación eliminada." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al eliminar la notificación." });
-    }
-}
-
-/**
- * Elimina todas las notificaciones de un usuario.
- * Esta función elimina todas las notificaciones asociadas a un nombre de usuario específico.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre de usuario en algún campo del request (ej. req.body o req.params).
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se pueden eliminar las notificaciones debido a problemas de conexión, falta de autorización,
- * o cualquier otro problema técnico.
- */
-const deleteAllNotifications = async (req: Request, res: Response) => {
-    let username = req.params.username.toLowerCase();
-    try {
-        await Notification.deleteMany({ username: username });
-        res.status(200).json({ message: "Notificaciones eliminadas." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al eliminar las notificaciones." });
-    }
-}
-
-/**
- * Crea una nueva notificación.
- * Esta función crea una nueva notificación en la base de datos, utilizando los datos proporcionados en el cuerpo de la solicitud.
- *
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir los datos de la notificación en el cuerpo de la solicitud.
- * @param {Response} res - El objeto de respuesta HTTP utilizado para enviar un mensaje de confirmación o un mensaje de error.
- *
- * @returns {void} - No retorna un valor directamente, pero envía una respuesta HTTP con un mensaje de confirmación si la operación es exitosa.
- * En caso de error, retorna un estado HTTP con un mensaje de error adecuado.
- *
- * @throws {Error} - Lanza un error con un mensaje explicativo si no se puede crear la notificación debido a problemas de conexión, falta de autorización, o cualquier otro problema técnico.
- */
-const createNotification = async (req: Request, res: Response) => {
-    let { username, type, message, importance, realTime } = req.body;
-    try {
-        const user = await User.findOne({ username_lower: username.toLowerCase() });
-        if (!user) {
-            return res.status(404).json({ message: "Usuario no encontrado." });
-        }
-        const newNotification = new Notification({
-            usuarioId: user._id,
-            username: username,
-            type: type,
-            message: message,
-            read: false,
-            creationDate: new Date(),
-            importance: importance,
-            realTime: realTime
-        });
-        await newNotification.save();
-
-        // Si la notificación es en tiempo real, enviarla a través de un servicio de mensajería en tiempo real
-        if (realTime) {
-            sendRealTimeNotification(newNotification);
-        }
-        res.status(201).json({ message: "Notificación creada." });
-    } catch (error) {
-        res.status(500).json({ message: "Error al crear la notificación." });
-    }
-}
 
 /**
  * Comprueba si el usuario tiene notificaciones sin leer.
@@ -185,7 +99,6 @@ const hasUnreadNotifications = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error al verificar las notificaciones." });
     }
 }
-
 
 /**
  * Envía una notificación a un usuario específico.
@@ -252,5 +165,5 @@ const sendRealTimeNotification = (notification: INotification) => {
 
 
 export {
-    createNotification, deleteAllNotifications, deleteNotification, getNotifications, hasUnreadNotifications, markAllAsRead, markAsRead, sendNotification
+    getNotifications, hasUnreadNotifications, markAllAsRead, markAsRead, sendNotification
 };

@@ -2,15 +2,12 @@ import { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Auction, { IAuction } from '../models/auction';
 import Bid, { IBid } from '../models/bid';
-import Card from '../models/card';
 import Notification from '../models/notification';
 import Transaction from '../models/transaction';
 import User from '../models/user';
 import UserCard from '../models/userCard';
 import { AuctionStatus, BidStatus, CardStatus, NotificationImportance, NotificationType, TransactionConcept } from '../models/utils/enums';
 import { sendNotification } from './notificationController';
-
-
 
 /**
  * Recupera todas las subastas activas disponibles en la base de datos.
@@ -63,9 +60,6 @@ const getAuction = async (req: Request, res: Response) => {
     }
 }
 
-
-
-
 /**
  * Recupera todas las subastas activas en el sistema, excluyendo las subastas del usuario actual.
  * Esta función busca en la base de datos todas las subastas que se encuentran con el estado 'open' y las devuelve.
@@ -115,42 +109,6 @@ const getActiveAuctionsByUser = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'No se pudieron obtener las subastas activas del usuario.' });
     }
 }
-
-/**
- * Recupera todas las subastas activas de cartas asociadas a un Pokémon específico.
- * Esta función busca en la base de datos todas las subastas que están abiertas ('Open') y que corresponden
- * al ID de la carta de Pokémon proporcionado en los parámetros del request. Si se encuentran, las devuelve en formato JSON.
- * 
- * Proceso:
- * 1. Busca todas las subastas abiertas que tengan cartas con el nombre de Pokémon proporcionado.
- * 2. Devuelve las subastas encontradas en formato JSON.
- * 
- * @param {Request} req - El objeto de solicitud HTTP, debe incluir el nombre del Pokémon en req.params.
- * @param {Response} res - El objeto de respuesta HTTP donde se envían las subastas activas o un mensaje de error.
- * 
- * @returns {Promise<void>} No retorna un valor directamente, pero envía una respuesta HTTP con las subastas activas del Pokémon
- * o un mensaje de error en caso de fallo.
- * 
- * @throws {Error} 500 - Si se produce un error durante la recuperación de las subastas activas del Pokémon.
- */
-const getActiveAuctionsByPokemonName = async (req: Request, res: Response) => {
-    try {
-        // Buscar las cartas con el nombre del Pokémon
-        const cards = await Card.find({ name: req.params.pokemon });
-        // Extraer los IDs de las cartas
-        const cardIds = cards.map(card => card._id);
-        // Buscar las subastas activas correspondientes a las cartas
-        const auctions = await Auction.find({ status: AuctionStatus.Open, card: { $in: cardIds } });
-
-        res.status(200).json(auctions);
-    } catch (error: any) {
-        console.error(error);
-        res.status(500).json({ message: `No se pudieron obtener las subastas activas del Pokémon ${req.params.pokemon}.` });
-    }
-}
-
-
-
 
 /**
  * Pone una carta en subasta, realizando una serie de validaciones y creando registros asociados.
@@ -750,7 +708,7 @@ const transferCard = async (auction: IAuction, bid: IBid, session: any) => {
 
 
 export {
-    checkAllActiveAuctions, getActiveAuctions, getActiveAuctionsByPokemonName, getActiveAuctionsByUser, getAuction, getAuctions, putUserCardUpForAuction,
+    checkAllActiveAuctions, getActiveAuctions, getActiveAuctionsByUser, getAuction, getAuctions, putUserCardUpForAuction,
     withdrawnUserCardFromAuction
 };
 

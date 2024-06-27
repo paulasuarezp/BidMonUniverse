@@ -9,8 +9,6 @@ import {
   createBid,
   getActiveBidsByUser,
   getBidById,
-  getBidHistoryByAuction,
-  getBidHistoryByUser,
   withdrawBid
 } from '../controllers/bidController';
 
@@ -55,43 +53,6 @@ bidRouter.post('/add', [
     next();
   }
 ], createBid);
-
-/**
- * Ruta para obtener el historial de pujas de un usuario
- * @route GET /bid-history/:username
- * @param username Nombre de usuario
- * @returns {Bid[]} 200 - Historial de pujas del usuario
- * @returns {Error}  400 - Error de validación
- */
-bidRouter.get('/bid-history/:username', [
-  param('username').notEmpty().withMessage('Username is required'),
-  param('username').isString().isLowercase().withMessage('Username must be a valid string in lowercase'),
-  (req: Request, res: Response, next: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }
-], getBidHistoryByUser);
-
-/**
- * Ruta para obtener el historial de pujas de una subasta
- * @route GET /bid-history/auction/:auctionId
- * @param auctionId ID de la subasta
- * @returns {Bid[]} 200 - Historial de pujas de la subasta
- * @returns {Error}  400 - Error de validación
- */
-bidRouter.get('/bid-history/auction/:auctionId', [
-  param('auctionId').notEmpty().withMessage('Auction ID is required'),
-  (req: Request, res: Response, next: any) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-    next();
-  }
-], getBidHistoryByAuction);
 
 /**
  * Ruta para obtener las pujas activas de un usuario

@@ -87,7 +87,4 @@ notificationRouter.get('/unread/:username', [
     }
 ], hasUnreadNotifications);
 
-
-
-
 export default notificationRouter;

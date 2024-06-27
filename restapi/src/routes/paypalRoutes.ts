@@ -5,7 +5,16 @@ import User from '../models/user';
 
 const paypalRouter: Router = express.Router();
 
-// Ruta para crear una orden
+/**
+ * Ruta para crear una orden de PayPal.
+ * @route POST /orders
+ * @param username - Nombre de usuario
+ * @param balance - Saldo a añadir
+ * @param total - Total a pagar
+ * @returns {Message} 200 - Orden creada con éxito
+ * @returns {Error} 400 - Error de validación
+ * @returns {Error} 500 - Error al crear la orden
+ */
 paypalRouter.post("/orders", [
     check('username').notEmpty().withMessage('Username is required'),
     check('balance').notEmpty().withMessage('Balance is required'),
@@ -27,12 +36,18 @@ paypalRouter.post("/orders", [
     }
 });
 
-// Ruta para actualizar el saldo del usuario
+/**
+ * Ruta para actualizar el saldo de un usuario después de completar un pago.
+ * @route POST /updateorder
+ * @param username - Nombre de usuario
+ * @param balance - Saldo a añadir
+ * @returns {Message} 200 - Pago completado con éxito y saldo actualizado
+ * @returns {Error} 404 - Usuario no encontrado
+ */
 paypalRouter.post("/updateorder", async (req: Request, res: Response) => {
     const { username, balance } = req.body;
 
     try {
-        // No intentamos capturar la orden de nuevo, solo actualizamos el saldo del usuario
         const user = await User.findOne({ username_lower: username.toLowerCase() });
         if (!user) {
             return res.status(404).json({ error: 'Usuario no encontrado' });
@@ -47,7 +62,5 @@ paypalRouter.post("/updateorder", async (req: Request, res: Response) => {
         res.status(500).json({ error: "Failed to update user balance." });
     }
 });
-
-
 
 export default paypalRouter;

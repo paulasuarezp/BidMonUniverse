@@ -1,10 +1,5 @@
-import mongoose from 'mongoose';
-import UserCard from '../models/userCard';
 import { Request, Response } from 'express';
-import { CardStatus, TransactionConcept } from '../models/utils/enums';
-import Transaction from '../models/transaction';
-import User from '../models/user';
-import Card from '../models/card';
+import UserCard from '../models/userCard';
 
 /**
  * Método para obtener todas las cartas de un usuario dado su username.
@@ -48,9 +43,6 @@ const getUserCard = async (req: Request, res: Response) => {
     }
 }
 
-
-
 export {
-    getUserCards,
-    getUserCard
+    getUserCard, getUserCards
 };
