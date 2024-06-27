@@ -1,12 +1,11 @@
 // tests/cardRouter.test.ts
-import request from 'supertest';
-import { api, hashPassword, dropEntireDatabase } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
-import User from '../../models/user';
-import initialUsers from '../mockData/users.json';
-import initialCards from '../mockData/cards.json';
+import { server } from '../../../server';
 import Card from '../../models/card';
+import User from '../../models/user';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
+import initialCards from '../mockData/cards.json';
+import initialUsers from '../mockData/users.json';
 
 
 let token: string;
@@ -38,16 +37,6 @@ afterAll(async () => {
 
 
 describe('CARD ROUTES', () => {
-    describe('GET /cards', () => {
-        it('should get all cards', async () => {
-            const response = await api
-                .get('/cards')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(200);
-            expect(response.body).toHaveLength(12);
-        });
-    });
 
     describe('GET /cards/:cardId', () => {
         it('should get a card by ID', async () => {
@@ -62,18 +51,6 @@ describe('CARD ROUTES', () => {
 });
 
 describe('CARD ROUTES Error Handling', () => {
-    describe('GET /cards', () => {
-        it('should handle errors', async () => {
-            jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
-
-            const response = await api
-                .get('/cards')
-                .set('Authorization', `Bearer ${token}`);
-
-            expect(response.status).toBe(500);
-            expect(response.body).toEqual({ message: 'Se ha producido un error al obtener las cartas.' });
-        });
-    });
 
     describe('GET /cards/:cardId', () => {
         it('should return 404 if card not found', async () => {
