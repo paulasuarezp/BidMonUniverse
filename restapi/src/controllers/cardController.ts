@@ -1,25 +1,6 @@
-import Card, { ICard } from '../models/card';
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose';  // Importa el tipo Session para TypeScript
-import UserCard from '../models/userCard';
-
-
-/**
- * Función para obtener todas las cartas registradas en la base de datos
- * @param req 
- * @param res 
- * @returns lista de cartas
- * @throws 500 - Si se produce un error de conexión con la base de datos
- */
-const getCards = async (req: Request, res: Response) => {
-  try {
-    const cards = await Card.find();
-    res.status(200).json(cards);
-  }
-  catch (error: any) {
-    res.status(500).json({ message: 'Se ha producido un error al obtener las cartas.' });
-  }
-};
+import { ClientSession } from 'mongoose'; // Importa el tipo Session para TypeScript
+import Card, { ICard } from '../models/card';
 
 /**
  * Función para obtener una carta por su ID (cardId)
@@ -43,7 +24,6 @@ const getCard = async (req: Request, res: Response) => {
   }
 }
 
-
 /**
  * Función para obtener una carta por su ID (mongoose.Types.ObjectId)
  * @param id id de la carta
@@ -55,11 +35,8 @@ const getCardById = async (id: any, session: ClientSession): Promise<ICard | nul
   return card as unknown as ICard | null;
 }
 
-
-
 // Exportar funciones de controlador
 export {
-  getCards,
   getCard,
   getCardById
 };

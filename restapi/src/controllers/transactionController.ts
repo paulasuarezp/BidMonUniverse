@@ -19,29 +19,6 @@ const getTransactions = async (req: Request, res: Response) => {
 };
 
 /**
- * Devuelve una transacción por su ID (mongoose.Types.ObjectId)
- * @param req 
- * @param res 
- * @returns transacción
- * @throws 404 - Si no se encuentra la transacción
- * @throws 500 - Si se produce un error de conexión con la base de datos
- */
-const getTransaction = async (req: Request, res: Response) => {
-    try {
-        const
-            transaction = await Transaction.findById(req.params.transactionId);
-        if (!transaction) {
-            return res.status(404
-            ).json({ message: 'Transacción no encontrada.' });
-        }
-        res.status(200).json(transaction);
-    }
-    catch (error: any) {
-        res.status(500).json({ message: 'Se ha producido un error al obtener la transacción.' });
-    }
-}
-
-/**
  * Devuelve todas las transacciones de un usuario por su username
  * @param req 
  * @param res 
@@ -81,6 +58,6 @@ const getTransactionsByUserCardId = async (req: Request, res: Response) => {
 
 // Exportar funciones de controlador
 export {
-    getTransaction, getTransactions, getTransactionsByUserCardId, getTransactionsByUsername
+    getTransactions, getTransactionsByUserCardId, getTransactionsByUsername
 };
 

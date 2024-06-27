@@ -1,15 +1,14 @@
-const { check, param, validationResult } = require('express-validator');
+const { param, validationResult } = require('express-validator');
 import express, { Request, Response, Router } from 'express';
 import auth from '../middlewares/authMiddleware';
 
 const userCardRouter: Router = express.Router();
 
-
 userCardRouter.use(auth);
 
 import {
-  getUserCards,
-  getUserCard
+  getUserCard,
+  getUserCards
 } from '../controllers/userCardController';
 
 /**

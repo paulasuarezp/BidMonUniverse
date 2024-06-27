@@ -9,7 +9,6 @@ transactionRouter.use(auth);
 
 import {
     getTransactions,
-    getTransaction,
     getTransactionsByUserCardId,
     getTransactionsByUsername
 } from '../controllers/transactionController';
@@ -62,29 +61,6 @@ transactionRouter.get('/c/:userCardId', [
         next();
     }
 ], getTransactionsByUserCardId);
-
-
-
-/**
- * Ruta para obtener una transacción por su ID
- * @route GET /transactions/:transactionId
- * @param transactionId id de la transacción
- * @returns la transacción
- * @throws 400 - Si el transactionId no es válido
- * @throws 404 - Si no se encuentra la transacción
- * @throws 500 - Si se produce un error de conexión con la base de datos
- */
-transactionRouter.get('/:transactionId', [
-    param('transactionId').notEmpty().withMessage('Transaction ID is required'),
-    param('transactionId').isString().isMongoId().withMessage('Transaction ID must be a valid MongoID'),
-    (req: Request, res: Response, next: any) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        next();
-    }
-], getTransaction);
 
 
 export default transactionRouter;
