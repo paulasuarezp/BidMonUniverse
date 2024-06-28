@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/notifications'; // Base URL for the Card API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/notifications` || 'http://localhost:5001/notifications'; // Base URL for the Card API endpoints
 
 /**
  * Verifica si el usuario tiene notificaciones no leídas.

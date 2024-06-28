@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/users'; // Base URL for the User API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/users` || 'http://localhost:5001/users'; // Base URL for the User API endpoints
 
 // Inicio de sesión
 export async function login(username: string, password: string): Promise<any> {

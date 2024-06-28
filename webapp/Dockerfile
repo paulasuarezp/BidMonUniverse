@@ -13,6 +13,9 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
+ARG API_URI="http://localhost:5001"
+ENV REACT_APP_API_URI=$API_URI
+
 # Construye la aplicación para producción
 RUN npm run build
 

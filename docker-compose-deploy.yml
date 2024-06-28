@@ -1,21 +1,12 @@
-version: '3.8'
-
+version: '3.5'
 services:
-  webapp:
-    image: tfgbidmonuniverseregistry.azurecr.io/webapp:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - API_URL=https://bidmonuniverse.azurewebsites.net/api
-
   restapi:
-    image: tfgbidmonuniverseregistry.azurecr.io/restapi:latest
+    image: ghcr.io/paulasuarezp/restapi:latest
     ports:
       - "5001:5001"
-    environment:
-      - MONGO_URI=mongodb+srv://paulasp24:yfwIDLXye8vttpNq@tfg-cluster.c1bcmv8.mongodb.net/?retryWrites=true&w=majority&appName=TFG-cluster
-      - TOKEN_SECRET=secr3TFG
-      - TEST_MONGO_URI=mongodb+srv://paulasp24:WX8w5rmcMlYwVuqi@test-tfg.k6wdkn9.mongodb.net/?retryWrites=true&w=majority&appName=Test-TFG
-      - PAYPAL_CLIENT_ID=AXE7-9Er_F_oY9-RdBsCvSZQ1OBfeTbgUVzzTj1tZk9RivJRYoI5U-xNYqUgqwY0z3_M4NvC6hJ5Cg8_
-      - PAYPAL_CLIENT_SECRET=EIoQpFkXTrpZjNguhYZ2ARUt8ZGlSvgSJpbg5NYNwK_SPhLEmZeD9yV8CEAj7vYKqTb49rzm4mW8g0Z3
-      - PAYPAL_TOKEN=access_token$sandbox$dr85zpb8pjqh53bs$9028ed0020a2eb94517e51ea6cbd43a3
+  webapp:
+    image: ghcr.io/paulasuarezp/webapp:latest
+    ports:
+      - "3000:3000"
+    depends_on: 
+      - restapi

@@ -1,6 +1,6 @@
 import { Bid } from "../shared/sharedTypes";
 
-const apiEndPointBase = 'http://localhost:5001/bids'; // Base URL for the Auction API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/bids` || 'http://localhost:5001/bids'; // Base URL for the Auction API endpoints
 
 
 /**
