@@ -79,6 +79,14 @@ jobs:
     - name: Create docker-compose.yml
       run: echo "${{ secrets.DOCKER_COMPOSE_DEPLOY }}" > docker-compose.yml
 
+    - name: Docker Login on Remote
+      uses: fifsky/ssh-action@master
+      with:
+        host: ${{ secrets.DEPLOY_HOST }}
+        user: ${{ secrets.DEPLOY_USER }}
+        key: ${{ secrets.DEPLOY_KEY }}
+        command: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
     - name: Deploy over SSH
       uses: fifsky/ssh-action@master
       with:
@@ -86,7 +94,7 @@ jobs:
         user: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_KEY }}
         command: |
-          docker-compose stop
-          docker-compose rm -f
-          docker-compose pull   
-          docker-compose up -d
+          sudo docker-compose stop
+          sudo docker-compose rm -f
+          sudo docker-compose pull   
+          sudo docker-compose up -d
