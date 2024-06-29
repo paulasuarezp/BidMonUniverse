@@ -1,4 +1,4 @@
-const apiEndPointBase = `${process.env.REACT_APP_API_URI}/cardpacks` || 'http://localhost:5001/cardpacks'; // Base URL for the Card API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/cardpacks` || 'http://localhost:5001/api/cardpacks'; // Base URL for the Card API endpoints
 
 /**
  * Obtiene los sobres de cartas disponibles para su compra desde el servidor utilizando una API.

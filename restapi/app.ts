@@ -24,16 +24,16 @@ app.use(cors({
 app.use(bp.json());
 
 // Manejo de peticiones
-app.use("/users", userRouter);
-app.use("/cardpacks", cardPackRouter);
-app.use("/decks", deckRouter);
-app.use("/cards", cardRouter);
-app.use("/usercards", userCardRouter);
-app.use("/purchases", purchasesRouter);
-app.use("/transactions", transactionRouter);
-app.use("/auctions", auctionRouter);
-app.use("/bids", bidRouter);
-app.use("/notifications", notificationRouter);
-app.use("/paypal", paypalRouter);
+app.use("/api/users", userRouter);
+app.use("/api/cardpacks", cardPackRouter);
+app.use("/api/decks", deckRouter);
+app.use("/api/cards", cardRouter);
+app.use("/api/usercards", userCardRouter);
+app.use("/api/purchases", purchasesRouter);
+app.use("/api/transactions", transactionRouter);
+app.use("/api/auctions", auctionRouter);
+app.use("/api/bids", bidRouter);
+app.use("/api/notifications", notificationRouter);
+app.use("/api/paypal", paypalRouter);
 
 export { app };

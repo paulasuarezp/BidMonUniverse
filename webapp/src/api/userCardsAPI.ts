@@ -1,4 +1,4 @@
-const apiEndPointBase = `${process.env.REACT_APP_API_URI}/usercards` || 'http://localhost:5001/usercards'; // Base URL for the User API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/usercards` || 'http://localhost:5001/api/usercards'; // Base URL for the User API endpoints
 
 
 

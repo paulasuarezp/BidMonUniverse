@@ -1,6 +1,6 @@
 import { Auction } from "../shared/sharedTypes";
 
-const apiEndPointBase = `${process.env.REACT_APP_API_URI}/auctions` || 'http://localhost:5001/auctions'; // Base URL for the Auction API endpoints
+const apiEndPointBase = `${process.env.REACT_APP_API_URI}/auctions` || 'http://localhost:5001/api/auctions'; // Base URL for the Auction API endpoints
 
 /**
  * Obtiene todas las subastas activas.
