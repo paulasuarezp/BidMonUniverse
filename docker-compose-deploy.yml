@@ -12,8 +12,8 @@ services:
       - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
       - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
       - PAYPAL_TOKEN=${PAYPAL_TOKEN}
-      - SSL_CERT=/src/certs/fullchain.pem
-      - SSL_PRIVKEY=/src/certs/privkey.pem
+    volumes:
+      - ./certs:/src/certs
   webapp:
     image: ghcr.io/paulasuarezp/webapp:latest
     ports:

@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+import fs from 'fs';
 import http from 'http';
 import https from 'https';
 import mongoose from 'mongoose';
@@ -17,8 +18,8 @@ const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONG
 let httpsOptions = {};
 if (process.env.NODE_ENV === 'production') {
   httpsOptions = {
-    key: process.env.SSL_PRIVKEY,
-    cert: process.env.SSL_CERT
+    key: process.env.SSL_PRIVKEY ? fs.readFileSync('./certs/privkey.pem') : null,
+    cert: process.env.SSL_CERT ? fs.readFileSync('./certs/fullchain.pem') : null,
   };
 }
 
