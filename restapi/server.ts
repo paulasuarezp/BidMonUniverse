@@ -16,14 +16,14 @@ const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONG
 let httpsOptions = {};
 if (process.env.NODE_ENV === 'production') {
   httpsOptions = {
-    key: fs.readFileSync(process.env.SSL_PRIVKEY),
-    cert: fs.readFileSync(process.env.SSL_CERT)
+    key: fs.readFileSync('./certs/privkey.pem'),
+    cert: fs.readFileSync('./certs/fullchain.pem')
   };
 }
 
 
 const httpServer = http.createServer(app);
-const httpsServer = process.env.NODE_ENV === 'production' ? https.createServer(httpsOptions, app) : http.createServer(app);
+const httpsServer = process.env.NODE_ENV === 'production' ? https.createServer(httpsOptions, app) : httpServer;
 
 const io = new Server(httpsServer, {
   cors: {
