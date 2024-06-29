@@ -72,6 +72,10 @@ jobs:
             PAYPAL_TOKEN=${{ secrets.PAYPAL_TOKEN }}
             SSL_CERT=${{ secrets.SSL_CERT }}
             SSL_PRIVKEY=${{ secrets.SSL_PRIVKEY }}
+            NODE_ENV=production
+          scripts: |
+            echo "${{ secrets.SSL_CERT }}" > /src/certs/fullchain.pem
+            echo "${{ secrets.SSL_KEY }}" > /src/certs/privkey.pem
   
   deploy:
     name: Deploy over SSH
