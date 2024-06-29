@@ -1,6 +1,6 @@
 import bp from 'body-parser';
 import cors from 'cors';
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import auctionRouter from "./src/routes/auctionRoutes";
 import bidRouter from "./src/routes/bidRoutes";
 import cardPackRouter from "./src/routes/cardPackRoutes";
@@ -35,5 +35,11 @@ app.use("/api/auctions", auctionRouter);
 app.use("/api/bids", bidRouter);
 app.use("/api/notifications", notificationRouter);
 app.use("/api/paypal", paypalRouter);
+
+// Middleware para manejar errores
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.error('Error en el middleware de manejo de errores:', err.stack);
+    res.status(500).send('Something broke!');
+});
 
 export { app };
