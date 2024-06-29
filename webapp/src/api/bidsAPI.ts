@@ -1,7 +1,6 @@
 import { Bid } from "../shared/sharedTypes";
 
-const apiEndPointBase = `${process.env.REACT_APP_API_URI}/bids` || 'http://localhost:5001/api/bids'; // Base URL for the Auction API endpoints
-
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/bids` : 'http://localhost:5001/api/bids'; // Base URL for the Bid API endpoints
 
 /**
  * Obtiene una puja por su ID.

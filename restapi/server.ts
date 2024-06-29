@@ -14,8 +14,8 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "https://bidmonuniverse.eastus.cloudapp.azure.com",
-    methods: ["GET", "POST"]
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   }
 });
 

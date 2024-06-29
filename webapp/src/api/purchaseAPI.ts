@@ -1,4 +1,4 @@
-const apiEndPointBase = `${process.env.REACT_APP_API_URI}/purchases` || 'http://localhost:5001/api/purchases'; // Base URL for the Card API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/purchases` : 'http://localhost:5001/api/purchases'; // Base URL for the User API endpoints
 
 /**
  * Realiza la compra de un sobre de cartas
