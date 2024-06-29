@@ -22,14 +22,11 @@ export default function Login() {
     loginAPI(username, password)
       .then(data => {
         if (data.error) {
-          console.error('Error en el inicio de sesión desde Login.tsx -> ', data.error);
           setErrorMessage(data.error); // Guardar y mostrar el mensaje de error
         } else {
           setErrorMessage(''); // Limpiar el mensaje de error en caso de éxito
-          console.log('Usuario almacenado en el estado global desde Login.tsx -> ', data);
           dispatch(setUser(data.user));
           if (data.token) {
-            console.log('Conectando socket desde Login.tsx -> ', data.token)
             dispatch(setSocketConnected(true));
             connectSocket(data.token, data.user.username);
           }
@@ -40,7 +37,6 @@ export default function Login() {
         }
       })
       .catch(error => {
-        console.error('Error en el inicio de sesión desde Login.tsx -> ', error);
         setErrorMessage(error.message); // Guardar y mostrar el mensaje de error
       });
   };

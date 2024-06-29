@@ -18,7 +18,7 @@ export async function login(username: string, password: string): Promise<any> {
 
         if (!response.ok) {
             console.log('Error en el inicio de sesión:', response);
-            throw new Error(data.message || 'Error en el inicio de sesión');
+            return { error: 'Se ha producido un error al validar las credenciales. Por favor, inténtelo de nuevo.' };
         }
 
         const token = data.token;

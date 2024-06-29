@@ -65,6 +65,11 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/restapi:latest
           build-args: |
+            MONGO_URI=${{ secrets.MONGO_URI }}
+            TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}
+            PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }}
+            PAYPAL_CLIENT_SECRET=${{ secrets.PAYPAL_CLIENT_SECRET }}
+            PAYPAL_TOKEN=${{ secrets.PAYPAL_TOKEN }}
             SSL_CERT=${{ secrets.SSL_CERT }}
             SSL_PRIVKEY=${{ secrets.SSL_PRIVKEY }}
   
