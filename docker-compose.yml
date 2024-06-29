@@ -4,7 +4,7 @@ services:
   restapi:
     build: ./restapi
     ports:
-      - "5001:5001"
+      - "5002:5002"
     env_file:
       - .env
 

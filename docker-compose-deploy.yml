@@ -3,7 +3,7 @@ services:
   restapi:
     image: ghcr.io/paulasuarezp/restapi:latest
     ports:
-      - "5001:5001"
+      - "5002:5002"
   webapp:
     image: ghcr.io/paulasuarezp/webapp:latest
     ports:
