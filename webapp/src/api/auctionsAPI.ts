@@ -102,7 +102,6 @@ export const addAuction = async (username: string, userCardId: string, saleBase:
         if (!response.ok) {
             throw new Error('Error al crear la subasta');
         }
-        console.log('Response', response);
 
         return response.json();
     })
@@ -141,7 +140,6 @@ export const withdrawAuction = async (username: string, auctionId: string) => {
         if (!response.ok) {
             throw new Error('Error al retirar la subasta');
         }
-        console.log('Response', response);
 
         return response.json();
     })

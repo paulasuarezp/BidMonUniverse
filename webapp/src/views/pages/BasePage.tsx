@@ -33,7 +33,6 @@ export const BasePage = (props: { toggleTheme: any, children: any }) => {
 
   useEffect(() => {
     notifications.forEach(notification => {
-      console.log('Notification en base page:', notification);
       if (toast.current) {
         toast.current.show({
           severity: getSeverity(notification.type),
