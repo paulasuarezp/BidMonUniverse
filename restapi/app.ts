@@ -23,15 +23,6 @@ app.use(cors({
 }));
 app.use(bp.json());
 
-// Redirigir HTTP a HTTPS
-app.use((req, res, next) => {
-    if (req.secure) {
-        next();
-    } else {
-        res.redirect(`https://${req.headers.host}${req.url}`);
-    }
-});
-
 
 // Manejo de peticiones
 app.use("/api/users", userRouter);
