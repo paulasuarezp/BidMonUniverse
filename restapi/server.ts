@@ -13,18 +13,17 @@ const httpPort: number = 5001;
 const httpsPort: number = 5002;
 const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
-
-// Opciones para HTTPS
 let httpsOptions = {};
 if (process.env.NODE_ENV === 'production') {
   httpsOptions = {
-    key: process.env.SSL_PRIVKEY ? fs.readFileSync('./certs/privkey.pem') : null,
-    cert: process.env.SSL_CERT ? fs.readFileSync('./certs/fullchain.pem') : null,
+    key: fs.readFileSync(process.env.SSL_PRIVKEY),
+    cert: fs.readFileSync(process.env.SSL_CERT)
   };
 }
 
+
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(httpsOptions, app);
+const httpsServer = process.env.NODE_ENV === 'production' ? https.createServer(httpsOptions, app) : http.createServer(app);
 
 const io = new Server(httpsServer, {
   cors: {
@@ -65,20 +64,24 @@ httpServer.listen(httpPort, (): void => {
   console.error('Error occurred: ' + error.message);
 });
 
-httpsServer.listen(httpsPort, (): void => {
-  console.log(`HTTPS server listening on port ${httpsPort}`);
-}).on("error", (error: Error) => {
-  console.error('Error occurred: ' + error.message);
-});
+if (process.env.NODE_ENV === 'production') {
+  httpsServer.listen(httpsPort, (): void => {
+    console.log(`HTTPS server listening on port ${httpsPort}`);
+  }).on("error", (error: Error) => {
+    console.error('Error occurred: ' + error.message);
+  });
+}
 
 // Cerrar servidores y conexión a la base de datos
 const closeServer = async () => {
   httpServer.close(() => {
     console.log('HTTP server closed');
   });
-  httpsServer.close(() => {
-    console.log('HTTPS server closed');
-  });
+  if (process.env.NODE_ENV === 'production') {
+    httpsServer.close(() => {
+      console.log('HTTPS server closed');
+    });
+  }
   await mongoose.connection.close();
   console.log('MongoDB connection closed');
 };

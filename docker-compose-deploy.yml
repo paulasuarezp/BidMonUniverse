@@ -11,9 +11,8 @@ services:
       - TOKEN_SECRET=${TOKEN_SECRET}
       - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
       - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
-      - PAYPAL_TOKEN=${PAYPAL_TOKEN}
     volumes:
-      - ./certs:/src/certs
+      - /home/azureuser/certs:/src/certs
   webapp:
     image: ghcr.io/paulasuarezp/webapp:latest
     ports:
