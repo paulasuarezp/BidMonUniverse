@@ -1,13 +1,13 @@
-import { app } from './app';
-import http from 'http';
-import { Server } from "socket.io";
-import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import http from 'http';
+import mongoose from 'mongoose';
+import { Server } from "socket.io";
+import { app } from './app';
 import authSocket from './src/middlewares/authSocket';
 
 dotenv.config();
 
-const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
+const port: number = 5001;
 const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
 const server = http.createServer(app);
@@ -62,4 +62,5 @@ process.on('SIGINT', closeServer);
 process.on('SIGTERM', closeServer);
 process.on('SIGUSR2', closeServer);  // Para nodemon restart
 
-export { io, server, closeServer };
+export { closeServer, io, server };
+
