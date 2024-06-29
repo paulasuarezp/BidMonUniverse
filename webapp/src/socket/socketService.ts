@@ -5,7 +5,8 @@ import { addNotification, resetNotifications } from '../redux/slices/notificatio
 import { store } from '../redux/store';
 import { Notification } from '../shared/sharedTypes';
 
-const SERVER_URL = 'http://localhost:5001';  // URL del servidor Socket.IO
+const SERVER_URL = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}` : 'http://localhost:5001'; // Base URL for the User API endpoints
+
 
 let socket: Socket;
 
@@ -25,25 +26,17 @@ function connectSocket(token: string, username: string) {
         }
     });
 
-    socket.on('connect', () => {
-        console.log('Connected to the server via Socket.IO with ID:', socket.id);
-    });
 
     socket.on('notification', (data: any) => {
-        console.log('Received notification:', data);
         let notification: Notification = {
             socketId: uuidv4(),
             type: data.type,
             message: data.message,
             importance: data.importance
         };
-        console.log('Notification en socketservice:', notification);
         store.dispatch(addNotification({ notification: notification }));
     });
 
-    socket.on('connect_error', (err: Error) => {
-        console.error('Connection Error:', err.message);
-    });
 }
 
 function disconnectSocket() {

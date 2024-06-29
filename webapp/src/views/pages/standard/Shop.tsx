@@ -22,7 +22,6 @@ export default function Shop() {
      */
     function getCardPackImage(packName: string): string {
         let name = packName.toLowerCase().replace(' ', '-');
-        console.log('name:', name);
         return `/cardpacks/${name}.webp`;
     }
 

@@ -106,7 +106,6 @@ export const addBid = async (username: string, auctionId: string, amount: number
         if (!response.ok) {
             throw new Error('Error al crear la subasta');
         }
-        console.log('Response', response);
 
         return response.json();
     })
@@ -146,8 +145,6 @@ export const withdrawBid = async (username: string, bidId: string) => {
         if (!response.ok) {
             throw new Error('Error al retirar la puja');
         }
-        console.log('Response', response);
-
         return response.json();
     })
         .catch(error => {

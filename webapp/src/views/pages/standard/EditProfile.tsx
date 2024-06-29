@@ -109,14 +109,17 @@ export default function EditProfile() {
                 title="Mi perfil"
                 elevation={3}
                 sx={{
-                    maxWidth: 400,
-                    mx: 'auto',
+                    width: { xs: '100%' },
+                    maxWidth: { xs: '100%', sm: 400 },
+                    margin: 'auto',
+                    mt: { xs: 2, sm: 10 },
+                    mb: { xs: 2, sm: 4 },
                     pt: 2,
-                    mt: { xs: 0, sm: 5 },
-                    mb: { xs: 0, sm: 0 },
+                    pb: 2,
+                    px: { xs: 2, sm: 3 }
                 }}
             >
-                <Box sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', mb: 2, minWidth: 400 }}>
+                <Box sx={{ display: 'flex', flexDirection: "column", justifyContent: 'center', mb: 2 }}>
                     <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                         <Avatar alt="Current Avatar" src={selectedAvatar} sx={{ width: 80, height: 80 }} />
                     </Box>
@@ -155,14 +158,13 @@ export default function EditProfile() {
                     }
                 </Box>
 
-                <Box component='form' onSubmit={editAvatar ? handleSubmit(onSubmitAvatar) : onSubmitPassword} noValidate sx={{ pl: 2, pr: 2, pb: 2 }}>
+                <Box component='form' onSubmit={editAvatar ? handleSubmit(onSubmitAvatar) : onSubmitPassword} noValidate sx={{ px: 2 }}>
                     {editAvatar && (
                         <>
                             <Divider sx={{ my: 2 }}><Typography variant="subtitle1" align="center">Selecciona un avatar</Typography></Divider>
-
-                            <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ textAlign: 'center' }}>
+                            <Grid container spacing={2} justifyContent="center" alignItems="center">
                                 {avatars.map((avatar, index) => (
-                                    <Grid item key={index} xs={4} sm={2}>
+                                    <Grid item key={index} sm={2} md={2}>
                                         <Badge
                                             overlap="circular"
                                             anchorOrigin={{

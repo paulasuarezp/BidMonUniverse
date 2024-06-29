@@ -133,7 +133,7 @@ export function getCardColor(rarity: CardRarity) {
 }
 
 export function getBackgroundImage(pokemonType: string) {
-    switch (pokemonType) {
+    switch (pokemonType.toLowerCase()) {
         case 'bug':
             return '/cardsBackgrounds/bug.webp';
         case 'dark':
@@ -155,7 +155,7 @@ export function getBackgroundImage(pokemonType: string) {
         case 'ground':
             return '/cardsBackgrounds/ground.jpeg';
         case 'ice':
-            return '/cardsBackgrounds/ice.avif';
+            return '/cardsBackgrounds/ice.webp';
         case 'poison':
             return '/cardsBackgrounds/poison.webp';
         case 'rock':

@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
@@ -66,6 +67,8 @@ const CardDetail = () => {
         }
         setOpenModal(true);
     }
+
+
 
     /**
      * Función para cerrar el modal de subasta
@@ -157,7 +160,14 @@ const CardDetail = () => {
                     variant="contained"
                     sx={{ marginTop: 2, marginBottom: 2 }}
                     buttonType="ghost"
-                    onClick={handleOpen}
+                    onClick={() => {
+                        Swal.fire({
+                            title: 'Funcionalidad disponible próximamente 😉',
+                            icon: 'info',
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#81c784',
+                        });
+                    }}
                     label='Destacar carta'
                 />}
 

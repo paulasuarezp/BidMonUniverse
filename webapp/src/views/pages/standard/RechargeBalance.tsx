@@ -108,8 +108,8 @@ export default function RechargeBalance() {
     };
 
 
+    const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/paypal` : 'http://localhost:5001/api/paypal'; // Base URL for the PayPal API endpoints
 
-    const apiEndPointBase = `${process.env.REACT_APP_API_URI}/paypal` || 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
 
     return (
         <Container>
@@ -224,7 +224,6 @@ export default function RechargeBalance() {
                                         throw new Error(errorMessage);
                                     }
                                 } catch (error) {
-                                    console.error(error);
                                     setDialogContent({ loading: false, error: `No se pudo iniciar PayPal Checkout...${error}`, successMessage: '' });
                                     setDialogOpen(true);
                                 }
@@ -234,7 +233,6 @@ export default function RechargeBalance() {
                                     const orderData = await actions.order.capture();
 
                                     if (!orderData.purchase_units || !orderData.purchase_units[0].payments || !orderData.purchase_units[0].payments.captures) {
-                                        console.error('Response structure unexpected:', orderData);
                                         throw new Error('Response structure unexpected. Check the response format.');
                                     }
 
@@ -243,7 +241,7 @@ export default function RechargeBalance() {
                                     setDialogOpen(true);
 
                                     // Enviar solicitud al servidor para actualizar el saldo del usuario
-                                    const response = await fetch(`http://localhost:5001/paypal/updateorder`, {
+                                    const response = await fetch(`${apiEndPointBase}/updateorder`, {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',

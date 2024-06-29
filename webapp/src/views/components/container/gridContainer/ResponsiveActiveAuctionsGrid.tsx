@@ -72,8 +72,7 @@ export default function ResponsiveActiveAuctionsGrid({ username, isAdmin = false
             const numberOfCards = limit ? Math.min(cardsData.length, getGridListCols()) : cardsData.length;
             setNumberOfCards(numberOfCards);
         } catch (err) {
-            setError('Error al obtener los datos de las subastas');
-            console.error(err);
+            setError('Se ha producido un error al obtener los datos de las subastas activas.');
         } finally {
             setLoading(false);
         }

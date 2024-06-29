@@ -147,7 +147,8 @@ const getActiveBidsByUser = async (req: Request, res: Response) => {
         }
 
         const auctions = await Auction.find({ status: AuctionStatus.Open });
-        const bids = await Bid.find({ username: username, status: BidStatus.Pending, auction: { $in: auctions.map(auction => auction._id) } });
+        let today = new Date();
+        const bids = await Bid.find({ username: username, estimatedDate: { $gte: today }, status: BidStatus.Pending, auction: { $in: auctions.map(auction => auction._id) } });
 
         res.status(200).json(bids);
     } catch (error) {

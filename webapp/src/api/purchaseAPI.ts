@@ -30,7 +30,6 @@ export const purchaseCardPack = async (username: string, cardPackId: string) => 
         if (!response.ok) {
             throw new Error(' No se ha podido comprar el sobre de cartas. Por favor, inténtalo de nuevo.');
         }
-        console.log('Response', response);
 
         return response.json();
     })

@@ -5,11 +5,13 @@ import NotificationImportantIcon from '@mui/icons-material/NotificationImportant
 import { Container, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText, Pagination, Paper, Tooltip } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import { getUserNotifications, markAllAsRead, markAsRead } from '../../../api/notificationsAPI';
 import { setHasUnreadNotifications } from '../../../redux/slices/notificationSlice';
 import { RootState } from '../../../redux/store';
 import { Notification, NotificationImportance } from '../../../shared/sharedTypes';
 import Button from '../../components/buttons/Button';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 import BasePageWithNav from '../BasePageWithNav';
 
 // #region COMPONENTE INBOX
@@ -19,6 +21,7 @@ export default function Inbox() {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [page, setPage] = useState<number>(1);
     const [pageSize] = useState<number>(10);
+    const [error, setError] = useState<string | null>(null);
 
     /**
      * Obtiene las notificaciones del usuario y las almacena en el estado
@@ -34,7 +37,7 @@ export default function Inbox() {
                 }
             });
         } catch (error) {
-            console.error("Error fetching notifications", error);
+            setError('Ha ocurrido un error al obtener las notificaciones, por favor inténtalo de nuevo.');
         }
     }
 
@@ -60,7 +63,12 @@ export default function Inbox() {
             await markAsRead(id);
             fetchNotifications();
         } catch (error) {
-            console.error("Error marking notification as read", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ha ocurrido un error al marcar la notificación como leída, por favor inténtalo de nuevo.',
+                cancelButtonText: 'Cerrar',
+            });
         }
     }
 
@@ -73,7 +81,12 @@ export default function Inbox() {
             dispatch(setHasUnreadNotifications(false));
             fetchNotifications();
         } catch (error) {
-            console.error("Error marking all notifications as read", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Ha ocurrido un error al marcar las notificaciones como leídas, por favor inténtalo de nuevo.',
+                cancelButtonText: 'Cerrar',
+            });
         }
     }
 
@@ -107,6 +120,14 @@ export default function Inbox() {
     // Calcular el índice de las notificaciones a mostrar
     const startIndex = (page - 1) * pageSize;
     const selectedNotifications = notifications.slice(startIndex, startIndex + pageSize);
+
+    if (error) {
+        return (
+            <BasePageWithNav title="Bandeja de entrada" showBackButton={false} handleBack={() => { }}>
+                <ErrorMessageBox message='Se ha producido un error al obtener las notificaciones. Por favor, inténtalo más tarde.' />
+            </BasePageWithNav>
+        );
+    }
 
     return (
         <BasePageWithNav title="Bandeja de entrada" showBackButton={false} handleBack={() => { }}>

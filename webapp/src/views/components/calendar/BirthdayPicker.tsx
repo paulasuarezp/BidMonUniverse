@@ -1,17 +1,19 @@
-import * as React from 'react';
-import dayjs from 'dayjs';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { ThemeProvider, useTheme } from '@mui/material/styles';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es';
+import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { birthdayDatePickerTheme } from '../../../themes';
 
+dayjs.extend(localizedFormat);
+dayjs.locale('es'); // Configura dayjs para usar el idioma español
 
 interface BirthdayDatePickerProps {
     onChange: (date: any) => void;
     error?: string;
 }
-
 
 export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
     const minDate = dayjs().subtract(120, 'year'); // Mínimo hace 120 años
@@ -20,18 +22,15 @@ export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
 
     const datePickerTheme = birthdayDatePickerTheme(useTheme());
 
-
-
     return (
         <ThemeProvider theme={datePickerTheme}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                 <DatePicker
                     label="Fecha de nacimiento"
                     onChange={props.onChange}
                     slotProps={{
                         textField: {
                             helperText: errrorMessage ? errrorMessage : ' ',
-
                         },
                         layout: {
                             sx: {
@@ -42,6 +41,7 @@ export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
                     minDate={minDate}
                     maxDate={maxDate}
                     views={['year', 'month', 'day']}
+                    format="DD/MM/YYYY" // Formato de fecha
                 />
             </LocalizationProvider>
         </ThemeProvider>
