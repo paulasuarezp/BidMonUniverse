@@ -109,7 +109,7 @@ export default function RechargeBalance() {
 
 
 
-    const apiEndPointBase = 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
+    const apiEndPointBase = `${process.env.REACT_APP_API_URI}/paypal` || 'http://localhost:5001/paypal'; // Base URL for the PayPal API endpoints
 
     return (
         <Container>

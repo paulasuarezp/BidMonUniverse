@@ -1,7 +1,8 @@
-const apiEndPointBase = 'http://localhost:5001/users'; // Base URL for the User API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/users` : 'http://localhost:5001/api/users'; // Base URL for the User API endpoints
 
 // Inicio de sesión
 export async function login(username: string, password: string): Promise<any> {
+    console.log('URL:', apiEndPointBase);
     const url = `${apiEndPointBase}/login`;
 
     try {
@@ -16,7 +17,8 @@ export async function login(username: string, password: string): Promise<any> {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || 'Error en el inicio de sesión');
+            console.log('Error en el inicio de sesión:', response);
+            return { error: 'Se ha producido un error al validar las credenciales. Por favor, inténtelo de nuevo.' };
         }
 
         const token = data.token;

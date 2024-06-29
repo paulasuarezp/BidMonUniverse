@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/transactions'; // Base URL for the Transaction API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/transactions` : 'http://localhost:5001/api/transactions'; // Base URL for the Transaction API endpoints
 
 /**
  * Obtiene las transacciones de la carta del usuario desde el servidor utilizando una API.

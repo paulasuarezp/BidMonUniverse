@@ -128,6 +128,8 @@ const loginUser = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).json({
             message: 'Se ha producido un error al verificar credenciales. Por favor, inténtelo de nuevo.',
+            message2: error,
+
             auth: false
         });
     }

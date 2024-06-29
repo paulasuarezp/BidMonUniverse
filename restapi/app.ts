@@ -1,6 +1,6 @@
 import bp from 'body-parser';
 import cors from 'cors';
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import auctionRouter from "./src/routes/auctionRoutes";
 import bidRouter from "./src/routes/bidRoutes";
 import cardPackRouter from "./src/routes/cardPackRoutes";
@@ -16,20 +16,31 @@ import userRouter from './src/routes/userRoutes';
 const app: Application = express();
 
 // Permitir peticiones de webapp y parsear el body a JSON
-app.use(cors());
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true
+}));
 app.use(bp.json());
 
+
 // Manejo de peticiones
-app.use("/users", userRouter);
-app.use("/cardpacks", cardPackRouter);
-app.use("/decks", deckRouter);
-app.use("/cards", cardRouter);
-app.use("/usercards", userCardRouter);
-app.use("/purchases", purchasesRouter);
-app.use("/transactions", transactionRouter);
-app.use("/auctions", auctionRouter);
-app.use("/bids", bidRouter);
-app.use("/notifications", notificationRouter);
-app.use("/paypal", paypalRouter);
+app.use("/api/users", userRouter);
+app.use("/api/cardpacks", cardPackRouter);
+app.use("/api/decks", deckRouter);
+app.use("/api/cards", cardRouter);
+app.use("/api/usercards", userCardRouter);
+app.use("/api/purchases", purchasesRouter);
+app.use("/api/transactions", transactionRouter);
+app.use("/api/auctions", auctionRouter);
+app.use("/api/bids", bidRouter);
+app.use("/api/notifications", notificationRouter);
+app.use("/api/paypal", paypalRouter);
+
+// Middleware para manejar errores
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    console.error('Error en el middleware de manejo de errores:', err.stack);
+    res.status(500).send('Something broke!');
+});
 
 export { app };

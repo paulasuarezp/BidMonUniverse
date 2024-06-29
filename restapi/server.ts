@@ -1,21 +1,34 @@
-import { app } from './app';
-import http from 'http';
-import { Server } from "socket.io";
-import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import fs from 'fs';
+import http from 'http';
+import https from 'https';
+import mongoose from 'mongoose';
+import { Server } from "socket.io";
+import { app } from './app';
 import authSocket from './src/middlewares/authSocket';
 
 dotenv.config();
 
-const port: number = process.env.PORT ? parseInt(process.env.PORT) : 5001;
+const httpPort: number = 5001;
+const httpsPort: number = 5002;
 const mongoURI: string = process.env.NODE_ENV === 'test' ? process.env.TEST_MONGO_URI : process.env.MONGO_URI;
 
-const server = http.createServer(app);
+let httpsOptions = {};
+if (process.env.NODE_ENV === 'production') {
+  httpsOptions = {
+    key: fs.readFileSync('./certs/privkey.pem'),
+    cert: fs.readFileSync('./certs/fullchain.pem')
+  };
+}
 
-const io = new Server(server, {
+
+const httpServer = http.createServer(app);
+const httpsServer = process.env.NODE_ENV === 'production' ? https.createServer(httpsOptions, app) : httpServer;
+
+const io = new Server(httpsServer, {
   cors: {
-    origin: "*", // Permitir cualquier origen
-    methods: ["GET", "POST"]
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   }
 });
 
@@ -39,20 +52,36 @@ io.on('connection', (socket) => {
 // Conexión a la base de datos
 mongoose.connect(mongoURI)
   .then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+  .catch((err) => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1); // Exit the application if there is a connection error
+  });
 
-// Arrancar servidor
-server.listen(port, (): void => {
-  console.log('Restapi listening on ' + port);
+// Arrancar servidores
+httpServer.listen(httpPort, (): void => {
+  console.log(`HTTP server listening on port ${httpPort}`);
 }).on("error", (error: Error) => {
   console.error('Error occurred: ' + error.message);
 });
 
-// Cerrar servidor y conexión a la base de datos
+if (process.env.NODE_ENV === 'production') {
+  httpsServer.listen(httpsPort, (): void => {
+    console.log(`HTTPS server listening on port ${httpsPort}`);
+  }).on("error", (error: Error) => {
+    console.error('Error occurred: ' + error.message);
+  });
+}
+
+// Cerrar servidores y conexión a la base de datos
 const closeServer = async () => {
-  server.close(() => {
+  httpServer.close(() => {
     console.log('HTTP server closed');
   });
+  if (process.env.NODE_ENV === 'production') {
+    httpsServer.close(() => {
+      console.log('HTTPS server closed');
+    });
+  }
   await mongoose.connection.close();
   console.log('MongoDB connection closed');
 };
@@ -62,4 +91,4 @@ process.on('SIGINT', closeServer);
 process.on('SIGTERM', closeServer);
 process.on('SIGUSR2', closeServer);  // Para nodemon restart
 
-export { io, server, closeServer };
+export { closeServer, io, httpsServer as server };
