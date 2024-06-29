@@ -100,6 +100,13 @@ jobs:
         user: ${{ secrets.DEPLOY_USER }}
         key: ${{ secrets.DEPLOY_KEY }}
         command: |
+          export MONGO_URI=${{ secrets.MONGO_URI }}
+          export TOKEN_SECRET=${{ secrets.TOKEN_SECRET }}
+          export PAYPAL_CLIENT_ID=${{ secrets.PAYPAL_CLIENT_ID }}
+          export PAYPAL_CLIENT_SECRET=${{ secrets.PAYPAL_CLIENT_SECRET }}
+          export PAYPAL_TOKEN=${{ secrets.PAYPAL_TOKEN }}
+          export SSL_CERT=${{ secrets.SSL_CERT }}
+          export SSL_PRIVKEY=${{ secrets.SSL_PRIVKEY }}
           sudo docker-compose stop
           sudo docker-compose rm -f
           sudo docker-compose pull   
