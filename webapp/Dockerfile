@@ -13,7 +13,7 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
-ARG API_URI="http://172.178.121.169:5001"
+ARG API_URI="https://bidmonuniverse.eastus.cloudapp.azure.com/api"
 ENV REACT_APP_API_URI=$API_URI
 
 # Construye la aplicación para producción

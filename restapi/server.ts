@@ -14,7 +14,7 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "*", // Permitir cualquier origen
+    origin: "https://bidmonuniverse.eastus.cloudapp.azure.com",
     methods: ["GET", "POST"]
   }
 });
@@ -63,4 +63,3 @@ process.on('SIGTERM', closeServer);
 process.on('SIGUSR2', closeServer);  // Para nodemon restart
 
 export { closeServer, io, server };
-

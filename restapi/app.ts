@@ -16,7 +16,11 @@ import userRouter from './src/routes/userRoutes';
 const app: Application = express();
 
 // Permitir peticiones de webapp y parsear el body a JSON
-app.use(cors());
+app.use(cors({
+    origin: "https://bidmonuniverse.eastus.cloudapp.azure.com",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true
+}));
 app.use(bp.json());
 
 // Manejo de peticiones
