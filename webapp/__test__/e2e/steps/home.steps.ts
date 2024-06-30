@@ -32,7 +32,7 @@ defineFeature(feature, (test) => {
         });
 
         when('the user accesses the home page', async () => {
-            const headingText = await page.$eval('h3', element => element.textContent);
+            const headingText = await page.$eval('h1', element => element.textContent);
             expect(headingText).toMatch('¡Bienvenido a BidMon Universe!');
         });
 

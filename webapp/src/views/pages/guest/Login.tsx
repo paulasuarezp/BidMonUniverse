@@ -83,7 +83,7 @@ export default function Login() {
               {errorMessage}
             </Typography>
           )}
-          <Button buttonType="primary" label='Iniciar sesión' fullWidth sx={{ mt: 2 }} onClick={handleLogin} onKeyDown={(e) => e.key === 'Enter' && handleLogin()} />
+          <Button id="loginButton" buttonType="primary" label='Iniciar sesión' fullWidth sx={{ mt: 2 }} onClick={handleLogin} onKeyDown={(e) => e.key === 'Enter' && handleLogin()} />
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2">
               ¿No tienes cuenta? <Link href="/signup" arial-label="Enlace para registrarse">Regístrate aquí</Link>

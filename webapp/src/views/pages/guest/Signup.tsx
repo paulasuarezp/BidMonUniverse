@@ -146,6 +146,7 @@ export default function Signup() {
             type='submit'
             buttonType="primary"
             label='Crear cuenta'
+            id='signupButton'
             fullWidth
             sx={{ mt: 2 }}
           />
