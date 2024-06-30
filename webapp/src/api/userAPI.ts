@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/users'; // Base URL for the User API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/users` : 'http://localhost:5001/api/users'; // Base URL for the User API endpoints
 
 // Inicio de sesión
 export async function login(username: string, password: string): Promise<any> {
@@ -16,7 +16,7 @@ export async function login(username: string, password: string): Promise<any> {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || 'Error en el inicio de sesión');
+            return { error: 'Se ha producido un error al validar las credenciales. Por favor, inténtelo de nuevo.' };
         }
 
         const token = data.token;
@@ -24,7 +24,6 @@ export async function login(username: string, password: string): Promise<any> {
         if (!token) {
             throw new Error('Token no encontrado en la respuesta');
         }
-        console.log('Token recibido:', token);
         // Guardar el token en el almacenamiento local
         localStorage.setItem('userToken', token);
 
@@ -32,7 +31,6 @@ export async function login(username: string, password: string): Promise<any> {
 
         return { user, token };
     } catch (error: any) {
-        console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
     }
 }
@@ -58,7 +56,6 @@ export async function signup(username: string, password: string, birthday: strin
 
         return data;
     } catch (error: any) {
-        console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
     }
 }
@@ -85,11 +82,9 @@ export function verifyToken(): Promise<any> {
                 throw new Error('Token inválido');
             }
 
-            console.log('Token válido en userApi.ts:', response);
             return response.json();
         })
         .catch(error => {
-            console.error('Ha ocurrido un error:', error.message);
             return { error: error.message };
         });
 }
@@ -123,7 +118,6 @@ export function getUser(username: string): any {
             return response.json();
         })
         .catch(error => {
-            console.error('Ha ocurrido un error:', error.message);
             return { error: error.message };
         });
 }
@@ -185,7 +179,6 @@ export async function updateUserAvatar(username: string, profileImg?: string): P
 
         return await response.json();
     } catch (error: any) {
-        console.error('Ha ocurrido un error:', error.message);
         return { error: error.message };
     }
 }

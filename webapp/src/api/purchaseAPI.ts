@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/purchases'; // Base URL for the Card API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/purchases` : 'http://localhost:5001/api/purchases'; // Base URL for the User API endpoints
 
 /**
  * Realiza la compra de un sobre de cartas
@@ -30,7 +30,6 @@ export const purchaseCardPack = async (username: string, cardPackId: string) => 
         if (!response.ok) {
             throw new Error(' No se ha podido comprar el sobre de cartas. Por favor, inténtalo de nuevo.');
         }
-        console.log('Response', response);
 
         return response.json();
     })

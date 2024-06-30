@@ -167,21 +167,21 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
           border: 'none',
           '&:hover': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&.Mui-selected': {
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : '#8FDAF1',
             border: 'none',
             borderRadius: '5px',
             color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&:focus': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
         },
       },
@@ -194,21 +194,21 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
           alignitems: 'center',
           '&:hover': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&.Mui-selected': {
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : '#8FDAF1',
             border: 'none',
             borderRadius: '5px',
             color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&:focus': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
         }
       }
@@ -220,21 +220,21 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
           border: 'none',
           '&:hover': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&.Mui-selected': {
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main.dark : '#8FDAF1',
             border: 'none',
             borderRadius: '5px',
             color: theme.palette.mode === 'dark' ? theme.palette.primary.contrastText : theme.palette.primary.text,
           },
           '&.Mui-focused': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
           '&:focus': {
             border: 'none',
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.secondary.main,
+            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.primary.main : '#E1F8FF',
           },
         }
       }
@@ -245,6 +245,13 @@ export const birthdayDatePickerTheme = (theme: any) => createTheme({
           width: '100%',
         }
       }
-    }
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.text.primary,
+        }
+      }
+    },
   }
 })

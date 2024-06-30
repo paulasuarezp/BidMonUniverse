@@ -20,10 +20,8 @@ export default function CloseAuctionsForm({ open, handleClose, openWithWarning =
         setLoading(true);
         try {
             let auctions = await checkAllActiveAuctions();
-            console.log('Auctions', auctions);
             const cardsData = await getAuctionCards(auctions);
             for (let card of cardsData) {
-                console.log('Card', card);
                 card.initialPrice = card.auction.finalPrice;
             }
             setCards(cardsData);

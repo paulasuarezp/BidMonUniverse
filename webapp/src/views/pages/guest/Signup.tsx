@@ -56,7 +56,7 @@ export default function Signup() {
         navigate("/login");
       }
     }).catch((e) => {
-      showError("Error inesperado", e.message, Swal.close)
+      showError("Error al crear la cuenta", "Por favor, inténtelo de nuevo más tarde.", Swal.close);
     })
   }
 

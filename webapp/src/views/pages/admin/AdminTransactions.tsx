@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getAllTransactions } from "../../../api/transactionsAPI";
@@ -6,7 +6,6 @@ import { RootState } from "../../../redux/store";
 import { Transaction } from "../../../shared/sharedTypes";
 import { getTransactionMessage } from "../../../utils/utils";
 import Container from "../../components/container/Container";
-import ErrorMessageBox from "../../components/messagesBox/ErrorMessageBox";
 import AllUserTransationsTable from "../../components/table/AllUserTransactionsTable";
 import BasePageWithNav from "./../BasePageWithNav";
 
@@ -49,7 +48,9 @@ export default function AdminTransactions() {
 
     // ERROR
     if (error) {
-        return <ErrorMessageBox message={error} />;
+        return <Container style={{ textAlign: 'center' }}>
+            <Alert severity="error">{error}</Alert>
+        </Container>;
     }
 
     return (

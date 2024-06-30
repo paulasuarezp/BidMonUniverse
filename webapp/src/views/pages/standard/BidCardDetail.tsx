@@ -19,7 +19,7 @@ import DurationButton from '../../components/buttons/duration/DurationButton';
 import GeneralCardDetail from '../../components/cardDetail/GeneralCardDetail';
 import Container from '../../components/container/Container';
 import WithdrawnBidForm from '../../components/forms/bid/WithdrawnBidForm';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 
 // Botón de retirar puja con memo para evitar renders innecesarios
 const WithdrawButton = memo(({ id, active, openWithdrawnModal, openWithWarning, handleWithdrawnOpen, handleWithdrawnClose }: any) => (

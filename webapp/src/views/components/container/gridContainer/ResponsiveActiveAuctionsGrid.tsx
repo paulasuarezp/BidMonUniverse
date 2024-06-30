@@ -4,8 +4,8 @@ import { filterAuctionsByUserActiveBid, getAuctionCards } from '../../../../api/
 import { getActiveAuctions, getAuctions, getUserActiveAuctions } from '../../../../api/auctionsAPI';
 import { Auction, Card, UserCard } from '../../../../shared/sharedTypes';
 import AuctionCard from '../../card/auction/AuctionCard';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
-import InfoMessageBox from '../../messagesBox/InfoMessageBox';
+import ErrorMessageBox from '../../messages/ErrorMessageBox';
+import InfoMessageBox from '../../messages/InfoMessageBox';
 
 // #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
@@ -72,8 +72,7 @@ export default function ResponsiveActiveAuctionsGrid({ username, isAdmin = false
             const numberOfCards = limit ? Math.min(cardsData.length, getGridListCols()) : cardsData.length;
             setNumberOfCards(numberOfCards);
         } catch (err) {
-            setError('Error al obtener los datos de las subastas');
-            console.error(err);
+            setError('Se ha producido un error al obtener los datos de las subastas activas.');
         } finally {
             setLoading(false);
         }

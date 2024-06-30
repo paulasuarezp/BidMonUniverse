@@ -13,14 +13,17 @@ RUN npm install
 # Copia el resto de la aplicación
 COPY . .
 
+ARG API_URI="https://bidmonuniverse.eastus.cloudapp.azure.com/api"
+ENV REACT_APP_API_URI=$API_URI
+
 # Construye la aplicación para producción
 RUN npm run build
 
-# Instala serve para servir la aplicación
+# Instala un servidor estático para servir la aplicación
 RUN npm install -g serve
 
 # Expone el puerto en el que la aplicación correrá
 EXPOSE 3000
 
 # Comando para iniciar la aplicación
-CMD ["npm", "start" ]
+CMD ["serve", "-s", "build"]

@@ -1,4 +1,4 @@
-const apiEndPointBase = 'http://localhost:5001/decks'; // Base URL for the Card API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/decks` : 'http://localhost:5001/api/decks'; // Base URL for the Card API endpoints
 
 /**
  * Obtiene los mazos de cartas disponibles para su compra desde el servidor utilizando una API.

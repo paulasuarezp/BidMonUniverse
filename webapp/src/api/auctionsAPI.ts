@@ -1,6 +1,6 @@
 import { Auction } from "../shared/sharedTypes";
 
-const apiEndPointBase = 'http://localhost:5001/auctions'; // Base URL for the Auction API endpoints
+const apiEndPointBase = process.env.REACT_APP_API_URI ? `${process.env.REACT_APP_API_URI}/auctions` : 'http://localhost:5001/api/auctions'; // Base URL for the Auction API endpoints
 
 /**
  * Obtiene todas las subastas activas.
@@ -102,7 +102,6 @@ export const addAuction = async (username: string, userCardId: string, saleBase:
         if (!response.ok) {
             throw new Error('Error al crear la subasta');
         }
-        console.log('Response', response);
 
         return response.json();
     })
@@ -141,7 +140,6 @@ export const withdrawAuction = async (username: string, auctionId: string) => {
         if (!response.ok) {
             throw new Error('Error al retirar la subasta');
         }
-        console.log('Response', response);
 
         return response.json();
     })

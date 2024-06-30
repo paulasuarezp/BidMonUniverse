@@ -4,7 +4,7 @@ import { linkDecksToCardPacks } from '../../../api/api';
 import { getCardPacks } from '../../../api/cardpacksAPI';
 import { CardPack as CardPackType } from '../../../shared/sharedTypes';
 import CardPack from '../../components/cardpack/CardPack';
-import ErrorMessageBox from '../../components/messagesBox/ErrorMessageBox';
+import ErrorMessageBox from '../../components/messages/ErrorMessageBox';
 import BasePageWithNav from '../BasePageWithNav';
 
 
@@ -22,7 +22,6 @@ export default function Shop() {
      */
     function getCardPackImage(packName: string): string {
         let name = packName.toLowerCase().replace(' ', '-');
-        console.log('name:', name);
         return `/cardpacks/${name}.webp`;
     }
 

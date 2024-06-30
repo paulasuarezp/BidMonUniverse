@@ -4,8 +4,8 @@ import { getBidsCards } from '../../../../api/api';
 import { getUserActiveBids } from '../../../../api/bidsAPI';
 import { Bid, Card, UserCard } from '../../../../shared/sharedTypes';
 import BidCard from '../../card/bid/BidCard';
-import ErrorMessageBox from '../../messagesBox/ErrorMessageBox';
-import InfoMessageBox from '../../messagesBox/InfoMessageBox';
+import ErrorMessageBox from '../../messages/ErrorMessageBox';
+import InfoMessageBox from '../../messages/InfoMessageBox';
 
 // #region PROPS
 interface ResponsiveActiveAuctionsGridProps {
@@ -59,8 +59,7 @@ export default function ResponsiveActiveBidsGrid({ username, limit = false }: Re
             const numberOfCards = limit ? Math.min(cardsData.length, getGridListCols()) : cardsData.length;
             setNumberOfCards(numberOfCards);
         } catch (err) {
-            setError('Se ha producido un error al obtener las subastas activas.');
-            console.error(err);
+            setError('Se ha producido un error al obtener los datos de las pujas activas.');
         } finally {
             setLoading(false);
         }

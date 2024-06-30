@@ -6,7 +6,7 @@ import { RootState } from "../../../redux/store";
 import { Transaction } from "../../../shared/sharedTypes";
 import { getTransactionMessage } from "../../../utils/utils";
 import Container from "../../components/container/Container";
-import ErrorMessageBox from "../../components/messagesBox/ErrorMessageBox";
+import ErrorMessageBox from "../../components/messages/ErrorMessageBox";
 import UserTransationsTable from "../../components/table/UserTransactionsTable";
 import BasePageWithNav from "../BasePageWithNav";
 

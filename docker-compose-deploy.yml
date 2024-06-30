@@ -1,11 +1,21 @@
 version: '3.5'
 services:
   restapi:
-    image: ghcr.io/paulasuarezp/TFG/restapi:latest
+    image: ghcr.io/paulasuarezp/restapi:latest
     ports:
-      - "5001:5001"
+      - "5001:5001"  # Puerto HTTP
+      - "5002:5002"  # Puerto HTTPS
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=${MONGO_URI}
+      - TOKEN_SECRET=${TOKEN_SECRET}
+      - PAYPAL_CLIENT_ID=${PAYPAL_CLIENT_ID}
+      - PAYPAL_CLIENT_SECRET=${PAYPAL_CLIENT_SECRET}
+    volumes:
+      - /home/azureuser/certs:/src/certs
+
   webapp:
-    image: ghcr.io/paulasuarezp/TFG/webapp:latest
+    image: ghcr.io/paulasuarezp/webapp:latest
     ports:
       - "3000:3000"
     depends_on: 

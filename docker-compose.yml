@@ -1,20 +1,16 @@
-version: '3.8'
+version: '3.5'
 
 services:
   restapi:
-    build:
-      context: ./restapi
+    build: ./restapi
     ports:
-      - '5001:5001'
+      - "5002:5002"
     env_file:
       - .env
 
   webapp:
-    build:
-      context: ./webapp
+    build: ./webapp
     ports:
-      - '3000:3000'
-    depends_on:
+      - "3000:3000"
+    depends_on: 
       - restapi
-    env_file:
-      - .env
