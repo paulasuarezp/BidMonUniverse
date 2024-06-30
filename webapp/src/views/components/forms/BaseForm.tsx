@@ -72,32 +72,32 @@ export default function BaseForm({ open, onClose, title, content, loading, error
             }}>
             <DialogContent>
                 {loading ? (
-                    <CircularProgress />
+                    <CircularProgress aria-label="Cargando" />
                 ) : error ? (
                     <Grow in={true}>
                         <Box display="flex" flexDirection="column" alignItems="center">
-                            <ErrorTwoTone style={{ fontSize: 50, color: 'red' }} />
-                            <Typography color="error">{error}</Typography>
+                            <ErrorTwoTone style={{ fontSize: 50, color: 'red' }} aria-hidden="true" />
+                            <Typography color="error" aria-live="assertive">{error}</Typography>
                         </Box>
                     </Grow>
                 ) : warning ? (
                     <Grow in={true}>
                         <Box display="flex" flexDirection="column" alignItems="center">
-                            <WarningIcon style={{ fontSize: 50, color: 'orange' }} />
-                            <Typography>{warning}</Typography>
+                            <WarningIcon style={{ fontSize: 50, color: 'orange' }} aria-hidden="true" />
+                            <Typography aria-live="polite">{warning}</Typography>
                         </Box>
                     </Grow>
                 ) : successMessage ? (
                     <Grow in={true}>
                         <Box display="flex" flexDirection="column" alignItems="center">
-                            <CheckCircleIcon style={{ fontSize: 50, color: 'green' }} />
-                            <Typography color="success">{successMessage}</Typography>
+                            <CheckCircleIcon style={{ fontSize: 50, color: 'green' }} aria-hidden="true" />
+                            <Typography color="success" aria-live="polite">{successMessage}</Typography>
                         </Box>
                     </Grow>
                 ) : (
                     <>
                         {showIcon && chooseIcon()}
-                        {title && <Typography variant="h5">{title}</Typography>}
+                        {title && <Typography id="form-dialog-title" variant="h5">{title}</Typography>}
                         {content}
                     </>
                 )}
@@ -105,7 +105,7 @@ export default function BaseForm({ open, onClose, title, content, loading, error
             {!loading && !error && !warning && !successMessage && (
                 <DialogActions style={{ justifyContent: 'center' }}>
                     {actions.map((action, index) => (
-                        <Button key={index} onClick={action.onClick} {...action} />
+                        <Button key={index} onClick={action.onClick} {...action} aria-label={action.label} />
                     ))}
                 </DialogActions>
             )}

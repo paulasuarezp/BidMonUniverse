@@ -108,6 +108,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                         backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]
                     }
                 }}
+                aria-readonly="true"
             />
             <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Personalizar subasta</Typography></Divider>
             <TextField
@@ -129,6 +130,8 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-invalid={basePriceError}
+                aria-describedby={basePriceError ? 'basePrice-error-text' : null}
             />
             <TextField
                 margin="dense"
@@ -149,12 +152,14 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-invalid={durationError}
+                aria-describedby={durationError ? 'duration-error-text' : null}
             />
         </Box>
     );
 
     const confirmationContent = (
-        <Box >
+        <Box>
             <Typography>ID de la Carta: <strong>{userCardId}</strong></Typography>
             <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Datos de la subasta</Typography></Divider>
             <TextField
@@ -220,18 +225,10 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 loading={loading}
                 error={error}
                 successMessage={successMessage}
-                actions={
-                    [{
-                        onClick: () => setConfirmDialogOpen(false),
-                        label: 'Volver',
-                        buttonType: 'back'
-                    },
-                    {
-                        onClick: handleConfirmAuction,
-                        label: 'Confirmar',
-                        buttonType: 'confirm'
-                    }]
-                }
+                actions={[
+                    { label: 'Volver', onClick: () => setConfirmDialogOpen(false), buttonType: 'back' },
+                    { label: 'Confirmar', onClick: handleConfirmAuction, buttonType: 'confirm' }
+                ]}
                 showIcon="warning"
             />
         </>

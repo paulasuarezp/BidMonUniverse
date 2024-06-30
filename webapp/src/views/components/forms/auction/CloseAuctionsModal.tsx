@@ -22,7 +22,6 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
         }, 2000);
     }
 
-
     return (
         <Modal
             open={open}
@@ -49,7 +48,7 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                 borderRadius: 5,
                 transition: 'all 0.3s ease-out'
             }}>
-                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }} >
+                <Typography id="modal-modal-title" variant="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }} component="h2">
                     Subastas cerradas
                 </Typography>
                 <Typography id="modal-modal-description" sx={{ mb: 2 }}>
@@ -64,9 +63,10 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                                     userCardId={card._id}
                                     onClick={() => { }}
                                     canFlip={true}
+                                    aria-label={`Carta de ${card.item.name}`}
                                 />
                                 {card.initialPrice > 0 &&
-                                    <CoinsButton balance={card.initialPrice} sx={{ mt: 2, color: theme.palette.mode === 'dark' ? '#FFFFFFF' : '#000000' }} />}
+                                    <CoinsButton balance={card.initialPrice} sx={{ mt: 2, color: theme.palette.mode === 'dark' ? '#FFFFFF' : '#000000' }} role='status' aria-label={`Precio inicial: ${card.initialPrice} zens`} />}
                                 {(card.initialPrice <= 0 || !card.initialPrice) &&
                                     <Typography variant='body2' align='center' sx={{ mt: 1 }}>
                                         La carta no se ha vendido.
@@ -76,8 +76,8 @@ export default function CloseAuctionsModal({ cards, open, handleClose }: CloseAu
                     ))}
                 </Grid>
                 <Box display='flex' justifyContent='center' mt={3} gap={2}>
-                    <Button onClick={handleClose} label='Cerrar' buttonType='ghost' />
-                    <Button onClick={navigateToAuctions} label='Ver subastas activas' buttonType='primary' />
+                    <Button onClick={handleClose} label='Cerrar' buttonType='ghost' aria-label="Cerrar modal" />
+                    <Button onClick={navigateToAuctions} label='Ver subastas activas' buttonType='primary' aria-label="Ver subastas activas" />
                 </Box>
             </Box>
         </Modal>
