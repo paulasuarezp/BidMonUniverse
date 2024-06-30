@@ -37,10 +37,12 @@ const FooterSection = styled(Box)(({ theme }) => ({
 }));
 
 const FooterLink = styled(Link)(({ theme }) => ({
-    color: theme.palette.mode === 'light' ? theme.palette.text.primary : theme.palette.text.secondary,
+    color: '#FFFFFF',
     textDecoration: 'none',
     '&:hover': {
         textDecoration: 'underline',
+        color: '#FFFFFF',
+        transform: 'scale(1.1)',
     },
 }));
 
@@ -48,9 +50,7 @@ const SocialMediaIcons = styled(Box)(({ theme }) => ({
     display: 'flex',
     gap: theme.spacing(1),
     justifyContent: 'center',
-    '& a': {
-        color: theme.palette.mode === 'light' ? theme.palette.text.primary : theme.palette.text.secondary,
-    },
+
 }));
 //#endregion
 
@@ -73,32 +73,41 @@ export default function Footer() {
             <Toolbar>
                 <FooterContainer>
                     <FooterSection>
-                        <Typography variant="h6" gutterBottom>
-                            Secciones
-                        </Typography>
-                        <FooterLink onClick={handleHomeClick}>Inicio</FooterLink>
-                        <FooterLink onClick={handleAboutClick}>Acerca de</FooterLink>
+                        <FooterLink
+                            role="button"
+                            onClick={handleHomeClick}
+                            aria-label="Ir a la página de inicio"
+                        >
+                            Inicio
+                        </FooterLink>
+                        <FooterLink
+                            role="button"
+                            onClick={handleAboutClick}
+                            aria-label="Ir a la página de acerca de"
+                        >
+                            Acerca de
+                        </FooterLink>
                     </FooterSection>
                     <FooterSection>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography gutterBottom>
                             Contacto
                         </Typography>
-                        <FooterLink href="mailto:uo269745@uniovi.es">
+                        <FooterLink href="mailto:uo269745@uniovi.es" aria-label="Enviar un correo electrónico">
                             <EmailIcon fontSize="small" /> uo269745@uniovi.es
                         </FooterLink>
                     </FooterSection>
                     <FooterSection>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography gutterBottom>
                             Síguenos
                         </Typography>
                         <SocialMediaIcons>
-                            <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank">
-                                <IconButton>
+                            <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" aria-label="LinkedIn">
+                                <IconButton sx={{ color: '#FFFFFF' }}>
                                     <LinkedInIcon />
                                 </IconButton>
                             </Link>
-                            <Link href="https://github.com/paulasuarezp" target="_blank">
-                                <IconButton>
+                            <Link href="https://github.com/paulasuarezp" target="_blank" aria-label="GitHub">
+                                <IconButton sx={{ color: '#FFFFFF' }}>
                                     <GitHubIcon />
                                 </IconButton>
                             </Link>
@@ -111,7 +120,6 @@ export default function Footer() {
                         &copy; 2024 BidMon Universe. Todos los derechos reservados.
                     </Typography>
                 </Box>
-
             </Toolbar>
         </StyledFooter>
     );

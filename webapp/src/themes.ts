@@ -48,15 +48,13 @@ export const lightTheme = createTheme(
     typography: {
       fontFamily: 'Nunito, Avenir, Helvetica, Arial, sans-serif',
       h1: {
-        fontSize: '2.5rem',
-        fontWeight: 'bold',
+        fontSize: '3rem',
       },
       h2: {
         fontSize: '2rem',
       },
       h3: {
-        fontSize: '1.5rem',
-        fontWeight: 'bold',
+        fontSize: '1.25rem',
       },
       body1: {
         fontSize: '1rem', // Texto del cuerpo principal
@@ -128,15 +126,13 @@ export const darkTheme = createTheme(
     typography: {
       fontFamily: 'Nunito, Avenir, Helvetica, Arial, sans-serif',
       h1: {
-        fontSize: '2.5rem',
-        fontWeight: 'bold',
+        fontSize: '3rem',
       },
       h2: {
         fontSize: '2rem',
       },
       h3: {
-        fontSize: '1.5rem',
-        fontWeight: 'bold',
+        fontSize: '1.25rem',
       },
       body1: {
         fontSize: '1rem', // Texto del cuerpo principal

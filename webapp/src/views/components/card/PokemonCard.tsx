@@ -50,6 +50,12 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
       role="button"
       aria-label={`Carta de ${name}`}
       aria-pressed={flipped}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          handleCardClick();
+        }
+      }}
       sx={{
         width: maxSize ? { xs: 200, sm: 200, md: 240, lg: 260, xl: 320 } : { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
         height: maxSize ? { xs: 280, sm: 280, md: 320, lg: 340, xl: 400 } : { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
@@ -67,6 +73,8 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
         },
         '&:focus': {
           outline: '2px solid #0046C7', // Mejorar visibilidad en foco
+          transform: !flipped ? 'scale(1.05)' : 'rotateY(180deg)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
         },
       }}
     >

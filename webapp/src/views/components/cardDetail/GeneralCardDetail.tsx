@@ -41,12 +41,15 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4}>
-                            <Button startIcon={<ArrowBackIcon />}
+                            <Button
+                                startIcon={<ArrowBackIcon />}
                                 variant="contained"
+                                role='button'
                                 sx={{ alignSelf: 'flex-start', margin: '10px' }}
                                 buttonType="ghost"
                                 onClick={handleBack}
                                 label={backLabel}
+                                aria-label={backLabel || "Volver atrás"}
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
@@ -59,11 +62,12 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                                     letterSpacing: 2,
                                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                                 }}
+                                id="card-name"
                             >
                                 {card.name}
                             </Typography>
                         </Grid>
-                        <Grid item xs={0} sm={4} />  {/* Esta columna vacía ayuda a centrar el texto en la columna del medio y se oculta en móviles */}
+                        <Grid item xs={0} sm={4} /> {/* Esta columna vacía ayuda a centrar el texto en la columna del medio y se oculta en móviles */}
                     </Grid>
                     <Box
                         sx={{
@@ -73,8 +77,7 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                             py: 1,
                             mb: 2,
                         }}
-                    >
-                    </Box>
+                    />
                     <Grid container spacing={2} justifyContent="center" alignItems="stretch">
                         <Grid item xs={12} md={6}>
                             <PokemonCardBox card={card} id={card._id} children={pokemonBoxChildren} />
@@ -92,5 +95,5 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
             </Box>
         </BasePageWithNav>
     );
-};
-//#endregion
+}
+// #endregion

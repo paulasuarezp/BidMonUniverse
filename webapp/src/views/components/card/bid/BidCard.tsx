@@ -58,7 +58,7 @@ export default function BidCard({ card, userCardId, duration, price, bidId }: Bi
     }
     return (
         <HoverEffectContainer>
-            <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} />
+            <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} aria-label={`Puja de la carta de ${card.name}`} />
             <DurationButton
                 duration={duration}
                 sx={{ marginTop: '10px', padding: "0.2em" }}
