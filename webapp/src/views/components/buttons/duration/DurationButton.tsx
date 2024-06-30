@@ -35,15 +35,18 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
         outline: 'none',
         border: 'none',
     },
+    '&:focus-visible': {
+        outline: '2px solid #48BB78', // Mejora de accesibilidad 
+    },
 }));
 // #endregion
 
 // #region COMPONENT DurationButton
 export default function DurationButton({ duration, ...rest }: DurationButtonProps) {
     return (
-        <StyledIconButton {...rest}>
+        <StyledIconButton {...rest} role='status' aria-live="polite" aria-label={`Duración: ${duration} horas`}>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography>{duration} horas</Typography>
+                <Typography variant='body1'>{duration} horas</Typography>
                 <TimerIcon />
             </Stack>
         </StyledIconButton>

@@ -125,7 +125,7 @@ export default function Button(props: ButtonProps) {
   const { label = "Default Label", buttonType = "primary", ...rest } = props;
 
   return (
-    <StyledButton buttonType={buttonType} {...rest}>
+    <StyledButton buttonType={buttonType} {...rest} role='button' aria-label={label}>
       {label}
     </StyledButton>
   );

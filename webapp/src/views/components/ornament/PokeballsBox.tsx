@@ -35,13 +35,10 @@ export default function PokeballsBox({ titulo, ...props }: PokeballsBoxProps) {
                 </Grid>
             ))}
             <Grid item style={{ flexGrow: 1, maxWidth: `calc(100% - ${40 * totalImages}px)` }}>
-                {isXs || isSm ?
-                    <Typography variant="h4" style={{ textAlign: 'center' }}>
-                        {titulo}
-                    </Typography>
-                    : <Typography variant="h3" style={{ textAlign: 'center' }}>
-                        {titulo}
-                    </Typography>}
+
+                <Typography variant="h1" style={{ textAlign: 'center' }}>
+                    {titulo}
+                </Typography>
 
             </Grid>
             {Array.from({ length: imageColumns }, (_, index) => (

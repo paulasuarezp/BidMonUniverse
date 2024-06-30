@@ -103,7 +103,7 @@ export default function Home() {
     <Container>
       <StyledBox>
         <PokeballsBox titulo='¡Bienvenido a BidMon Universe!' />
-        <Typography variant="h5" align="center" component="div" sx={{ mb: 4 }}>
+        <Typography variant="h2" align="center" component="div" sx={{ mb: 4 }}>
           Descubre, colecciona y subasta las cartas más valiosas.
         </Typography>
         <ButtonPrincipal label="¡Únete ahora!" onClick={handleNavigate} />

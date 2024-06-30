@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Button, ButtonProps, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { motion } from 'framer-motion';
+import { Button, ButtonProps, IconButton, useMediaQuery, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 //#region STYLES
 const StyledButton = styled(Button)(({ theme }) => ({
@@ -53,7 +53,7 @@ export default function LoginButton(props: ButtonProps) {
     <>
       {isMobile ?
 
-        (<IconButton color="inherit" {...props}>
+        (<IconButton color="inherit" {...props} role='button' aria-label='Iniciar sesión'>
           <AccountCircleIcon />
         </IconButton>)
 
@@ -63,6 +63,8 @@ export default function LoginButton(props: ButtonProps) {
           onMouseOut={() => setIsHovered(false)}
           style={{ position: 'relative', overflow: 'hidden' }}
           {...props}
+          role='button'
+          aria-label='Iniciar sesión'
         >
           <motion.div
             animate={isHovered ? 'hidden' : 'visible'}

@@ -45,7 +45,7 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
-        <StyledButton {...rest}>
+        <StyledButton {...rest} role='button' aria-label={`Botón de perfil de ${name}`}>
             <Stack direction="row" alignItems="center" spacing={2}>
                 <Avatar
                     alt={name}
@@ -59,7 +59,7 @@ export default function UserProfileButton({ name, imageUrl, ...rest }: UserButto
                 >
                     {name.charAt(0).toUpperCase()}
                 </Avatar>
-                {!isMobile && <Typography>{name}</Typography>}
+                {!isMobile && <Typography variant='body1'>{name}</Typography>}
             </Stack>
         </StyledButton>
     );
