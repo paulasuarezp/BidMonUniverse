@@ -83,8 +83,9 @@ export default function Signup() {
   return (
     <Container>
       <Paper
-        title="Registro"
+        title="Crear cuenta"
         imageSrc="logo-sf.png"
+        imageAlt="Logo de BidMon Universe"
         elevation={3}
         sx={{
           maxWidth: 400,
@@ -94,7 +95,7 @@ export default function Signup() {
           mb: { xs: 0, sm: 0 },
         }}
       >
-        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }}>
+        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }} aria-labelledby="signup-form" onKeyDown={(e) => { if (e.key === 'Enter') onSubmit() }}>
           <TextField
             id='username'
             fullWidth
@@ -104,11 +105,13 @@ export default function Signup() {
             {...register('username')}
             error={!!errors.username}
             helperText={errors.username?.message}
+            aria-describedby={errors.username ? "username-error" : undefined}
           />
 
           <BirthdayDatePicker
             onChange={(date) => updateBirthday(date)}
             error={birthdayError}
+            aria-describedby={birthdayError ? "birthday-error" : undefined}
           />
 
           <Divider sx={{ my: 2 }} />
@@ -123,6 +126,7 @@ export default function Signup() {
             {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
+            aria-describedby={errors.password ? "password-error" : undefined}
           />
 
           <TextField
@@ -135,19 +139,20 @@ export default function Signup() {
             {...register('confirmPassword')}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
+            aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
           />
 
           <Button
             type='submit'
             buttonType="primary"
-            label='Registrarse'
+            label='Crear cuenta'
             fullWidth
             sx={{ mt: 2 }}
           />
 
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2">
-              ¿Ya tienes una cuenta? <Link href="/login">Inicia sesión aquí</Link>
+              ¿Ya tienes una cuenta? <Link href="/login" aria-label="Enlace para iniciar sesión">Inicia sesión aquí</Link>
             </Typography>
           </Box>
         </Box>

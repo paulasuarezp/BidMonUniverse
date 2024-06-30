@@ -27,7 +27,8 @@ interface SurpriseMessageBoxProps {
 //#region COMPONENTE SURPRISEMESSAGEBOX
 export default function SurpriseMessageBox({ message }: SurpriseMessageBoxProps) {
     const navigate = useNavigate();
-    const imageSource = '/jigglypuff.png'; // Asegúrate de tener una imagen apropiada de Jigglypuff
+    const imageSource = '/jigglypuff.png';
+
 
     return (
         <StyledPaper
@@ -38,15 +39,33 @@ export default function SurpriseMessageBox({ message }: SurpriseMessageBoxProps)
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pl: 2, pr: 2, pb: 2 }}>
                 <Box sx={{ textAlign: 'center', mt: 2 }}>
-                    <Typography sx={{ marginBottom: '1em', marginTop: '1em' }}>
+                    <Typography
+                        sx={{ marginBottom: '1em', marginTop: '1em' }}
+                        role="alert"
+                        aria-live="polite"
+                    >
                         ¡Oh, sorpresa! Parece que Jigglypuff ha cantado tan fuerte que tu colección se ha vaciado. 🎤😮
                     </Typography>
-                    <img src={imageSource} alt="Pokémon Jigglypuff" style={{ maxWidth: '30%', height: 'auto' }} />
-                    <Typography>
+                    <img
+                        src={imageSource}
+                        alt="Imagen del Pokémon Jigglypuff"
+                        style={{ maxWidth: '30%', height: 'auto' }}
+                    />
+                    <Typography
+                        role="alert"
+                        aria-live="polite"
+                    >
                         {message || 'No te preocupes, es el momento perfecto para comenzar tu aventura y capturar algunas cartas. ¡Buena suerte!😉'}
                     </Typography>
                 </Box>
-                <Button buttonType="primary" label='Ir a capturar cartas' fullWidth onClick={() => navigate('/shop')} sx={{ mt: 2 }} />
+                <Button
+                    buttonType="primary"
+                    label='Ir a capturar cartas'
+                    fullWidth
+                    onClick={() => navigate('/shop')}
+                    sx={{ mt: 2 }}
+                    aria-label="Botón para ir a la tienda y capturar cartas"
+                />
             </Box>
         </StyledPaper>
     );

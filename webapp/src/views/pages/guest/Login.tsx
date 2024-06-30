@@ -9,6 +9,7 @@ import Button from '../../components/buttons/Button';
 import Container from '../../components/container/Container';
 import Paper from '../../components/paper/Paper';
 
+
 //#region COMPONENT Login
 export default function Login() {
   const dispatch = useDispatch();
@@ -31,9 +32,8 @@ export default function Login() {
             connectSocket(data.token, data.user.username);
           }
           // Redirigir a la página de inicio
-          if (data.user.role == 'admin') navigate('/admin');
-          else
-            navigate('/logued');
+          if (data.user.role === 'admin') navigate('/admin');
+          else navigate('/logued');
         }
       })
       .catch(error => {
@@ -46,6 +46,7 @@ export default function Login() {
       <Paper
         title="Iniciar sesión"
         imageSrc="logo-sf.png"
+        imageAlt="Logo de BidMon Universe"
         elevation={3}
         sx={{
           maxWidth: 400,
@@ -59,25 +60,33 @@ export default function Login() {
           <TextField
             fullWidth
             error={errorMessage ? true : false}
+            id="username"
             label="Usuario"
             margin="normal"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            aria-describedby={errorMessage ? "username-error" : undefined}
           />
           <TextField
             fullWidth
             error={errorMessage ? true : false}
+            id="password"
             label="Contraseña"
             type="password"
             margin="normal"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            aria-describedby={errorMessage ? "password-error" : undefined}
           />
-          {errorMessage && <Typography color="error">{errorMessage}</Typography>}
-          <Button buttonType="primary" label='Iniciar sesión' fullWidth sx={{ mt: 2 }} onClick={handleLogin} />
+          {errorMessage && (
+            <Typography id="username-error" color="error" role="alert">
+              {errorMessage}
+            </Typography>
+          )}
+          <Button buttonType="primary" label='Iniciar sesión' fullWidth sx={{ mt: 2 }} onClick={handleLogin} onKeyDown={(e) => e.key === 'Enter' && handleLogin()} />
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2">
-              ¿No tienes cuenta? <Link href="/signup">Regístrate aquí</Link>
+              ¿No tienes cuenta? <Link href="/signup" arial-label="Enlace para registrarse">Regístrate aquí</Link>
             </Typography>
           </Box>
         </Box>

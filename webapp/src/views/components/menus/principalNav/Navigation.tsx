@@ -71,14 +71,19 @@ export default function NavigationMenu() {
                 onChange={handleChange}
                 textColor="secondary"
                 indicatorColor="secondary"
-                aria-label="navigation tabs"
+                aria-label="Navegación principal"
                 TabIndicatorProps={{ style: { height: '3px', bottom: '10px' } }}
+                sx={{
+                    '& .MuiTab-root:focus': {
+                        outline: '2px solid #000',
+                    }
+                }}
             >
-                <Tab icon={<HomeIcon />} value="logued" iconPosition="start" />
-                <Tab icon={<CollectionsIcon />} value="album" iconPosition="start" label={isMobile ? '' : 'Mi colección'} />
-                <Tab icon={<StoreIcon />} value="shop" iconPosition="start" label={isMobile ? '' : 'Tienda'} />
-                {!isMobile && <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' />}
-                {!isMobile && <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' />}
+                <Tab icon={<HomeIcon />} value="logued" iconPosition="start" aria-label="Ir a Inicio" />
+                <Tab icon={<CollectionsIcon />} value="album" iconPosition="start" label={isMobile ? '' : 'Mi colección'} aria-label="Ir a Mi colección" />
+                <Tab icon={<StoreIcon />} value="shop" iconPosition="start" label={isMobile ? '' : 'Tienda'} aria-label="Ir a Tienda" />
+                {!isMobile && <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' aria-label="Ir a Subastas" />}
+                {!isMobile && <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' aria-label="Ir a Histórico de transacciones" />}
             </Tabs>
         </Box>
     );

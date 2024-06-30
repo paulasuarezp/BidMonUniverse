@@ -59,7 +59,7 @@ const AddBidButton = memo(({ auction, openBidModal, openWithWarning, handleOpenB
                 <AddBidForm open={openBidModal} handleClose={handleBidClose} warning={openWithWarning} auction={auction} />
             </>
         ) : (
-            <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }}>
+            <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} role='alert' >
                 ¡Puja realizada con éxito!
             </Alert>
         )}
@@ -235,7 +235,7 @@ export default function AuctionCardDetail() {
                             {isOwner && onAuction && (
                                 <>
                                     <CardContent sx={{ flexGrow: 1 }}>
-                                        <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
+                                        <Typography variant="h3" gutterBottom sx={{ textAlign: 'center' }} >Detalles de la subasta</Typography>
                                         <Grid container spacing={2}>
                                             <Grid item xs={6}>
                                                 <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
@@ -263,7 +263,7 @@ export default function AuctionCardDetail() {
                                 </>
                             )}
                             {isOwner && !onAuction && (
-                                <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }}>
+                                <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} role='alert' >
                                     La subasta se ha retirado con éxito.
                                 </Alert>
                             )}

@@ -25,12 +25,13 @@ interface GeneralMenuProps {
   handleGeneralMenu: (event: React.MouseEvent<HTMLElement>) => void;
   handleGeneralMenuClose: () => void;
   toggleTheme?: () => void;
+  tabIndex?: number;
 }
 //#endregion
 
 //#region COMPONENTE GENERAL MENU
 // Menú general, solo se muestra en dispositivos móviles
-export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, handleGeneralMenuClose, toggleTheme }: GeneralMenuProps) {
+export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, handleGeneralMenuClose, toggleTheme, tabIndex }: GeneralMenuProps) {
   const navigate = useNavigate();
   const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
   const theme = useTheme();
@@ -74,7 +75,7 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
 
   return (
     <>
-      <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleGeneralMenu}>
+      <IconButton edge="start" color="inherit" aria-label="Abrir menú" onClick={handleGeneralMenu} tabIndex={tabIndex}>
         <MenuIcon sx={{ color: theme.palette.primary.contrastText }} />
       </IconButton>
 
@@ -102,45 +103,45 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
           }
         }}
       >
-        <MenuItem onClick={handleNavigate('')}>
+        <MenuItem onClick={handleNavigate('')} tabIndex={tabIndex + 1} aria-label="Ir a Inicio">
           <ListItemIcon>
             <HomeIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography variant="inherit">Inicio</Typography>
+          <Typography >Inicio</Typography>
         </MenuItem>
         {!isAdmin &&
-          <MenuItem onClick={handleNavigate('album')}>
+          <MenuItem onClick={handleNavigate('album')} tabIndex={tabIndex + 2} aria-label="Ir a Mi colección">
             <ListItemIcon>
               <CollectionsIcon fontSize="small" sx={{ color: color }} />
             </ListItemIcon>
-            <Typography variant="inherit">Mi colección</Typography>
+            <Typography >Mi colección</Typography>
           </MenuItem>
         }
         {!isAdmin &&
-          <MenuItem onClick={handleNavigate('shop')}>
+          <MenuItem onClick={handleNavigate('shop')} tabIndex={tabIndex + 3} aria-label="Ir a Tienda">
             <ListItemIcon>
               <StoreIcon fontSize="small" sx={{ color: color }} />
             </ListItemIcon>
-            <Typography variant="inherit">Tienda</Typography>
+            <Typography >Tienda</Typography>
           </MenuItem>
         }
-        <MenuItem onClick={handleNavigate('auctions')}>
+        <MenuItem onClick={handleNavigate('auctions')} tabIndex={tabIndex + 4} aria-label="Ir a Subastas">
           <ListItemIcon>
             <GavelIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography variant="inherit">Subastas</Typography>
+          <Typography >Subastas</Typography>
         </MenuItem>
-        <MenuItem onClick={handleNavigate('bids')}>
+        <MenuItem onClick={handleNavigate('bids')} tabIndex={tabIndex + 5} aria-label="Ir a Mis pujas">
           <ListItemIcon>
             <GavelIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography variant="inherit">Mis pujas</Typography>
+          <Typography >Mis pujas</Typography>
         </MenuItem>
-        <MenuItem onClick={handleNavigate('transactions')}>
+        <MenuItem onClick={handleNavigate('transactions')} tabIndex={tabIndex + 6} aria-label="Ir a Histórico de transacciones">
           <ListItemIcon>
             <HistoryIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography variant="inherit">Histórico de transacciones</Typography>
+          <Typography >Histórico de transacciones</Typography>
         </MenuItem>
 
         {isMobile && (
@@ -148,16 +149,17 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
             <Divider textAlign="right" sx={{ mt: 1, mb: 1 }}>
               <Chip label="Ajustes" size="small" />
             </Divider>
-            <MenuItem>
+            <MenuItem tabIndex={tabIndex + 7} aria-label="Cambiar idioma">
               <LanguageMenu
                 anchorElLang={anchorElLang}
                 handleLanguageMenu={handleLanguageMenu}
                 handleCloseLanguageMenu={handleCloseLanguageMenu}
                 texto='Cambiar idioma'
+                tabIndex={tabIndex + 8}
               />
             </MenuItem>
-            <MenuItem onClick={handleGeneralMenuClose}>
-              <ThemeSwitch toggleTheme={toggleTheme} />
+            <MenuItem onClick={handleGeneralMenuClose} tabIndex={tabIndex + 9} aria-label="Cambiar tema">
+              <ThemeSwitch toggleTheme={toggleTheme} tabIndex={tabIndex + 10} />
             </MenuItem>
           </Box>
         )}
@@ -165,4 +167,3 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
     </>
   );
 };
-//#endregion

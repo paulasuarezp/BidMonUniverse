@@ -115,7 +115,7 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
 
     // ALERTA SI NO DATA
     if (!data || data.length === 0) {
-        return <Alert severity="info">No tienes transacciones</Alert>;
+        return <Alert severity="info" role="alert">No tienes transacciones</Alert>;
     }
 
     return (

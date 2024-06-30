@@ -164,7 +164,7 @@ export default function AdminAuctionDetail() {
                 canWithdraw && onAuction && (
                     <>
                         <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
+                            <Typography variant="h2" gutterBottom textAlign={'center'}>Datos de la subasta</Typography>
                             <Grid container spacing={2}>
                                 <Grid item xs={6}>
                                     <Box display="flex" alignItems="center" justifyContent="center" mt={1}>

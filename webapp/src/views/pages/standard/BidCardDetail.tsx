@@ -162,7 +162,7 @@ export default function BidCardDetail() {
             cardInformationChildren={
                 <>
                     <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography variant="h5" gutterBottom>Detalles de la subasta</Typography>
+                        <Typography variant="h3" gutterBottom sx={{ textAlign: 'center' }}>Detalles de la puja</Typography>
                         <Box display="flex" alignItems="center" justifyContent="center" mt={1}>
                             <Typography><strong>Cantidad de la puja:</strong> {amount}</Typography>
                             <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', marginLeft: 10, height: 'auto' }} />
