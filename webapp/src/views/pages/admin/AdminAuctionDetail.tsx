@@ -75,7 +75,12 @@ export default function AdminAuctionDetail() {
                 }
                 return getShopTransactionsCard(data._id);
             })
-            .then(setTransactions)
+            .then(
+                (data) => {
+                    setTransactions(data);
+                    setLoading(false);
+                }
+            )
             .catch((error) => {
                 setLoading(false);
                 setOnAuction(false);
