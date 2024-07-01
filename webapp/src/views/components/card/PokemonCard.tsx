@@ -44,10 +44,18 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
       }
     }
   };
-
   return (
     <Card
       onClick={handleCardClick}
+      role="button"
+      aria-label={`Carta de ${name}`}
+      aria-pressed={flipped}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          handleCardClick();
+        }
+      }}
       sx={{
         width: maxSize ? { xs: 200, sm: 200, md: 240, lg: 260, xl: 320 } : { xs: 150, sm: 150, md: 180, lg: 200, xl: 250 },
         height: maxSize ? { xs: 280, sm: 280, md: 320, lg: 340, xl: 400 } : { xs: 200, sm: 200, md: 220, lg: 240, xl: 300 },
@@ -60,6 +68,11 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
         transform: flipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
         cursor: 'pointer',
         '&:hover': {
+          transform: !flipped ? 'scale(1.05)' : 'rotateY(180deg)',
+          boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
+        },
+        '&:focus': {
+          outline: '2px solid #0046C7', // Mejorar visibilidad en foco
           transform: !flipped ? 'scale(1.05)' : 'rotateY(180deg)',
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
         },
@@ -88,7 +101,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
           >
             <Avatar
               src={pokemonGymImg}
-              alt={card?.gym[0]}
+              alt={`Gimnasio ${card?.gym[0]}`}
               sx={{
                 width: 30,
                 padding: 0.2,
@@ -104,7 +117,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
           {maxSize ? (
             <Chip
               label={typeName}
-              avatar={<Avatar src={typeImg} sx={{ width: 20, height: 20 }} alt={typeName} />}
+              avatar={<Avatar src={typeImg} sx={{ width: 20, height: 20 }} alt={`Tipo ${typeName}`} />}
               sx={{
                 ...typeStyles[pokemonType],
                 color: 'white',
@@ -117,7 +130,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
           ) : (
             <Avatar
               src={typeImg}
-              alt={typeName}
+              alt={`Tipo ${typeName}`}
               sx={{
                 ...typeStyles[pokemonType],
                 width: 30,
@@ -147,7 +160,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
         <CardMedia
           component="img"
           image={pokemonImage}
-          alt={name}
+          alt={`Imagen de ${name}`}
           sx={{
             width: '100%',
             height: '100%',
@@ -188,6 +201,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
                 fontSize: '1rem',
                 fontWeight: 'bold',
                 textShadow: '1px 1px 2px black',
+                visibility: !flipped ? 'visible' : 'hidden',
               }}
             />
           </Box>

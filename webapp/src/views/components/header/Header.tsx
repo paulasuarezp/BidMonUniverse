@@ -121,21 +121,22 @@ export default function Header({ toggleTheme }: HeaderProps) {
 
   return (
     <>
-      <StyledAppBar scrollbarWidth={scrollbarWidth}>
+      <StyledAppBar scrollbarWidth={scrollbarWidth} aria-label="Encabezado de la aplicación">
         <Toolbar>
           <Grid container alignItems="center" justifyContent="space-between">
             {isMobile ? (
               <>
                 <Grid item xs={6} display="flex" alignItems="center">
                   <Box display="flex" alignItems="center" gap={1}>
-                    { }
                     <GeneralMenu
                       anchorGeneralMenu={anchorGeneralMenu}
                       handleGeneralMenu={handleGeneralMenu}
                       handleGeneralMenuClose={() => setAnchorGeneralMenu(null)}
                       toggleTheme={toggleTheme}
+                      aria-label="Menú general"
+                      tabIndex={0}
                     />
-                    <LogoBox title="BidMon Universe" />
+                    <LogoBox title="BidMon Universe" aria-label="Logo de BidMon Universe" tabIndex={1} />
                   </Box>
                 </Grid>
                 <Grid item xs={6} display="flex" justifyContent="flex-end">
@@ -143,22 +144,24 @@ export default function Header({ toggleTheme }: HeaderProps) {
                     anchorElUser={anchorElUser}
                     handleUserMenu={handleUserMenu}
                     handleCloseUserMenu={handleCloseUserMenu}
+                    aria-label="Menú de usuario"
+                    tabIndex={2}
                   />
                 </Grid>
               </>
             ) : (
               <>
-                <Grid item xs={3}>
-
-                </Grid>
+                <Grid item xs={3}></Grid>
                 <Grid item xs={6} display="flex" justifyContent="center">
-                  <LogoBox title="BidMon Universe" />
+                  <LogoBox title="BidMon Universe" aria-label="Logo de BidMon Universe" tabIndex={0} />
                 </Grid>
                 <Grid item xs={3} display="flex" justifyContent="flex-end">
                   <UserMenu
                     anchorElUser={anchorElUser}
                     handleUserMenu={handleUserMenu}
                     handleCloseUserMenu={handleCloseUserMenu}
+                    aria-label="Menú de usuario"
+                    tabIndex={1}
                   />
                 </Grid>
               </>
@@ -172,8 +175,10 @@ export default function Header({ toggleTheme }: HeaderProps) {
             anchorElLang={anchorElLang}
             handleLanguageMenu={handleLanguageMenu}
             handleCloseLanguageMenu={handleCloseLanguageMenu}
+            aria-label="Menú de idioma"
+            tabIndex={2}
           />
-          <ThemeSwitch toggleTheme={toggleTheme} />
+          <ThemeSwitch toggleTheme={toggleTheme} aria-label="Interruptor para cambiar de tema" tabIndex={3} />
         </ControlsContainer>
       )}
     </>

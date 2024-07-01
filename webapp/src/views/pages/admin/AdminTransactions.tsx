@@ -49,7 +49,7 @@ export default function AdminTransactions() {
     // ERROR
     if (error) {
         return <Container style={{ textAlign: 'center' }}>
-            <Alert severity="error">{error}</Alert>
+            <Alert severity="error" role="alert">{error}</Alert>
         </Container>;
     }
 

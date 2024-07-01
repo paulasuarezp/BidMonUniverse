@@ -45,64 +45,6 @@ export default function AddBidForm({ open, handleClose, warning, auction }: AddB
         setConfirmDialogOpen(true);
     };
 
-    // Contenido del formulario
-    const content = (
-        <Box>
-
-            <Typography sx={{ marginBottom: 2 }}>
-                Introduce la cantidad que deseas pujar.
-            </Typography>
-            <TextField
-                margin="dense"
-                id="basePrice"
-                label="Cantidad a pujar"
-                type="number"
-                variant="outlined"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                error={amountError}
-                helperText={amountError ? 'Por favor, introduce una cantidad válida para pujar. Mínimo: 1 zen' : 'La cantidad mínima para pujar es 1 zen'}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
-                        </InputAdornment>
-                    ),
-                    inputProps: { step: 10 },
-                }}
-            />
-            <Alert severity="info" sx={{ mt: 2 }}>
-                La cantidad se descontará de tu saldo solo si ganas la subasta.
-            </Alert>
-        </Box>
-
-    );
-
-    // Contenido de la confirmación
-    const confirmationContent = (
-        <Box display="flex" alignItems="center" justifyContent="center" mt={1} flexDirection='column'>
-            <Typography>¿Estás seguro de que deseas realizar esta puja?</Typography>
-            <TextField
-                margin="dense"
-                id="basePrice"
-                label="Cantidad a pujar"
-                type="number"
-                disabled
-                variant="outlined"
-                value={amount}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
-                        </InputAdornment>
-                    ),
-                    inputProps: { step: 10 },
-                }}
-            />
-        </Box>
-
-    );
-
     /**
      * Función para confirmar la puja
      * @returns 
@@ -132,9 +74,63 @@ export default function AddBidForm({ open, handleClose, warning, auction }: AddB
         }
     };
 
+    const content = (
+        <Box>
+            <Typography sx={{ marginBottom: 2 }}>
+                Introduce la cantidad que deseas pujar.
+            </Typography>
+            <TextField
+                margin="dense"
+                id="amount"
+                label="Cantidad a pujar"
+                type="number"
+                variant="outlined"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                error={amountError}
+                helperText={amountError ? 'Por favor, introduce una cantidad válida para pujar. Mínimo: 1 zen' : 'La cantidad mínima para pujar es 1 zen'}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
+                aria-invalid={amountError}
+                aria-describedby={amountError ? 'amount-error-text' : null}
+            />
+            <Alert severity="info" sx={{ mt: 2 }}>
+                La cantidad se descontará de tu saldo solo si ganas la subasta.
+            </Alert>
+        </Box>
+    );
+
+    const confirmationContent = (
+        <Box display="flex" alignItems="center" justifyContent="center" mt={1} flexDirection='column'>
+            <Typography>¿Estás seguro de que deseas realizar esta puja?</Typography>
+            <TextField
+                margin="dense"
+                id="confirmAmount"
+                label="Cantidad a pujar"
+                type="number"
+                disabled
+                variant="outlined"
+                value={amount}
+                InputProps={{
+                    endAdornment: (
+                        <InputAdornment position="end">
+                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                        </InputAdornment>
+                    ),
+                    inputProps: { step: 10 },
+                }}
+            />
+        </Box>
+    );
+
     return (
         <>
-            {/* Notificación de error si ya existe una puja previa */}
             {error &&
                 <BaseForm
                     open={open}

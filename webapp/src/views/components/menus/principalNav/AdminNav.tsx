@@ -49,12 +49,34 @@ export default function AdminNavigationMenu() {
                 onChange={handleChange}
                 textColor="secondary"
                 indicatorColor="secondary"
-                aria-label="navigation tabs"
+                aria-label="Navegación principal del administrador"
                 TabIndicatorProps={{ style: { height: '3px', bottom: '10px' } }}
+                sx={{
+                    '& .MuiTab-root:focus': {
+                        outline: '2px solid #000',
+                    }
+                }}
             >
-                <Tab icon={<HomeIcon />} value="admin" iconPosition="start" />
-                <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' />
-                <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' />
+                <Tab
+                    icon={<HomeIcon />}
+                    value="admin"
+                    iconPosition="start"
+                    aria-label="Ir a Administración"
+                />
+                <Tab
+                    icon={<GavelIcon />}
+                    iconPosition="start"
+                    value="auctions"
+                    label='Subastas'
+                    aria-label="Ir a Subastas"
+                />
+                <Tab
+                    icon={<HistoryIcon />}
+                    iconPosition="start"
+                    value="transactions"
+                    label='Histórico de transacciones'
+                    aria-label="Ir a Histórico de transacciones"
+                />
             </Tabs>
         </Box>
     );

@@ -55,9 +55,18 @@ export default function CardPack({ cardpack }: PackProps) {
 
     return (
         <Card sx={{
-            width: '100%', height: 480, borderRadius: '15px', boxShadow: 3, display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            width: '100%',
+            height: 480,
+            borderRadius: '15px',
+            boxShadow: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
             '&:hover': {
                 animation: 'shake 0.5s'
+            },
+            '&:focus-visible': {
+                outline: `2px solid ${theme.palette.primary.main}`,
             }
         }}>
             <CardMedia
@@ -69,14 +78,14 @@ export default function CardPack({ cardpack }: PackProps) {
             <CardContent sx={{ flexGrow: 1, padding: theme.spacing(2) }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                     <Box>
-                        <Typography gutterBottom variant="h5" component="div">
+                        <Typography gutterBottom variant="h3" component="div">
                             {cardpack.name}
                         </Typography>
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography color="text.secondary">
                             Contiene <strong>{cardpack.numberOfCards}</strong> cartas
                         </Typography>
                     </Box>
-                    <CoinsButton balance={cardpack.price} sx={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF' }} />
+                    <CoinsButton balance={cardpack.price} role='status' sx={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF' }} />
                 </Box>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     Puedes conseguir cartas de los siguientes mazos:
@@ -109,7 +118,13 @@ export default function CardPack({ cardpack }: PackProps) {
                 </List>
             </CardContent>
             <CardActions sx={{ justifyContent: 'center', paddingBottom: theme.spacing(2) }}>
-                <Button buttonType='primary' label='Comprar sobre' fullWidth onClick={handleOpen} />
+                <Button
+                    buttonType='primary'
+                    label='Comprar sobre'
+                    fullWidth
+                    onClick={handleOpen}
+                    aria-label={`Comprar sobre de ${cardpack.name}`}
+                />
                 <PurchaseCardpackConfirm open={openModal} handleClose={handleClose} cardpack={cardpack} />
             </CardActions>
         </Card>

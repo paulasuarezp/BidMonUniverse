@@ -34,10 +34,10 @@ export default function BasePageWithNav({ title, description, description2, back
 
             <PokeballsBox titulo={title} sx={{ marginBottom: '1em', marginTop: '3em' }} />
 
-            <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
+            <Typography variant="h2" align="center" component="div" style={{ marginBottom: '1em' }}>
                 {description ? description : ''}
             </Typography>
-            <Typography variant="body2" align="center" component="div" style={{ marginBottom: '1em' }}>
+            <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
                 {description2 ? description2 : ''}
             </Typography>
 

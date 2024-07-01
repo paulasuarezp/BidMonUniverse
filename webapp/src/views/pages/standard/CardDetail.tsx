@@ -173,7 +173,7 @@ const CardDetail = () => {
 
             cardInformationChildren={inAuction ? (<CardActions>
 
-                <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} >
+                <Alert severity="success" sx={{ width: '100%', fontSize: '1.1em' }} role='alert' aria-label='La carta está en subasta'>
                     ¡La carta está en subasta!
                 </Alert>
             </CardActions>)

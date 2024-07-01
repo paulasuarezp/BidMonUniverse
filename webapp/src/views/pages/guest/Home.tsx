@@ -36,6 +36,10 @@ const SmallImage = styled('img')(({ theme }) => ({
   marginTop: theme.spacing(2),
   boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   cursor: 'pointer',
+  '&:focus': {
+    outline: '2px solid',
+    outlineColor: theme.palette.primary.main,
+  },
 }));
 
 const SliderContainer = styled(Box)(({ theme }) => ({
@@ -53,9 +57,9 @@ export default function Home() {
   const popularCards = getPopularCards();
   const theme = useTheme();
   const navigate = useNavigate();
-  const [openImage, setOpenImage] = useState(null);
+  const [openImage, setOpenImage] = useState<string | null>(null);
 
-  const handleClickOpen = (imgSrc) => {
+  const handleClickOpen = (imgSrc: string) => {
     setOpenImage(imgSrc);
   };
 
@@ -103,16 +107,16 @@ export default function Home() {
     <Container>
       <StyledBox>
         <PokeballsBox titulo='¡Bienvenido a BidMon Universe!' />
-        <Typography variant="h5" align="center" component="div" sx={{ mb: 4 }}>
+        <Typography align="center" component="h1" sx={{ mb: 4, fontSize: '1.75rem' }}>
           Descubre, colecciona y subasta las cartas más valiosas.
         </Typography>
-        <ButtonPrincipal label="¡Únete ahora!" onClick={handleNavigate} />
+        <ButtonPrincipal label="¡Únete ahora!" onClick={handleNavigate} aria-label="Botón para unirse a BidMon Universe" />
       </StyledBox>
 
       <InfoPaper elevation={4} sx={{ bgcolor: bgColorSolid, color: 'common.white', mt: 2 }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" component={'section'} aria-labelledby="bidmon-universe-section">
           <Grid item xs={12} md={6}>
-            <Typography variant="h4">BidMon Universe</Typography>
+            <Typography variant="h2" id="bidmon-universe-section">BidMon Universe</Typography>
             <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
               En BidMon Universe podrás coleccionar y subastar cartas de Pokémon de forma segura y sencilla.
               Nuestra plataforma se basa en subastas ciegas para garantizar la transparencia y la igualdad de oportunidades.
@@ -136,14 +140,14 @@ export default function Home() {
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: bgBorder, bgcolor: theme.palette.background.default }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" component={'section'} aria-labelledby="how-to-start-section">
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-              <SmallImage src="/album.png" alt="Captura de colección de usuario" onClick={() => handleClickOpen("/album.png")} />
+              <SmallImage src="/album.png" alt="Captura de colección de usuario" onClick={() => handleClickOpen("/album.png")} tabIndex={0} aria-label="Captura de pantalla de la colección de usuario" />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h4">Cómo empezar</Typography>
+            <Typography variant="h2" id="how-to-start-section">Cómo empezar</Typography>
             <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
               Únete a nuestra plataforma y comienza tu colección hoy mismo.
               Adquiere cartas en nuestra tienda o participa en subastas en vivo.
@@ -156,9 +160,9 @@ export default function Home() {
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ bgcolor: bgColorSolid, color: 'common.white' }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" component={'section'} aria-labelledby="explore-auctions-section">
           <Grid item xs={12} md={6}>
-            <Typography variant="h4">Explora subastas</Typography>
+            <Typography variant="h2" id="explore-auctions-section">Explora subastas</Typography>
             <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
               Descubre y participa en subastas en vivo para obtener cartas raras.
               Consulta las subastas activas en tiempo real y puja por tus cartas favoritas.
@@ -166,21 +170,21 @@ export default function Home() {
           </Grid>
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-              <SmallImage src="/subastas.png" alt="Captura de subastas" onClick={() => handleClickOpen("/subastas.png")} />
+              <SmallImage src="/subastas.png" alt="Captura de subastas" onClick={() => handleClickOpen("/subastas.png")} tabIndex={0} aria-label="Captura de pantalla de las subastas" />
             </Box>
           </Grid>
         </Grid>
       </InfoPaper>
 
       <InfoPaper elevation={4} sx={{ border: bgBorder, bgcolor: theme.palette.background.default }}>
-        <Grid container spacing={2} alignItems="center">
+        <Grid container spacing={2} alignItems="center" component={'section'} aria-labelledby="transparency-section">
           <Grid item xs={12} md={6}>
             <Box display="flex" justifyContent="center">
-              <SmallImage src="/detalle_subasta.png" alt="Captura de detalle de subasta" onClick={() => handleClickOpen("/detalle_subasta.png")} />
+              <SmallImage src="/detalle_subasta.png" alt="Captura de detalle de subasta" onClick={() => handleClickOpen("/detalle_subasta.png")} tabIndex={0} aria-label="Captura de pantalla del detalle de subasta" />
             </Box>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Typography variant="h4">Transparencia</Typography>
+            <Typography variant="h2" id="transparency-section">Transparencia</Typography>
             <Typography sx={{ fontSize: '1.3rem', mt: 2 }}>
               Nuestras cartas cuentan con un registro de transacciones que garantiza la trazabilidad y ayuda a los usuarios a conocer el mercado.
             </Typography>
@@ -190,7 +194,7 @@ export default function Home() {
 
       <Dialog open={Boolean(openImage)} onClose={handleClose}>
         <DialogContent>
-          <img src={openImage} alt="Ampliada" style={{ width: '100%' }} />
+          <img src={openImage} alt="Imagen ampliada" style={{ width: '100%' }} />
         </DialogContent>
       </Dialog>
     </Container>

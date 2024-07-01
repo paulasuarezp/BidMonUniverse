@@ -25,7 +25,7 @@ export default function AuctionsAdmin() {
             description="En esta sección podrás ver y gestionar todas las subastas activas."
             description2="Cierra las subastas que ya han terminado, buscando automáticamente al ganador y notificándole mediante el botón 'Cerrar subastas terminadas'."
         >
-            <Button label="Cerrar subastas terminadas" onClick={handleCloseAuctions} />
+            <Button label="Cerrar subastas terminadas" onClick={handleCloseAuctions} aria-label='Cerrar subastas terminadas' />
 
             <CloseAuctionsForm open={openCloseAuctionsModal} handleClose={() => setOpenCloseAuctionsModal(false)} />
             <div style={{ marginBottom: '2em' }}>

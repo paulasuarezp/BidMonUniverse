@@ -19,13 +19,14 @@ interface UserMenuProps {
   anchorElUser: null | HTMLElement;
   handleUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
   handleCloseUserMenu: () => void;
+  tabIndex?: number;
 }
 //#endregion
 
 
 //#region COMPONENTE USER MENU
 // Menú de usuario
-export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUserMenu }: UserMenuProps) {
+export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUserMenu, tabIndex }: UserMenuProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

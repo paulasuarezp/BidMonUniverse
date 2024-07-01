@@ -35,17 +35,19 @@ export default function ActiveAuctions() {
 
             <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
                 Aquí encontrarás las subastas activas actualmente.<br />
-                <strong>¡Participa en ellas!</strong>
+                ¡Participa en ellas y hazte con las cartas más exclusivas!
             </Typography>
+
 
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <FormGroup>
                     <FormControlLabel
+                        aria-label='Mostrar mis subastas'
                         control={<Switch checked={showUserAuctions} onChange={() => setShowUserAuctions(!showUserAuctions)} />}
                         label={showUserAuctions ? "Mis subastas" : "Todas las subastas"}
                     />
                 </FormGroup>
-                <Button startIcon={<SearchIcon />} onClick={handleNavigate} variant="contained" color="primary" label="Mis pujas" />
+                <Button startIcon={<SearchIcon />} onClick={handleNavigate} buttonType="primary" label="Mis pujas" />
             </Box>
 
             <div style={{ marginBottom: '2em' }}>

@@ -52,30 +52,57 @@ export default function CardInformation({ card, id }: CardDetailProps) {
         margin: 5,
         fontWeight: 'bold'
     };
-
     return (
         <CardContent sx={{ flexGrow: 1 }}>
-            <Typography variant="h5" gutterBottom>Detalles de la carta</Typography>
-            <Box display="flex" alignItems="center"><CodeIcon sx={{ mr: 1 }} /><Typography><strong>ID:</strong> {id}</Typography></Box>
-            <Box display="flex" alignItems="center">{getCategoryIcon(card.rarity)}<Typography><strong>Rareza:</strong> {getCategoryName(card.rarity)}</Typography></Box>
-            <Box display="flex" alignItems="center"><HealthIcon sx={{ mr: 1, color: '#e91e63' }} /><Typography><strong>HP:</strong> {card.hp}</Typography></Box>
-            <Box display="flex" alignItems="center"><AttackIcon sx={{ mr: 1, color: '#ff9800' }} /><Typography><strong>Ataque:</strong> {card.attack}</Typography></Box>
-            <Box display="flex" alignItems="center"><DefenseIcon sx={{ mr: 1, color: '#3f51b5' }} /><Typography><strong>Defensa:</strong> {card.defense}</Typography></Box>
-            <Box display="flex" alignItems="center"><SpeedIcon sx={{ mr: 1, color: '#4caf50' }} /><Typography><strong>Velocidad:</strong> {card.speed}</Typography></Box>
-            <Box display="flex" alignItems="center"><WeightIcon sx={{ mr: 1, color: '#9c27b0' }} /><Typography><strong>Peso:</strong> {card.weight}</Typography></Box>
-            <Box display="flex" alignItems="center"><HeightIcon sx={{ mr: 1, color: '#00bcd4' }} /><Typography><strong>Altura:</strong> {card.height}</Typography></Box>
-            <Box display="flex" alignItems="center"><CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} /><Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography></Box>
-            {card.is_legendary && <Typography><strong>¡Es un Pokémon legendario!</strong></Typography>}
-            {card.is_mythical && <Typography><strong>¡Es un Pokémon mítico!</strong></Typography>}
+            <Typography variant="h3" gutterBottom id="card-details-title" sx={{ textAlign: 'center' }}> Detalles de la carta </Typography>
+            <Box display="flex" alignItems="center">
+                <CodeIcon sx={{ mr: 1 }} />
+                <Typography><strong>ID:</strong> {id}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                {getCategoryIcon(card.rarity)}
+                <Typography><strong>Rareza:</strong> {getCategoryName(card.rarity)}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <HealthIcon sx={{ mr: 1, color: '#e91e63' }} />
+                <Typography><strong>HP:</strong> {card.hp}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <AttackIcon sx={{ mr: 1, color: '#ff9800' }} />
+                <Typography><strong>Ataque:</strong> {card.attack}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <DefenseIcon sx={{ mr: 1, color: '#3f51b5' }} />
+                <Typography><strong>Defensa:</strong> {card.defense}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <SpeedIcon sx={{ mr: 1, color: '#4caf50' }} />
+                <Typography><strong>Velocidad:</strong> {card.speed}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <WeightIcon sx={{ mr: 1, color: '#9c27b0' }} />
+                <Typography><strong>Peso:</strong> {card.weight}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <HeightIcon sx={{ mr: 1, color: '#00bcd4' }} />
+                <Typography><strong>Altura:</strong> {card.height}</Typography>
+            </Box>
+            <Box display="flex" alignItems="center">
+                <CalendarTodayIcon sx={{ mr: 1, color: '#795548' }} />
+                <Typography><strong>Fecha de lanzamiento:</strong> {new Date(card.releaseDate).toLocaleDateString()}</Typography>
+            </Box>
 
             {hasGym && (
                 <Box display="flex" justifyContent='center' sx={{ mt: 2 }}>
                     <Chip
-                        icon={<img src={getPokemonGymImg(card.gym[0])} alt={card.gym[0]} style={{ width: 24, height: 24 }} />}
+                        icon={<img src={getPokemonGymImg(card.gym[0])} alt={`Gimnasio ${card.gym[0]}`} style={{ width: 24, height: 24 }} />}
                         label={`Gimnasio ${card.gym[0]}`}
                         style={chipStyle}
                         variant="outlined"
                         size="medium"
+                        tabIndex={0}
+                        role="status"
+                        aria-label={`Gimnasio: ${card.gym[0]}`}
                     />
                 </Box>
             )}
@@ -85,7 +112,6 @@ export default function CardInformation({ card, id }: CardDetailProps) {
                 {descriptions[0]}
                 <AutoAwesomeIcon sx={{ ml: 1 }} style={{ color: '#FFD700' }} />
             </Typography>
-
         </CardContent>
     );
 }
