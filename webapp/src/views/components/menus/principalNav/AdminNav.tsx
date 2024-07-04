@@ -62,6 +62,7 @@ export default function AdminNavigationMenu() {
                     value="admin"
                     iconPosition="start"
                     aria-label="Ir a Administración"
+                    onClick={() => navigate('/admin')}
                 />
                 <Tab
                     icon={<GavelIcon />}
@@ -69,6 +70,7 @@ export default function AdminNavigationMenu() {
                     value="auctions"
                     label='Subastas'
                     aria-label="Ir a Subastas"
+                    onClick={() => navigate('/admin/auctions')}
                 />
                 <Tab
                     icon={<HistoryIcon />}
@@ -76,6 +78,7 @@ export default function AdminNavigationMenu() {
                     value="transactions"
                     label='Histórico de transacciones'
                     aria-label="Ir a Histórico de transacciones"
+                    onClick={() => navigate('/admin/transactions')}
                 />
             </Tabs>
         </Box>

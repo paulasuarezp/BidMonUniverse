@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Card,
     CardActions,
@@ -11,7 +12,9 @@ import {
     Typography,
     useTheme
 } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 import { CardPack as CardPackType } from '../../../shared/sharedTypes';
 import Button from '../buttons/Button';
 import CoinsButton from '../buttons/coins/CoinsButton';
@@ -42,8 +45,11 @@ function getDeckName(name: string): string {
 
 export default function CardPack({ cardpack }: PackProps) {
     const theme = useTheme();
+    const [showBuyButton, setShowBuyButton] = useState(true);
 
     const [openModal, setOpenModal] = useState(false);
+
+    const balance = useSelector((state: RootState) => state.user.balance);
 
     const handleOpen = () => {
         setOpenModal(true);
@@ -52,6 +58,10 @@ export default function CardPack({ cardpack }: PackProps) {
     const handleClose = () => {
         setOpenModal(false);
     }
+
+    useEffect(() => {
+        setShowBuyButton(cardpack.price <= balance);
+    }, [balance]);
 
     return (
         <Card sx={{
@@ -117,16 +127,24 @@ export default function CardPack({ cardpack }: PackProps) {
                     )}
                 </List>
             </CardContent>
-            <CardActions sx={{ justifyContent: 'center', paddingBottom: theme.spacing(2) }}>
-                <Button
-                    buttonType='primary'
-                    label='Comprar sobre'
-                    fullWidth
-                    onClick={handleOpen}
-                    aria-label={`Comprar sobre de ${cardpack.name}`}
-                />
-                <PurchaseCardpackConfirm open={openModal} handleClose={handleClose} cardpack={cardpack} />
-            </CardActions>
+
+            {/* Botón de compra */}
+            {showBuyButton && (
+                <CardActions sx={{ justifyContent: 'center', paddingBottom: theme.spacing(2) }}>
+                    <Button
+                        buttonType='primary'
+                        label='Comprar sobre'
+                        fullWidth
+                        onClick={handleOpen}
+                        aria-label={`Comprar sobre de ${cardpack.name}`}
+                    />
+                </CardActions>
+            )}
+
+            <PurchaseCardpackConfirm open={openModal} handleClose={handleClose} cardpack={cardpack} />
+            {!showBuyButton && (<Alert severity="warning" sx={{ width: '100%', fontSize: '1.1em' }} role='alert' aria-label=' No tienes saldo suficiente para comprar este sobre.'>
+                Saldo insuficiente. </Alert>)}
+
         </Card>
     );
 }

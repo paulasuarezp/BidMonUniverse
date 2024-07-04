@@ -79,11 +79,11 @@ export default function NavigationMenu() {
                     }
                 }}
             >
-                <Tab icon={<HomeIcon />} value="logued" iconPosition="start" aria-label="Ir a Inicio" />
-                <Tab icon={<CollectionsIcon />} value="album" iconPosition="start" label={isMobile ? '' : 'Mi colección'} aria-label="Ir a Mi colección" />
-                <Tab icon={<StoreIcon />} value="shop" iconPosition="start" label={isMobile ? '' : 'Tienda'} aria-label="Ir a Tienda" />
-                {!isMobile && <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' aria-label="Ir a Subastas" />}
-                {!isMobile && <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' aria-label="Ir a Histórico de transacciones" />}
+                <Tab icon={<HomeIcon />} value="logued" iconPosition="start" aria-label="Ir a Inicio" onClick={() => navigate('/logued')} />
+                <Tab icon={<CollectionsIcon />} value="album" iconPosition="start" label={isMobile ? '' : 'Mi colección'} aria-label="Ir a Mi colección" onClick={() => navigate('/album')} />
+                <Tab icon={<StoreIcon />} value="shop" iconPosition="start" label={isMobile ? '' : 'Tienda'} aria-label="Ir a Tienda" onClick={() => navigate('/shop')} />
+                {!isMobile && <Tab icon={<GavelIcon />} iconPosition="start" value="auctions" label='Subastas' aria-label="Ir a Subastas" onClick={() => navigate('/auctions')} />}
+                {!isMobile && <Tab icon={<HistoryIcon />} iconPosition="start" value="transactions" label='Histórico de transacciones' aria-label="Ir a Histórico de transacciones" onClick={() => navigate('/transactions')} />}
             </Tabs>
         </Box>
     );

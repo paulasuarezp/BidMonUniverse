@@ -80,22 +80,6 @@ export default function Header({ toggleTheme }: HeaderProps) {
     setAnchorElUser(null);
   };
 
-  /**
-   * Función que maneja el menú de idioma
-   * @param event 
-   */
-  const handleLanguageMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElLang(event.currentTarget);
-  };
-
-  /**
-   * Función que cierra el menú de idioma
-   * @param languageKey 
-   */
-  const handleCloseLanguageMenu = (languageKey: string) => {
-    setAnchorElLang(null);
-  };
-
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (anchorElLang && !anchorElLang.contains(event.target as HTMLElement)) {

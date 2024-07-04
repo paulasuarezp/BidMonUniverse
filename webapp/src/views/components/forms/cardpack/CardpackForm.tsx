@@ -44,7 +44,14 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
      * Función para cerrar el modal de las cartas compradas
      * @returns 
      */
-    const handleCloseShowCards = () => setShowCards(false);
+    const handleCloseShowCards = () => {
+        setShowCards(false);
+        setLoading(false);
+        setSuccessMessage('');
+        setError('');
+        setCards([]);
+        handleClose();
+    }
 
     /**
      * Función para confirmar la compra del sobre
@@ -66,10 +73,11 @@ export default function PurchaseCardpackConfirm({ open, handleClose, cardpack }:
             setSuccessMessage("¡Sobre comprado con éxito!");
             setTimeout(() => {
                 setShowCards(true);
+                setLoading(false);
                 handleClose(); // Cierra el formulario después de mostrar el éxito
             }, 2000);
         } catch (err) {
-            setError(err.message);
+            setError("No se ha podido comprar el sobre. Por favor, inténtalo de nuevo.");
             setLoading(false);
         }
     };
