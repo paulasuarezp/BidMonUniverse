@@ -14,6 +14,7 @@ import CardInformation from '../cardDetail/CardInformation';
 import TableCardDetail from '../table/TableCardDetail';
 import PokemonCardBox from './PokemonCardBox';
 
+
 // #region PROPS
 interface GeneralCardDetailProps {
     title: string; // Título de la página
@@ -26,12 +27,13 @@ interface GeneralCardDetailProps {
     pokemonBoxChildren: React.ReactNode; // Contenido del box de la carta
     cardInformationChildren: React.ReactNode; // Contenido de la información de la carta
     form?: React.ReactNode; // Formulario
+    flip?: boolean; // Propiedad opcional para voltear la carta
 }
 // #endregion
 
 // #region COMPONENT GeneralCardDetail
 // Detalle general de una carta
-export default function GeneralCardDetail({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack }: GeneralCardDetailProps) {
+export default function GeneralCardDetail({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack, flip = false }: GeneralCardDetailProps) {
 
     const theme = useTheme();
 
@@ -80,7 +82,7 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                     />
                     <Grid container spacing={2} justifyContent="center" alignItems="stretch">
                         <Grid item xs={12} md={6}>
-                            <PokemonCardBox card={card} id={card._id} children={pokemonBoxChildren} />
+                            <PokemonCardBox card={card} id={card._id} children={pokemonBoxChildren} showFlipped={flip} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>

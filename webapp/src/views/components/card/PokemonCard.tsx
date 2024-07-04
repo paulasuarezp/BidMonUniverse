@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardRarity, Card as CardType } from "../../../shared/sharedTypes";
 import { capitalizeFirstLetter } from '../../../utils/utils';
@@ -19,6 +19,10 @@ interface PokemonCardProps {
 export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick, showFlipped = false }: PokemonCardProps) {
   const navigate = useNavigate();
   const [flipped, setFlipped] = useState(showFlipped);
+
+  useEffect(() => {
+    setFlipped(!flipped);
+  }, [showFlipped]);
 
   let name = card?.name ? capitalizeFirstLetter(card?.name) : 'Pokemon';
   let rarity = card?.rarity || CardRarity.Common;

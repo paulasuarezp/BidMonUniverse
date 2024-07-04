@@ -1,5 +1,5 @@
 import GavelIcon from '@mui/icons-material/Gavel';
-import StarIcon from '@mui/icons-material/Star';
+import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import {
     Alert,
     CardActions,
@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { getCardFromUserCollection, getShopTransactionsCard } from '../../../api/api';
 import { resetUpdate } from '../../../redux/slices/updateSlice';
 import { RootState } from '../../../redux/store';
@@ -32,6 +31,7 @@ const CardDetail = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [inAuction, setInAuction] = useState<boolean>(false);
+    const [flipped, setFlipped] = useState(false);
 
 
     const sessionUser = useSelector((state: RootState) => state.user);
@@ -137,6 +137,9 @@ const CardDetail = () => {
         processCard(id);
     }, []);
 
+    useEffect(() => {
+    }, [flipped]);
+
 
     //ERROR
     if (error) {
@@ -155,20 +158,14 @@ const CardDetail = () => {
             card={card}
             id={id}
             transactions={transactions}
+            flip={flipped}
             pokemonBoxChildren={
-                <Button startIcon={<StarIcon />}
+                <Button startIcon={<ThreeSixtyIcon />}
                     variant="contained"
                     sx={{ marginTop: 2, marginBottom: 2 }}
                     buttonType="ghost"
-                    onClick={() => {
-                        Swal.fire({
-                            title: 'Funcionalidad disponible próximamente 😉',
-                            icon: 'info',
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#81c784',
-                        });
-                    }}
-                    label='Destacar carta'
+                    onClick={() => setFlipped(!flipped)}
+                    label='¡Girar carta!'
                 />}
 
             cardInformationChildren={inAuction ? (<CardActions>
