@@ -27,10 +27,10 @@ beforeEach(async () => {
         await newTransaction.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'admin', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'admin', password: 'Password123-' });
     tokenAdmin = response.body.token;
 
-    const responseUser = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const responseUser = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = responseUser.body.token;
 });
 
@@ -41,10 +41,10 @@ afterAll(async () => {
 
 
 describe('TRANSACTION ROUTES', () => {
-    describe('GET /transactions', () => {
+    describe('GET /api/transactions', () => {
         it('should get all transactions', async () => {
             const response = await api
-                .get('/transactions')
+                .get('/api/transactions')
                 .set('Authorization', `Bearer ${tokenAdmin}`);
 
             expect(response.status).toBe(200);
@@ -52,11 +52,11 @@ describe('TRANSACTION ROUTES', () => {
         });
     });
 
-    describe('GET /transactions/u/:username', () => {
+    describe('GET /api/transactions/u/:username', () => {
         it('should return transactions for a valid username', async () => {
             const username = 'test';
             const response = await api
-                .get(`/transactions/u/${username}`)
+                .get(`/api/transactions/u/${username}`)
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -65,11 +65,11 @@ describe('TRANSACTION ROUTES', () => {
 
     });
 
-    describe('GET /transactions/c/:userCardId', () => {
+    describe('GET /api/transactions/c/:userCardId', () => {
         it('should return transactions for a valid userCardId', async () => {
             const userCardId = '66646db6a10d744749820f4b';
             const response = await api
-                .get(`/transactions/c/${userCardId}`)
+                .get(`/api/transactions/c/${userCardId}`)
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -81,10 +81,10 @@ describe('TRANSACTION ROUTES', () => {
 });
 
 describe('TRANSACTION ROUTES Error Handling', () => {
-    describe('GET /transactions', () => {
+    describe('GET /api/transactions', () => {
         it('shold return 403 if user is not admin', async () => {
             const response = await api
-                .get('/transactions')
+                .get('/api/transactions')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(403);
@@ -92,10 +92,10 @@ describe('TRANSACTION ROUTES Error Handling', () => {
         });
     });
 
-    describe('GET /transactions/u/:username', () => {
+    describe('GET /api/transactions/u/:username', () => {
         it('should return 400 for invalid username', async () => {
             const response = await api
-                .get('/transactions/u/INVALIDUSERNAME2022')
+                .get('/api/transactions/u/INVALIDUSERNAME2022')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(400);

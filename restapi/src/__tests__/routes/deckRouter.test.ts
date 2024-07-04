@@ -1,14 +1,13 @@
 // tests/cardRouter.test.ts
-import request from 'supertest';
-import { api, dropEntireDatabase, hashPassword } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
-import User from '../../models/user';
-import initialUsers from '../mockData/users.json';
-import initialCards from '../mockData/cards.json';
-import initialDecks from '../mockData/decks.json';
+import { server } from '../../../server';
 import Card from '../../models/card';
 import Deck from '../../models/deck';
+import User from '../../models/user';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
+import initialCards from '../mockData/cards.json';
+import initialDecks from '../mockData/decks.json';
+import initialUsers from '../mockData/users.json';
 
 
 let token: string;
@@ -34,7 +33,7 @@ beforeEach(async () => {
         await newDeck.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -48,7 +47,7 @@ describe('DECK ROUTES', () => {
     describe('GET /decks', () => {
         it('should get all decks', async () => {
             const response = await api
-                .get('/decks')
+                .get('/api/decks')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -57,10 +56,10 @@ describe('DECK ROUTES', () => {
 
     });
 
-    describe('GET /decks/:deckid', () => {
+    describe('GET /api/decks/:deckid', () => {
         it('should get a deck by deckId', async () => {
             const response = await api
-                .get('/decks/d-4')
+                .get('/api/decks/d-4')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -78,12 +77,12 @@ describe('DECK ROUTES', () => {
 });
 
 describe('DECK ROUTES Error Handling', () => {
-    describe('GET /decks', () => {
+    describe('GET /api/decks', () => {
         it('should handle errors', async () => {
             jest.spyOn(mongoose.Model, 'find').mockRejectedValueOnce(new Error('Database error'));
 
             const response = await api
-                .get('/decks')
+                .get('/api/decks')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(500);
@@ -91,11 +90,11 @@ describe('DECK ROUTES Error Handling', () => {
         });
     });
 
-    describe('GET /decks/:deckid', () => {
+    describe('GET /api/decks/:deckid', () => {
 
         it('should return 404 if deck does not exist', async () => {
             const response = await api
-                .get('/decks/999')
+                .get('/api/decks/999')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -106,7 +105,7 @@ describe('DECK ROUTES Error Handling', () => {
             jest.spyOn(mongoose.Model, 'findOne').mockRejectedValueOnce(new Error('Database error'));
 
             const response = await api
-                .get('/decks/1')
+                .get('/api/decks/1')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(500);

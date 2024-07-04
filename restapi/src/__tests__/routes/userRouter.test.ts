@@ -20,7 +20,7 @@ beforeEach(async () => {
     await newUser.save();
   }
 
-  const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+  const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
   token = response.body.token;
 });
 
@@ -33,7 +33,7 @@ describe('User Routes', () => {
   describe('POST /login', () => {
     it('should login an existing user', async () => {
       const response = await api
-        .post('/users/login')
+        .post('/api/users/login')
         .send({ username: 'test', password: 'Password123-' });
 
       expect(response.status).toBe(200);
@@ -56,7 +56,7 @@ describe('User Routes', () => {
   describe('POST /signup', () => {
     it('should create a new user', async () => {
       const response = await api
-        .post('/users/signup')
+        .post('/api/users/signup')
         .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
 
       expect(response.status).toBe(201);
@@ -71,7 +71,7 @@ describe('User Routes', () => {
   describe('GET /:username', () => {
     it('should get user details with valid token', async () => {
       const response = await api
-        .get('/users/test')
+        .get('/api/users/test')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(200);
@@ -91,7 +91,7 @@ describe('User Routes', () => {
   describe('PATCH /update/avatar', () => {
     it('should update user avatar', async () => {
       const response = await api
-        .patch('/users/update/avatar')
+        .patch('/api/users/update/avatar')
         .set('Authorization', `Bearer ${token}`)
         .send({ profileImg: 'avatar1.png', username: 'test' });
 
@@ -103,7 +103,7 @@ describe('User Routes', () => {
   describe('PATCH /update/pass', () => {
     it('should update user password', async () => {
       const response = await api
-        .patch('/users/update/pass')
+        .patch('/api/users/update/pass')
         .set('Authorization', `Bearer ${token}`)
         .send({ password: 'NewPass1234-', username: 'test' });
 
@@ -117,7 +117,7 @@ describe('USER ROUTES Error Handling', () => {
   describe('GET /:username', () => {
     it('should return 400 if username is too long', async () => {
       const response = await api
-        .get('/users/thisusernameiswaytoolongtobevalid')
+        .get('/api/users/thisusernameiswaytoolongtobevalid')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(400);
@@ -125,14 +125,14 @@ describe('USER ROUTES Error Handling', () => {
 
 
     it('should return 401 if no token is provided', async () => {
-      const response = await api.get('/users/test');
+      const response = await api.get('/api/users/test');
 
       expect(response.status).toBe(401);
     });
 
     it('should return 404 if user is not found', async () => {
       const response = await api
-        .get('/users/nonexist')
+        .get('/api/users/nonexist')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(404);
@@ -143,7 +143,7 @@ describe('USER ROUTES Error Handling', () => {
       jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
 
       const response = await api
-        .get('/users/testuser')
+        .get('/api/users/testuser')
         .set('Authorization', `Bearer ${token}`);
 
       expect(response.status).toBe(500);
@@ -153,7 +153,7 @@ describe('USER ROUTES Error Handling', () => {
   describe('POST /login', () => {
     it('should return 401 if user does not exist', async () => {
       const response = await api
-        .post('/users/login')
+        .post('/api/users/login')
         .send({ username: 'nonexistentuser', password: 'Password123-' });
 
       expect(response.status).toBe(401);
@@ -161,7 +161,7 @@ describe('USER ROUTES Error Handling', () => {
 
     it('should return 401 if password is invalid', async () => {
       const response = await api
-        .post('/users/login')
+        .post('/api/users/login')
         .send({ username: 'test', password: 'WrongPassword' });
 
       expect(response.status).toBe(401);
@@ -171,7 +171,7 @@ describe('USER ROUTES Error Handling', () => {
       jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
 
       const response = await api
-        .post('/users/login')
+        .post('/api/users/login')
         .send({ username: 'test', password: 'Password123-' });
 
       expect(response.status).toBe(500);
@@ -181,7 +181,7 @@ describe('USER ROUTES Error Handling', () => {
   describe('POST /signup', () => {
     it('should return 400 if username already exists', async () => {
       const response = await api
-        .post('/users/signup')
+        .post('/api/users/signup')
         .send({ username: 'test', password: 'Password123-', birthday: '2000-01-01' });
 
       expect(response.status).toBe(400);
@@ -189,7 +189,7 @@ describe('USER ROUTES Error Handling', () => {
 
     it('should return 400 if username, password or birthday is missing', async () => {
       const response = await api
-        .post('/users/signup')
+        .post('/api/users/signup')
         .send({ username: '', password: '' });
 
       expect(response.status).toBe(400);
@@ -199,7 +199,7 @@ describe('USER ROUTES Error Handling', () => {
       jest.spyOn(User, 'findOne').mockRejectedValueOnce(new Error('Error'));
 
       const response = await api
-        .post('/users/signup')
+        .post('/api/users/signup')
         .send({ username: 'newuser', password: 'Password123-', birthday: '2000-01-01' });
 
       expect(response.status).toBe(500);

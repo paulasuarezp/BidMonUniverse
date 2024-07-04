@@ -50,7 +50,7 @@ beforeEach(async () => {
     }
 
     // Obtener token de autenticación
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -64,7 +64,7 @@ describe('BIDS ROUTES', () => {
     describe('GET /b/:id', () => {
         it('should return a specific bid', async () => {
             const response = await api
-                .get('/bids/b/6676ede4ca24fe8c4e90b4e7')
+                .get('/api/bids/b/6676ede4ca24fe8c4e90b4e7')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -72,7 +72,7 @@ describe('BIDS ROUTES', () => {
 
         it('should return 404 for non existent bid ID', async () => {
             const response = await api
-                .get('/bids/b/67468a8920f1692e1068d40f')
+                .get('/api/bids/b/67468a8920f1692e1068d40f')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -82,7 +82,7 @@ describe('BIDS ROUTES', () => {
     describe('GET /active/u/:username', () => {
         it('should return all active bids for a valid username', async () => {
             const response = await api
-                .get('/bids/active/u/test')
+                .get('/api/bids/active/u/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
