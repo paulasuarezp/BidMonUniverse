@@ -12,12 +12,13 @@ interface PokemonCardProps {
   maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
   type?: 'auction' | 'album' | 'bid'; // Propiedad obligatoria para determinar el tipo de tarjeta
   onClick?: () => void; // Propiedad opcional para manejar el evento de clic
+  showFlipped?: boolean; // Propiedad opcional para mostrar la carta volteada
 }
 
 
-export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick }: PokemonCardProps) {
+export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick, showFlipped = false }: PokemonCardProps) {
   const navigate = useNavigate();
-  const [flipped, setFlipped] = useState(false);
+  const [flipped, setFlipped] = useState(showFlipped);
 
   let name = card?.name ? capitalizeFirstLetter(card?.name) : 'Pokemon';
   let rarity = card?.rarity || CardRarity.Common;

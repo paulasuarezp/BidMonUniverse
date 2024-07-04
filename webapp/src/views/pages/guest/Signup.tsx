@@ -22,7 +22,7 @@ export default function Signup() {
 
   const schema = fieldsValidation.signupValidationSchema;
   type UserSchema = yup.InferType<typeof schema>;
-  const { register, handleSubmit, control, formState: { errors } } = useForm<UserSchema>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UserSchema>({
     resolver: yupResolver(schema)
   });
 
@@ -95,7 +95,8 @@ export default function Signup() {
           mb: { xs: 0, sm: 0 },
         }}
       >
-        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }} aria-labelledby="signup-form" onKeyDown={(e) => { if (e.key === 'Enter') onSubmit() }}>
+        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }} aria-labelledby="signup-form-title" onKeyDown={(e) => { if (e.key === 'Enter') onSubmit() }}>
+          <Typography id="signup-form-title" variant="h6">Crear cuenta</Typography>
           <TextField
             id='username'
             fullWidth
@@ -105,14 +106,24 @@ export default function Signup() {
             {...register('username')}
             error={!!errors.username}
             helperText={errors.username?.message}
-            aria-describedby={errors.username ? "username-error" : undefined}
+            aria-describedby={errors.username ? "username-error-text" : undefined}
           />
+          {errors.username && (
+            <Typography id="username-error-text" role="alert" sx={{ color: 'error.main' }}>
+              {errors.username.message}
+            </Typography>
+          )}
 
           <BirthdayDatePicker
             onChange={(date) => updateBirthday(date)}
             error={birthdayError}
-            aria-describedby={birthdayError ? "birthday-error" : undefined}
+            aria-describedby={birthdayError ? "birthday-error-text" : undefined}
           />
+          {birthdayError && (
+            <Typography id="birthday-error-text" role="alert" sx={{ color: 'error.main' }}>
+              {birthdayError}
+            </Typography>
+          )}
 
           <Divider sx={{ my: 2 }} />
 
@@ -126,8 +137,13 @@ export default function Signup() {
             {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
-            aria-describedby={errors.password ? "password-error" : undefined}
+            aria-describedby={errors.password ? "password-error-text" : undefined}
           />
+          {errors.password && (
+            <Typography id="password-error-text" role="alert" sx={{ color: 'error.main' }}>
+              {errors.password.message}
+            </Typography>
+          )}
 
           <TextField
             id='confirmPassword'
@@ -139,8 +155,13 @@ export default function Signup() {
             {...register('confirmPassword')}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
-            aria-describedby={errors.confirmPassword ? "confirmPassword-error" : undefined}
+            aria-describedby={errors.confirmPassword ? "confirmPassword-error-text" : undefined}
           />
+          {errors.confirmPassword && (
+            <Typography id="confirmPassword-error-text" role="alert" sx={{ color: 'error.main' }}>
+              {errors.confirmPassword.message}
+            </Typography>
+          )}
 
           <Button
             type='submit'

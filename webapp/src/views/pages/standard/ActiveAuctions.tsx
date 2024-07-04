@@ -31,13 +31,29 @@ export default function ActiveAuctions() {
     return (
         <Container>
             <NavigationMenu />
-            <PokeballsBox titulo="Subastas activas" sx={{ marginBottom: '0.2em', marginTop: '3em' }} />
+            <PokeballsBox titulo={showUserAuctions ? "Mis subastas" : "Subastas activas"} sx={{ marginBottom: '0.2em', marginTop: '3em' }} />
 
-            <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
-                Aquí encontrarás las subastas activas actualmente.<br />
-                ¡Participa en ellas y hazte con las cartas más exclusivas!
-            </Typography>
+            {!showUserAuctions &&
+                <Typography variant="body1" align="center" component="div" style={{ marginBottom: '1em' }}>
+                    Aquí encontrarás las subastas activas actualmente.<br />
+                    ¡Participa en ellas y hazte con las cartas más exclusivas!
+                </Typography>
+            }
 
+            {!showUserAuctions &&
+                <Typography variant="body2" align="center" component="div" style={{ marginBottom: '1em' }}>
+                    Si deseas ver las subastas que has creado, activa el interruptor de "Mis subastas".
+                </Typography>
+            }
+
+
+            {showUserAuctions &&
+                <Typography variant="body2" align="center" component="div" style={{ marginBottom: '1em' }}>
+                    Se están mostrando las subastas activas que has creado. <br />
+                    Puedes consultar su información y gestionarlas desde aquí. <br />
+                    ¡Suerte!
+                </Typography>
+            }
 
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <FormGroup>

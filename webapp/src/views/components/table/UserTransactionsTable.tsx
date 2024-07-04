@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Alert, Box, CircularProgress, Dialog, DialogContent, DialogTitle, IconButton, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Transaction } from '../../../shared/sharedTypes';
@@ -43,7 +43,7 @@ const columns: GridColDef[] = [
         renderCell: ({ value }) => (
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span>{value}</span>
-                <img src="/zen.png" alt="Zen" style={{ width: 20, height: 20, marginLeft: 5 }} />
+                <img src="/zen.png" alt="Icono de Zen" style={{ width: 20, height: 20, marginLeft: 5 }} />
             </div>
         ),
     },
@@ -57,8 +57,7 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
     const isSm = useMediaQuery(theme.breakpoints.down('sm'));
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
-    const [title, setTitle] = useState<string | null>(null);
-    const [cellContent, setCellContent] = useState<string | null>(null);
+    const [cellContent, setCellContent] = useState<Partial<Transaction> | null>(null);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -77,24 +76,10 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
     const handleCellClick = (params: any) => {
         if (!isXs && !isSm) return;
 
-        if (params.field === 'mensajeConcepto' && params.value) {
-            setTitle('Concepto');
-            setCellContent(params.value);
-            setOpen(true);
-        }
-        if (params.field === 'date' && params.value) {
-            setTitle('Fecha');
-            setCellContent(new Date(params.value).toLocaleString());
-            setOpen(true);
-        }
-        if (params.field === 'price' && params.value) {
-            setTitle('Precio');
-            setCellContent(`${params.value} Zen`);
-            setOpen(true);
-        }
-        if (params.field === 'username' && params.value) {
-            setTitle('Usuario');
-            setCellContent(params.value);
+        const transaction = data.find((row) => row._id === params.id);
+
+        if (transaction) {
+            setCellContent(transaction);
             setOpen(true);
         }
     };
@@ -109,9 +94,8 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
 
     // LOADING
     if (loading) {
-        return <Container style={{ textAlign: 'center' }}><CircularProgress /></Container>;
+        return <Container style={{ textAlign: 'center' }}><CircularProgress aria-label="Cargando transacciones" /></Container>;
     }
-
 
     // ALERTA SI NO DATA
     if (!data || data.length === 0) {
@@ -130,7 +114,6 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
                     },
                 }}
                 pageSizeOptions={[5, 10, 20]}
-                checkboxSelection
                 getRowId={(row) => row._id}
                 autoHeight
                 sx={{
@@ -160,11 +143,11 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
                     }
                 }}
             />
-            <Dialog open={open} onClose={handleClose} fullWidth>
-                <DialogTitle>
-                    {title}
+            <Dialog open={open} onClose={handleClose} fullWidth aria-labelledby="transaction-dialog-title">
+                <DialogTitle id="transaction-dialog-title">
+                    Detalles de la transacción
                     <IconButton
-                        aria-label="close"
+                        aria-label="Cerrar"
                         onClick={handleClose}
                         sx={{
                             position: 'absolute',
@@ -177,9 +160,14 @@ export default function UserTransactionsTable({ data }: UserTransactionsTablePro
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <Box sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
-                        {cellContent}
-                    </Box>
+                    {cellContent && (
+                        <Box sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>
+                            <Typography variant="body1"><strong>Fecha:</strong> {new Date(cellContent.date).toLocaleString()}</Typography>
+                            <Typography variant="body1"><strong>ID de la carta:</strong> {cellContent.userCard}</Typography>
+                            <Typography variant="body1"><strong>Concepto:</strong> {cellContent.concept}</Typography>
+                            <Typography variant="body1"><strong>Precio:</strong> {cellContent.price} Zen</Typography>
+                        </Box>
+                    )}
                 </DialogContent>
             </Dialog>
         </div>

@@ -1,4 +1,3 @@
-// MobileMenu.tsx
 import CollectionsIcon from '@mui/icons-material/Collections';
 import GavelIcon from '@mui/icons-material/Gavel';
 import HistoryIcon from '@mui/icons-material/History';
@@ -17,9 +16,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../../redux/store';
 import ThemeSwitch from '../../switch/ThemeSwitch';
-import LanguageMenu from '../languageMenu/LanguageMenu';
 
-//#region PROPS
 interface GeneralMenuProps {
   anchorGeneralMenu: null | HTMLElement;
   handleGeneralMenu: (event: React.MouseEvent<HTMLElement>) => void;
@@ -27,10 +24,7 @@ interface GeneralMenuProps {
   toggleTheme?: () => void;
   tabIndex?: number;
 }
-//#endregion
 
-//#region COMPONENTE GENERAL MENU
-// Menú general, solo se muestra en dispositivos móviles
 export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, handleGeneralMenuClose, toggleTheme, tabIndex }: GeneralMenuProps) {
   const navigate = useNavigate();
   const [anchorElLang, setAnchorElLang] = React.useState<null | HTMLElement>(null);
@@ -38,15 +32,6 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
   const sessionUser = useSelector((state: RootState) => state.user);
   const isAdmin = sessionUser.role === 'admin';
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleLanguageMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElLang(event.currentTarget);
-  };
-
-  // Language menu handlers
-  const handleCloseLanguageMenu = (languageKey: string) => {
-    setAnchorElLang(null);
-  };
 
   useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
@@ -80,6 +65,7 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
       </IconButton>
 
       <Menu
+        id="general-menu"
         anchorEl={anchorGeneralMenu}
         anchorOrigin={{
           vertical: 'bottom',
@@ -102,46 +88,50 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
             color: theme.palette.text.primary,
           }
         }}
+        MenuListProps={{
+          'aria-labelledby': 'general-menu-button',
+          role: 'menu',
+        }}
       >
-        <MenuItem onClick={handleNavigate('')} tabIndex={tabIndex + 1} aria-label="Ir a Inicio">
+        <MenuItem onClick={handleNavigate('')} tabIndex={tabIndex + 1} role="menuitem" aria-label="Ir a Inicio">
           <ListItemIcon>
             <HomeIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography >Inicio</Typography>
+          <Typography>Inicio</Typography>
         </MenuItem>
         {!isAdmin &&
-          <MenuItem onClick={handleNavigate('album')} tabIndex={tabIndex + 2} aria-label="Ir a Mi colección">
+          <MenuItem onClick={handleNavigate('album')} tabIndex={tabIndex + 2} role="menuitem" aria-label="Ir a Mi colección">
             <ListItemIcon>
               <CollectionsIcon fontSize="small" sx={{ color: color }} />
             </ListItemIcon>
-            <Typography >Mi colección</Typography>
+            <Typography>Mi colección</Typography>
           </MenuItem>
         }
         {!isAdmin &&
-          <MenuItem onClick={handleNavigate('shop')} tabIndex={tabIndex + 3} aria-label="Ir a Tienda">
+          <MenuItem onClick={handleNavigate('shop')} tabIndex={tabIndex + 3} role="menuitem" aria-label="Ir a Tienda">
             <ListItemIcon>
               <StoreIcon fontSize="small" sx={{ color: color }} />
             </ListItemIcon>
-            <Typography >Tienda</Typography>
+            <Typography>Tienda</Typography>
           </MenuItem>
         }
-        <MenuItem onClick={handleNavigate('auctions')} tabIndex={tabIndex + 4} aria-label="Ir a Subastas">
+        <MenuItem onClick={handleNavigate('auctions')} tabIndex={tabIndex + 4} role="menuitem" aria-label="Ir a Subastas">
           <ListItemIcon>
             <GavelIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography >Subastas</Typography>
+          <Typography>Subastas</Typography>
         </MenuItem>
-        <MenuItem onClick={handleNavigate('bids')} tabIndex={tabIndex + 5} aria-label="Ir a Mis pujas">
+        <MenuItem onClick={handleNavigate('bids')} tabIndex={tabIndex + 5} role="menuitem" aria-label="Ir a Mis pujas">
           <ListItemIcon>
             <GavelIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography >Mis pujas</Typography>
+          <Typography>Mis pujas</Typography>
         </MenuItem>
-        <MenuItem onClick={handleNavigate('transactions')} tabIndex={tabIndex + 6} aria-label="Ir a Histórico de transacciones">
+        <MenuItem onClick={handleNavigate('transactions')} tabIndex={tabIndex + 6} role="menuitem" aria-label="Ir a Histórico de transacciones">
           <ListItemIcon>
             <HistoryIcon fontSize="small" sx={{ color: color }} />
           </ListItemIcon>
-          <Typography >Histórico de transacciones</Typography>
+          <Typography>Histórico de transacciones</Typography>
         </MenuItem>
 
         {isMobile && (
@@ -149,16 +139,7 @@ export default function GeneralMenu({ anchorGeneralMenu, handleGeneralMenu, hand
             <Divider textAlign="right" sx={{ mt: 1, mb: 1 }}>
               <Chip label="Ajustes" size="small" />
             </Divider>
-            <MenuItem tabIndex={tabIndex + 7} aria-label="Cambiar idioma">
-              <LanguageMenu
-                anchorElLang={anchorElLang}
-                handleLanguageMenu={handleLanguageMenu}
-                handleCloseLanguageMenu={handleCloseLanguageMenu}
-                texto='Cambiar idioma'
-                tabIndex={tabIndex + 8}
-              />
-            </MenuItem>
-            <MenuItem onClick={handleGeneralMenuClose} tabIndex={tabIndex + 9} aria-label="Cambiar tema">
+            <MenuItem onClick={handleGeneralMenuClose} tabIndex={tabIndex + 9} role="menuitem" aria-label="Cambiar tema">
               <ThemeSwitch toggleTheme={toggleTheme} tabIndex={tabIndex + 10} />
             </MenuItem>
           </Box>

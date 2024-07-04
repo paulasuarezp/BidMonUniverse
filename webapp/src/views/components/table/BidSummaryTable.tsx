@@ -136,6 +136,7 @@ export default function BidSummaryTable() {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
+                aria-label="Paginación de pujas activas"
                 count={numberOfCards}
                 rowsPerPage={rowsPerPage}
                 page={page}
