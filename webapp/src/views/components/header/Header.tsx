@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import LogoBox from '../logoBox/LogoBox';
 import GeneralMenu from '../menus/generalMenu/GeneralMenu';
-import LanguageMenu from '../menus/languageMenu/LanguageMenu';
 import UserMenu from '../menus/userMenu/UserMenu';
 import ThemeSwitch from '../switch/ThemeSwitch';
 
@@ -171,13 +170,6 @@ export default function Header({ toggleTheme }: HeaderProps) {
       </StyledAppBar>
       {!isMobile && (
         <ControlsContainer>
-          <LanguageMenu
-            anchorElLang={anchorElLang}
-            handleLanguageMenu={handleLanguageMenu}
-            handleCloseLanguageMenu={handleCloseLanguageMenu}
-            aria-label="Menú de idioma"
-            tabIndex={2}
-          />
           <ThemeSwitch toggleTheme={toggleTheme} aria-label="Interruptor para cambiar de tema" tabIndex={3} />
         </ControlsContainer>
       )}

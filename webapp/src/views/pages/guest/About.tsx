@@ -6,7 +6,6 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import PlaceIcon from '@mui/icons-material/Place';
 import { Avatar, Box, Card, CardContent, Grid, IconButton, Link, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/system';
 import Container from '../../components/container/Container';
 import PokeballsBox from '../../components/ornament/PokeballsBox';
 
@@ -23,6 +22,9 @@ const InfoCard = styled(Card)(({ theme }) => ({
     margin: theme.spacing(2, 0),
     borderRadius: 15,
     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
         margin: theme.spacing(2),
     },
@@ -74,8 +76,11 @@ const ContactLink = styled(Link)(({ theme }) => ({
     },
 }));
 
-const About = () => {
-    const theme = useTheme();
+const CardContentStyled = styled(CardContent)({
+    flexGrow: 1,
+});
+
+export default function About() {
 
     return (
         <Container>
@@ -86,12 +91,12 @@ const About = () => {
                 </Typography>
             </StyledBox>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={4} alignItems="stretch">
                 <Grid item xs={12} md={4}>
                     <Box sx={{ position: 'relative' }} component={'section'} aria-labelledby="school-title">
                         <CardAvatar alt="Universidad" src="/eii_logo.png" />
                         <InfoCard sx={{ pt: 8 }}>
-                            <CardContent sx={{ textAlign: 'center' }}>
+                            <CardContentStyled sx={{ textAlign: 'center' }}>
                                 <Typography id="school-title" variant="h2" component="h2">
                                     Escuela de Ingeniería Informática
                                 </Typography>
@@ -123,13 +128,13 @@ const About = () => {
                                     </ContactLink>
                                     <Box sx={{ mt: 2, textAlign: 'center' }}>
                                         <Link href="https://ingenieriainformatica.uniovi.es/" target="_blank" sx={{ display: 'inline-block' }} aria-label="Página web de la Escuela de Ingeniería Informática">
-                                            <CircularIconButton>
+                                            <CircularIconButton aria-label="Página web">
                                                 <LanguageIcon />
                                             </CircularIconButton>
                                         </Link>
                                     </Box>
                                 </ContactSection>
-                            </CardContent>
+                            </CardContentStyled>
                         </InfoCard>
                     </Box>
                 </Grid>
@@ -138,7 +143,7 @@ const About = () => {
                     <Box sx={{ position: 'relative' }} component={'section'} aria-labelledby="paula-title">
                         <CardAvatar alt="Foto de Paula Suárez Prieto" src="/paula.jpeg" />
                         <InfoCard sx={{ pt: 8 }}>
-                            <CardContent sx={{ textAlign: 'center' }}>
+                            <CardContentStyled sx={{ textAlign: 'center' }}>
                                 <Typography id="paula-title" variant="h2" component="h2">
                                     Paula Suárez Prieto
                                 </Typography>
@@ -163,18 +168,18 @@ const About = () => {
                                     </ContactLink>
                                     <Box sx={{ mt: 2, textAlign: 'center' }}>
                                         <Link href="https://github.com/paulasuarezp" target="_blank" sx={{ display: 'inline-block' }} aria-label="Perfil de GitHub de Paula Suárez Prieto">
-                                            <CircularIconButton>
+                                            <CircularIconButton aria-label="GitHub">
                                                 <GitHubIcon />
                                             </CircularIconButton>
                                         </Link>
-                                        <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" sx={{ display: 'inline-block' }} aria-label="Perfil de LinkedIn de Paula Suárez Prieto">
-                                            <CircularIconButton>
+                                        <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" sx={{ display: 'inline-block' }} aria-label="LinkedIn">
+                                            <CircularIconButton aria-label="LinkedIn">
                                                 <LinkedInIcon />
                                             </CircularIconButton>
                                         </Link>
                                     </Box>
                                 </ContactSection>
-                            </CardContent>
+                            </CardContentStyled>
                         </InfoCard>
                     </Box>
                 </Grid>
@@ -183,7 +188,7 @@ const About = () => {
                     <Box sx={{ position: 'relative' }} component={'section'} aria-labelledby="hugo-title">
                         <CardAvatar alt="Hugo Lebredo Buján" src="" />
                         <InfoCard sx={{ pt: 8 }}>
-                            <CardContent sx={{ textAlign: 'center' }}>
+                            <CardContentStyled sx={{ textAlign: 'center' }}>
                                 <Typography id="hugo-title" variant="h2" component="h2">
                                     Hugo Lebredo Buján
                                 </Typography>
@@ -202,19 +207,19 @@ const About = () => {
                                         lebredohugo@uniovi.es
                                     </ContactLink>
                                     <Box sx={{ mt: 2, textAlign: 'center' }}>
-                                        <Link href="https://github.com/HugoLebredo" target="_blank" sx={{ display: 'inline-block' }} aria-label="Perfil de GitHub de Hugo Lebredo Buján">
-                                            <CircularIconButton>
+                                        <Link href="https://github.com/HugoLebredo" target="_blank" sx={{ display: 'inline-block' }} aria-label="GitHub">
+                                            <CircularIconButton aria-label="GitHub">
                                                 <GitHubIcon />
                                             </CircularIconButton>
                                         </Link>
-                                        <Link href="https://www.di.uniovi.es/personal/pdi/-/asset_publisher/0028/content/pdi_lebredo-bujan-hugo;jsessionid=95871949D3211A74D3619EA585B34539?redirect=%2Fpersonal%2Fpdi" target="_blank" sx={{ display: 'inline-block' }} aria-label="Página personal de Hugo Lebredo Buján en la Universidad de Oviedo">
-                                            <CircularIconButton>
+                                        <Link href="https://www.di.uniovi.es/personal/pdi/-/asset_publisher/0028/content/pdi_lebredo-bujan-hugo;jsessionid=95871949D3211A74D3619EA585B34539?redirect=%2Fpersonal%2Fpdi" target="_blank" sx={{ display: 'inline-block' }} aria-label="Página personal">
+                                            <CircularIconButton aria-label="Página personal">
                                                 <LanguageIcon />
                                             </CircularIconButton>
                                         </Link>
                                     </Box>
                                 </ContactSection>
-                            </CardContent>
+                            </CardContentStyled>
                         </InfoCard>
                     </Box>
                 </Grid>
@@ -222,5 +227,3 @@ const About = () => {
         </Container>
     );
 };
-
-export default About;
