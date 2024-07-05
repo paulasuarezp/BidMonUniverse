@@ -16,16 +16,16 @@ interface PokemonCardProps {
 }
 
 
-export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick, showFlipped = false }: PokemonCardProps) {
+export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick, showFlipped }: PokemonCardProps) {
   const navigate = useNavigate();
-  const [flipped, setFlipped] = useState(!showFlipped);
+  const [flipped, setFlipped] = useState(false);
+  const [showPreviousFlipped, setShowPreviousFlipped] = useState(false);
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    } else {
+    if (showFlipped !== undefined && showFlipped !== showPreviousFlipped) {
       setFlipped(!flipped);
+      setShowPreviousFlipped(showFlipped);
     }
   }, [showFlipped]);
 
@@ -83,7 +83,7 @@ export default function PokemonCard({ card, userCardId, canFlip = false, maxSize
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
         },
         '&:focus': {
-          outline: '2px solid #0046C7', // Mejorar visibilidad en foco
+          outline: '2px solid #0046C7',
           transform: !flipped ? 'scale(1.05)' : 'rotateY(180deg)',
           boxShadow: '0 8px 16px rgba(0, 0, 0, 0.5)',
         },
