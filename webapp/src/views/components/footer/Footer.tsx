@@ -101,13 +101,13 @@ export default function Footer() {
                             Síguenos
                         </Typography>
                         <SocialMediaIcons>
-                            <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" aria-label="LinkedIn">
-                                <IconButton sx={{ color: '#FFFFFF' }}>
+                            <Link href="https://www.linkedin.com/in/paula-suárez-prieto?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" target="_blank" aria-label="Enlace a LinkedIn">
+                                <IconButton sx={{ color: '#FFFFFF' }} aria-label='LinkedIn'>
                                     <LinkedInIcon />
                                 </IconButton>
                             </Link>
-                            <Link href="https://github.com/paulasuarezp" target="_blank" aria-label="GitHub">
-                                <IconButton sx={{ color: '#FFFFFF' }}>
+                            <Link href="https://github.com/paulasuarezp" target="_blank" aria-label="Enlace a GitHub">
+                                <IconButton sx={{ color: '#FFFFFF' }} aria-label='GitHub'>
                                     <GitHubIcon />
                                 </IconButton>
                             </Link>

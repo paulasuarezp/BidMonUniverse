@@ -70,6 +70,7 @@ export default function ThemeSwitch({ toggleTheme, tabIndex = 0 }: ThemeSwitchPr
       <FormControlLabel
         control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme} />}
         label={isMobile ? texto : ''}
+        aria-label='Cambiar tema'
       />
     </FormGroup>
   );

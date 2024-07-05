@@ -26,7 +26,7 @@ beforeEach(async () => {
         await newCard.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -40,7 +40,7 @@ describe('CARDPACK ROUTES', () => {
     describe('GET /cardpacks', () => {
         it('should get all card packs availables', async () => {
             const response = await api
-                .get('/cardpacks')
+                .get('/api/cardpacks')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);

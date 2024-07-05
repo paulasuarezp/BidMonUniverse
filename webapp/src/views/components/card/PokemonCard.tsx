@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardContent, CardMedia, Chip } from "@mui/material";
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardRarity, Card as CardType } from "../../../shared/sharedTypes";
 import { capitalizeFirstLetter } from '../../../utils/utils';
@@ -12,12 +12,23 @@ interface PokemonCardProps {
   maxSize?: boolean; // Propiedad opcional para habilitar el tamaño máximo
   type?: 'auction' | 'album' | 'bid'; // Propiedad obligatoria para determinar el tipo de tarjeta
   onClick?: () => void; // Propiedad opcional para manejar el evento de clic
+  showFlipped?: boolean; // Propiedad opcional para mostrar la carta volteada
 }
 
 
-export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick }: PokemonCardProps) {
+export default function PokemonCard({ card, userCardId, canFlip = false, maxSize = false, onClick, showFlipped = false }: PokemonCardProps) {
   const navigate = useNavigate();
-  const [flipped, setFlipped] = useState(false);
+  const [flipped, setFlipped] = useState(!showFlipped);
+  const isFirstRender = useRef(true);
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      setFlipped(!flipped);
+    }
+  }, [showFlipped]);
+
 
   let name = card?.name ? capitalizeFirstLetter(card?.name) : 'Pokemon';
   let rarity = card?.rarity || CardRarity.Common;

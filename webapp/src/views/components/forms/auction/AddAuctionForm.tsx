@@ -125,7 +125,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                            <img src={`/zen.png`} alt="Icono de Zen" style={{ width: 24, height: 24 }} />
                         </InputAdornment>
                     ),
                     inputProps: { step: 10 },
@@ -164,8 +164,8 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
             <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Datos de la subasta</Typography></Divider>
             <TextField
                 margin="dense"
-                id="basePrice"
-                label="Precio inicial"
+                id="basePriceConfirm"
+                label="Precio inicial confirmación"
                 type="number"
                 disabled
                 fullWidth
@@ -174,16 +174,17 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                            <img src={`/zen.png`} alt="Icono de Zen" style={{ width: 24, height: 24 }} />
                         </InputAdornment>
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-labelledby="basePriceConfirm-label"
             />
             <TextField
                 margin="dense"
-                id="duration"
-                label="Duración (horas)"
+                id="durationConfirm"
+                label="Duración (horas) confirmación"
                 type="number"
                 disabled
                 fullWidth
@@ -197,6 +198,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-labelledby="durationConfirm-label"
             />
         </Box>
     );

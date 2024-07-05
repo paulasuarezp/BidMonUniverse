@@ -28,7 +28,7 @@ beforeEach(async () => {
     }
 
     // Obtener token de autenticación
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -42,7 +42,7 @@ describe('NOTIFICATIONS ROUTES', () => {
     describe('GET /:username', () => {
         it('should return all notifications for a valid username', async () => {
             const response = await api
-                .get('/notifications/test')
+                .get('/api/notifications/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -52,7 +52,7 @@ describe('NOTIFICATIONS ROUTES', () => {
     describe('GET /unread/:username', () => {
         it('should return all unread notifications for a valid username', async () => {
             const response = await api
-                .get('/notifications/unread/test')
+                .get('/api/notifications/unread/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -62,7 +62,7 @@ describe('NOTIFICATIONS ROUTES', () => {
     describe('PATCH /notification/:notificationId/read', () => {
         it('should mark a notification as read', async () => {
             const response = await api
-                .patch('/notifications/notification/5f8f4b3b9b3f3b001f3f3b3b/read')
+                .patch('/api/notifications/notification/5f8f4b3b9b3f3b001f3f3b3b/read')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -73,7 +73,7 @@ describe('NOTIFICATIONS ROUTES', () => {
     describe('PATCH /read/:username', () => {
         it('should mark all user notifications as read', async () => {
             const response = await api
-                .patch('/notifications/read/test')
+                .patch('/api/notifications/read/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);

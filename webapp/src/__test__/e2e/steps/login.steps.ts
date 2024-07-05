@@ -2,7 +2,7 @@ import { expect } from 'expect';
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import * as puppeteer from 'puppeteer';
 
-const feature = loadFeature('./__test__/e2e/features/login.feature');
+const feature = loadFeature('./src/__test__/e2e/features/login.feature');
 const baseUrl = 'http://localhost:3000/login';
 
 let page: puppeteer.Page;

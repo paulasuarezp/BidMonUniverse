@@ -15,29 +15,22 @@ const StyledButton = styled(Button)(({ theme }) => ({
     boxShadow: theme.palette.mode === 'light' ?
       '2px 2px 2px 0px rgba(255, 255, 255, 0.25), 0px 0px 2px 0px rgba(255, 255, 255, 0.25)' : // Sombra para modo claro
       '2px 2px 2px 0px rgba(229, 62, 48, 0.35), 0px 0px 2px 0px rgba(229, 62, 48, 0.35)',
-    // '2px 2px 2px 0px rgba(255, 206, 49, 0.35), 0px 0px 2px 0px rgba(255, 206, 49, 0.35)', 
     textShadow: theme.palette.mode === 'light' ?
       '0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255,255, 0.4)' : // Sombra para modo claro
       '0 0 10px rgba(229, 62, 48, 0.6), 0 0 20px rgba(229, 62, 48, 0.4)',
   },
-  '&:active': {
-    outline: 'none',
-    border: 'none',
-  },
   '&:focus': {
-    outline: 'none',
+    outline: '2px solid #0046C7', // Mejorar visibilidad en foco
     border: 'none',
   },
 }));
 //#endregion
-
 
 //#region COMPONENT LoginButton
 export default function LoginButton(props: ButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
 
   const iconVariants = {
     visible: { opacity: 1, scale: 1 },
@@ -47,6 +40,12 @@ export default function LoginButton(props: ButtonProps) {
   const textVariants = {
     visible: { opacity: 1, scale: 1 },
     hidden: { opacity: 0, scale: 1.2 }
+  };
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      setIsHovered(!isHovered);
+    }
   };
 
   return (
@@ -61,6 +60,9 @@ export default function LoginButton(props: ButtonProps) {
         (<StyledButton
           onMouseOver={() => setIsHovered(true)}
           onMouseOut={() => setIsHovered(false)}
+          onFocus={() => setIsHovered(true)}
+          onBlur={() => setIsHovered(false)}
+          onKeyDown={handleKeyDown}
           style={{ position: 'relative', overflow: 'hidden' }}
           {...props}
           role='button'

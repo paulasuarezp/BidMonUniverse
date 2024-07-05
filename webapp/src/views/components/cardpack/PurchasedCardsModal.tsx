@@ -57,6 +57,7 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
                                 onClick={() => { }}
                                 canFlip={true}
                                 aria-label={`Carta de ${card.name}`}
+                                showFlipped={true}
                             />
                         </Grid>
                     ))}

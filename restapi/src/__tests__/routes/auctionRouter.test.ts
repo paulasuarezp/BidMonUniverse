@@ -50,7 +50,7 @@ beforeEach(async () => {
     }
 
     // Obtener token de autenticación
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -63,7 +63,7 @@ describe('AUCTION ROUTES', () => {
     describe('GET /', () => {
         it('should return all auctions', async () => {
             const response = await api
-                .get('/auctions')
+                .get('/api/auctions')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -73,7 +73,7 @@ describe('AUCTION ROUTES', () => {
     describe('GET /a/:id', () => {
         it('should return a specific auction', async () => {
             const response = await api
-                .get('/auctions/a/667468a8920f1692e1068d40')
+                .get('/api/auctions/a/667468a8920f1692e1068d40')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -81,7 +81,7 @@ describe('AUCTION ROUTES', () => {
 
         it('should return 404 for non existent auction ID', async () => {
             const response = await api
-                .get('/auctions/a/67468a8920f1692e1068d40f')
+                .get('/api/auctions/a/67468a8920f1692e1068d40f')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -91,7 +91,7 @@ describe('AUCTION ROUTES', () => {
     describe('GET /active/:username', () => {
         it('should return all active auctions for a valid username', async () => {
             const response = await api
-                .get('/auctions/active/test')
+                .get('/api/auctions/active/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -102,7 +102,7 @@ describe('AUCTION ROUTES', () => {
     describe('GET /active/u/:username', () => {
         it('should return all active auctions for a user', async () => {
             const response = await api
-                .get('/auctions/active/u/test')
+                .get('/api/auctions/active/u/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);

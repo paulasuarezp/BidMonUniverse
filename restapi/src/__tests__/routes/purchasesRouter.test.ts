@@ -1,20 +1,19 @@
 // tests/cardPackRouter.test.ts
-import request from 'supertest';
-import { api, dropEntireDatabase, hashPassword } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
-import User from '../../models/user';
-import initialUsers from '../mockData/users.json';
+import { server } from '../../../server';
+import Card from '../../models/card';
 import CardPack from '../../models/cardpack';
-import initialCardPacks from '../mockData/cardPacks.json';
-import UserCard from '../../models/userCard';
-import initialUserCards from '../mockData/usercards.json';
+import Deck from '../../models/deck';
 import Transaction from '../../models/transaction';
-import initialTransactions from '../mockData/transaction.json';
+import User from '../../models/user';
+import UserCard from '../../models/userCard';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
+import initialCardPacks from '../mockData/cardPacks.json';
 import initialcards from '../mockData/cards.json';
 import initialDecks from '../mockData/decks.json';
-import Card from '../../models/card';
-import Deck from '../../models/deck';
+import initialTransactions from '../mockData/transaction.json';
+import initialUserCards from '../mockData/usercards.json';
+import initialUsers from '../mockData/users.json';
 
 
 
@@ -58,10 +57,10 @@ beforeEach(async () => {
         await newCard.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'admin', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'admin', password: 'Password123-' });
     tokenAdmin = response.body.token;
 
-    const responseUser = await api.post('/users/login').send({ username: 'test2', password: 'Password123-' });
+    const responseUser = await api.post('/api/users/login').send({ username: 'test2', password: 'Password123-' });
     token = responseUser.body.token;
 });
 
@@ -79,7 +78,7 @@ describe('PURCHASES ROUTES', () => {
             const initialCardPack = await CardPack.findOne({ cardPackId: cardPackId });
 
             const purchaseResponse = await api
-                .post('/purchases/cardpack')
+                .post('/api/purchases/cardpack')
                 .set('Authorization', `Bearer ${token}`)
                 .send({ username: 'test2', cardPackId: 'CP-1' });
 
@@ -140,7 +139,7 @@ describe('PURCHASES ROUTES', () => {
 
         it('Error handling when the user does not exist', async () => {
             const response = await api
-                .post('/purchases/cardpack')
+                .post('/api/purchases/cardpack')
                 .set('Authorization', `Bearer ${token}`)
                 .send({ username: 'nonexistent_user', cardPackId: 'CP-1' });
 
@@ -150,7 +149,7 @@ describe('PURCHASES ROUTES', () => {
 
         it('Error handling when the user does not have enough balance', async () => {
             const response = await api
-                .post('/purchases/cardpack')
+                .post('/api/purchases/cardpack')
                 .set('Authorization', `Bearer ${token}`)
                 .send({ username: 'admin', cardPackId: 'CP-1' });
 
@@ -161,7 +160,7 @@ describe('PURCHASES ROUTES', () => {
             const cardPackId = 'nonexistent_id';
 
             const response = await api
-                .post('/purchases/cardpack')
+                .post('/api/purchases/cardpack')
                 .set('Authorization', `Bearer ${token}`)
                 .send({ username: 'test2', cardPackId });
 
@@ -172,7 +171,7 @@ describe('PURCHASES ROUTES', () => {
             const cardPackId = 'nonexistent_id';
 
             const response = await api
-                .post('/purchases/cardpack')
+                .post('/api/purchases/cardpack')
                 .set('Authorization', `Bearer ${token}`)
                 .send({ username: 'test2', cardPackId });
 
