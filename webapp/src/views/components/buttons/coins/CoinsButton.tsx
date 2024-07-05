@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 // #region PROPS
 interface CoinsButtonProps extends IconButtonProps {
     balance: number;
+    role?: string;
 }
 // #endregion
 
@@ -30,20 +31,29 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
         borderRight: '2px solid #F8E260',
         backgroundColor: 'rgba(248, 226, 96, 0.4)',
     },
-    '&:active, &:focus': {
-        outline: 'none',
+    '&:disabled': {
+        backgroundColor: 'rgba(248, 226, 96, 0.2)',
         border: 'none',
+        borderBottom: '2px solid #F8E260',
+        borderRight: '2px solid #F8E260',
+        textTransform: 'none',
+        borderRadius: '20px',
+        marginRight: '10px',
+        color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF',
+    },
+    '&:focus': {
+        outline: '2px solid #F8E260'
     },
 }));
 // #endregion
 
 // #region COMPONENT CoinsButton
-export default function CoinsButton({ balance, ...rest }: CoinsButtonProps) {
+export default function CoinsButton({ balance, role, ...rest }: CoinsButtonProps) {
     return (
-        <StyledIconButton {...rest}>
+        <StyledIconButton {...rest} role={role ? role : 'button'} aria-live="polite" aria-label={`Balance: ${balance}`} disabled={role === 'status'}>
             <Stack direction="row" alignItems="center" spacing={1}>
-                <Typography>{balance}</Typography>
-                <img src="/zen.png" alt="Saldo del usuario en zens" style={{ width: '1.2em', height: 'auto' }} />
+                <Typography variant="body1">{balance}</Typography>
+                <img src="/zen.png" alt="Imagen de la moneda Zen" style={{ width: '1.2em', height: 'auto' }} />
             </Stack>
         </StyledIconButton>
     );

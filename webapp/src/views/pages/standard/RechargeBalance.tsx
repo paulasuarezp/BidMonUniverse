@@ -124,6 +124,7 @@ export default function RechargeBalance() {
             <Paper
                 title="Recargar saldo"
                 imageSrc="recharge-meowth.png"
+                imageAlt='Pokemon Meowth con monedas'
                 elevation={3}
                 sx={{
                     maxWidth: 400,

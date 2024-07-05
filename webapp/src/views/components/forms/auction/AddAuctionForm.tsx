@@ -108,6 +108,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                         backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[200]
                     }
                 }}
+                aria-readonly="true"
             />
             <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Personalizar subasta</Typography></Divider>
             <TextField
@@ -124,11 +125,13 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                            <img src={`/zen.png`} alt="Icono de Zen" style={{ width: 24, height: 24 }} />
                         </InputAdornment>
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-invalid={basePriceError}
+                aria-describedby={basePriceError ? 'basePrice-error-text' : null}
             />
             <TextField
                 margin="dense"
@@ -149,18 +152,20 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-invalid={durationError}
+                aria-describedby={durationError ? 'duration-error-text' : null}
             />
         </Box>
     );
 
     const confirmationContent = (
-        <Box >
+        <Box>
             <Typography>ID de la Carta: <strong>{userCardId}</strong></Typography>
             <Divider sx={{ margin: '20px 0' }}><Typography variant="subtitle1">Datos de la subasta</Typography></Divider>
             <TextField
                 margin="dense"
-                id="basePrice"
-                label="Precio inicial"
+                id="basePriceConfirm"
+                label="Precio inicial confirmación"
                 type="number"
                 disabled
                 fullWidth
@@ -169,16 +174,17 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 InputProps={{
                     endAdornment: (
                         <InputAdornment position="end">
-                            <img src={`/zen.png`} alt="zen icon" style={{ width: 24, height: 24 }} />
+                            <img src={`/zen.png`} alt="Icono de Zen" style={{ width: 24, height: 24 }} />
                         </InputAdornment>
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-labelledby="basePriceConfirm-label"
             />
             <TextField
                 margin="dense"
-                id="duration"
-                label="Duración (horas)"
+                id="durationConfirm"
+                label="Duración (horas) confirmación"
                 type="number"
                 disabled
                 fullWidth
@@ -192,6 +198,7 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                     ),
                     inputProps: { step: 10 },
                 }}
+                aria-labelledby="durationConfirm-label"
             />
         </Box>
     );
@@ -220,18 +227,10 @@ export default function AddAuctionForm({ open, handleClose, userCardId }: Auctio
                 loading={loading}
                 error={error}
                 successMessage={successMessage}
-                actions={
-                    [{
-                        onClick: () => setConfirmDialogOpen(false),
-                        label: 'Volver',
-                        buttonType: 'back'
-                    },
-                    {
-                        onClick: handleConfirmAuction,
-                        label: 'Confirmar',
-                        buttonType: 'confirm'
-                    }]
-                }
+                actions={[
+                    { label: 'Volver', onClick: () => setConfirmDialogOpen(false), buttonType: 'back' },
+                    { label: 'Confirmar', onClick: handleConfirmAuction, buttonType: 'confirm' }
+                ]}
                 showIcon="warning"
             />
         </>

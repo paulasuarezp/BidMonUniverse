@@ -21,7 +21,7 @@ export default function TableCardDetail({ data }: TableCardDetailProps) {
 
     // ALERTA SI NO DATA
     if (!data || data.length === 0) {
-        return <Alert severity="info">No hay datos acerca de esta carta</Alert>;
+        return <Alert severity="info" role="alert">No hay datos acerca de esta carta</Alert>;
     }
 
     return (

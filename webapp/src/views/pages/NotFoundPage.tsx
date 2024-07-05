@@ -15,23 +15,9 @@ const StyledPaper = styled(Paper)(({ theme }) => ({
   borderRadius: 16,
   padding: theme.spacing(1),
   boxShadow: theme.palette.mode === 'light' ?
-    'default' : // Sombra para modo claro
+    '0px 4px 6px rgba(0,0,0,0.1)' :
     '0px 2px 10px rgba(255, 255, 255, 0.24)',
 
-}));
-
-const SecondaryText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? 'rgba(18, 18, 18, 0.5)' : 'rgba(255, 255, 255, 0.5)',
-  fontSize: '1.4em',
-  textAlign: 'center',
-  borderRadius: '4px',
-}));
-
-const PrincipalText = styled(Typography)(({ theme }) => ({
-  color: theme.palette.mode === 'light' ? 'rgba(18, 18, 18)' : 'rgba(255, 255, 255)',
-  fontSize: '1.6em',
-  borderRadius: '4px',
-  textAlign: 'center',
 }));
 //#endregion
 
@@ -44,29 +30,24 @@ export default function NotFoundPage() {
   const imageSource = theme.palette.mode === 'light' ? '/404_light.png' : '/404_dark.png';
 
   return (
-    <Container>
-      <StyledPaper
-        elevation={3}
-        sx={{
-          mt: { xs: '5.5em', sm: 'auto' } // marginTop de 5.5em en xs (móviles) y 'auto' en sm y tamaños mayores
-        }}
-      >
-        <Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center', pl: 2, pr: 2, pb: 2 }}>
-          <SecondaryText sx={{ marginBottom: '0.2em', marginTop: '1em' }}>
+    <Container role="main"> {/* Añadir un rol semántico */}
+      <StyledPaper elevation={3} sx={{ mt: { xs: '5.5em', sm: 'auto' } }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
+          <Typography color="textSecondary" sx={{ mb: '0.2em', mt: '1em' }}>
             Parece que has intentado explorar una zona cubierta por niebla...
-          </SecondaryText>
-          <PrincipalText sx={{ marginBottom: '1em' }}>
+          </Typography>
+          <Typography color="textPrimary" sx={{ mb: '1em', fontSize: '1.5rem' }}>
             ¡No podemos encontrar esta página!
-          </PrincipalText>
+          </Typography>
 
-          <img src={imageSource} alt="Pokémon Confundido" style={{ alignSelf: 'center', maxWidth: '80%', height: 'auto' }} />
+          <img src={imageSource} alt="Imagen de Pokémon confundido indicando error 404" style={{ maxWidth: '80%', height: 'auto' }} />
 
-
-          <Button buttonType="primary" label='Volver a la página de inicio' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
+          <Button variant="contained" color="primary" fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} label='Volver a la página de inicio' />
 
         </Box>
       </StyledPaper>
     </Container>
   );
 };
+
 //#endregion

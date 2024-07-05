@@ -101,7 +101,7 @@ export default function ResponsiveActiveBidsGrid({ username, limit = false }: Re
                     />
                 </Grid>
             ))}
-            {numberOfCards === 0 && <InfoMessageBox message="¡Es un buen momento para relajarte y planear tu próxima estrategia de puja!" />}
+            {numberOfCards === 0 && <InfoMessageBox seccion='pujas' message="¡Es un buen momento para relajarte y planear tu próxima estrategia de puja!" />}
         </Grid>
     );
 };

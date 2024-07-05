@@ -19,13 +19,14 @@ interface UserMenuProps {
   anchorElUser: null | HTMLElement;
   handleUserMenu: (event: React.MouseEvent<HTMLElement>) => void;
   handleCloseUserMenu: () => void;
+  tabIndex?: number;
 }
 //#endregion
 
 
 //#region COMPONENTE USER MENU
 // Menú de usuario
-export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUserMenu }: UserMenuProps) {
+export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUserMenu, tabIndex }: UserMenuProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -94,16 +95,17 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
       ) : (
         <ButtonLogin onClick={handleLoginClick} />
       )}
-      <Menu
-        id="menu-appbar-user"
-        anchorEl={anchorElUser}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={Boolean(anchorElUser)}
-        onClose={handleCloseUserMenu}
-      >
-        {isAuthenticated && (
+      {isAuthenticated && (
+        <Menu
+          id="menu-appbar-user"
+          anchorEl={anchorElUser}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+          keepMounted
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={Boolean(anchorElUser)}
+          onClose={handleCloseUserMenu}
+        >
+
           <div>
             <MenuItem onClick={handleShowPerfil}>
               <AccountCircleIcon sx={{ mr: 1 }} />
@@ -114,8 +116,9 @@ export default function UserMenu({ anchorElUser, handleUserMenu, handleCloseUser
               Cerrar sesión
             </MenuItem>
           </div>
-        )}
-      </Menu>
+
+        </Menu>
+      )}
     </>
   );
 };

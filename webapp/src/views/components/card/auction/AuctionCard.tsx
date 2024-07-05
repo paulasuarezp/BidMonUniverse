@@ -50,8 +50,20 @@ export default function AuctionCard({ card, userCardId, duration, auctionId }: A
     }
     return (
         <HoverEffectContainer>
-            <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} />
-            <DurationButton duration={duration} sx={{ marginTop: '10px' }} className="hover-effect" />
+            <PokemonCard
+                card={card}
+                type="auction"
+                userCardId={userCardId}
+                onClick={handleCardClick}
+                aria-label={`Carta de subasta de ${card.name}`}
+            />
+            <DurationButton
+                duration={duration}
+                sx={{ marginTop: '10px' }}
+                className="hover-effect"
+                role='status'
+                aria-label={`Duración de la subasta: ${duration} días`}
+            />
         </HoverEffectContainer>
     );
 }

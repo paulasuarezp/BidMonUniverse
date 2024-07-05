@@ -40,12 +40,13 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
                 overflowY: 'auto',
                 maxHeight: '90vh',
                 borderRadius: 5,
-                transition: 'all 0.3s ease-out'  // Agregando transiciones suaves
+                transition: 'all 0.3s ease-out'
             }}>
-                <Typography id="modal-modal-title" variant="h5" component="h2" align='center' sx={{ mb: 2, fontWeight: 'medium' }}>
+                <Typography id="modal-modal-title" variant="h2" align='center' sx={{ mb: 2 }}>
                     ¡Enhorabuena! 🥳
-                    <br />
-                    Has adquirido las siguientes cartas:
+                </Typography>
+                <Typography id="modal-modal-description" variant="h3" align='center' sx={{ mb: 2 }}>
+                    Has adquirido {cards.length} cartas, ¡échales un vistazo!
                 </Typography>
                 <Grid container spacing={2} justifyContent="center">
                     {cards.map((card, index) => (
@@ -55,13 +56,15 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
                                 userCardId={card._id}
                                 onClick={() => { }}
                                 canFlip={true}
+                                aria-label={`Carta de ${card.name}`}
+                                showFlipped={true}
                             />
                         </Grid>
                     ))}
                 </Grid>
                 <Box display='flex' justifyContent='center' mt={3} gap={2}>
-                    <Button onClick={handleClose} label='Cerrar' buttonType='ghost' />
-                    <Button onClick={navigateToAlbum} label='Ver en mi colección' buttonType='primary' />
+                    <Button onClick={handleClose} label='Cerrar' buttonType='ghost' aria-label='Cerrar modal' />
+                    <Button onClick={navigateToAlbum} label='Ver en mi colección' buttonType='primary' aria-label='Ver en mi colección' />
                 </Box>
             </Box>
         </Modal>

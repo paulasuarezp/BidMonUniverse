@@ -14,6 +14,7 @@ import CardInformation from '../cardDetail/CardInformation';
 import TableCardDetail from '../table/TableCardDetail';
 import PokemonCardBox from './PokemonCardBox';
 
+
 // #region PROPS
 interface GeneralCardDetailProps {
     title: string; // Título de la página
@@ -26,12 +27,13 @@ interface GeneralCardDetailProps {
     pokemonBoxChildren: React.ReactNode; // Contenido del box de la carta
     cardInformationChildren: React.ReactNode; // Contenido de la información de la carta
     form?: React.ReactNode; // Formulario
+    flip?: boolean; // Propiedad opcional para voltear la carta
 }
 // #endregion
 
 // #region COMPONENT GeneralCardDetail
 // Detalle general de una carta
-export default function GeneralCardDetail({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack }: GeneralCardDetailProps) {
+export default function GeneralCardDetail({ card, transactions, pokemonBoxChildren, cardInformationChildren, form, title, description, backLabel, handleBack, flip = false }: GeneralCardDetailProps) {
 
     const theme = useTheme();
 
@@ -41,12 +43,15 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     <Grid container spacing={2} alignItems="center">
                         <Grid item xs={12} sm={4}>
-                            <Button startIcon={<ArrowBackIcon />}
+                            <Button
+                                startIcon={<ArrowBackIcon />}
                                 variant="contained"
+                                role='button'
                                 sx={{ alignSelf: 'flex-start', margin: '10px' }}
                                 buttonType="ghost"
                                 onClick={handleBack}
                                 label={backLabel}
+                                aria-label={backLabel || "Volver atrás"}
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
@@ -59,11 +64,12 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                                     letterSpacing: 2,
                                     textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
                                 }}
+                                id="card-name"
                             >
                                 {card.name}
                             </Typography>
                         </Grid>
-                        <Grid item xs={0} sm={4} />  {/* Esta columna vacía ayuda a centrar el texto en la columna del medio y se oculta en móviles */}
+                        <Grid item xs={0} sm={4} /> {/* Esta columna vacía ayuda a centrar el texto en la columna del medio y se oculta en móviles */}
                     </Grid>
                     <Box
                         sx={{
@@ -73,11 +79,10 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
                             py: 1,
                             mb: 2,
                         }}
-                    >
-                    </Box>
+                    />
                     <Grid container spacing={2} justifyContent="center" alignItems="stretch">
                         <Grid item xs={12} md={6}>
-                            <PokemonCardBox card={card} id={card._id} children={pokemonBoxChildren} />
+                            <PokemonCardBox card={card} id={card._id} children={pokemonBoxChildren} showFlipped={flip} />
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', padding: 2 }}>
@@ -92,5 +97,5 @@ export default function GeneralCardDetail({ card, transactions, pokemonBoxChildr
             </Box>
         </BasePageWithNav>
     );
-};
-//#endregion
+}
+// #endregion

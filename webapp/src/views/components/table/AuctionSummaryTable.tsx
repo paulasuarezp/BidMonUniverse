@@ -65,7 +65,7 @@ export default function AuctionSummaryTable() {
     // NO DATA
     if (cards && !cards.length) {
         return (
-            <Alert severity="info">No tienes subastas activas</Alert>
+            <Alert severity="info" role="alert">No tienes subastas activas</Alert>
         );
     }
 

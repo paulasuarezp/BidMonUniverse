@@ -83,7 +83,7 @@ export default function BidSummaryTable() {
     // ERROR
     if (error) {
         return (
-            <Alert severity="error">No se han podido cargar los datos, por favor, inténtalo de nuevo más tarde</Alert>
+            <Alert severity="error" role="alert">No se han podido cargar los datos, por favor, inténtalo de nuevo más tarde</Alert>
 
         );
     }
@@ -91,7 +91,7 @@ export default function BidSummaryTable() {
     // ALERTA SI NO DATA
     if (cards && !cards.length) {
         return (
-            <Alert severity="info">No tienes pujas activas</Alert>
+            <Alert severity="info" role="alert">No tienes pujas activas</Alert>
         );
     }
 
@@ -136,6 +136,7 @@ export default function BidSummaryTable() {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
+                aria-label="Paginación de pujas activas"
                 count={numberOfCards}
                 rowsPerPage={rowsPerPage}
                 page={page}

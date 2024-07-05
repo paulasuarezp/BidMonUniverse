@@ -22,7 +22,7 @@ export default function Signup() {
 
   const schema = fieldsValidation.signupValidationSchema;
   type UserSchema = yup.InferType<typeof schema>;
-  const { register, handleSubmit, control, formState: { errors } } = useForm<UserSchema>({
+  const { register, handleSubmit, formState: { errors } } = useForm<UserSchema>({
     resolver: yupResolver(schema)
   });
 
@@ -83,8 +83,9 @@ export default function Signup() {
   return (
     <Container>
       <Paper
-        title="Registro"
+        title="Crear cuenta"
         imageSrc="logo-sf.png"
+        imageAlt="Logo de BidMon Universe"
         elevation={3}
         sx={{
           maxWidth: 400,
@@ -94,7 +95,8 @@ export default function Signup() {
           mb: { xs: 0, sm: 0 },
         }}
       >
-        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }}>
+        <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }} aria-labelledby="signup-form-title" onKeyDown={(e) => { if (e.key === 'Enter') onSubmit() }}>
+          <Typography id="signup-form-title" variant="h6">Crear cuenta</Typography>
           <TextField
             id='username'
             fullWidth
@@ -140,14 +142,15 @@ export default function Signup() {
           <Button
             type='submit'
             buttonType="primary"
-            label='Registrarse'
+            label='Crear cuenta'
+            id='signupButton'
             fullWidth
             sx={{ mt: 2 }}
           />
 
           <Box sx={{ mt: 2, textAlign: 'center' }}>
             <Typography variant="body2">
-              ¿Ya tienes una cuenta? <Link href="/login">Inicia sesión aquí</Link>
+              ¿Ya tienes una cuenta? <Link href="/login" aria-label="Enlace para iniciar sesión">Inicia sesión aquí</Link>
             </Typography>
           </Box>
         </Box>

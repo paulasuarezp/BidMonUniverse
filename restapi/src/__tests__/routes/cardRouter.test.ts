@@ -26,7 +26,7 @@ beforeEach(async () => {
         await newCard.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -38,10 +38,10 @@ afterAll(async () => {
 
 describe('CARD ROUTES', () => {
 
-    describe('GET /cards/:cardId', () => {
+    describe('GET /api/cards/:cardId', () => {
         it('should get a card by ID', async () => {
             const response = await api
-                .get('/cards/c-1-0')
+                .get('/api/cards/c-1-0')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -52,10 +52,10 @@ describe('CARD ROUTES', () => {
 
 describe('CARD ROUTES Error Handling', () => {
 
-    describe('GET /cards/:cardId', () => {
+    describe('GET /api/cards/:cardId', () => {
         it('should return 404 if card not found', async () => {
             const response = await api
-                .get('/cards/nonexistent')
+                .get('/api/cards/nonexistent')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -66,7 +66,7 @@ describe('CARD ROUTES Error Handling', () => {
             jest.spyOn(mongoose.Model, 'findOne').mockRejectedValueOnce(new Error('Database error'));
 
             const response = await api
-                .get('/cards/c-1-0')
+                .get('/api/cards/c-1-0')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(500);

@@ -7,10 +7,10 @@ export default function AdminPage() {
     return (
         <Container>
             <AdminNavigationMenu />
-            <Typography variant="h4" align="center" component="div">
+            <Typography variant="h1" align="center" component="div">
                 ¡Bienvenido a la administración!
             </Typography>
-            <Typography variant="h6" align="center" component="div">
+            <Typography variant="h2" align="center" component="div">
                 Desde aquí podrás gestionar las subastas y las transacciones de los usuarios.
             </Typography>
         </Container>

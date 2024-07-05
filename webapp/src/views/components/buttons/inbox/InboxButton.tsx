@@ -49,7 +49,10 @@ export default function InboxButton() {
                     transform: 'scale(1.1)',
                     transition: 'transform 0.2s',
                 }
-            }}>
+            }}
+            role="button"
+            aria-label="Ir al buzón de notificaciones"
+        >
             <MailIcon />
         </Badge>
     );

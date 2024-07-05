@@ -118,7 +118,7 @@ export default function AllUserTransactionsTable({ data }: UserTransactionsTable
 
     // ALERT NO DATA
     if (!data || data.length === 0) {
-        return <Alert severity="info">No hay transacciones</Alert>;
+        return <Alert severity="info" role="alert">No hay transacciones</Alert>;
     }
 
     return (

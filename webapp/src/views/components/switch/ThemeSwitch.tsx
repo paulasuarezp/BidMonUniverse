@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 //#region PROPS
 interface ThemeSwitchProps {
   toggleTheme?: () => void;
+  tabIndex?: number;
 }
 //#endregion
 
@@ -60,7 +61,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 
 //#region COMPONENTE THEME SWITCH
 // Componente que permite cambiar el tema de la aplicación
-export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
+export default function ThemeSwitch({ toggleTheme, tabIndex = 0 }: ThemeSwitchProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const texto = theme.palette.mode === 'dark' ? 'Modo oscuro' : 'Modo claro';
@@ -69,6 +70,7 @@ export default function ThemeSwitch({ toggleTheme }: ThemeSwitchProps) {
       <FormControlLabel
         control={<MaterialUISwitch sx={{ ml: 2 }} onChange={toggleTheme} />}
         label={isMobile ? texto : ''}
+        aria-label='Cambiar tema'
       />
     </FormGroup>
   );

@@ -1,14 +1,13 @@
 // tests/cardRouter.test.ts
-import request from 'supertest';
-import { api, hashPassword, dropEntireDatabase } from '../helpers';
-import { server } from '../../../server';
 import mongoose from 'mongoose';
+import { server } from '../../../server';
+import Card from '../../models/card';
 import User from '../../models/user';
-import initialUsers from '../mockData/users.json';
+import UserCard from '../../models/userCard';
+import { api, dropEntireDatabase, hashPassword } from '../helpers';
 import initialCards from '../mockData/cards.json';
 import initialUserCards from '../mockData/usercards.json';
-import UserCard from '../../models/userCard';
-import Card from '../../models/card';
+import initialUsers from '../mockData/users.json';
 
 
 let token: string;
@@ -34,7 +33,7 @@ beforeEach(async () => {
         await newUserCard.save();
     }
 
-    const response = await api.post('/users/login').send({ username: 'test', password: 'Password123-' });
+    const response = await api.post('/api/users/login').send({ username: 'test', password: 'Password123-' });
     token = response.body.token;
 });
 
@@ -47,7 +46,7 @@ describe('USERCARD ROUTES', () => {
     describe('GET /usercards/u/:username', () => {
         it('should return user usercards for a valid username', async () => {
             const response = await api
-                .get('/usercards/u/test')
+                .get('/api/usercards/u/test')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -57,10 +56,10 @@ describe('USERCARD ROUTES', () => {
 
     });
 
-    describe('GET /usercards/:id', () => {
+    describe('GET /api/usercards/:id', () => {
         it('should return a specific user card', async () => {
             const response = await api
-                .get('/usercards/66646db6a10d744749820f4b')
+                .get('/api/usercards/66646db6a10d744749820f4b')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(200);
@@ -69,7 +68,7 @@ describe('USERCARD ROUTES', () => {
 
         it('should return 404 if does not exist', async () => {
             const response = await api
-                .get('/usercards/86646db6a10d744749820f4b')
+                .get('/api/usercards/86646db6a10d744749820f4b')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(404);
@@ -79,20 +78,20 @@ describe('USERCARD ROUTES', () => {
 });
 
 describe('USERCARD ROUTES Error Handling', () => {
-    describe('GET /usercards/:id', () => {
+    describe('GET /api/usercards/:id', () => {
         it('should return 400 for invalid userCardId', async () => {
             const response = await api
-                .get('/usercards/invalid-id')
+                .get('/api/usercards/invalid-id')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(400);
         });
     });
 
-    describe('GET /usercards/u/:username', () => {
+    describe('GET /api/usercards/u/:username', () => {
         it('should return 400 if username is too long', async () => {
             const response = await api
-                .get('/usercards/u/thisusernameiswaytoolongtobevalid')
+                .get('/api/usercards/u/thisusernameiswaytoolongtobevalid')
                 .set('Authorization', `Bearer ${token}`);
 
             expect(response.status).toBe(400);

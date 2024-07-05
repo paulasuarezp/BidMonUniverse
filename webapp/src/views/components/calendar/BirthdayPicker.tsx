@@ -31,6 +31,10 @@ export default function BirthdayDatePicker(props: BirthdayDatePickerProps) {
                     slotProps={{
                         textField: {
                             helperText: errrorMessage ? errrorMessage : ' ',
+                            FormHelperTextProps: {
+                                error: !!errrorMessage,
+                                'aria-live': 'assertive',
+                            },
                         },
                         layout: {
                             sx: {

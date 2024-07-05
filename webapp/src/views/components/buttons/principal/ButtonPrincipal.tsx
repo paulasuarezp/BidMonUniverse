@@ -14,6 +14,7 @@ export interface ButtonProps {
 // #region STYLES
 const StyledTypography = styled(Typography)(({ theme }) => ({
     color: theme.palette.mode === 'light' ? '#111111' : '#ececec', // Cambiado para adaptarse al esquema de color
+    fontSize: '1.2em',
     '&:hover': {
         color: '#FFFFFF',
     },
@@ -36,8 +37,8 @@ export default function ButtonPrincipal({ label, onClick }: ButtonProps) {
         <div className="container">
             <motion.div className="bolita bolita1" animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 2 }} />
             <motion.div className="bolita bolita2" animate={{ opacity: [1, 0.7, 1] }} transition={{ repeat: Infinity, duration: 2.5 }} />
-            <motion.button className="btn" whileHover={whileHover} onClick={onClick} style={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF' }}>
-                <StyledTypography variant="h4" sx={{ color: 'inherit' }}>{label}</StyledTypography>
+            <motion.button className="btn" whileHover={whileHover} onClick={onClick} style={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF' }} role="button" aria-label={label}>
+                <StyledTypography variant="body1" sx={{ color: 'inherit' }}>{label}</StyledTypography>
             </motion.button>
         </div >
     );

@@ -421,8 +421,10 @@ const checkAllActiveAuctions = async (req: Request, res: Response) => {
 
         const updateAuctions = [];
         for (let i = 0; i < auctions.length; i++) {
-            if (auctions[i].endDate <= now && auctions[i].status === AuctionStatus.Open) {
+            if (auctions[i].estimatedEndDate <= now && auctions[i].status === AuctionStatus.Open) {
                 auctions[i].status = AuctionStatus.Closed;
+                auctions[i].endDate = new Date();
+                auctions[i].save({ session });
                 await chekWinnerBid(auctions[i], session);
                 updateAuctions.push(auctions[i]);
             }

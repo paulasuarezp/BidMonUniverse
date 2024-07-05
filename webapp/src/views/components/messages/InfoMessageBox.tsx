@@ -40,15 +40,34 @@ export default function InfoMessageBox({ message, seccion = 'subastas' }: InfoMe
         >
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', pl: 2, pr: 2, pb: 2 }}>
                 <Box sx={{ textAlign: 'center', mt: 2 }}>
-                    <img src={imageSource} alt="Pokémon Snorlax" style={{ maxWidth: '30%', height: 'auto' }} />
-                    <Typography sx={{ marginBottom: '1em', marginTop: '1em' }}>
+                    <Typography
+                        sx={{ marginBottom: '1em', marginTop: '1em' }}
+                        role="alert"
+                        aria-live="polite"
+                    >
                         ¡Vaya! Parece que Snorlax está bloqueando el camino y no hay {seccion} activas en este momento. 😮
                     </Typography>
-                    <Typography>
+                    <img
+                        src={imageSource}
+                        alt="Imagen del Pokémon Snorlax"
+                        style={{ maxWidth: '30%', height: 'auto' }}
+                    />
+
+                    <Typography
+                        role="alert"
+                        aria-live="polite"
+                    >
                         {message || '¡Es un buen momento para relajarte y planear tu próxima estrategia de subasta!'}
                     </Typography>
                 </Box>
-                <Button buttonType="primary" label='Explorar otras áreas' fullWidth onClick={() => navigate('/')} sx={{ mt: 2 }} />
+                <Button
+                    buttonType="primary"
+                    label='Explorar otras áreas'
+                    fullWidth
+                    onClick={() => navigate('/')}
+                    sx={{ mt: 2 }}
+                    aria-label="Botón para explorar otras áreas"
+                />
             </Box>
         </StyledPaper>
     );

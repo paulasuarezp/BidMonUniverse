@@ -58,9 +58,24 @@ export default function BidCard({ card, userCardId, duration, price, bidId }: Bi
     }
     return (
         <HoverEffectContainer>
-            <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} />
-            <DurationButton duration={duration} sx={{ marginTop: '10px', padding: "0.2em" }} className="hover-effect" />
-            <CoinsButton balance={price} onClick={() => { }} className="hover-effect-coins" sx={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF', marginTop: '5px', padding: "0.2em" }} />
+            <PokemonCard card={card} type="auction" userCardId={userCardId} onClick={handleCardClick} aria-label={`Puja de la carta de ${card.name}`} />
+            <DurationButton
+                duration={duration}
+                sx={{ marginTop: '10px', padding: "0.2em" }}
+                className="hover-effect"
+                role="status"
+                aria-live="polite"
+                aria-label={`Duración de la subasta: ${duration} horas`}
+            />
+            <CoinsButton
+                balance={price}
+                onClick={() => { }}
+                className="hover-effect-coins"
+                sx={{ color: theme.palette.mode === 'light' ? '#000000' : '#FFFFFF', marginTop: '5px', padding: "0.2em" }}
+                role="status"
+                aria-live="polite"
+                aria-label={`Precio actual: ${price} monedas`}
+            />
         </HoverEffectContainer>
     );
 }
