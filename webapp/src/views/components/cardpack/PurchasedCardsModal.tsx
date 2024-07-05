@@ -48,7 +48,7 @@ export default function PurchasedCardsModal({ cards, open, handleClose }) {
                 <Typography id="modal-modal-description" variant="h3" align='center' sx={{ mb: 2 }}>
                     Has adquirido {cards.length} cartas, ¡échales un vistazo!
                 </Typography>
-                <Grid container spacing={2} justifyContent="center">
+                <Grid container spacing={5} justifyContent="center">
                     {cards.map((card, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <PokemonCard
