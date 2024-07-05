@@ -1,9 +1,12 @@
-export default {
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
     transform: {
         "^.+\\.tsx?$": "ts-jest"
     },
-    testMatch: ["**/steps/*.ts"],
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-    preset: "jest-puppeteer",
-    testTimeout: 60000
-}
+    testTimeout: 60000,
+    setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+};
+
+export default config;

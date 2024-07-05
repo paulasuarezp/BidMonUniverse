@@ -106,24 +106,12 @@ export default function Signup() {
             {...register('username')}
             error={!!errors.username}
             helperText={errors.username?.message}
-            aria-describedby={errors.username ? "username-error-text" : undefined}
           />
-          {errors.username && (
-            <Typography id="username-error-text" role="alert" sx={{ color: 'error.main' }}>
-              {errors.username.message}
-            </Typography>
-          )}
 
           <BirthdayDatePicker
             onChange={(date) => updateBirthday(date)}
             error={birthdayError}
-            aria-describedby={birthdayError ? "birthday-error-text" : undefined}
           />
-          {birthdayError && (
-            <Typography id="birthday-error-text" role="alert" sx={{ color: 'error.main' }}>
-              {birthdayError}
-            </Typography>
-          )}
 
           <Divider sx={{ my: 2 }} />
 
@@ -137,13 +125,7 @@ export default function Signup() {
             {...register('password')}
             error={!!errors.password}
             helperText={errors.password?.message}
-            aria-describedby={errors.password ? "password-error-text" : undefined}
           />
-          {errors.password && (
-            <Typography id="password-error-text" role="alert" sx={{ color: 'error.main' }}>
-              {errors.password.message}
-            </Typography>
-          )}
 
           <TextField
             id='confirmPassword'
@@ -155,13 +137,7 @@ export default function Signup() {
             {...register('confirmPassword')}
             error={!!errors.confirmPassword}
             helperText={errors.confirmPassword?.message}
-            aria-describedby={errors.confirmPassword ? "confirmPassword-error-text" : undefined}
           />
-          {errors.confirmPassword && (
-            <Typography id="confirmPassword-error-text" role="alert" sx={{ color: 'error.main' }}>
-              {errors.confirmPassword.message}
-            </Typography>
-          )}
 
           <Button
             type='submit'
