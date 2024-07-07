@@ -85,8 +85,8 @@ describe('PokemonCard Component', () => {
 
         const cardElement = screen.getByRole('button', { name: /carta de charizard/i });
 
-        expect(cardElement).toHaveAttribute('aria-pressed', 'true'); // Inicialmente volteada
+        expect(cardElement).toHaveAttribute('aria-pressed', 'false'); // Inicialmente no debería estar volteado
         fireEvent.click(cardElement);
-        expect(cardElement).toHaveAttribute('aria-pressed', 'false'); // Debería haberse volteado
+        expect(cardElement).toHaveAttribute('aria-pressed', 'true'); // Debería haberse volteado
     });
 });

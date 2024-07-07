@@ -38,7 +38,7 @@ export default function Paper({ background, title, imageSrc, imageAlt, children,
         >
             <Box sx={{ textAlign: 'center' }}>
                 {imageSrc && <img src={imageSrc} alt={imageAlt} style={{ maxWidth: '65%', height: 'auto' }} />}
-                {title && <Typography variant="h1" sx={{ mb: 2 }}>{title}</Typography>}
+                {title && <Typography variant="h2" sx={{ mb: 2 }}>{title}</Typography>}
             </Box>
             {children}
         </StyledPaper>

@@ -59,7 +59,7 @@ export default function LogoBox({ size = 60, title = "BidMon Universe", tabIndex
         style={{ width: '100%', height: 'auto', maxWidth: size }}
       />
       {(!isMobile && title) && (
-        <StyledTypography sx={{ flexGrow: 1, marginLeft: 1 }}>
+        <StyledTypography sx={{ flexGrow: 1, marginLeft: 1 }} variant="h1">
           {title}
         </StyledTypography>
       )}

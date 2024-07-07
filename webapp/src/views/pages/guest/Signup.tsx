@@ -87,6 +87,7 @@ export default function Signup() {
         imageSrc="logo-sf.png"
         imageAlt="Logo de BidMon Universe"
         elevation={3}
+        id="signup-form-title"
         sx={{
           maxWidth: 400,
           mx: 'auto',
@@ -96,7 +97,6 @@ export default function Signup() {
         }}
       >
         <Box component='form' onSubmit={onSubmit} noValidate sx={{ pl: 2, pr: 2, pb: 2 }} aria-labelledby="signup-form-title" onKeyDown={(e) => { if (e.key === 'Enter') onSubmit() }}>
-          <Typography id="signup-form-title" variant="h6">Crear cuenta</Typography>
           <TextField
             id='username'
             fullWidth
